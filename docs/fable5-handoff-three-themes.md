@@ -20,10 +20,24 @@ a pearl isn't manufactured, it's an organism's layered, emergent response to
 friction — just as a design system is an organization's accumulated response to
 recurring problems. Structure is fixed; identity is authored on top of it.
 
-Pearl already has one authored identity ("Pearl" — oyster stone, black shell,
-silver, near-white; quiet by default, color only at the seams: focus states,
-selection, material emphasis). I need THREE MORE, each proving the engine can
-swing to a genuinely different register without becoming a different codebase.
+Pearl is the system's own name — not a theme. Within it I need THREE named
+themes, each proving the engine can swing to a genuinely different register
+without becoming a different codebase. Each theme is named after a real pearl
+type; let that type's real-world character inform (not dictate) its register:
+
+- **Tahitian** — naturally the darkest pearls (black, grey, peacock-green,
+  aubergine overtones), rare, exotic. This is the flagship theme — its DARK
+  mode is what a first-time visitor sees on page load. A rough, unauthored
+  placeholder draft already exists for its light mode (oyster-stone/ink,
+  quiet-by-default, color only at the seams) — treat it as a discardable
+  starting sketch, not a constraint.
+- **Freshwater** — the most common, affordable, versatile pearls (white, pink,
+  lavender); approachable, everyday, "the one most people actually wear."
+- **South Sea** — the largest, most luminous pearls (gold, white), rare and
+  prized; the luxury register.
+
+Don't treat these as literal color-matching exercises (e.g. Tahitian ≠ "make
+everything grey-black") — they're a starting *mood*, not a palette mandate.
 
 ## The exact token schema (two tiers — fill this shape precisely)
 
@@ -36,12 +50,9 @@ stack per role.
 every theme, for BOTH light and dark):
 
 - Surface: `background`, `surface`, `overlay`
-- Inverse surface (for in-page contrast bands, e.g. a dark hero on a light
-  theme): `backgroundInverse`, `surfaceInverse`
 - Text: `text`, `textSubtle` (exactly two ranks — `subtle` always means "one
   step down in prominence," everywhere it's used)
-- Text (inverse): `textInverse`, `textInverseSubtle`
-- Border: `border`, `borderStrong`, `borderSubtle`, `borderInverse`
+- Border: `border`, `borderStrong`, `borderSubtle`
 - Accent — ONE hue axis only, no separate "brand" color: `accent`,
   `accentHover`, `accentSubtle`, `onAccent`. A quiet/ink-primary identity is
   achieved by setting `accent` itself to a near-neutral, not by adding a
@@ -61,26 +72,51 @@ every theme, for BOTH light and dark):
 - Type scale — fixed size/line-height PAIRS (never a unitless ratio), for:
   `bodySm, bodyMd, bodyLg, headingSm, headingMd, headingLg, displaySm, displayLg`
 
+## Two independent modes per theme — then the inverse tokens
+
+`light` and `dark` are a GLOBAL axis. For each theme, author both modes as two
+FULLY INDEPENDENT, completely filled token sets — never derive one mode's
+colors from the other's (not by inverting lightness, not by any formula).
+Each mode should look like a real, deliberately-designed mode on its own.
+
+Only AFTER both real modes exist, fill the inverse tokens —
+`backgroundInverse`, `surfaceInverse`, `textInverse`, `textInverseSubtle`,
+`borderInverse`. These are a different, SECTION-scoped concept: "render this
+one element/band as if the other mode were active," without switching the
+whole page's mode (Material Design 3's `inverseSurface`/`inverseOnSurface`
+pattern — used there for Snackbar, so it reads clearly against either theme).
+Each mode's inverse fields should approximate the OTHER mode's real primary
+values — e.g. `<theme>Light.backgroundInverse` ≈ `<theme>Dark.background`,
+and `<theme>Dark.backgroundInverse` ≈ `<theme>Light.background`. Don't invent
+new colors for these — reuse (or closely approximate) values you already
+authored for the other mode.
+
 ## The three themes to design
 
 Each must be a genuinely different REGISTER, not a recolor. Each needs a full
-LIGHT and DARK pair (six token sets total). Name each theme.
+LIGHT and DARK pair (six token sets total), per the pearl-type character
+above:
 
-1. **Enterprise SaaS / data-dense** — calm, high legibility, restrained accent,
-   TIGHT control heights (small `controlHeight` values), small radii, a
-   type scale favoring information density over drama.
-2. **Creative agency / expressive** — high-contrast, bold display type (lean
-   into `displayLg`), generous spacing, larger radii, a confident accent that
-   isn't afraid to be loud. This is the one place `accent` can be vivid.
-3. **Consumer / friendly / mobile-leaning** — rounded (radii closer to
-   `full`), AIRY/touch-friendly control heights, soft sentiment colors, a warm
-   approachable accent.
+1. **Tahitian** — the flagship; dark mode is the default first render.
+   Exotic, rare register — could lean dark/moody even in its light mode, with
+   iridescent (peacock/aubergine) touches at the seams rather than an
+   all-over color wash.
+2. **Freshwater** — the approachable, everyday register. Softer, warmer,
+   more forgiving — this could be the one with AIRY/touch-friendly
+   `controlHeight` and rounder radii, if that reads as "everyday-friendly"
+   to you.
+3. **South Sea** — the luxury register. Confident, spacious, a lustrous
+   golden/warm-white accent that isn't afraid to be seen — generous spacing,
+   larger radii, maybe the most expressive `displayLg` treatment of the three.
+
+These register hints are suggestions, not requirements — reinterpret freely
+if a different read of each pearl type produces a more interesting system.
 
 ## What I want back, per theme, per mode (6 total token sets)
 
-- Every semantic token above as a hex value (or px/rem for size tokens),
-  organized in a table or JSON-ish block I can paste directly into a
-  `createTheme()` call.
+- Every semantic token above (including the five inverse fields) as a hex
+  value (or px/rem for size tokens), organized in a table or JSON-ish block I
+  can paste directly into a `createTheme()` call.
 - Two WCAG 2.2 AA contrast checks per mode: `text` on `background`, and
   `onAccent` on `accent`. State the actual ratios.
 - A one-paragraph rationale: what makes this register distinct, and which
@@ -97,15 +133,18 @@ renders, so the token swap is the only variable.
 ## On "luster" — Pearl's existing material language (optional, explore if it
 ## resonates with a given theme; do not force it into all three)
 
-Pearl's own theme uses a restrained material treatment on hover: a soft
-radial-gradient highlight (very low opacity, ~5-8%, using `accentSubtle`),
-a slow easing transition, subtle inset-highlight + tight shadow instead of
-generic elevation. This is about DEPTH from layered translucency, not gloss or
-rainbow iridescence. If a theme's register suits it (e.g. the creative-agency
-one, maybe not enterprise), suggest how its OWN accent/surface tokens would
-drive an equivalent restrained hover treatment — but the enterprise theme in
-particular may be better served by NO motion at all. Call this out explicitly
-per theme rather than defaulting it in.
+Pearl's early exploration used a restrained material treatment on hover: a
+soft radial-gradient highlight (very low opacity, ~5-8%, using
+`accentSubtle`), a slow easing transition, subtle inset-highlight + tight
+shadow instead of generic elevation. This is about DEPTH from layered
+translucency, not gloss or rainbow iridescence — literally how real pearl
+luster works (light penetrating multiple translucent layers), not a
+decorative shine. If a theme's register suits it (Tahitian and South Sea seem
+like natural fits; Freshwater's everyday register might not), suggest how its
+OWN accent/surface tokens would drive an equivalent restrained hover
+treatment — but any theme may be better served by NO motion at all if that
+reads as more honest to its register. Call this out explicitly per theme
+rather than defaulting it in.
 
 ## Constraints
 - Every value must be a literal, paste-able token (hex / px / rem /
@@ -119,26 +158,38 @@ per theme rather than defaulting it in.
   are directly comparable.
 
 ## Output format
-For each of the 3 themes: theme name → light token table + specimen render →
-dark token table + specimen render → rationale paragraph → luster note (if
-applicable). Then one closing note: which of the 8 semantic groups above (or
-which specific field) was hardest to keep meaningful across all three very
-different registers — that's a signal for me about where the schema itself
-might still be too rigid or too loose.
+For each of the 3 themes (Tahitian, Freshwater, South Sea): light token table
++ specimen render → dark token table + specimen render → the five inverse
+fields for each mode → rationale paragraph → luster note (if applicable).
+Then one closing note: which semantic group (or specific field) was hardest
+to keep meaningful across all three very different registers — that's a
+signal for me about where the schema itself might still be too rigid or too
+loose.
 ```
 
 ---
 
 ## After themes come back (engineering checklist — not part of the prompt)
 
-1. One `src/themes/<name>.css.ts` per theme, light+dark pair each — same
-   pattern as `pearl.css.ts` (spread `scales` from `themes/scales.ts` only for
-   whatever a theme doesn't intentionally override; enterprise/agency/consumer
-   will likely each want their OWN `controlHeight`/`radius`/`text` scale, since
-   those are exactly the density/register levers the brief asks Fable 5 to use).
-2. Register each in the `themeMatrix` in `.storybook/preview.tsx` (already
-   generalized to theme×mode — just add matrix entries).
-3. Spot-check the "hardest to keep meaningful" field the brief asks Fable 5 to
-   flag — likely candidate for a schema revision (log in `OPEN_QUESTIONS.md`).
-4. Run the existing token-editor POC (`PearlExperience` story) against the new
-   themes as a sanity check before writing new stories.
+The scaffold already exists — `src/themes/tahitian.css.ts`,
+`freshwater.css.ts`, `south-sea.css.ts`, each currently exporting
+`<name>LightThemeClass`/`<name>DarkThemeClass` as placeholders (Tahitian light
+= a rough draft; the other five slots alias the generic theme). Replace, don't
+rebuild:
+
+1. In each file, replace the placeholder `createTheme(...)` (or alias) with
+   real authored values — spread `scales` from `themes/scales.ts` only for
+   whatever the theme doesn't intentionally override (each theme will likely
+   want its OWN `controlHeight`/`radius`/`text` scale — exactly the
+   density/register levers the brief asks Fable 5 to use).
+2. Author both real modes independently first, THEN fill each mode's five
+   inverse fields from the other mode's real values — never the reverse (see
+   `theme.css.ts`'s contract comment for the full rule).
+3. File/export names and the `themeMatrix` in `.storybook/preview.tsx` don't
+   change — the toolbar already points at the real names.
+4. Spot-check the "hardest to keep meaningful" field the brief asks Fable 5 to
+   flag — likely candidate for a schema revision (log in `OPEN_QUESTIONS.md`
+   #13, which tracks this handoff's status).
+5. Run the existing token-editor POC (`PearlExperience` story, currently
+   wrapped in `tahitianDarkThemeClass`) against the new values as a sanity
+   check before writing new stories.

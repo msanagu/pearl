@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { Input } from '../components/Input';
-import { pearlThemeClass } from '../themes/pearl.css';
+import { tahitianDarkThemeClass } from '../themes/tahitian.css';
 import { color } from '../tokens';
 import * as css from './pearl-experience.css';
 
@@ -20,13 +20,15 @@ interface EditorControl {
 // The editor changes emitted CSS custom properties on its preview wrapper. It
 // does not recompile a theme in the browser — this is the runtime proof that
 // every component consumes the semantic contract rather than hard-coded values.
+// Initial values mirror `tahitianDarkThemeClass` (currently a placeholder
+// alias of the generic dark theme — see themes/tahitian.css.ts).
 const editorControls: readonly EditorControl[] = [
-  { key: 'background', label: 'Background', reference: color.background, initialValue: '#F1F2EF' },
-  { key: 'surface', label: 'Surface', reference: color.surface, initialValue: '#FAFAF7' },
-  { key: 'text', label: 'Text', reference: color.text, initialValue: '#202324' },
-  { key: 'border', label: 'Border', reference: color.border, initialValue: '#D7D9D6' },
-  { key: 'accent', label: 'Accent', reference: color.accent, initialValue: '#624C5D' },
-  { key: 'focusRing', label: 'Focus', reference: color.focusRing, initialValue: '#615C53' },
+  { key: 'background', label: 'Background', reference: color.background, initialValue: '#0E0E10' },
+  { key: 'surface', label: 'Surface', reference: color.surface, initialValue: '#1A1A1D' },
+  { key: 'text', label: 'Text', reference: color.text, initialValue: '#F5F5F7' },
+  { key: 'border', label: 'Border', reference: color.border, initialValue: '#2C2C30' },
+  { key: 'accent', label: 'Accent', reference: color.accent, initialValue: '#6D84FF' },
+  { key: 'focusRing', label: 'Focus', reference: color.focusRing, initialValue: '#6D84FF' },
 ];
 
 const initialEditorValues = Object.fromEntries(
@@ -58,7 +60,7 @@ function PearlExperience() {
   }
 
   return (
-    <div className={`${pearlThemeClass} ${css.experience}`} style={style}>
+    <div className={`${tahitianDarkThemeClass} ${css.experience}`} style={style}>
       <section className={css.hero} aria-labelledby="pearl-hero-heading">
         <header className={css.heroMeta}>
           <span className={css.brandMark}>Pearl / DS</span>

@@ -1,25 +1,22 @@
 import type { Preview } from '@storybook/react-vite';
 import { vars } from '../src/theme.css';
-import { lightThemeClass } from '../src/themes/light.css';
-import { darkThemeClass } from '../src/themes/dark.css';
-import { pearlThemeClass, pearlAubergineThemeClass } from '../src/themes/pearl.css';
+import { tahitianLightThemeClass, tahitianDarkThemeClass } from '../src/themes/tahitian.css';
+import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater.css';
+import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea.css';
 
-// Theme × mode matrix. Each theme is meant to ship a real light AND dark pair
-// (that's the whole point — see docs/visual-language-brief.md's 3-theme
-// validation). Pearl's dark pair doesn't exist yet (pending the Fable 5 visual
-// exploration), so it falls back to its light values rather than fake them —
-// marked explicitly so nobody mistakes the fallback for a real dark theme.
+// Theme × mode matrix. Each of Pearl's three named themes ships a real light
+// AND dark pair (docs/fable5-handoff-three-themes.md) — Tahitian/Freshwater/
+// South Sea currently alias generic/placeholder values pending that visual
+// exploration; only the *shape* (theme × mode, all six slots real) is final.
 const themeMatrix: Record<string, Record<'light' | 'dark', string>> = {
-  default: { light: lightThemeClass, dark: darkThemeClass },
-  pearl: { light: pearlThemeClass, dark: pearlThemeClass /* TODO: real Pearl dark pair */ },
-  pearlAubergine: {
-    light: pearlAubergineThemeClass,
-    dark: pearlAubergineThemeClass /* TODO: real Pearl Aubergine dark pair */,
-  },
+  tahitian: { light: tahitianLightThemeClass, dark: tahitianDarkThemeClass },
+  freshwater: { light: freshwaterLightThemeClass, dark: freshwaterDarkThemeClass },
+  southSea: { light: southSeaLightThemeClass, dark: southSeaDarkThemeClass },
 };
 
 const preview: Preview = {
   parameters: {
+      layout: 'fullscreen',
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -37,9 +34,9 @@ const preview: Preview = {
         title: 'Theme',
         icon: 'paintbrush',
         items: [
-          { value: 'default', title: 'Default' },
-          { value: 'pearl', title: 'Pearl (oyster stone)' },
-          { value: 'pearlAubergine', title: 'Pearl (ink)' },
+          { value: 'tahitian', title: 'Tahitian' },
+          { value: 'freshwater', title: 'Freshwater' },
+          { value: 'southSea', title: 'South Sea' },
         ],
         dynamicTitle: true,
       },
@@ -57,13 +54,14 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { theme: 'pearl', mode: 'light' },
+  // Tahitian dark is the flagship first-render (per product direction).
+  initialGlobals: { theme: 'tahitian', mode: 'dark' },
 
   decorators: [
     (Story, context) => {
-      const theme = (context.globals.theme as string) ?? 'pearl';
-      const mode = (context.globals.mode as 'light' | 'dark') ?? 'light';
-      const themeClass = themeMatrix[theme]?.[mode] ?? pearlThemeClass;
+      const theme = (context.globals.theme as string) ?? 'tahitian';
+      const mode = (context.globals.mode as 'light' | 'dark') ?? 'dark';
+      const themeClass = themeMatrix[theme]?.[mode] ?? tahitianDarkThemeClass;
 
       // Every component reads only `vars.*` — nothing renders correctly without
       // a theme class as an ancestor. Applying it globally means stories never

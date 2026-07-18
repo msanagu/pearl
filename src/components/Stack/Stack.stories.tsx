@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack } from './Stack';
 import { Row } from '../Row/Row';
+import { color } from '../../tokens';
 
 /**
  * `Stack` (vertical) and `Row` (horizontal) are thin presets over one shared
@@ -11,6 +12,9 @@ const meta: Meta<typeof Stack> = {
   title: 'Components/Layout',
   component: Stack,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
   argTypes: {
     gap: {
       control: 'select',
@@ -29,8 +33,8 @@ const Box = ({ children }: { children: React.ReactNode }) => (
   <div
     style={{
       padding: '12px 16px',
-      background: '#e0e7ff',
-      border: '1px solid #b9ccf7',
+      background: color.surface,
+      border: `1px solid ${color.border}`,
       borderRadius: 6,
       fontSize: 13,
     }}

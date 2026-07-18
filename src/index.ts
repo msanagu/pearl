@@ -3,9 +3,9 @@
 
 // --- Theme contract & themes ---
 export { vars } from './theme.css';
-export { lightThemeClass } from './themes/light.css';
-export { darkThemeClass } from './themes/dark.css';
-export { pearlThemeClass, pearlAubergineThemeClass } from './themes/pearl.css';
+export { tahitianLightThemeClass, tahitianDarkThemeClass } from './themes/tahitian.css';
+export { freshwaterLightThemeClass, freshwaterDarkThemeClass } from './themes/freshwater.css';
+export { southSeaLightThemeClass, southSeaDarkThemeClass } from './themes/south-sea.css';
 
 // --- Documented token layer (JSDoc wrapper) ---
 export {

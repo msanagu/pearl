@@ -25,8 +25,18 @@ export const vars = createThemeContract({
     background: null,
     surface: null,
     overlay: null,
-    // Inverse surfaces let a single theme move from an editorial dark field
-    // into a light reading surface without changing themes.
+    // Inverse tokens: section-scoped "render as if the OTHER mode were
+    // active," without flipping the global mode — a dark band inside an
+    // otherwise-light page (or vice versa). Same pattern as Material 3's
+    // inverseSurface/inverseOnSurface/inversePrimary (used there for Snackbar).
+    //
+    // Mode (light/dark) is a separate, GLOBAL axis: each mode is a fully
+    // independent, completely authored token set — never derived from the
+    // other. Inverse tokens are the bridge between them: each mode's inverse
+    // fields should approximate the OTHER mode's real primary values (e.g.
+    // lightTheme.backgroundInverse ≈ darkTheme.background), authored only
+    // after both real modes exist — never the other way around (a mode must
+    // never be seeded FROM an inverse value).
     backgroundInverse: null,
     surfaceInverse: null,
     // Text — two ranks. `subtle` always means "one step down in prominence,"

@@ -4,10 +4,10 @@ import * as css from './tokens.css';
 
 /**
  * Foundations → Tokens: a live specimen of the whole token contract, rendered
- * under `lightThemeClass`. This is not a component — it's a validation surface
- * for the token layer (ADR-0005 tiers, ADR-0006 naming). Values shown are
- * whatever the active theme defines; colors are PLACEHOLDERS pending the
- * visual-language exploration.
+ * under whichever theme is active in the Storybook toolbar. This is not a
+ * component — it's a validation surface for the token layer (ADR-0005 tiers,
+ * ADR-0006 naming). Values shown are whatever the active theme defines; colors
+ * are PLACEHOLDERS pending the visual-language exploration.
  */
 
 // Flat (non-nested) color tokens — sentiment groups are rendered separately.
