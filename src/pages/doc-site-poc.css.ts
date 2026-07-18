@@ -9,14 +9,20 @@ export const experience = style({
   fontFamily: fontFamily.body,
 });
 
+// Deliberately NOT using the *Inverse tokens here — those are for a
+// section-scoped "show the other mode" effect (see theme.css.ts's contract
+// comment), which would fight a real, working mode switcher: selecting Light
+// should show a light hero, not a hero frozen to look like dark mode. `surface`
+// (one step off the page `background`) keeps a mild editorial distinction
+// without contradicting the selected mode.
 export const hero = style({
   position: 'relative',
   display: 'grid',
   gridTemplateRows: 'auto minmax(560px, 76vh)',
   overflow: 'hidden',
   padding: '28px clamp(24px, 5vw, 88px) 40px',
-  background: color.backgroundInverse,
-  color: color.textInverse,
+  background: color.surface,
+  color: color.text,
 });
 
 export const heroMeta = style({
@@ -26,7 +32,7 @@ export const heroMeta = style({
   justifyContent: 'space-between',
   alignItems: 'center',
   paddingBottom: space.lg,
-  borderBottom: `1px solid ${color.borderInverse}`,
+  borderBottom: `1px solid ${color.border}`,
   fontFamily: fontFamily.body,
   fontSize: text.bodySm.fontSize,
   fontWeight: fontWeight.medium,
@@ -38,11 +44,49 @@ export const heroMeta = style({
 });
 
 export const brandMark = style({
-  color: color.textInverse,
+  color: color.text,
   letterSpacing: '0.18em',
 });
 
-export const heroIndex = style({ color: color.textInverseSubtle });
+export const heroIndex = style({ color: color.textSubtle });
+
+// The site's own theme/mode switcher — a real production site can't depend on
+// Storybook's toolbar, so this recreates the mechanism natively: local state
+// + a small control group, not `.storybook/preview.tsx`'s decorator.
+export const switcherGroup = style({
+  display: 'flex',
+  gap: space.xs,
+  fontFamily: fontFamily.body,
+  textTransform: 'none',
+  letterSpacing: 'normal',
+});
+
+export const switcherButton = style({
+  padding: `${space.xs} ${space.sm}`,
+  border: `1px solid ${color.border}`,
+  borderRadius: radius.full,
+  background: 'transparent',
+  color: color.textSubtle,
+  fontSize: text.bodySm.fontSize,
+  fontWeight: fontWeight.medium,
+  cursor: 'pointer',
+  transition: 'background 150ms ease, color 150ms ease, border-color 150ms ease',
+  selectors: {
+    '&[data-active="true"]': {
+      background: color.accent,
+      borderColor: color.accent,
+      color: color.onAccent,
+    },
+    '&:not([data-active="true"]):hover': {
+      borderColor: color.accent,
+      color: color.text,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${color.accent}`,
+      outlineOffset: '2px',
+    },
+  },
+});
 
 export const heroContent = style({
   position: 'relative',
@@ -75,7 +119,7 @@ export const heroAside = style({
   flexDirection: 'column',
   gap: space.md,
   paddingBottom: '8px',
-  color: color.textInverseSubtle,
+  color: color.textSubtle,
   fontSize: text.bodyMd.fontSize,
   lineHeight: text.bodyLg.lineHeight,
 });
@@ -93,7 +137,7 @@ export const heroWord = style({
   position: 'absolute',
   right: '-0.08em',
   bottom: '-0.19em',
-  color: color.surfaceInverse,
+  color: color.background,
   fontFamily: fontFamily.display,
   fontSize: 'clamp(155px, 30vw, 540px)',
   fontWeight: fontWeight.bold,

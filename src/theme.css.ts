@@ -8,9 +8,17 @@ import { createThemeContract } from '@vanilla-extract/css';
  *
  * ## Tiering (ADR-0005)
  * Components consume this **semantic** layer only — role-named tokens, never raw
- * values. A **primitive** tier (raw color ramps, etc.) will be introduced with
- * the visual language; at that point these semantic values repoint to primitive
- * vars with zero component change. Today they hold placeholder values directly.
+ * values. Each theme (`src/themes/*.css.ts`) now has a real primitive tier: a
+ * module-scoped `*Primitives` object of raw, named hexes (e.g. `aubergine:
+ * '#624C5D'`), which the `createTheme()` call maps onto these semantic roles.
+ * Primitives are scoped per theme (not shared across Tahitian/Freshwater/South
+ * Sea) and per mode within a theme — see any `themes/*.css.ts` file. Values are
+ * still placeholders pending the Fable 5 visual-language pass; the tier
+ * structure itself is final.
+ *
+ * Non-color scales (radius/space/controlHeight/fontWeight/fontFamily/text) are
+ * likewise defined per theme, not shared via a global scales file — each theme
+ * owns its full identity, including density and type, not just color.
  *
  * ## Color naming (ADR-0005 worked example)
  * Feedback/sentiment colors are keyed by *valence* (`positive`/`negative`/

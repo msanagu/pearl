@@ -86,13 +86,26 @@ the product flips correctly with zero component changes. Component APIs stay fre
 to use their own vocabulary (`<Alert variant="error">`) mapped onto these tokens —
 token names describe palette-meaning, component props describe component-meaning.
 
+## Implementation note (post-acceptance)
+
+The primitive tier landed as plain, module-scoped JS objects per theme file —
+`const tahitianLightPrimitives = { aubergine: '#624C5D', ... }` — not a second
+vanilla-extract contract/`createGlobalTheme`. The semantic `createTheme(vars,
+{...})` call then references those primitives by name (`accent:
+tahitianLightPrimitives.aubergine`). Primitives are scoped per theme *and* per
+mode (Tahitian's light and dark are two separate primitive objects) — a mode's
+`*Inverse` semantic fields reference the *other* mode's primitive object
+directly (see `theme.css.ts`'s contract comment), so they can't silently drift
+out of sync with a copy-pasted value. Non-color scales followed the same
+per-theme-not-shared principle: no global `scales.ts` — each theme file also
+owns its own `radius`/`space`/`controlHeight`/`fontWeight`/`fontFamily`/`text`.
+
 ## Related
 
-- ADR-0001 — vanilla-extract, which expresses two tiers via a primitives
-  `createGlobalTheme`/contract + a semantic `createThemeContract` whose theme
-  values point at primitive vars.
+- ADR-0001 — vanilla-extract; the semantic tier is its `createThemeContract` +
+  `createTheme`, per the implementation note above.
 - `roadmap.md` — the theme-only reskinning proposition this makes robust.
 - `spacing-system.md`, `typography.md` — existing scales that become primitives
   with semantic roles layered on.
-- The visual-language exploration brief (below) — the vehicle developing the
-  concrete semantic schema.
+- `docs/fable5-handoff-three-themes.md` — the vehicle developing the concrete
+  primitive + semantic values for Tahitian/Freshwater/South Sea.

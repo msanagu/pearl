@@ -27,27 +27,40 @@ type; let that type's real-world character inform (not dictate) its register:
 
 - **Tahitian** — naturally the darkest pearls (black, grey, peacock-green,
   aubergine overtones), rare, exotic. This is the flagship theme — its DARK
-  mode is what a first-time visitor sees on page load. A rough, unauthored
-  placeholder draft already exists for its light mode (oyster-stone/ink,
-  quiet-by-default, color only at the seams) — treat it as a discardable
-  starting sketch, not a constraint.
+  mode is what a first-time visitor sees on page load. A rough, discardable
+  sketch already exists (aubergine/orchid accent; Druk for display, Neue
+  Montreal for UI text) — a starting point, not a constraint.
 - **Freshwater** — the most common, affordable, versatile pearls (white, pink,
-  lavender); approachable, everyday, "the one most people actually wear."
+  lavender); approachable, everyday, "the one most people actually wear." Rough
+  sketch: teal/turquoise accent, Satoshi (display) + Geist (UI text).
 - **South Sea** — the largest, most luminous pearls (gold, white), rare and
-  prized; the luxury register.
+  prized; the luxury register. Rough sketch: warm gold/amber accent
+  (deliberately NOT purple — stay clear of Tahitian's aubergine), a serif
+  display pairing (RST Thermal / Aire-style).
+
+All three sketches are placeholders — reinterpret freely, including the fonts
+and accent hues. They exist so the mechanism has something real to render
+today, not to constrain your direction.
 
 Don't treat these as literal color-matching exercises (e.g. Tahitian ≠ "make
 everything grey-black") — they're a starting *mood*, not a palette mandate.
 
 ## The exact token schema (two tiers — fill this shape precisely)
 
-**Primitives** (raw, per-theme swappable): a neutral ramp, an accent ramp, four
-sentiment hues (positive/negative/warn/info — do NOT call these
-success/danger; they're reused outside alerts, e.g. metric deltas), a font
-stack per role.
+**Primitives — give every raw color a real, descriptive NAME, not a role.**
+Example from the existing sketch: `aubergine: '#624C5D'`. Not `accentColor`,
+not `purple500` — an actual color name, the way a paint swatch or a fashion
+palette would name it. I'll wire `accent: primitives.aubergine` on my end. Do
+this for every distinct hex you use: neutrals (surfaces/text/borders), the
+accent family (base + hover + tint), and the four sentiment hue families
+(positive/negative/warn/info — do NOT call these success/danger; they're
+reused outside alerts, e.g. metric deltas). Primitives are scoped per THEME
+and per MODE — Tahitian Light and Tahitian Dark are two separate named
+palettes, not one ramp split in half. Also name the font stacks per role.
 
 **Semantics** (what components actually consume — fill every field below,
-every theme, for BOTH light and dark):
+every theme, for BOTH light and dark, each value a reference to a named
+primitive):
 
 - Surface: `background`, `surface`, `overlay`
 - Text: `text`, `textSubtle` (exactly two ranks — `subtle` always means "one
@@ -114,9 +127,13 @@ if a different read of each pearl type produces a more interesting system.
 
 ## What I want back, per theme, per mode (6 total token sets)
 
-- Every semantic token above (including the five inverse fields) as a hex
-  value (or px/rem for size tokens), organized in a table or JSON-ish block I
-  can paste directly into a `createTheme()` call.
+- A **primitives table**: every named color you invented → its hex (e.g.
+  `aubergine → #624C5D`), plus the named font stacks.
+- A **semantics table**: every semantic field above (including the five
+  inverse fields) → which PRIMITIVE NAME it references (not a raw hex here —
+  the whole point is the semantic table should read like `accent →
+  aubergine`, `accentHover → aubergineDeep`). Size tokens (space/radius/
+  controlHeight/type) can stay literal px/rem, they don't need primitive names.
 - Two WCAG 2.2 AA contrast checks per mode: `text` on `background`, and
   `onAccent` on `accent`. State the actual ratios.
 - A one-paragraph rationale: what makes this register distinct, and which
@@ -158,13 +175,13 @@ rather than defaulting it in.
   are directly comparable.
 
 ## Output format
-For each of the 3 themes (Tahitian, Freshwater, South Sea): light token table
-+ specimen render → dark token table + specimen render → the five inverse
-fields for each mode → rationale paragraph → luster note (if applicable).
-Then one closing note: which semantic group (or specific field) was hardest
-to keep meaningful across all three very different registers — that's a
-signal for me about where the schema itself might still be too rigid or too
-loose.
+For each of the 3 themes (Tahitian, Freshwater, South Sea): light primitives
+table + light semantics table + specimen render → dark primitives table +
+dark semantics table + specimen render → rationale paragraph → luster note
+(if applicable). Then one closing note: which semantic group (or specific
+field) was hardest to keep meaningful across all three very different
+registers — that's a signal for me about where the schema itself might still
+be too rigid or too loose.
 ```
 
 ---
@@ -172,27 +189,28 @@ loose.
 ## After themes come back (engineering checklist — not part of the prompt)
 
 The scaffold already exists — `src/themes/tahitian.css.ts`,
-`freshwater.css.ts`, `south-sea.css.ts`, each a self-contained file exporting
-`<name>LightThemeClass`/`<name>DarkThemeClass`, both real `createTheme(...)`
-calls (no more generic light/dark fallback file to alias — that's been
-removed). All six are currently placeholders: Tahitian's two modes are at
-least distinct from each other; Freshwater and South Sea are honest
-duplicates of each other, still pending any authored identity. Replace, don't
-rebuild:
+`freshwater.css.ts`, `south-sea.css.ts`, each a fully self-contained file (no
+shared `scales.ts` — removed) exporting `<name>LightThemeClass`/
+`<name>DarkThemeClass`. Each already has the two-tier structure: a
+module-scoped `*Primitives` object (named hexes) per theme+mode, and the
+`createTheme(...)` semantic call references those primitives by name. All
+values are currently rough sketches pulled from the visual-language moodboard
+(distinct per theme, not yet final). Replace values, keep the structure:
 
-1. In each file, replace the placeholder `createTheme(...)` values with real
-   authored ones — spread `scales` from `themes/scales.ts` only for
-   whatever the theme doesn't intentionally override (each theme will likely
-   want its OWN `controlHeight`/`radius`/`text` scale — exactly the
+1. In each file, replace the `*Primitives` object's values (and add/remove
+   named entries as needed) with Fable 5's real primitives, then update the
+   semantic `createTheme(...)` references if any primitive names changed.
+   Also replace the inlined `radius`/`space`/`controlHeight`/`fontWeight`/
+   `fontFamily`/`text` consts — each theme owns these fully (the
    density/register levers the brief asks Fable 5 to use).
-2. Author both real modes independently first, THEN fill each mode's five
-   inverse fields from the other mode's real values — never the reverse (see
-   `theme.css.ts`'s contract comment for the full rule).
+2. Author both real modes' primitives independently first, THEN point each
+   mode's five inverse semantic fields at the OTHER mode's primitive object
+   directly (`tahitianLightPrimitives.pearl`, not a copied hex) — never the
+   reverse. See `theme.css.ts`'s contract comment for the full rule.
 3. File/export names and the `themeMatrix` in `.storybook/preview.tsx` don't
    change — the toolbar already points at the real names.
 4. Spot-check the "hardest to keep meaningful" field the brief asks Fable 5 to
    flag — likely candidate for a schema revision (log in `OPEN_QUESTIONS.md`
    #13, which tracks this handoff's status).
-5. Run the existing token-editor POC (`PearlExperience` story, currently
-   wrapped in `tahitianDarkThemeClass`) against the new values as a sanity
-   check before writing new stories.
+5. Run the token-editor POC (`src/pages/DocSitePoc.stories.tsx`) against the
+   new values as a sanity check before writing new stories.
