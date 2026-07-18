@@ -172,13 +172,16 @@ loose.
 ## After themes come back (engineering checklist — not part of the prompt)
 
 The scaffold already exists — `src/themes/tahitian.css.ts`,
-`freshwater.css.ts`, `south-sea.css.ts`, each currently exporting
-`<name>LightThemeClass`/`<name>DarkThemeClass` as placeholders (Tahitian light
-= a rough draft; the other five slots alias the generic theme). Replace, don't
+`freshwater.css.ts`, `south-sea.css.ts`, each a self-contained file exporting
+`<name>LightThemeClass`/`<name>DarkThemeClass`, both real `createTheme(...)`
+calls (no more generic light/dark fallback file to alias — that's been
+removed). All six are currently placeholders: Tahitian's two modes are at
+least distinct from each other; Freshwater and South Sea are honest
+duplicates of each other, still pending any authored identity. Replace, don't
 rebuild:
 
-1. In each file, replace the placeholder `createTheme(...)` (or alias) with
-   real authored values — spread `scales` from `themes/scales.ts` only for
+1. In each file, replace the placeholder `createTheme(...)` values with real
+   authored ones — spread `scales` from `themes/scales.ts` only for
    whatever the theme doesn't intentionally override (each theme will likely
    want its OWN `controlHeight`/`radius`/`text` scale — exactly the
    density/register levers the brief asks Fable 5 to use).
