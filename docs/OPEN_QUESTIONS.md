@@ -1,0 +1,38 @@
+# Open Questions & Doc Gaps (resolve-as-we-go tracker)
+
+The philosophy docs captured big-picture decisions and brainstorming. A handful of
+things they don't yet pin down get forced the moment code is written. This file
+tracks them so they're resolved deliberately, at the phase where they first bite —
+not silently defaulted. **Nothing here overrides a documented decision;** these are
+the genuinely-undecided seams.
+
+Status legend: 🔴 open · 🟡 provisional default in place · 🟢 resolved
+
+## Decisions needed by phase
+
+| # | Question | Bites at | Status | Provisional default (if any) |
+|---|---|---|---|---|
+| 1 | **Authoritative token contract.** ~~Real color set, space scale, typography/radius swappable?~~ **RESOLVED:** color + space + radius + typography all in the swappable contract; values in `src/theme.css.ts` + `src/themes/light.css.ts`. Color = the fuller 7-token set. Caveat: typography **weight values** (400/500/600/700 + per-variant defaults) are provisional — typography.md doesn't enumerate them (see reconciliations below). | Phase 1 | 🟢 | color+space+radius+typography |
+| 2 | **`vars.*` vs. `tokens.ts` wrapper** as the canonical import. **RESOLVED:** components import the JSDoc wrapper (`colorVars`/`spaceVars`/`radiusVars`/`fontWeightVars`/`textVars`) from `src/tokens.ts`. Owner accepts the thin maintained layer for IntelliSense + type safety. | Phase 1 | 🟢 | tokens.ts wrapper |
+| 3 | **Component folder colocation.** Where `Component.tsx`, `Component.css.ts`, stories, tests, `index.ts` sit relative to each other. | Phase 2 | 🟡 | `src/components/<Name>/` |
+| 4 | **Testing strategy & tooling.** **RESOLVED (harness):** Vitest 4 (runner) + React Testing Library + jsdom + jest-dom matchers, wired with a Phase 1 smoke test. Automated axe a11y assertions deferred to Phase 2 (Button) — will use `axe-core` directly (stale `vitest-axe` avoided). | Phase 2 | 🟢 | Vitest + RTL + jsdom |
+| 5 | **Storybook docs format.** MDX vs. CSF autodocs + `argTypes`. Load-bearing: docs are the future RAG corpus. | Phase 2 | 🔴 | — |
+| 6 | **Build/packaging.** **RESOLVED (core):** Vite lib (ES) + external react → `dist/index.js` + `index.css`; `.d.ts` emitted via a zero-dep `tsc -p tsconfig.build.json` pass → `dist/index.d.ts`. Still open: verifying the `exports` map against a real consumer install, and whether to `preserveModules` for finer tree-shaking. | Phase 2 / pre-publish | 🟡 | Vite lib + tsc dts pass |
+| 7 | **No-raw-values lint rule.** `roadmap.md` flags it required + unimplemented. Custom ESLint rule? Blocking CI gate? | Phase 7 (guard earlier if cheap) | 🔴 | — |
+| 8 | **TS `exactOptionalPropertyTypes`.** `Field`'s explicit `\| undefined` hints you may want it. Off for now. | Phase 3–5 | 🟡 | `strict:true` + `noUncheckedIndexedAccess` + `verbatimModuleSyntax`; `exactOptionalPropertyTypes` **off** |
+| 9 | **Icon registry mechanics.** How SVGs are stored/registered + typed name union. | Phase 6 | 🔴 | — |
+| 10 | **Progress Bar:** native `<progress>` vs. custom `role="progressbar"` — `markup-philosophy.md` defers this to implementation. | Phase 6 | 🔴 | — |
+| 11 | **Styling engine: vanilla-extract vs. Panda CSS.** **RESOLVED → vanilla-extract** (+ `@vanilla-extract/recipes`). Full reasoning recorded in [ADR-0001](decisions/0001-styling-engine.md): VE natively models the compile-enforced forkable-theme-contract thesis; the `tokens.ts` wrapper cost is accepted for hover-doc DX; Panda's completeness guarantee is weaker and its atomic/`@layer` output would make the override contract engine-specific; Tailwind rejected as hostile to the markup + override philosophy. | Phase 1.5 | 🟢 | vanilla-extract + recipes |
+| 12 | **Icon↔Button sizing + icon-only a11y contract.** Composing `<Button><Icon/>text</Button>` works via internal flex + `spaceVars.xs` gap (no `icon`/`iconPosition` prop — direct application of the composition-over-configuration heuristic). Two sub-questions remain: (a) does `Icon` size itself ambiently (e.g. `1em`, inheriting Button's font-size) so it auto-matches Button `size`, or does the consumer pass matching sizes to both independently; (b) how is an icon-only Button's accessible name enforced (`aria-label` works today but nothing requires it — lint rule? Storybook a11y check only?). | Phase 2 (Button) | 🔴 | Layout: internal flex + `gap: spaceVars.xs`, no position prop |
+
+## Doc reconciliations to make (not code — doc edits, when we touch each area)
+
+- **Space scale disagreement.** ✅ Resolved in code: full 6 steps `xs`–`2xl` in the contract (`spacing-system.md` wins). The VE example docs (5-step / 3-step contracts) are now the stale ones — update them to match `src/theme.css.ts` when convenient.
+- **Typography/radius absent from the contract** — ✅ Resolved: both are in the contract now. The `vanilla-extract-*` example docs still show the old color-only-ish contract; reconcile the docs to the real one in `src/theme.css.ts`.
+- **Typography weight values undocumented (new).** `typography.md` gives the exact size/line-height table but never enumerates font-weights. Code currently assigns body=regular(400), headings=semibold(600), plus a regular/medium/semibold/bold scale — all provisional. Confirm or adjust, and add the weight scale to `typography.md`.
+- **`Card.Header` shown two incompatible ways.** `composition-patterns-examples.md` uses a raw `className="card-header"` and no `data-part`/`className` passthrough; `override-patterns.md` uses `data-component`/`data-part` + `clsx(cardHeader, className)`. The override version is the real contract — reconcile the composition example when Card is built (Phase 5).
+- **`2xl` violates `naming-conventions.md`** (camelCase token keys; `2xl` isn't and must be quoted). Acknowledge as the one named exception, or rename.
+- **Broken cross-refs:** `override-patterns.md` → "prior draft of this doc"; `design-in-code-canonization-loop.md` → "original architecture notes"; `audience-model.md` → "primitives/patterns/product tiers ... elsewhere" (no such doc). Fix or drop the dangling pointers.
+- **`override-patterns.md` selector bug (fixed).** The example selectors were missing the descendant-combinator space (`'&[data-component="card"]…'` instead of `'& [data-component="card"]…'`), so as written they matched the wrapper itself — which never carries `data-component="card"` — instead of the nested `Card`, and would silently match nothing. Fixed in the doc.
+- **Engine-dependent framing (surfaced while comparing vanilla-extract vs Panda for OPEN_QUESTIONS #2/#7).** This doc's "predictable without `@layer`" guarantee is specific to VE's `style()` compiling the selectors block into one real, unlayered class. If the styling engine decision (still open) lands on Panda, its `css()` output is atomic and `@layer`-wrapped by default, and this section's claims would need rewriting around layer order instead of pure specificity. Revisit this doc once the engine is decided.
+- **Stale handoff docs.** `claude-code-handoff-step1-design-system.md` leaves styling open (superseded — vanilla-extract is settled) and `claude-code-handoff-establish-docs.md` mandates a `docs/philosophy/` layout + `README.md` index that were never created (docs are flat in `docs/`). Consider moving both to `docs/archive/`.

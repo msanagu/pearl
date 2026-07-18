@@ -1,0 +1,21 @@
+{
+  // Declaration-emit pass for the published package. Runs after `vite build`
+  // (which produces the JS/CSS bundle); this emits only .d.ts files into dist/.
+  // Zero extra build dependencies — plain tsc, per the dependency-light ethos.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx",
+    "src/test",
+    "src/foundations"
+  ]
+}

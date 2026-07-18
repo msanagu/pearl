@@ -1,0 +1,64 @@
+# Component Philosophy
+
+## Core principle: composition over configuration
+
+Favor `children` and slot-based props over prop-explosion. If a component needs many
+boolean or enum props whose only job is to toggle rendered structure or content, that's
+a signal it should be composed instead of configured.
+
+**Heuristic:** if a prop is a boolean/enum that only toggles what gets rendered (not how
+something looks), it's probably a compositional slot, not a config prop.
+
+## Smart defaults, always escapable
+
+Every component should work with minimal props out of the box, but nothing should be a
+dead end. The default rendering path and the override path are both first-class:
+
+```tsx
+<Card /> {/* renders a sensible default layout */}
+
+<Card>
+  <Card.Header>Custom</Card.Header>
+  <Card.Body>...</Card.Body>
+</Card> {/* fully overridden via composition */}
+```
+
+Preferred escape hatch: `children` as the primary slot. Render-prop patterns
+(`children={(injectedProps) => ...}`) are used specifically where a component needs to
+hand data/behavior back to an arbitrary child (see `Field`), since implicit prop-cloning
+onto children is considered too "magic" for this system.
+
+## "Dumb outside its four walls"
+
+A component should not know or care about its context, siblings, or where it's rendered.
+No implicit coupling to global state, layout assumptions, or components outside its own
+family. It receives what it needs via props/children and renders — that's the whole
+contract.
+
+## The compound-component exception (stated explicitly, not accidental)
+
+Compound components (e.g. `Tabs`, `Tabs.List`, `Tabs.Trigger`) use React Context to let
+sibling sub-components coordinate — this is a deliberate, bounded exception to "dumb
+outside its four walls," not a violation of it. The rule: **siblings within a component
+family may coordinate; a component must never reach outside its own family.**
+
+**When to use compound components:** only when sub-parts need to genuinely coordinate
+state or behavior (which tab is active, matching `id`s for ARIA relationships). If
+sub-parts are just visually adjacent with no shared logic, use plain `children`
+composition — no Context needed. Most components in this system fall into the second
+category; compound components are the exception, used sparingly and only where justified.
+
+## Trade-off: duplication vs. the wrong abstraction
+
+DRY (avoiding repeated *data*) is not free — it often trades data duplication for logic
+complexity. Before unifying two things into one abstraction, ask: **is the thing being
+unified structurally guaranteed to stay simple, or just simple today?**
+
+- Safe to unify: closed, stable properties (e.g. `Stack`'s `direction: 'row' | 'column'`
+  is exactly one CSS property toggle, not going to grow surprise cases).
+- Risky to unify: open-ended, divergent concerns (e.g. icon "variants" like outline vs.
+  filled vs. duotone aren't guaranteed to be a clean transform of one shape into another).
+
+When in doubt, prefer duplicated data (multiple files, explicit registrations) over a
+shared abstraction whose assumptions might not hold — duplication is cheap to undo; a
+wrong abstraction is expensive to unwind once code has grown around it.
