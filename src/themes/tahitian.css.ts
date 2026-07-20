@@ -88,14 +88,14 @@ const tahitianFontFamily = {
 };
 
 const tahitianText = {
-  bodySm: { fontSize: '12px', lineHeight: '16px', fontWeight: '400' },
-  bodyMd: { fontSize: '14px', lineHeight: '20px', fontWeight: '400' },
-  bodyLg: { fontSize: '16px', lineHeight: '24px', fontWeight: '400' },
-  headingSm: { fontSize: '20px', lineHeight: '24px', fontWeight: '600' },
-  headingMd: { fontSize: '24px', lineHeight: '30px', fontWeight: '600' },
-  headingLg: { fontSize: '36px', lineHeight: '40px', fontWeight: '600' },
-  displaySm: { fontSize: '56px', lineHeight: '56px', fontWeight: '600' },
-  displayLg: { fontSize: '96px', lineHeight: '88px', fontWeight: '600' },
+  bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px escape
+  bodyMd: { fontSize: '0.875rem', lineHeight: '1.7143', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
+  bodyLg: { fontSize: '1rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
+  headingSm: { fontSize: '1.25rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '0' }, // 24px 8-grid
+  headingMd: { fontSize: '1.5rem', lineHeight: '1.3333', fontWeight: '600', letterSpacing: '0' }, // 32px 8-grid
+  headingLg: { fontSize: '2.25rem', lineHeight: '1.2222', fontWeight: '600', letterSpacing: '0.004em' }, // 44px 4px escape
+  displaySm: { fontSize: '3.5rem', lineHeight: '1.0714', fontWeight: '600', letterSpacing: '0.004em' }, // 60px 4px escape
+  displayLg: { fontSize: '6rem', lineHeight: '1.0417', fontWeight: '600', letterSpacing: '0.004em' }, // 100px 4px escape
 };
 
 // ---- Semantics (map primitives onto roles) ----
@@ -119,6 +119,10 @@ export const tahitianLightThemeClass = createTheme(vars, {
     borderSubtle: tahitianLightPrimitives.cloud,
     borderInverse: tahitianDarkPrimitives.shadow,
 
+    // Still a placeholder theme (see file header) — primary passes through
+    // to the existing accent fill; no dedicated CTA color authored yet.
+    primary: tahitianLightPrimitives.aubergine,
+    onPrimary: tahitianLightPrimitives.aubergineMist,
     accent: tahitianLightPrimitives.aubergine,
     accentHover: tahitianLightPrimitives.aubergineDeep,
     accentSubtle: tahitianLightPrimitives.aubergineMist,
@@ -157,6 +161,10 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     borderSubtle: tahitianDarkPrimitives.onyx,
     borderInverse: tahitianLightPrimitives.mist,
 
+    // Still a placeholder theme (see file header) — primary passes through
+    // to the existing accent fill; no dedicated CTA color authored yet.
+    primary: tahitianDarkPrimitives.orchid,
+    onPrimary: tahitianDarkPrimitives.aubergineDusk,
     accent: tahitianDarkPrimitives.orchid,
     accentHover: tahitianDarkPrimitives.orchidBright,
     accentSubtle: tahitianDarkPrimitives.aubergineDusk,

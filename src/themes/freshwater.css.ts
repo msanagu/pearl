@@ -66,14 +66,14 @@ const freshwaterFontFamily = {
   body: "'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif",
 };
 const freshwaterText = {
-  bodySm: { fontSize: '12px', lineHeight: '16px', fontWeight: '400' },
-  bodyMd: { fontSize: '14px', lineHeight: '20px', fontWeight: '400' },
-  bodyLg: { fontSize: '16px', lineHeight: '24px', fontWeight: '400' },
-  headingSm: { fontSize: '20px', lineHeight: '24px', fontWeight: '600' },
-  headingMd: { fontSize: '24px', lineHeight: '32px', fontWeight: '600' },
-  headingLg: { fontSize: '32px', lineHeight: '40px', fontWeight: '600' },
-  displaySm: { fontSize: '40px', lineHeight: '48px', fontWeight: '700' },
-  displayLg: { fontSize: '56px', lineHeight: '64px', fontWeight: '700' },
+  bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px escape
+  bodyMd: { fontSize: '0.875rem', lineHeight: '1.7143', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
+  bodyLg: { fontSize: '1rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
+  headingSm: { fontSize: '1.25rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.005em' }, // 24px 8-grid
+  headingMd: { fontSize: '1.5rem', lineHeight: '1.3333', fontWeight: '600', letterSpacing: '-0.01em' }, // 32px 8-grid
+  headingLg: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '600', letterSpacing: '-0.01em' }, // 40px 8-grid
+  displaySm: { fontSize: '2.5rem', lineHeight: '1', fontWeight: '700', letterSpacing: '-0.02em' }, // 40px 8-grid
+  displayLg: { fontSize: '3.5rem', lineHeight: '1.0714', fontWeight: '700', letterSpacing: '-0.03em' }, // 60px 4px escape
 };
 
 export const freshwaterLightThemeClass = createTheme(vars, {
@@ -91,6 +91,10 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     borderStrong: freshwaterLightPrimitives.fog,
     borderSubtle: freshwaterLightPrimitives.haze,
     borderInverse: freshwaterDarkPrimitives.shadow,
+    // Still a placeholder theme (see file header) — primary passes through
+    // to the existing accent fill; no dedicated CTA color authored yet.
+    primary: freshwaterLightPrimitives.teal,
+    onPrimary: freshwaterLightPrimitives.tealMist,
     accent: freshwaterLightPrimitives.teal,
     accentHover: freshwaterLightPrimitives.tealDeep,
     accentSubtle: freshwaterLightPrimitives.tealMist,
@@ -124,6 +128,10 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     borderStrong: freshwaterDarkPrimitives.graphite,
     borderSubtle: freshwaterDarkPrimitives.onyx,
     borderInverse: freshwaterLightPrimitives.mist,
+    // Still a placeholder theme (see file header) — primary passes through
+    // to the existing accent fill; no dedicated CTA color authored yet.
+    primary: freshwaterDarkPrimitives.turquoise,
+    onPrimary: freshwaterDarkPrimitives.tealDusk,
     accent: freshwaterDarkPrimitives.turquoise,
     accentHover: freshwaterDarkPrimitives.turquoiseBright,
     accentSubtle: freshwaterDarkPrimitives.tealDusk,
