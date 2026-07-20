@@ -44,10 +44,10 @@ describe('Text', () => {
   });
 
   it('changes visual class between tones', () => {
-    const subtle = render(<Text tone="subtle">Subtle</Text>);
+    const subtle = render(<Text prominence="subtle">Subtle</Text>);
     const subtleClass = subtle.getByText('Subtle').className;
     subtle.unmount();
-    const defaultTone = render(<Text tone="default">Default</Text>);
+    const defaultTone = render(<Text prominence="default">Default</Text>);
     expect(defaultTone.getByText('Default').className).not.toBe(subtleClass);
   });
 });

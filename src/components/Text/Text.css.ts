@@ -18,13 +18,13 @@ export const textRecipe = recipe({
       displaySm: { fontFamily: fontFamily.display, fontSize: text.displaySm.fontSize, lineHeight: text.displaySm.lineHeight, fontWeight: text.displaySm.fontWeight, letterSpacing: text.displaySm.letterSpacing },
       displayLg: { fontFamily: fontFamily.display, fontSize: text.displayLg.fontSize, lineHeight: text.displayLg.lineHeight, fontWeight: text.displayLg.fontWeight, letterSpacing: text.displayLg.letterSpacing },
     },
-    tone: {
+    prominence: {
       default: { color: color.text },
       subtle: { color: color.textSubtle },
     },
   },
   defaultVariants: {
     variant: 'bodyMd',
-    tone: 'default',
+    prominence: 'default',
   },
 });

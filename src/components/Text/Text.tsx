@@ -22,8 +22,8 @@ export interface TextProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   as?: ElementType;
   /** Optional weight override on top of the variant's default. */
   weight?: FontWeight;
-  /** Color tone. `subtle` for secondary/metadata text. @default 'default' */
-  tone?: 'default' | 'subtle';
+  /** Color prominence. `subtle` for secondary/metadata text. @default 'default' */
+  prominence?: 'default' | 'subtle';
   className?: string;
   children?: ReactNode;
 }
@@ -39,7 +39,7 @@ export function Text({
   variant = 'bodyMd',
   as: Component = 'span',
   weight,
-  tone = 'default',
+  prominence = 'default',
   className,
   style,
   children,
@@ -51,7 +51,7 @@ export function Text({
 
   return (
     <Component
-      className={clsx(textRecipe({ variant, tone }), className)}
+      className={clsx(textRecipe({ variant, prominence }), className)}
       style={{ ...weightStyle, ...style }}
       {...rest}
     >
