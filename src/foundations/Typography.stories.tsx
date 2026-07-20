@@ -16,13 +16,13 @@ import * as css from './tokens.css';
  * a section per theme as each gets one (see docs/decisions/0007).
  */
 
-function RoleEmphasisSpecimen({ role }: { role: { face: string; style?: string } }) {
+function RoleEmphasisSpecimen({ role }: { role: { fontFamily: string; style?: string } }) {
   const [ref, resolved] = useComputed<HTMLSpanElement>(['font-family', 'font-style']);
   return (
     <div className={css.cell}>
       <span style={{ fontFamily: fontFamily.body, fontSize: '22px', color: color.text }}>
         The world is your{' '}
-        <span ref={ref} style={{ fontFamily: role.face, fontStyle: role.style }}>
+        <span ref={ref} style={{ fontFamily: role.fontFamily, fontStyle: role.style }}>
           oyster.
         </span>
       </span>
@@ -40,7 +40,7 @@ function RoleLabelSpecimen({
 }: {
   label: string;
   sample: string;
-  role: { face: string; case?: 'upper' | 'sentence'; tracking?: string };
+  role: { fontFamily: string; case?: 'upper' | 'sentence'; tracking?: string };
 }) {
   const [ref, resolved] = useComputed<HTMLSpanElement>([
     'font-family',
@@ -52,7 +52,7 @@ function RoleLabelSpecimen({
       <span
         ref={ref}
         style={{
-          fontFamily: role.face,
+          fontFamily: role.fontFamily,
           textTransform: role.case === 'upper' ? 'uppercase' : 'none',
           letterSpacing: role.tracking,
           color: color.textSubtle,
@@ -70,7 +70,7 @@ function RoleLabelSpecimen({
 }
 
 function TypographyPreview() {
-  const roles = pearlAssignments.roles;
+  const roles = pearlAssignments.roles?.typography;
   return (
     <div className={css.page}>
       <section className={css.section}>
@@ -109,10 +109,12 @@ function TypographyPreview() {
           display/heading/body; the serif is a rare accent, not a default.
         </p>
 
-        {roles?.emphasis && (
+        {roles?.inlineEmphasis && (
           <>
-            <h3 className={css.subsectionTitle}>Emphasis — {roles.emphasis.scope?.join(', ')}</h3>
-            <RoleEmphasisSpecimen role={roles.emphasis} />
+            <h3 className={css.subsectionTitle}>
+              Inline emphasis — {roles.inlineEmphasis.scope?.join(', ')}
+            </h3>
+            <RoleEmphasisSpecimen role={roles.inlineEmphasis} />
           </>
         )}
 

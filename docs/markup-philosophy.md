@@ -19,6 +19,29 @@ of that by hand and will always have edge cases the native element doesn't.
   and stylable via CSS natively.
 - **Stack / Row / Grid** — real CSS Flexbox/Grid on plain elements.
 
+## Vocabulary: header, heading, preheading, subheading
+
+These four terms get conflated easily, so they're pinned down here:
+
+- **`header`** — reserved for the actual HTML5 `<header>` element (or a component
+  rendering one via `as="header"`, e.g. `Stack`). It names the composed *area*, not
+  any single piece of text inside it.
+- **heading** — the canon type-scale step (`Text`'s `variant`, e.g. `headingLg`,
+  `displayLg`) paired with the correct semantic level via `as` (`h1`–`h6`),
+  independently of visual size — see "Applied across the system" above.
+- **preheading** — a `Text` `role` (`themes/assignment.ts`'s `TypographyRoles`), not
+  a variant. The short line *above* a heading (Pearl's "A design system for
+  identities that refuse sameness" above its hero `h1`). Deliberately not called
+  "eyebrow": the name should say what it relates to. Kept distinct from `label`
+  even where a theme's treatment happens to match, because it always pairs with a
+  heading rather than standing alone next to data/IDs.
+- **subheading** — not yet a role; reserved for a short line *below* a heading,
+  same pattern as `preheading` when a theme needs one.
+
+A `header` composes these — `<header><Text role="preheading">…</Text><Text as="h1"
+variant="displayLg">…</Text></header>` — but the system has no `Header`/composition
+component yet, so today that's assembled by hand (see `src/sections/Hero/Hero.stories.tsx`).
+
 ## Where it's genuinely contested: components with no native element
 
 Some components (Alert, Badge) have no native HTML5 equivalent — there's no `<alert>` or

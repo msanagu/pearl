@@ -301,7 +301,7 @@ function DocSitePoc() {
 }
 
 const meta: Meta<typeof DocSitePoc> = {
-  title: 'Doc Site POC/Landing',
+  title: 'POC/Landing',
   component: DocSitePoc,
   parameters: { layout: 'fullscreen' },
 };
