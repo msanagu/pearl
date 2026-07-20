@@ -1,4 +1,4 @@
-import { createTheme } from '@vanilla-extract/css';
+import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '../theme.css';
 
 /**
@@ -126,6 +126,7 @@ const pearlFontFamily = {
  * tracking token, so that is currently unexpressable — flagged, not solved.
  */
 const pearlText = {
+  caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 16px 8-grid
   bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px escape
   bodyMd: { fontSize: '0.875rem', lineHeight: '1.7143', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
   bodyLg: { fontSize: '0.9375rem', lineHeight: '1.6', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
@@ -229,6 +230,47 @@ export const pearlDarkThemeClass = createTheme(vars, {
   fontFamily: pearlFontFamily,
   text: pearlText,
 });
+
+// ---- Role treatments (roles.typography in pearl.assignment.ts) ----
+//
+// The assignment record never becomes CSS itself — it's the spec these
+// selectors are checked against. `Text` only ever writes `data-role`; each
+// theme decides here what that attribute actually looks like.
+
+globalStyle(
+  `${pearlLightThemeClass} [data-role="inlineEmphasis"], ${pearlDarkThemeClass} [data-role="inlineEmphasis"]`,
+  {
+    fontFamily: pearlFonts.serif,
+    fontStyle: 'italic',
+  },
+);
+
+globalStyle(`${pearlLightThemeClass} [data-role="label"], ${pearlDarkThemeClass} [data-role="label"]`, {
+  fontFamily: pearlFonts.mono,
+  textTransform: 'uppercase',
+  letterSpacing: '0.12em',
+  fontSize: vars.text.caption.fontSize,
+  lineHeight: vars.text.caption.lineHeight,
+});
+
+globalStyle(
+  `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
+  {
+    fontFamily: pearlFonts.mono,
+    textTransform: 'uppercase',
+    letterSpacing: '0.12em',
+    fontSize: vars.text.caption.fontSize,
+    lineHeight: vars.text.caption.lineHeight,
+  },
+);
+
+globalStyle(
+  `${pearlLightThemeClass} [data-role="numeric"], ${pearlDarkThemeClass} [data-role="numeric"]`,
+  {
+    fontFamily: pearlFonts.mono,
+    fontVariantNumeric: 'tabular-nums',
+  },
+);
 
 // ---- Extension capability: luster ----
 

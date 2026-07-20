@@ -165,6 +165,8 @@ export interface TextVariantTokens {
 }
 
 export interface TextTokens {
+  /** 11/16. Below the reading floor — labels, tabular data, micro-metadata. */
+  caption: TextVariantTokens;
   /** 12/16. Fine print, captions, metadata. */
   bodySm: TextVariantTokens;
   /** 14/20. Default body text. */

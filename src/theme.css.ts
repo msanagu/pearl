@@ -147,6 +147,7 @@ export const vars = createThemeContract({
   // is NOT here — `label` is not a shared role, so its tracking lives in each
   // theme's own configuration (see src/themes/assignment.ts).
   text: {
+    caption: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     bodySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     bodyMd: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     bodyLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
