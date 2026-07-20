@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ArrowUpRightIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, GithubLogoIcon, TerminalWindowIcon } from '@phosphor-icons/react';
 import { Text } from '../../components/Text/Text';
 import { Button } from '../../components/Button/Button';
 import { Row } from '../../components/Row/Row';
 import { Stack } from '../../components/Stack/Stack';
 import { Icon } from '../../components/Icon/Icon';
-import { color, fontWeight, radius, space } from '../../tokens';
+import { color, fontWeight, space } from '../../tokens';
 
 /**
  * The Pearl marketing hero (exploration turn 5a), rebuilt from **only**
@@ -17,6 +17,11 @@ import { color, fontWeight, radius, space } from '../../tokens';
  * CTAs, stat row) versus what has no home anywhere in the system yet (the
  * luster sphere, film grain, a real nav/header layout primitive). Those gaps
  * are called out inline rather than smoothed over with one-off styles.
+ *
+ * Landing vs. docs nav (Porsche v4 reference): this top bar is NOT the docs
+ * sidebar pulled up early — it's deliberately minimal utility chrome (search,
+ * GitHub, sandbox) with no section links, so it doesn't duplicate the real
+ * docs nav that only populates once you're inside the docs experience.
  */
 const meta: Meta = {
   title: 'Sections/Hero',
@@ -77,61 +82,48 @@ function LusterSphere() {
 
 export const Overview: Story = {
   render: () => (
-    <Stack gap="2xl" style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* GAP — no eyebrow/callout component. Vanilla flex row + a chip built
-          from raw div/padding, since neither Card nor Button fit a pill label. */}
-      <Row gap="sm" align="center" wrap>
-        <span
-          style={{
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: 12,
-            fontWeight: 600,
-            background: color.surface,
-            border: `1px solid ${color.border}`,
-            borderRadius: radius.full,
-            padding: `2px ${space.sm}`,
-          }}
-        >
-          5a
-        </span>
-        <Text role="label" as="span">Pearl — canon, refined.</Text>
-        <Text variant="caption" prominence="subtle" as="span">
-          Editorial italic wordmark + sentence-case nav, ambient sphere, faint film grain.
-        </Text>
-      </Row>
-
-      {/* GAP — no Nav/Header layout primitive. Row gets the flex layout for
-          free; the wordmark's italic serif and the border-bottom rule are
-          vanilla, since there's no `Divider` component either. */}
+    // GAP — full-bleed/constrained-content split has no primitive today.
+    // Each bordered band below is its own edge-to-edge wrapper with an inner
+    // maxWidth:1200 container, so the border genuinely reaches the viewport
+    // edge instead of stopping at the content measure (the old single
+    // maxWidth Stack wrapping everything made every border look edge-to-edge
+    // only by accident, at exactly one browser width).
+    <Stack style={{ minHeight: '100vh' }}>
+      {/* GAP — no Nav/Header layout primitive. Deliberately minimal: no
+          section links (Foundations/Components/Themes/Playground moved to
+          the real docs sidebar, per the Porsche v4 reference — landing nav
+          is utility chrome only, not docs nav pulled up early). */}
       <Row
         justify="between"
         align="center"
-        style={{ borderBottom: `1px solid ${color.border}`, paddingBottom: space.md }}
+        style={{ borderBottom: `1px solid ${color.border}`, padding: `${space.md} ${space.xl}` }}
       >
         <Text as="span" role="inlineEmphasis" style={{ fontSize: 24 }}>
           pearl
         </Text>
-        {/* GAP — `Text`'s `as` prop isn't polymorphically typed: swapping
-            `as="a"` doesn't unlock `href` (TextProps only extends
-            HTMLAttributes<HTMLElement>, which has no anchor-specific
-            attributes). Wrapping a plain `<a>` around `Text` instead, since
-            that's the only type-safe way to get a link today. */}
         <Row gap="lg" align="center">
-          {['Foundations', 'Components', 'Themes', 'Playground'].map((label) => (
-            <a key={label} href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Text variant="bodyMd" as="span">{label}</Text>
-            </a>
-          ))}
-          <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Row gap="xs" align="center">
-              <Text variant="bodyMd" as="span">GitHub</Text>
-              <Icon icon={ArrowUpRightIcon} size={16} />
-            </Row>
+          <button
+            type="button"
+            aria-label="Search"
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit', display: 'flex' }}
+          >
+            <Icon icon={MagnifyingGlassIcon} size={20} />
+          </button>
+          <a href="#" aria-label="Sandbox" style={{ color: 'inherit', display: 'flex' }}>
+            <Icon icon={TerminalWindowIcon} size={20} />
+          </a>
+          <a href="#" aria-label="GitHub" style={{ color: 'inherit', display: 'flex' }}>
+            <Icon icon={GithubLogoIcon} size={20} />
           </a>
         </Row>
       </Row>
 
-      <Row gap="2xl" align="center" wrap>
+      <Row
+        gap="2xl"
+        align="center"
+        wrap
+        style={{ flex: 1, maxWidth: 1200, margin: '0 auto', padding: `0 ${space.xl}`, width: '100%' }}
+      >
         {/*
           GAP — no `<header>` composition primitive. Per docs/markup-
           philosophy.md's header/heading/preheading/subheading vocabulary,
@@ -148,7 +140,9 @@ export const Overview: Story = {
             The world is your{' '}
             <Text as="span" role="inlineEmphasis">oyster.</Text>
           </Text>
-          <Text variant="bodyLg" prominence="subtle" as="p">
+          {/* GAP — no `measure` prop on `Text` yet to cap prose line length;
+              `maxWidth` via the style escape hatch stands in for now. */}
+          <Text variant="bodyLg" prominence="subtle" as="p" style={{ maxWidth: '52ch' }}>
             Not a doc that goes stale. A type the compiler checks. Every
             theme's rules are data — structured, queryable, and impossible to
             drift from what actually ships.
@@ -163,7 +157,7 @@ export const Overview: Story = {
       </Row>
 
       <Row
-        style={{ borderTop: `1px solid ${color.border}` }}
+        style={{ borderTop: `1px solid ${color.border}`, borderBottom: `1px solid ${color.border}` }}
       >
         {/* The index numbers are acting as preheadings here — decorative,
             supporting the label below rather than data — so they get
