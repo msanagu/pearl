@@ -17,3 +17,6 @@ npm-debug.log*
 
 # Vanilla-extract / Vite caches
 .vite/
+
+# Claude Design Handoffs
+handoffs
