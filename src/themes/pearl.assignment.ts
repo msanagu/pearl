@@ -29,15 +29,29 @@ export const pearlAssignments = {
   // role assignment is itself a theme distinction, so it lives here rather than
   // in `fontFamily`. See docs/theme-revision-decisions.md §8.
   roles: {
-    emphasis: {
-      face: pearlFonts.serif,
-      style: 'italic',
-      scope: ['inline', 'wordmark'],
-    },
-    label: {
-      face: pearlFonts.mono,
-      case: 'upper',
-      tracking: '0.12em',
+    typography: {
+      inlineEmphasis: {
+        fontFamily: pearlFonts.serif,
+        fontStyle: 'italic',
+        scope: ['inline', 'wordmark'],
+        // No `size` — inline emphasis rides whatever variant it's set in.
+      },
+      preheading: {
+        fontFamily: pearlFonts.mono,
+        size: 'caption',
+        case: 'upper',
+        tracking: '0.12em',
+      },
+      label: {
+        fontFamily: pearlFonts.mono,
+        size: 'caption',
+        case: 'upper',
+        tracking: '0.12em',
+      },
+      numeric: {
+        fontFamily: pearlFonts.mono,
+        tabularFigures: true,
+      },
     },
   },
 
