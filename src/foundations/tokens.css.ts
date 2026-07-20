@@ -83,3 +83,83 @@ export const sentimentCard = style({
   height: '64px',
   borderRadius: radius.surface,
 });
+
+// The resolved-value caption under every swatch — what the token ACTUALLY
+// computes to in the active theme, not just the var() reference. Turns this
+// page from a paint job into a verification surface (see file doc comment).
+export const resolvedValue = style({
+  fontFamily: 'ui-monospace, Menlo, monospace',
+  fontSize: '10px',
+  color: color.textSubtle,
+});
+
+export const subsectionTitle = style({
+  margin: 0,
+  fontSize: '13px',
+  fontWeight: 600,
+  color: color.textSubtle,
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
+});
+
+// A border/divider token shown as an actual rule, not a filled box — a border
+// color swatch-as-fill misrepresents how the token is ever used.
+export const borderRule = style({
+  width: '112px',
+  height: 0,
+  borderTop: '2px solid',
+});
+
+// Inverse tokens mean nothing in isolation (textInverse on transparent tells
+// you nothing about legibility). Render them together, in context, on the
+// inverse background — the way a real "dark band inside a light page" section
+// would actually use them.
+export const inversePanel = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.md,
+  padding: space.lg,
+  borderRadius: radius.surface,
+  background: color.backgroundInverse,
+});
+
+export const inverseCard = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.xs,
+  padding: space.md,
+  borderRadius: radius.control,
+  background: color.surfaceInverse,
+});
+
+// Accent shown as it's actually consumed: a filled pill with onAccent text,
+// so a contrast problem is visible rather than inferred from two flat swatches.
+export const accentPill = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: space.sm,
+  padding: `${space.sm} ${space.lg}`,
+  borderRadius: radius.control,
+  background: color.accent,
+  color: color.onAccent,
+  fontWeight: 600,
+  width: 'fit-content',
+});
+
+// focusRing is a ring, never a fill — show the actual box-shadow usage.
+export const focusDemo = style({
+  width: '96px',
+  height: '40px',
+  borderRadius: radius.control,
+  border: `1px solid ${color.border}`,
+  background: color.surface,
+  boxShadow: `0 0 0 3px ${color.focusRing}`,
+});
+
+export const familySample = style({
+  fontSize: '20px',
+});
+
+export const weightSwatch = style({
+  fontSize: '24px',
+});

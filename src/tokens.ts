@@ -59,7 +59,14 @@ export interface ColorTokens {
   borderSubtle: CSSVarFunction;
   /** Border/divider on an inverse surface. */
   borderInverse: CSSVarFunction;
-  /** Primary brand / action color. */
+  /** Main call-to-action fill — Button's `primary` variant. Not assumed to
+   * equal `accent`: an ink-primary theme's quiet accent color would go loud
+   * everywhere it's used (focus borders, underlines) if it also filled CTAs. */
+  primary: CSSVarFunction;
+  /** Text/icon on a `primary` fill. */
+  onPrimary: CSSVarFunction;
+  /** Quiet signal color — focus borders, underlines, hover states. Not
+   * assumed to be a fill color; see `primary` for the CTA fill. */
   accent: CSSVarFunction;
   /** Accent hover state. */
   accentHover: CSSVarFunction;
@@ -134,11 +141,27 @@ export interface FontWeightTokens {
   bold: CSSVarFunction;
 }
 
-/** One type-scale step: a fixed size/line-height pair plus a default weight. */
+/**
+ * One type-scale step: size, line-height, a default weight, and tracking.
+ * See docs/typography.md for the accessibility rationale behind the units.
+ */
 export interface TextVariantTokens {
+  /** rem — scales with the user's browser/OS text size (WCAG SC 1.4.4). */
   fontSize: CSSVarFunction;
+  /**
+   * Unitless multiplier, not a fixed px value — required by WCAG SC 1.4.12 so
+   * a user's forced text-spacing override scales with font-size rather than
+   * colliding with it. Authored per theme to land on the 8px soft grid.
+   */
   lineHeight: CSSVarFunction;
   fontWeight: CSSVarFunction;
+  /**
+   * Letter-spacing for this step. Tracking belongs to the type step rather than
+   * to a standalone scale — the right value is a function of size, so display
+   * runs tight and body runs at zero. Label/caps tracking is a per-theme
+   * concern, not part of this shared scale.
+   */
+  letterSpacing: CSSVarFunction;
 }
 
 export interface TextTokens {

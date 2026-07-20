@@ -1,4 +1,8 @@
 import { createThemeContract } from '@vanilla-extract/css';
+// Side-effect import — sets the 16px root the whole rem-based type scale
+// assumes. theme.css.ts is imported everywhere the contract is used, so this
+// guarantees the root rule ships wherever `vars` does.
+import './globalStyles.css';
 
 /**
  * The theme contract — the single source of truth for *which* semantic tokens
@@ -59,10 +63,18 @@ export const vars = createThemeContract({
     borderStrong: null,
     borderSubtle: null,
     borderInverse: null,
-    // Accent — the one hue: primary/brand action color (ADR-0006). A theme
-    // wanting an "ink-primary, color-at-the-seams" identity (e.g. Pearl) still
-    // expresses it through `accent` — set it to a near-neutral ink, and use
-    // `focusRing`/sentiment for where color actually shows.
+    // Primary — the main call-to-action fill (Button's `primary` variant).
+    // Added after authoring real theme values: all four themes turned out to
+    // need a CTA fill distinct from `accent` (an ink-primary theme's quiet
+    // accent must NOT double as its button color, or every quiet use — focus
+    // borders, underlines, hover states — goes loud too). Promoted once this
+    // pattern repeated across all four, not designed in advance.
+    primary: null,
+    onPrimary: null,
+    // Accent — a quieter signal color: focus borders, underlines, hover
+    // states, sentiment-adjacent emphasis. NOT assumed to be the button fill
+    // — an ink-primary theme (e.g. Pearl) keeps `accent` genuinely quiet and
+    // uses `primary` for its CTA fill instead.
     accent: null,
     accentHover: null,
     accentSubtle: null,
@@ -117,16 +129,31 @@ export const vars = createThemeContract({
     semibold: null,
     bold: null,
   },
-  // Type scale: fixed font-size / line-height pairs per variant. Line-height is
-  // always an absolute value, never a unitless ratio.
+  // Type scale: font-size / line-height / tracking triples per variant.
+  //
+  // `fontSize` is rem (assumes the 16px root set in globalStyles.css.ts — see
+  // WCAG SC 1.4.4 Resize Text). `lineHeight` is a UNITLESS multiplier, not a
+  // fixed px value — required by WCAG SC 1.4.12 Text Spacing so a user
+  // stylesheet forcing 1.5x line spacing scales with the text instead of
+  // colliding with an author-fixed px value. Each theme still authors it to
+  // land on the 8px soft grid (spacing-system.md) at the theme's own
+  // font-size — see docs/typography.md for the accessibility rationale and
+  // per-theme worked numbers.
+  //
+  // `letterSpacing` is per-variant rather than a standalone scale because
+  // tracking is a property of a type step, not an independent axis: display
+  // type is set tight, body is set at zero, and the correct value is a function
+  // of size. Label tracking (mono caps at .12–.2em in three of the four themes)
+  // is NOT here — `label` is not a shared role, so its tracking lives in each
+  // theme's own configuration (see src/themes/assignment.ts).
   text: {
-    bodySm: { fontSize: null, lineHeight: null, fontWeight: null },
-    bodyMd: { fontSize: null, lineHeight: null, fontWeight: null },
-    bodyLg: { fontSize: null, lineHeight: null, fontWeight: null },
-    headingSm: { fontSize: null, lineHeight: null, fontWeight: null },
-    headingMd: { fontSize: null, lineHeight: null, fontWeight: null },
-    headingLg: { fontSize: null, lineHeight: null, fontWeight: null },
-    displaySm: { fontSize: null, lineHeight: null, fontWeight: null },
-    displayLg: { fontSize: null, lineHeight: null, fontWeight: null },
+    bodySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    bodyMd: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    bodyLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    headingSm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    headingMd: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    headingLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    displaySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    displayLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
   },
 });
