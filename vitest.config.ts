@@ -24,7 +24,12 @@ export default defineConfig({
         environment: 'jsdom',
         setupFiles: ['./src/test/setup.ts'],
         css: true,
-        include: ['src/**/*.test.{ts,tsx}']
+        include: ['src/**/*.test.{ts,tsx}'],
+        coverage: {
+          provider: 'v8',
+          reporter: ['text', 'lcov'],
+          reportsDirectory: 'coverage'
+        }
       }
     }, {
       extends: true,
@@ -32,7 +37,11 @@ export default defineConfig({
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       storybookTest({
-        configDir: path.join(dirname, '.storybook')
+        configDir: path.join(dirname, '.storybook'),
+        // Disable the addon's auto coverage reporting directory which attempts
+        // to create folders under `node_modules/.cache` and can fail in some
+        // environments. Coverage is still collected by Vitest's project config.
+        coverage: false
       })],
       test: {
         name: 'storybook',

@@ -58,6 +58,8 @@
     "@vanilla-extract/vite-plugin": "^5.2.5",
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "^4.1.10",
+    "axe-core": "^4.6.3",
+    "jest-axe": "^10.0.0",
     "jsdom": "^29.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
