@@ -1,6 +1,6 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
-import type { TextTokens } from '../../tokens';
+import { text, type TextTokens } from '../../tokens';
 import type { TypographyRoles } from '../../themes/assignment';
 import { textRecipe } from './Text.css';
 
@@ -32,6 +32,7 @@ export type TextProps = TextBaseProps &
          */
         variant?: TextVariant;
         role?: never;
+        size?: never;
       }
     | {
         /**
@@ -50,6 +51,16 @@ export type TextProps = TextBaseProps &
          */
         role: TextRole;
         variant?: never;
+        /**
+         * Escape hatch to override just the size step a role renders at —
+         * the role's face/weight/case/tracking still comes from the theme's
+         * `[data-role]` CSS; only font-size/line-height are swapped in. Only
+         * canon type-scale steps are valid (never a raw size), so an
+         * oversized `dataDigits` moment still rides the same scale as
+         * everything else.
+         * @default undefined — the role's own declared size, or ambient.
+         */
+        size?: TextVariant;
       }
   );
 
@@ -59,11 +70,12 @@ export type TextProps = TextBaseProps &
  * @example
  * <Text variant="headingLg" as="h1">Page Title</Text>
  * <Text variant="bodyMd" as="h2">Structurally an h2, visually restrained</Text>
- * <Text role="label">Plate 01 / Nacre</Text>
+ * <Text role="preheading">Plate 01 / Nacre</Text>
  */
 export function Text({
   variant,
   role,
+  size,
   as: Component = 'span',
   prominence = 'default',
   className,
@@ -72,16 +84,22 @@ export function Text({
   ...rest
 }: TextProps) {
   // `role` supplies its own sizing via theme CSS (`[data-role]`) only when the
-  // theme's assignment declares one (e.g. Pearl's `label`). A role with no
-  // declared size (Pearl's `inlineEmphasis`) inherits ambient size instead of
-  // being forced to `bodyMd` — so no variant class is applied on that path.
+  // theme's assignment declares one (e.g. Pearl's `preheading`). A role with
+  // no declared size (Pearl's `inlineEmphasis`) inherits ambient size instead
+  // of being forced to `bodyMd` — so no variant class is applied on that path.
   const resolvedVariant = role ? undefined : (variant ?? 'bodyMd');
+
+  // `size` overrides only font-size/line-height via inline style (highest
+  // specificity), deliberately not the variant class — a variant class also
+  // carries fontFamily/fontWeight/letterSpacing, which would fight the
+  // role's own face/weight/case CSS instead of just resizing it.
+  const sizeStyle = role && size ? { fontSize: text[size].fontSize, lineHeight: text[size].lineHeight } : undefined;
 
   return (
     <Component
       className={clsx(textRecipe({ variant: resolvedVariant, prominence }), className)}
       data-role={role}
-      style={style}
+      style={sizeStyle ? { ...sizeStyle, ...style } : style}
       {...rest}
     >
       {children}

@@ -245,14 +245,6 @@ globalStyle(
   },
 );
 
-globalStyle(`${pearlLightThemeClass} [data-role="label"], ${pearlDarkThemeClass} [data-role="label"]`, {
-  fontFamily: pearlFonts.mono,
-  textTransform: 'uppercase',
-  letterSpacing: '0.12em',
-  fontSize: vars.text.caption.fontSize,
-  lineHeight: vars.text.caption.lineHeight,
-});
-
 globalStyle(
   `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
   {
@@ -265,7 +257,7 @@ globalStyle(
 );
 
 globalStyle(
-  `${pearlLightThemeClass} [data-role="numeric"], ${pearlDarkThemeClass} [data-role="numeric"]`,
+  `${pearlLightThemeClass} [data-role="dataDigits"], ${pearlDarkThemeClass} [data-role="dataDigits"]`,
   {
     fontFamily: pearlFonts.mono,
     fontVariantNumeric: 'tabular-nums',

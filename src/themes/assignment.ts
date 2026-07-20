@@ -117,21 +117,19 @@ export interface TypographyRoles {
   inlineEmphasis?: RoleTreatment & { scope?: string[] };
   /**
    * The face carrying the short line above a heading (e.g. "A design system
-   * for identities that refuse sameness" above the Pearl hero's h1) — kept
-   * distinct from `label` because it always pairs with a heading rather than
-   * standing alone next to data/IDs, even where the two visually coincide.
+   * for identities that refuse sameness" above the Pearl hero's h1), and also
+   * the face for standalone labels/IDs/metadata — `label` as a separate role
+   * was removed since every theme so far gave it an identical treatment.
    * See `docs/markup-philosophy.md` for the `header`/heading/preheading/
    * subheading vocabulary this belongs to.
    */
   preheading?: RoleTreatment & { case?: 'upper' | 'sentence'; tracking?: string };
-  /** The face carrying labels, IDs, metadata. */
-  label?: RoleTreatment & { case?: 'upper' | 'sentence'; tracking?: string };
   /**
    * The face carrying tabular data — table cells, counters, form values.
    * Density (how tight the rows/fields sit) comes from the theme's `density`
    * axis, same as everywhere else; this only covers the face and figure style.
    */
-  numeric?: RoleTreatment & { tabularFigures?: boolean };
+  dataDigits?: RoleTreatment & { tabularFigures?: boolean };
 }
 
 /**

@@ -28,7 +28,7 @@ const meta: Meta<typeof Text> = {
     },
     role: {
       control: 'select',
-      options: [undefined, 'inlineEmphasis', 'label', 'numeric'],
+      options: [undefined, 'inlineEmphasis', 'preheading', 'dataDigits'],
       description: 'A theme-owned typographic job — mutually exclusive with variant.',
     },
     prominence: {
@@ -74,8 +74,8 @@ export const VariantVsElement: Story = {
 /**
  * `role` targeting resolved live, in whichever theme is active in the
  * toolbar — switch themes to see it change. Pearl defines `inlineEmphasis`
- * (serif italic) and `label` (mono caps at the `caption` step); a theme with
- * no assignment for a role falls back to canon `bodyMd`, silently.
+ * (serif italic) and `preheading` (mono caps at the `caption` step); a theme
+ * with no assignment for a role falls back to canon `bodyMd`, silently.
  */
 export const Roles: Story = {
   render: () => (
@@ -83,8 +83,8 @@ export const Roles: Story = {
       <Text variant="bodyLg" as="p">
         The world is your <Text as="span" role="inlineEmphasis">oyster</Text>.
       </Text>
-      <Text role="label" as="span">Plate 01 / Nacre</Text>
-      <Text role="numeric" as="span">1,204.50</Text>
+      <Text role="preheading" as="span">Plate 01 / Nacre</Text>
+      <Text role="dataDigits" as="span">1,204.50</Text>
     </div>
   ),
 };

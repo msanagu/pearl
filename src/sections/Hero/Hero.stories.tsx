@@ -161,7 +161,7 @@ export const Overview: Story = {
       >
         {/* The index numbers are acting as preheadings here — decorative,
             supporting the label below rather than data — so they get
-            `role="preheading"` rather than `numeric` (reserved for real
+            `role="preheading"` rather than `dataDigits` (reserved for real
             tabular/data digits). `weight` no longer exists on Text (removed
             so it can't compete with `role`'s bundled treatment); a genuine
             one-off like this label's semibold uses the `style` escape hatch. */}

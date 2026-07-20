@@ -42,13 +42,7 @@ export const pearlAssignments = {
         case: 'upper',
         tracking: '0.12em',
       },
-      label: {
-        fontFamily: pearlFonts.mono,
-        size: 'caption',
-        case: 'upper',
-        tracking: '0.12em',
-      },
-      numeric: {
+      dataDigits: {
         fontFamily: pearlFonts.mono,
         tabularFigures: true,
       },

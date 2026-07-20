@@ -118,13 +118,13 @@ function TypographyPreview() {
           </>
         )}
 
-        {roles?.label && (
+        {roles?.preheading && (
           <>
-            <h3 className={css.subsectionTitle}>Label</h3>
+            <h3 className={css.subsectionTitle}>Preheading</h3>
             <div className={css.row}>
-              <RoleLabelSpecimen label="nav / index" sample="Index" role={roles.label} />
-              <RoleLabelSpecimen label="plate caption" sample="Plate 01 / Nacre" role={roles.label} />
-              <RoleLabelSpecimen label="index row" sample="Selected — 2024/26" role={roles.label} />
+              <RoleLabelSpecimen label="nav / index" sample="Index" role={roles.preheading} />
+              <RoleLabelSpecimen label="plate caption" sample="Plate 01 / Nacre" role={roles.preheading} />
+              <RoleLabelSpecimen label="index row" sample="Selected — 2024/26" role={roles.preheading} />
             </div>
           </>
         )}
