@@ -11,7 +11,8 @@ export interface ButtonProps
     ButtonVariants {
   /**
    * Visual style. `primary` for the main call-to-action per surface,
-   * `secondary` for supporting actions.
+   * `secondary` for supporting actions, `quiet` for a text-only, low-emphasis
+   * action (no fill or border — an accent underline carries the affordance).
    * @default 'primary'
    */
   variant?: ButtonVariants['variant'];

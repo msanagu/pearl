@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { CaretDownIcon, FloppyDiskIcon, HeartIcon } from '@phosphor-icons/react';
+import { Icon } from '../Icon';
 import { Button } from './Button';
 
 /**
@@ -23,9 +25,9 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['primary', 'secondary'],
+      options: ['primary', 'secondary', 'tertiary'],
       description:
-        'Visual style. `primary` for the main call-to-action per surface, `secondary` for supporting actions.',
+        'Visual style. `primary` for the main call-to-action per surface, `secondary` for supporting actions, `tertiary` for a text-only, low-emphasis action.',
     },
     size: {
       control: 'radio',
@@ -47,6 +49,10 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: { variant: 'secondary' },
+};
+
+export const Tertiary: Story = {
+  args: { variant: 'tertiary' },
 };
 
 export const Sizes: Story = {
@@ -71,20 +77,19 @@ export const Disabled: Story = {
 
 /**
  * Icon-plus-text composition, both orders, to prove the no-prop layout
- * contract discussed for Icon+Button (docs/OPEN_QUESTIONS.md #12). `Icon`
- * itself doesn't exist yet (Phase 6) — this stands in with a plain span so
- * the layout mechanism (flex + gap) is visible today.
+ * contract (docs/OPEN_QUESTIONS.md #12) — Button lays out `children` via
+ * flex + gap, so no `icon`/`iconPosition` prop is needed.
  */
-export const WithIconPlaceholder: Story = {
+export const WithIcon: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12 }}>
       <Button {...args}>
-        <span aria-hidden>💾</span>
+        <Icon icon={FloppyDiskIcon} size={16} />
         Save
       </Button>
       <Button {...args} variant="secondary">
         Open Menu
-        <span aria-hidden>▾</span>
+         <Icon icon={CaretDownIcon} size={12} />
       </Button>
     </div>
   ),

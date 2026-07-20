@@ -13,7 +13,6 @@ const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
 };
 export default meta;
 
