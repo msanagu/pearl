@@ -107,5 +107,5 @@ owns its own `radius`/`space`/`controlHeight`/`fontWeight`/`fontFamily`/`text`.
 - `roadmap.md` — the theme-only reskinning proposition this makes robust.
 - `spacing-system.md`, `typography.md` — existing scales that become primitives
   with semantic roles layered on.
-- `docs/fable5-handoff-three-themes.md` — the vehicle developing the concrete
-  primitive + semantic values for Tahitian/Freshwater/South Sea.
+- `docs/theme-revision-decisions.md`, `docs/handoffs/theme-revision/` — the vehicle
+  developing the concrete primitive + semantic values for Tahitian/Freshwater/South Sea.

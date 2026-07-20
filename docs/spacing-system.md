@@ -41,8 +41,10 @@ compile-time error, not just a lint warning.
 
 ## Relationship to typography
 
-Typography (font-size/line-height pairs) uses the full 4px grid more liberally than
-spacing does, since font sizes don't always pair cleanly to 8. Spacing prefers the 8px
-major grid; typography leans on the 4px minor grid. See `typography.md` for the paired
-scale. Line-height is never computed from a unitless ratio (e.g. `1.5`) — every
-line-height is a fixed, chosen value per type step, to avoid float pixel values.
+Typography shares this same 8px soft grid — line-height, in px, lands on it exactly
+the way spacing does. But line-height is *authored* as a unitless multiplier, not a
+fixed px value: WCAG SC 1.4.12 (Text Spacing) requires that a user's forced
+line-spacing override scale with font-size rather than collide with an author-fixed
+px number, which only a unitless ratio allows. Each theme picks the ratio that lands
+that theme's font-size on the grid (8px preferred, 4px escape hatch, same rule as
+above). See `typography.md` for the accessibility rationale and worked numbers.
