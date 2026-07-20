@@ -28,10 +28,26 @@ export default meta;
 type Story = StoryObj;
 
 const stats = [
-  { n: '01', label: 'Token contract' },
-  { n: '02', label: 'Three registers' },
-  { n: '03', label: 'Override contract' },
-  { n: '04', label: 'A11y as a feature' },
+  {
+    n: '01',
+    label: 'Self-documenting by construction',
+    description: 'Every capability ships with its own usage guidance, attached to the code that defines it.',
+  },
+  {
+    n: '02',
+    label: "Rules that can't drift",
+    description: "The type system rejects a theme whose guidance doesn't match what it actually declares.",
+  },
+  {
+    n: '03',
+    label: 'Smart defaults, flexible overrides',
+    description: 'Sane behavior out of the box, with an explicit contract for where you’re meant to deviate.',
+  },
+  {
+    n: '04',
+    label: 'Infinite themes, one contract',
+    description: 'Every theme satisfies the same interface, so nothing custom-built has to reinvent the rules.',
+  },
 ];
 
 /**
@@ -124,7 +140,7 @@ export const Overview: Story = {
         */}
         <Stack as="header" gap="lg" style={{ flex: 1, minWidth: 320 }}>
           <Text role="preheading" as="p">
-            A design system for identities that refuse sameness
+            Decisive by default. Yours by design.
           </Text>
           {/* `role="inlineEmphasis"` on the trailing word is exactly the
               "the world is your *oyster*" case the role system was built for. */}
@@ -133,8 +149,9 @@ export const Overview: Story = {
             <Text as="span" role="inlineEmphasis">oyster.</Text>
           </Text>
           <Text variant="bodyLg" prominence="subtle" as="p">
-            An open-source system engineered to be cloned, re-tokened, and made
-            unrecognizably someone else's.
+            Not a doc that goes stale. A type the compiler checks. Every
+            theme's rules are data — structured, queryable, and impossible to
+            drift from what actually ships.
           </Text>
           <Row gap="sm">
             <Button variant="primary">Read the docs</Button>
@@ -167,6 +184,9 @@ export const Overview: Story = {
             <Text role="preheading" as="span">{s.n}</Text>
             <Text variant="bodyMd" as="span" style={{ fontWeight: fontWeight.semibold }}>
               {s.label}
+            </Text>
+            <Text variant="caption" prominence="subtle" as="span">
+              {s.description}
             </Text>
           </Stack>
         ))}
