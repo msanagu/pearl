@@ -19,10 +19,10 @@ describe('Text', () => {
     expect(el.tagName).toBe('H1');
   });
 
-  it('applies a weight override as inline style', () => {
-    render(<Text weight="bold">Bold text</Text>);
-    const el = screen.getByText('Bold text');
-    expect(el.style.fontWeight).toBeTruthy();
+  it('sets data-role when a role is passed', () => {
+    render(<Text role="label">Plate 01</Text>);
+    const el = screen.getByText('Plate 01');
+    expect(el.dataset.role).toBe('label');
   });
 
   it('merges custom className and forwards other props', () => {

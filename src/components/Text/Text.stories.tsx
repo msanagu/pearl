@@ -14,24 +14,24 @@ const meta: Meta<typeof Text> = {
   args: {
     children: 'The quick brown fox jumps over the lazy dog',
     variant: 'bodyMd',
-    tone: 'default',
+    prominence: 'default',
   },
   argTypes: {
     variant: {
       control: 'select',
       options: [
-        'bodySm', 'bodyMd', 'bodyLg',
+        'caption', 'bodySm', 'bodyMd', 'bodyLg',
         'headingSm', 'headingMd', 'headingLg',
         'displaySm', 'displayLg',
       ],
       description: 'Type-scale step (size + line-height + default weight).',
     },
-    weight: {
+    role: {
       control: 'select',
-      options: [undefined, 'regular', 'medium', 'semibold', 'bold'],
-      description: "Optional override on top of the variant's default weight.",
+      options: [undefined, 'inlineEmphasis', 'label', 'numeric'],
+      description: 'A theme-owned typographic job — mutually exclusive with variant.',
     },
-    tone: {
+    prominence: {
       control: 'radio',
       options: ['default', 'subtle'],
     },
@@ -51,7 +51,7 @@ export const Scale: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {(
-        ['displayLg', 'displaySm', 'headingLg', 'headingMd', 'headingSm', 'bodyLg', 'bodyMd', 'bodySm'] as const
+        ['displayLg', 'displaySm', 'headingLg', 'headingMd', 'headingSm', 'bodyLg', 'bodyMd', 'bodySm', 'caption'] as const
       ).map((v) => (
         <Text key={v} variant={v} as="p">
           {v} — The quick brown fox
@@ -71,11 +71,29 @@ export const VariantVsElement: Story = {
   ),
 };
 
+/**
+ * `role` targeting resolved live, in whichever theme is active in the
+ * toolbar — switch themes to see it change. Pearl defines `inlineEmphasis`
+ * (serif italic) and `label` (mono caps at the `caption` step); a theme with
+ * no assignment for a role falls back to canon `bodyMd`, silently.
+ */
+export const Roles: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Text variant="bodyLg" as="p">
+        The world is your <Text as="span" role="inlineEmphasis">oyster</Text>.
+      </Text>
+      <Text role="label" as="span">Plate 01 / Nacre</Text>
+      <Text role="numeric" as="span">1,204.50</Text>
+    </div>
+  ),
+};
+
 export const Prominence: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <Text tone="default">Default prominence — primary content.</Text>
-      <Text tone="subtle">Subtle prominence — captions, metadata, helper text.</Text>
+      <Text prominence="default">Default prominence — primary content.</Text>
+      <Text prominence="subtle">Subtle prominence — captions, metadata, helper text.</Text>
     </div>
   ),
 };

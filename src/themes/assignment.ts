@@ -81,12 +81,57 @@ export interface CapabilityAssignment {
   source?: string;
 }
 
-/** How this theme assigns type primitives to jobs. */
+/**
+ * How this theme assigns primitives to jobs. Nested by domain — `typography`
+ * today, room for e.g. `iconography` later — so `roles` doesn't become a flat
+ * bag of unrelated job assignments.
+ */
 export interface RoleAssignments {
-  /** The face carrying rare emphasis — pull quotes, inline interjections. */
-  emphasis?: { face: string; style?: 'normal' | 'italic'; scope?: string[] };
-  /** The face carrying labels, IDs, data. */
-  label?: { face: string; case?: 'upper' | 'sentence'; tracking?: string };
+  typography?: TypographyRoles;
+}
+
+/**
+ * One role's complete typographic treatment — size *and* face, not a face
+ * layered on top of whatever `variant` the caller happened to pick. `size`
+ * points into the same canon scale `variant` uses (`TextVariant`, i.e.
+ * `keyof TextTokens`), so a role never invents its own raw numbers; it just
+ * claims a scale step as its own. Typed as `string` here rather than
+ * importing `TextVariant` to keep this infra file independent of the
+ * component layer — `Text`'s `role` prop is what enforces the real union.
+ */
+interface RoleTreatment {
+  fontFamily: string;
+  /** Canon scale step this role rides on, e.g. `'caption'`. Omit to inherit `bodyMd`. */
+  size?: string;
+  fontWeight?: 'regular' | 'medium' | 'semibold' | 'bold';
+  fontStyle?: 'normal' | 'italic';
+}
+
+export interface TypographyRoles {
+  /**
+   * The face carrying rare emphasis — pull quotes, inline interjections.
+   * Named `inlineEmphasis` (not `emphasis`) to keep it distinct from
+   * `prominence` on `Text`, which is about text-vs-subtle color weight, not
+   * a face/style change — the two are easy to conflate by name alone.
+   */
+  inlineEmphasis?: RoleTreatment & { scope?: string[] };
+  /**
+   * The face carrying the short line above a heading (e.g. "A design system
+   * for identities that refuse sameness" above the Pearl hero's h1) — kept
+   * distinct from `label` because it always pairs with a heading rather than
+   * standing alone next to data/IDs, even where the two visually coincide.
+   * See `docs/markup-philosophy.md` for the `header`/heading/preheading/
+   * subheading vocabulary this belongs to.
+   */
+  preheading?: RoleTreatment & { case?: 'upper' | 'sentence'; tracking?: string };
+  /** The face carrying labels, IDs, metadata. */
+  label?: RoleTreatment & { case?: 'upper' | 'sentence'; tracking?: string };
+  /**
+   * The face carrying tabular data — table cells, counters, form values.
+   * Density (how tight the rows/fields sit) comes from the theme's `density`
+   * axis, same as everywhere else; this only covers the face and figure style.
+   */
+  numeric?: RoleTreatment & { tabularFigures?: boolean };
 }
 
 /**
@@ -105,12 +150,17 @@ export type ThemeAssignments<C extends object = Record<never, never>> = {
 } & { [K in keyof C]: CapabilityAssignment };
 
 export type UsageAxis =
+  /** Spacing and line-height posture. Editorial themes run loose, data-dense themes run tight. */
   | 'density'
+  /** How far the display step is allowed to jump from body (dramatic hero sizing vs. restrained). */
   | 'displayScale'
+  /** How much of the type system is allowed to carry emphasis/color at once (quiet-work-no-fills vs. richer). */
   | 'accentBudget'
   /** What hover does — lift, tracking-stretch, edge-rule, border-signal. */
   | 'hoverBehavior'
+  /** How photo-first a theme is, and what treatment imagery gets (soft-neutral, high-contrast, etc.). */
   | 'imagery'
   /** How micro-labels are styled — mono-caps, slash-caps, quiet-mono. */
   | 'labelTreatment'
+  /** How content sits on its axis — centered, baseline-drift, grid-locked. */
   | 'alignment';
