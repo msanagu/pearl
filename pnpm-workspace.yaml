@@ -9,3 +9,5 @@ minimumReleaseAgeExclude:
   - '@storybook/react@10.5.2'
   - storybook@10.5.2
   - vite@8.1.5
+patchedDependencies:
+  '@storybook/addon-vitest@10.5.2': patches/@storybook__addon-vitest@10.5.2.patch

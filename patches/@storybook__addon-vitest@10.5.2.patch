@@ -1,0 +1,26 @@
+diff --git a/dist/preset.js b/dist/preset.js
+index 96d35c6984a6f5dae9980a44e128acfb074a2479..505ca920cd46ab916f992519e13b7e9c56acfd65 100644
+--- a/dist/preset.js
++++ b/dist/preset.js
+@@ -603,7 +603,20 @@ var experimental_serverChannel = async (channel, options) => {
+   if (options.configType === "PRODUCTION")
+     return values;
+   let coverageDirectory = resolvePathInStorybookCache(COVERAGE_DIRECTORY);
+-  return await mkdir(coverageDirectory, { recursive: !0 }), [
++  for (let __sbMkdirAttempt = 0; __sbMkdirAttempt < 5; __sbMkdirAttempt++) {
++    try {
++      await mkdir(coverageDirectory, { recursive: !0 });
++      break;
++    } catch (__sbErr) {
++      // The coverage provider runs with `clean: true`/`cleanOnRerun: true` on
++      // this same cache dir, so a concurrent rm can make recursive mkdir throw
++      // ENOENT. Retry a few times, then give up silently rather than crash the
++      // whole test-runner (and the dev server with it).
++      if (__sbErr && __sbErr.code === "ENOENT" && __sbMkdirAttempt < 4) continue;
++      break;
++    }
++  }
++  return [
+     {
+       from: coverageDirectory,
+       to: "/coverage"
