@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Azeret+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=gambetta@400,500&amp;f[]=zodiak@400,500,700&amp;f[]=boska@300,400,500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFEDE8;font-family:'General Sans',system-ui,sans-serif;color:#1a1a1a}
+a{color:#1a1a1a}a:hover{color:#6B4E8E}
+@keyframes dvLuster{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes dvOrb{0%,100%{background-position:118% 0,center}50%{background-position:34% 0,center}}
+@keyframes dvBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+</style>
+</helmet>
+
+<div style="max-width:1120px;margin:0 auto;padding:48px 44px 90px">
+
+<div data-screen-label="Philosophy" style="max-width:880px">
+  <div style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:rgba(0,0,0,.45)">PEARL DESIGN SYSTEM — THEME CONTRACT SPEC</div>
+  <h1 style="font:600 34px/1.15 'General Sans',sans-serif;letter-spacing:-.02em;margin:14px 0 18px">One structure, four vibes.<br>A theme is colors + fonts + <em style="font-style:italic">usage patterns</em> — density, scale, and idiom are contract values too.</h1>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:24px">
+    <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:18px 20px"><div style="font:600 12px 'IBM Plex Mono',monospace;margin-bottom:8px">LAW 1 — AGNOSTIC MARKUP</div><div style="font:400 12.5px/1.6 'General Sans',sans-serif;color:rgba(0,0,0,.6)">Section markup references only contract variables — including its paddings, type sizes, and alignment. No literal colors, fonts, radii, durations, or spacing inside a template. If a theme can't fully reskin a section, the section is wrong — not the theme.</div></div>
+    <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:18px 20px"><div style="font:600 12px 'IBM Plex Mono',monospace;margin-bottom:8px">LAW 2 — SWAPPABLE SECTIONS</div><div style="font:400 12.5px/1.6 'General Sans',sans-serif;color:rgba(0,0,0,.6)">Pages are stacks of interchangeable sections. Layouts from retired style explorations stay in the library — the style was rejected, the structure wasn't. Any section slots into any page under any theme.</div></div>
+    <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:18px 20px"><div style="font:600 12px 'IBM Plex Mono',monospace;margin-bottom:8px">LAW 3 — VIBE IS DATA</div><div style="font:400 12.5px/1.6 'General Sans',sans-serif;color:rgba(0,0,0,.6)">Motion keyframes are global; themes override only parameter values. Same for whitespace and scale: every theme ships a <span style="font-family:ui-monospace,Menlo,monospace">space</span> ramp and <span style="font-family:ui-monospace,Menlo,monospace">usage</span> axes (density, display scale, accent budget, hover idiom) so switching themes switches temperament, not just paint.</div></div>
+  </div>
+</div>
+
+<div data-screen-label="Contract shape" style="margin-top:44px">
+  <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">§1 — The contract (vanilla-extract shape)</div>
+  <div style="font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin-bottom:14px">Extends the existing scheme in <span style="font-family:ui-monospace,Menlo,monospace">src/theme.css.ts</span> — same <span style="font-family:ui-monospace,Menlo,monospace">createGlobalThemeContract</span> + per-theme <span style="font-family:ui-monospace,Menlo,monospace">createTheme(vars, …)</span> pattern, new axis groups only, no deviation. <strong>Note:</strong> the linked folder is currently unreachable from this doc, so key names below need a 1:1 sync pass against <span style="font-family:ui-monospace,Menlo,monospace">theme.css.ts</span> / <span style="font-family:ui-monospace,Menlo,monospace">tokens.ts</span> once it's re-linked.</div>
+  <pre style="margin:0;background:#141416;color:#D8DCD9;border-radius:12px;padding:22px 26px;font:400 12px/1.7 ui-monospace,Menlo,monospace;overflow:auto">export const vars = createGlobalThemeContract({
+  color: {
+    ground: '',            // page behind everything; in exposed-grid themes it shows through the gaps
+    surface: '', surfaceAlt: '', surfaceHover: '',
+    hairline: '', hairlineStrong: '',
+    ink: '', text: '', muted: '', faint: '',
+    accent: { base: '', hover: '', alt: '', alt2: '', onAccent: '' },
+    chrome: { bg: '', ink: '' },   // the one "loud cell" per view (CONTACT, primary CTA)
+  },
+  type: {
+    display: { family: '', weight: '', transform: '', tracking: '', leading: '', fontStyle: '' },
+    text:    { family: '' },
+    label:   { family: '', tracking: '', wrap: '' },   // wrap: '/ % /' slash convention or '%'
+    scale:   { hero: '', display: '', title: '', poster: '' },  // px ramp — themes differ WIDELY here
+  },
+  shape: { radiusControl: '', radiusCard: '', gridGap: '', hairlineWidth: '' },
+  space: { hero: '', section: '', cell: '', row: '', stack: '' },  // whitespace ramp (shorthand paddings)
+  usage: {                       // ── the vibe axes: structured, enumerable, machine-checkable ──
+    density: '',        // 'airy' | 'comfortable' | 'compact' | 'poster-tight'
+    displayScale: '',   // 'poster-xl' | 'editorial-lg' | 'product-md' | 'console-sm'
+    accentBudget: '',   // 'one-chrome-cell' | 'one-small-loud-thing' | 'signals-only' | 'quiet-work-no-fills'
+    hoverIdiom: '',     // 'lift-and-shadow' | 'tracking-stretch' | 'edge-rule' | 'border-signal'
+    imagery: '',        // 'grayscale-plates' | 'warm-photography' | 'none-data-only' | 'soft-neutral'
+    labelIdiom: '',     // 'mono-caps' | 'slash-caps' | 'mono-data-only' | 'quiet-mono'
+    alignment: '',      // 'grid-locked' | 'centered-ceremonial' | 'left-utilitarian' | 'baseline-drift'
+  },
+  surfaceFx: {
+    pearl: '', accentBar: '', noiseBlend: '', noiseOpacity: '', plateFilter: '',
+  },
+  luster: { angle: '', speed: '', size: '', blend: '', stops: '' },
+  motion: { tempo: '', lift: '', easing: '', sheenSpeed: '', caretSpeed: '' },
+});
+
+// usage.* values are closed enums: a generator (human or LLM) reads them as hard constraints,
+// e.g. usage.accentBudget='one-small-loud-thing' forbids a second accent fill in the same view.
+// The luster adapter is identical for every theme — nuance lives in the values:
+//   background: linear-gradient(vars.luster.angle, vars.luster.stops);
+//   background-size: vars.luster.size 100%;  mix-blend-mode: vars.luster.blend;
+//   animation: luster vars.luster.speed ease-in-out infinite;   ← one global keyframe</pre>
+</div>
+
+<div data-screen-label="Live proof" style="margin-top:44px">
+  <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">§2 — Live proof: one page, four temperaments</div>
+  <div style="font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin-bottom:14px">Identical markup below — even paddings and type sizes are holes filled by the contract. Watch the whitespace and scale change with the theme, not just the paint. Provenance of each folded-in layout is labeled per section.</div>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px">
+    <sc-for list="{{ themeBtns }}" as="b" hint-placeholder-count="4">
+      <div onClick="{{ b.pick }}" style="cursor:pointer;padding:8px 16px;border-radius:999px;font:500 12px 'General Sans',sans-serif;background:{{ b.bg }};color:{{ b.fg }};border:1px solid rgba(0,0,0,.16)">{{ b.label }}</div>
+    </sc-for>
+    <div style="width:1px;height:22px;background:rgba(0,0,0,.15)"></div>
+    <div onClick="{{ toggleMode }}" style="cursor:pointer;padding:8px 16px;border-radius:999px;font:500 12px 'General Sans',sans-serif;background:#1a1a1a;color:#fff">mode: {{ mode }} ⇄</div>
+    <div onClick="{{ toggleNav }}" style="cursor:pointer;padding:8px 16px;border-radius:999px;font:500 12px 'General Sans',sans-serif;background:rgba(0,0,0,.07);color:#1a1a1a">nav markup: {{ navName }} ⇄</div>
+    <div onClick="{{ toggleHero }}" style="cursor:pointer;padding:8px 16px;border-radius:999px;font:500 12px 'General Sans',sans-serif;background:rgba(0,0,0,.07);color:#1a1a1a">hero markup: {{ heroName }} ⇄</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+    <sc-for list="{{ usageChips }}" as="u" hint-placeholder-count="6">
+      <span style="font:500 10px ui-monospace,Menlo,monospace;padding:4px 9px;border-radius:5px;background:rgba(0,0,0,.06);color:rgba(0,0,0,.6)">usage.{{ u.k }} = <span style="color:#1a1a1a;font-weight:600">{{ u.v }}</span></span>
+    </sc-for>
+  </div>
+
+  <div style="border:1px solid rgba(0,0,0,.12);border-radius:12px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.08)">
+  <div style="position:relative;background:{{ t.groundFill }}">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:{{ t.noiseOpacity }};mix-blend-mode:{{ t.noiseBlend }};background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:relative;z-index:6">
+
+    <sc-if value="{{ navGrid }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Nav — exposed grid" style="display:grid;grid-template-columns:1fr 150px 196px;gap:{{ t.gridGap }};background:{{ t.hairline }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}">
+        <div style="background:{{ t.surface }};display:flex;align-items:center;gap:12px;padding:{{ t.navPad }}">
+          <div style="width:17px;height:17px;border-radius:50%;background:{{ t.pearl }}"></div>
+          <span style="font:{{ t.wmFont }};color:{{ t.ink }};letter-spacing:{{ t.wmTracking }};text-transform:{{ t.displayTransform }}">{{ t.wordmark }}</span>
+        </div>
+        <div style="background:{{ t.surface }};display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:{{ t.labelFont }};color:{{ t.muted }};letter-spacing:{{ t.labelTracking }}"><span>{{ t.lIndex }}</span><span>＋</span></div>
+        <div style="background:{{ t.chromeBg }};display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:{{ t.labelFont }};color:{{ t.chromeInk }};letter-spacing:{{ t.labelTracking }};cursor:pointer;transition:opacity {{ t.tempo }} ease" style-hover="opacity:.8"><span>{{ t.lContact }}</span><span>→</span></div>
+      </div>
+      <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 12a / 14a exposed-grid bar (Tahitian serif round — style retired, structure kept)</span></div>
+    </sc-if>
+    <sc-if value="{{ navSlash }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Nav — editorial slash" style="display:flex;justify-content:space-between;align-items:center;padding:{{ t.navPad }};background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:17px;height:17px;border-radius:50%;background:{{ t.pearl }}"></div>
+          <span style="font:{{ t.wmFont }};color:{{ t.ink }};letter-spacing:{{ t.wmTracking }};text-transform:{{ t.displayTransform }}">{{ t.wordmark }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;font:450 12.5px {{ t.fontText }};color:{{ t.text }}">
+          <span>About</span><span style="color:{{ t.faint }}">/</span><span>Collection</span><span style="color:{{ t.faint }}">/</span><span>Atelier</span><span style="color:{{ t.faint }}">/</span><span style="color:{{ t.accent }}">Contact</span>
+        </div>
+      </div>
+      <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 11a slash nav (structure kept)</span></div>
+    </sc-if>
+
+    <sc-if value="{{ heroPoster }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Hero — poster masthead" style="display:grid;grid-template-columns:1fr 300px;gap:{{ t.gridGap }};background:{{ t.hairline }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}">
+        <div style="background:{{ t.surface }};padding:{{ t.padHero }};text-align:{{ t.heroAlign }}">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;font:{{ t.labelFont }};color:{{ t.muted }};letter-spacing:.18em;margin-bottom:{{ t.metaGap }}"><span>{{ t.lTagline }}</span><span>EST. 2019</span></div>
+          <div style="font:{{ t.heroFont }};color:{{ t.ink }};text-transform:{{ t.displayTransform }};letter-spacing:{{ t.displayTracking }}">Never the same<br><span style="color:{{ t.accent }};font-style:{{ t.heroAccentStyle }}">twice.</span></div>
+          <div style="height:{{ t.barH }};max-width:420px;margin:{{ t.metaGap }} {{ t.barMargin }} 0;background:{{ t.accentBar }}"></div>
+          <div style="font:400 {{ t.bodySize }}/1.65 {{ t.fontText }};color:{{ t.text }};max-width:{{ t.measure }};margin:{{ t.metaGap }} {{ t.barMargin }} 0;text-wrap:pretty">Brand systems for water-born companies — surfaces that answer light instead of shouting over it.</div>
+        </div>
+        <div style="position:relative;overflow:hidden;min-height:300px;background:{{ t.surfaceAlt }}">
+          <img src="./images/mother-of-pearl.jpg" alt="nacre plate" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:{{ t.plateFilter }}">
+          <div style="position:absolute;inset:0;background:{{ t.plateWash }}"></div>
+          <div style="position:absolute;inset:0;background:{{ t.lusterOverlay }};background-size:{{ t.lusterSize }} {{ t.lusterSize }};animation:dvLuster {{ t.lusterSpeed }} ease-in-out infinite;mix-blend-mode:screen"></div>
+          <div style="position:absolute;inset:0;padding:14px 18px;display:flex;justify-content:space-between;align-items:flex-end;box-sizing:border-box;font:{{ t.labelFont }};color:{{ t.plateInk }};letter-spacing:{{ t.labelTracking }}"><span>{{ t.lPlate }}</span><span>↓</span></div>
+        </div>
+      </div>
+      <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 14a poster masthead · luster overlay lives on imagery only — never on type</span></div>
+    </sc-if>
+    <sc-if value="{{ heroEditorial }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Hero — editorial split" style="background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }};padding:{{ t.padHero }}">
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start">
+          <div>
+            <div style="font:{{ t.heroEdFont }};color:{{ t.ink }};text-transform:{{ t.displayTransform }};letter-spacing:{{ t.displayTracking }}">Never the</div>
+            <div style="display:flex;align-items:baseline;gap:22px;font:{{ t.heroEdFont }};color:{{ t.ink }};text-transform:{{ t.displayTransform }};letter-spacing:{{ t.displayTracking }}"><span style="font-style:{{ t.heroAccentStyle }};color:{{ t.accent }}">same</span><span style="flex:1;min-width:80px;border-bottom:1px solid {{ t.hairlineStrong }};transform:translateY(-12px)"></span><span>twice</span></div>
+          </div>
+          <div style="padding-top:6px">
+            <div style="font:500 11px {{ t.fontText }};color:{{ t.ink }};letter-spacing:.12em;border-bottom:1px solid {{ t.hairlineStrong }};display:inline-block;padding-bottom:3px;text-transform:uppercase">Talk to the atelier</div>
+            <div style="font:400 {{ t.bodySize }}/1.7 {{ t.fontText }};color:{{ t.text }};margin-top:16px;max-width:{{ t.measure }};text-wrap:pretty">Cultured over years, chosen in a morning. Each surface is kept, graded, and set by the same four hands.</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 11a roman/italic mixing, rule-in-the-gap (structure kept)</span></div>
+    </sc-if>
+
+    <div data-screen-label="Index — staggered" style="display:grid;grid-template-columns:320px 1fr 170px;gap:{{ t.gridGap }};background:{{ t.hairline }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}">
+      <div style="position:relative;overflow:hidden;grid-row:1 / 4;min-height:280px;background:{{ t.surfaceAlt }}">
+        <img src="./images/iridescent.jpg" alt="iridescent nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:{{ t.plateFilter }}">
+        <div style="position:absolute;inset:0;background:{{ t.plateWash }}"></div>
+        <div style="position:absolute;inset:0;background:{{ t.lusterOverlay }};background-size:{{ t.lusterSize }} {{ t.lusterSize }};animation:dvLuster {{ t.lusterSpeedB }} ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="font:{{ t.labelFont }};color:{{ t.plateInk }};letter-spacing:{{ t.labelTracking }}">{{ t.lSelected }}</div>
+          <div style="font:{{ t.plateTitleFont }};color:#F4F2F6;text-transform:{{ t.displayTransform }}">The index</div>
+        </div>
+      </div>
+      <div style="background:{{ t.surface }};display:flex;align-items:center;justify-content:space-between;padding:0 24px;min-height:48px;font:{{ t.labelFont }};color:{{ t.muted }};letter-spacing:{{ t.labelTracking }}"><span>{{ t.lIndex }}</span><span>34 ENTRIES</span></div>
+      <div style="background:{{ t.surface }};display:flex;align-items:center;justify-content:center;min-height:48px;font:{{ t.labelFont }};color:{{ t.accent }};letter-spacing:{{ t.labelTracking }}">FILTER ▾</div>
+      <sc-for list="{{ indexRows }}" as="row" hint-placeholder-count="2">
+        <div style="background:{{ t.surface }};grid-column:{{ row.span }};display:flex;align-items:center;justify-content:space-between;padding:{{ t.rowPad }};transition:box-shadow {{ t.tempo }} ease,background {{ t.tempo }} ease" style-hover="box-shadow:inset 3px 0 0 {{ t.accent }};background:{{ t.surfaceHover }}">
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font:{{ t.labelFont }};color:{{ t.faint }}">{{ row.n }}</span><span style="font:{{ t.indexTitleFont }};color:{{ t.ink }};text-transform:{{ t.displayTransform }};letter-spacing:{{ t.displayTracking }}">{{ row.name }}</span></div>
+          <span style="font:{{ t.labelFont }};color:{{ t.accent }};letter-spacing:{{ t.labelTracking }}">{{ row.meta }}</span>
+        </div>
+      </sc-for>
+      <div style="background:{{ t.surface }};display:flex;align-items:center;justify-content:center;padding:20px 12px;font:400 11px/1.7 {{ t.fontMono }};color:{{ t.faint }};text-align:center">fig. 02 —<br>held, not shown</div>
+    </div>
+    <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 12b staggered index (Tahitian serif round revoked — structure kept) · row scale + padding come from type.scale.title / space.row</span></div>
+
+    <div data-screen-label="Elements + luster card" style="display:grid;grid-template-columns:1fr 1fr;gap:{{ t.gridGap }};background:{{ t.hairline }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}">
+      <div style="background:{{ t.surface }};padding:{{ t.padCell }};display:flex;flex-direction:column;gap:{{ t.stackGap }}">
+        <div style="font:{{ t.labelFont }};color:{{ t.muted }};letter-spacing:{{ t.labelTracking }}">{{ t.lControls }}</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="height:{{ t.ctrlH }};display:flex;align-items:center;padding:0 22px;border-radius:{{ t.radiusControl }};color:{{ t.primaryInk }};font:{{ t.btnFont }};letter-spacing:{{ t.btnTracking }};text-transform:{{ t.btnTransform }};background:linear-gradient(115deg,transparent 35%,{{ t.sheen }} 50%,transparent 65%),{{ t.primaryBg }};background-size:260% 100%,100% 100%;background-position:118% 0,center;box-shadow:{{ t.primaryShadow }};cursor:pointer;transition:transform {{ t.tempo }} {{ t.easing }},letter-spacing {{ t.tempo }} ease" style-hover="transform:translateY({{ t.lift }});letter-spacing:{{ t.btnTrackingHover }};animation:dvOrb {{ t.sheenSpeed }} ease-in-out infinite">Add to bag</div>
+          <div style="height:{{ t.ctrlH }};display:flex;align-items:center;padding:0 22px;border-radius:{{ t.radiusControl }};border:1px solid {{ t.hairlineStrong }};color:{{ t.ink }};font:{{ t.btnFont }};letter-spacing:{{ t.btnTracking }};text-transform:{{ t.btnTransform }};background:{{ t.secondaryBg }};cursor:pointer;transition:border-color {{ t.tempo }} ease,box-shadow {{ t.tempo }} ease" style-hover="border-color:{{ t.accent }};box-shadow:0 0 0 3px {{ t.focusRing }}">Reserve</div>
+          <div style="height:{{ t.ctrlH }};display:flex;align-items:center;padding:0 4px;color:{{ t.ink }};font:{{ t.btnFont }};letter-spacing:{{ t.btnTracking }};text-transform:{{ t.btnTransform }};border-bottom:1px solid {{ t.accent }};cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Quiet</div>
+        </div>
+        <div>
+          <div style="font:{{ t.labelFont }};color:{{ t.faint }};letter-spacing:{{ t.labelTracking }};margin-bottom:6px">{{ t.lEmail }}</div>
+          <div style="height:42px;max-width:340px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-radius:{{ t.radiusControl }};background:{{ t.fieldBg }};border:1px solid {{ t.accent }};box-shadow:0 0 0 3px {{ t.focusRing }};font:400 13px {{ t.fontText }};color:{{ t.ink }}">you@studio.co<span style="color:{{ t.faint }};animation:dvBlink 1.1s steps(1) infinite">▏</span></div>
+        </div>
+      </div>
+      <div style="background:{{ t.surface }};padding:{{ t.padCell }};display:flex;flex-direction:column;gap:14px;justify-content:center">
+        <div style="border-radius:{{ t.radiusCard }};border:1px solid {{ t.hairline }};padding:20px 24px;display:flex;align-items:center;gap:18px;background:{{ t.lusterSurface }};background-size:300% 100%;background-position:0% 50%;cursor:pointer;transition:box-shadow 400ms ease,transform 400ms {{ t.easing }}" style-hover="animation:dvLuster {{ t.lusterCardSpeed }} ease-in-out infinite;transform:translateY(-2px);box-shadow:{{ t.cardHoverShadow }}">
+          <div style="width:52px;height:52px;flex:none;border-radius:50%;background:{{ t.pearl }};box-shadow:{{ t.pearlShadow }}"></div>
+          <div style="min-width:0">
+            <div style="font:{{ t.labelFont }};color:{{ t.muted }};letter-spacing:{{ t.labelTracking }};margin-bottom:5px">{{ t.lHover }}</div>
+            <div style="font:500 16px {{ t.fontText }};color:{{ t.ink }};letter-spacing:-.01em">Nacre surface — the luster token, applied to a card.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font:400 10.5px {{ t.fontMono }};color:{{ t.faint }};flex-wrap:wrap"><span style="color:{{ t.muted }}">luster:</span><span>{{ t.lusterAngle }} ·</span><sc-for list="{{ stopChips }}" as="c" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:{{ c.hex }};box-shadow:inset 0 0 0 1px rgba(127,127,127,.35)"></span>{{ c.name }}</span></sc-for><span>· {{ t.lusterCardSpeed }}</span></div>
+      </div>
+    </div>
+    <div style="padding:5px 12px;background:{{ t.surface }};border-bottom:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">ELEMENTS ← 8a/9x sheets · primary sheen = dvOrb · card luster = dvLuster, same keyframe every theme · hover obeys usage.hoverIdiom</span></div>
+
+    <div data-screen-label="Footer — atelier" style="background:{{ t.surface }}">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:28px;padding:{{ t.padSection }}">
+        <div>
+          <div style="font:{{ t.labelFont }};color:{{ t.faint }};letter-spacing:{{ t.labelTracking }};margin-bottom:14px">{{ t.lCollection }}</div>
+          <div style="display:flex;flex-direction:column;gap:{{ t.linkGap }};font:450 13px {{ t.fontText }};color:{{ t.text }}"><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">The Keshi Line</span><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Baroque Nº 1–12</span><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Gift Card</span></div>
+        </div>
+        <div>
+          <div style="font:{{ t.labelFont }};color:{{ t.faint }};letter-spacing:{{ t.labelTracking }};margin-bottom:14px">{{ t.lAtelier }}</div>
+          <div style="display:flex;flex-direction:column;gap:{{ t.linkGap }};font:450 13px {{ t.fontText }};color:{{ t.text }}"><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Our Ethos</span><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Grading</span><span style="cursor:pointer;transition:color {{ t.tempo }} ease" style-hover="color:{{ t.accent }}">Appointments</span></div>
+        </div>
+        <div>
+          <div style="font:{{ t.labelFont }};color:{{ t.faint }};letter-spacing:{{ t.labelTracking }};margin-bottom:14px">{{ t.lViewings }}</div>
+          <div style="display:flex;flex-direction:column;gap:{{ t.linkGap }};font:450 12px {{ t.fontText }};color:{{ t.text }}">
+            <div style="display:flex;align-items:baseline;gap:8px"><span>Tuesday</span><span style="flex:1;border-bottom:1px dotted {{ t.hairlineStrong }}"></span><span>10 — 18</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px"><span>Thursday</span><span style="flex:1;border-bottom:1px dotted {{ t.hairlineStrong }}"></span><span>10 — 20</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px"><span>Saturday</span><span style="flex:1;border-bottom:1px dotted {{ t.hairlineStrong }}"></span><span style="color:{{ t.accent }}">By appointment</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid {{ t.hairline }};padding:{{ t.padSection }}">
+        <div style="font:{{ t.posterFont }};color:{{ t.ink }};letter-spacing:{{ t.displayTracking }};text-transform:{{ t.displayTransform }};text-align:{{ t.posterAlign }}">{{ t.wordmark }}</div>
+        <div style="display:flex;justify-content:space-between;margin-top:{{ t.metaGap }};font:{{ t.labelFont }};color:{{ t.faint }};letter-spacing:{{ t.labelTracking }}"><span>© 2026 {{ t.legalName }}</span><span>{{ t.lCities }}</span><span style="color:{{ t.accent }}">INSTAGRAM ↗</span></div>
+      </div>
+      <div style="padding:5px 12px;border-top:{{ t.hairlineWidth }} solid {{ t.hairline }}"><span style="font:500 9px ui-monospace,Menlo,monospace;color:{{ t.faint }};letter-spacing:.08em">LAYOUT ← 13a atelier footer: dotted leaders + poster wordmark (Gielly bones, structure kept) · wordmark scale/alignment come from type.scale.poster / usage.alignment</span></div>
+    </div>
+
+    </div>
+  </div>
+  </div>
+</div>
+
+<div data-screen-label="Token tables" style="margin-top:48px">
+  <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">§3 — Canonized values, both modes</div>
+  <div style="font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin-bottom:16px">The exact objects driving §2 — copy a column into <span style="font-family:ui-monospace,Menlo,monospace">createTheme(vars, …)</span> per theme per mode. Color values locked in explorations 7a, 8a, 9a–9c, 11a/b, 13a, 14a–c. The usage line under each table is part of the theme, not commentary.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <sc-for list="{{ specThemes }}" as="th" hint-placeholder-count="4">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:14px 18px;border-bottom:1px solid rgba(0,0,0,.08)"><span style="font:600 13px 'General Sans',sans-serif">{{ th.name }}</span><span style="font:500 10px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.45)">{{ th.fonts }}</span></div>
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;padding:8px 18px 4px;font:600 9.5px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.4);letter-spacing:.06em"><span>TOKEN</span><span>LIGHT</span><span>DARK</span></div>
+        <sc-for list="{{ th.rows }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:6px;padding:5px 18px;font:400 10.5px ui-monospace,Menlo,monospace;color:#1a1a1a;border-top:1px solid rgba(0,0,0,.04);align-items:center">
+            <span style="color:rgba(0,0,0,.55)">{{ r.token }}</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;min-width:0"><span style="width:11px;height:11px;flex:none;border-radius:3px;background:{{ r.lightHex }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.light }}</span></span>
+            <span style="display:inline-flex;align-items:center;gap:5px;min-width:0"><span style="width:11px;height:11px;flex:none;border-radius:3px;background:{{ r.darkHex }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.dark }}</span></span>
+          </div>
+        </sc-for>
+        <div style="padding:10px 18px 4px;border-top:1px solid rgba(0,0,0,.06);font:500 10px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.6);line-height:1.8">{{ th.usageLine }}</div>
+        <div style="padding:8px 18px 16px;font:400 11px/1.55 'General Sans',sans-serif;color:rgba(0,0,0,.55)">{{ th.modeNote }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<div data-screen-label="Luster and motion" style="margin-top:48px">
+  <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">§4 — Luster &amp; motion: one keyframe set, four personalities</div>
+  <div style="font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin-bottom:16px">Keyframes are defined once, globally, and never per theme: <span style="font-family:ui-monospace,Menlo,monospace">luster</span> (background-position 0% → 100% → 0%), <span style="font-family:ui-monospace,Menlo,monospace">sheen</span> (a highlight band sweeping a CTA once per cycle), <span style="font-family:ui-monospace,Menlo,monospace">caret</span> (steps(1) blink), plus the hover behaviors selected by <span style="font-family:ui-monospace,Menlo,monospace">usage.hoverIdiom</span>. A theme expresses motion identity ONLY through parameter values — never by adding keyframes.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <sc-for list="{{ lusterDemos }}" as="d" hint-placeholder-count="4">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:16px 18px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px"><span style="font:600 12px 'General Sans',sans-serif">{{ d.name }}</span><span style="font:500 10px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.45)">{{ d.params }}</span></div>
+        <div style="height:44px;border-radius:8px;background:{{ d.bg }};background-size:{{ d.size }} 100%;animation:dvLuster {{ d.speed }} ease-in-out infinite;border:1px solid rgba(0,0,0,.08)"></div>
+        <div style="font:400 10.5px/1.6 ui-monospace,Menlo,monospace;color:rgba(0,0,0,.5);margin-top:10px">{{ d.stops }}</div>
+        <div style="font:400 11px/1.55 'General Sans',sans-serif;color:rgba(0,0,0,.55);margin-top:6px">{{ d.note }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<div data-screen-label="LLM notes" style="margin-top:48px">
+  <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">§5 — Theme distinctions, written for a model</div>
+  <div style="font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin-bottom:16px">Structured rules an LLM (or a new designer) applies when generating under a theme. Every rule is pinned to the contract key(s) that encode it — nuance is always expressible as values, and violations are checkable against <span style="font-family:ui-monospace,Menlo,monospace">usage.*</span> enums.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <sc-for list="{{ llmNotes }}" as="n" hint-placeholder-count="4">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:18px 20px">
+        <div style="font:600 13px 'General Sans',sans-serif;margin-bottom:4px">{{ n.theme }}</div>
+        <div style="font:400 11.5px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.5);font-style:italic;margin-bottom:12px">{{ n.voice }}</div>
+        <sc-for list="{{ n.rules }}" as="r" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:3px;padding:7px 0;border-top:1px solid rgba(0,0,0,.05)">
+            <span style="align-self:flex-start;font:600 9px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.5);background:rgba(0,0,0,.05);padding:2px 6px;border-radius:4px;letter-spacing:.04em">{{ r.k }}</span>
+            <span style="font:400 12px/1.55 'General Sans',sans-serif;color:rgba(0,0,0,.72)">{{ r.text }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;initialTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pearl&quot;,&quot;freshwater&quot;,&quot;southsea&quot;,&quot;tahitian&quot;],&quot;default&quot;:&quot;pearl&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;initialMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: this.props.initialTheme ?? 'pearl',
+    mode: this.props.initialMode ?? 'light',
+    nav: 'grid',
+    hero: 'poster',
+  };
+
+  themes() {
+    const T = {};
+    T.pearl = {
+      label: 'Pearl', wordmark: 'pearl\u00AE', legalName: 'PEARL', cities: '/ SEATTLE \u2014 GEN\u00C8VE /',
+      fontDisplay: "'Gambetta',serif", displayWeight: 400, displayFontStyle: 'italic', displayTransform: 'none', displayTracking: '-.02em', displayLeading: 1.04,
+      fontText: "'General Sans',sans-serif", fontMono: "'IBM Plex Mono',monospace",
+      wmSize: 20, wmTracking: '-.02em',
+      labelFont: "500 10px 'IBM Plex Mono',monospace", labelTracking: '.12em', slash: false,
+      btnFont: "500 13.5px 'General Sans',sans-serif", btnTracking: '0', btnTrackingHover: '0', btnTransform: 'none', ctrlH: '42px',
+      radiusControl: '999px', radiusCard: '16px', gridGap: '0px', hairlineWidth: '1px',
+      tempo: '300ms', lift: '-1px', easing: 'cubic-bezier(.22,1,.36,1)', sheenSpeed: '2.8s', lusterCardSpeed: '3.5s',
+      lusterAngle: '115deg', lusterSpeed: '9s', lusterSpeedB: '11s', lusterSize: '300%',
+      scale: { hero: 62, heroEd: 44, title: 21, poster: 72, plate: 30, body: '13.5px' },
+      space: { hero: '48px 44px', section: '32px 40px', cell: '26px 30px', row: '20px 26px', nav: '18px 32px', stack: '20px', metaGap: '22px', linkGap: '9px', barH: '3px' },
+      heroAlign: 'left', posterAlign: 'center', barMargin: '0',
+      usage: { density: 'comfortable', displayScale: 'product-md', accentBudget: 'quiet-work-no-fills', hoverIdiom: 'lift-and-shadow', imagery: 'soft-neutral', labelIdiom: 'mono-caps', alignment: 'baseline-drift' },
+      modes: {
+        light: {
+          ground: '#F5F3EF', surface: '#FBFAF7', surfaceAlt: '#F2F1F6', surfaceHover: '#F2F1F6',
+          hairline: '#DEDAD2', hairlineStrong: '#B8B5C6', ink: '#17161A', text: '#6E6A78', muted: '#77737E', faint: '#9B96A8',
+          accent: '#77737E', accentHover: '#17161A', accentAlt: '#D7D5DF',
+          chromeBg: 'linear-gradient(180deg,#26252C,#17161A)', chromeInk: '#F5F3EF',
+          primaryBg: 'linear-gradient(180deg,#26252C,#17161A)', primaryInk: '#F5F3EF', sheen: 'rgba(215,213,223,.28)',
+          primaryShadow: 'inset 0 1px 0 rgba(215,213,223,.35),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14)',
+          secondaryBg: 'linear-gradient(180deg,#FDFCFA,#F3F1EC)', fieldBg: '#FBFAF7', focusRing: 'rgba(215,213,223,.5)',
+          lusterStops: ['#FBFAF7', '#F2F1F6', '#E9E8F0', '#F5F4F7', '#EDF1EE', '#FBFAF7'], stopNames: ['silver.100', 'marine.150', 'marine.200', 'seagreen.150'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FDFDFB 8%,rgba(215,213,223,.92) 30%,#C8C7CF 62%,#A9A6B8 100%)',
+          pearlShadow: '0 6px 14px rgba(23,22,26,.14),inset 0 -2px 4px rgba(122,118,138,.3)',
+          accentBar: 'linear-gradient(100deg,#D7D5DF,#B8B5C6 50%,#D7D5DF)', cardHoverShadow: '0 14px 30px rgba(23,22,26,.1)',
+          noiseBlend: 'multiply', noiseOpacity: .05, plateFilter: 'saturate(.85) brightness(.9)', plateWash: 'linear-gradient(165deg,rgba(23,22,26,.55) 6%,rgba(78,75,94,.4) 60%,rgba(23,22,26,.3) 100%)', plateInk: '#D7D5DF',
+        },
+        dark: {
+          ground: '#17161A', surface: '#1E1D23', surfaceAlt: '#1B1A20', surfaceHover: '#232229',
+          hairline: '#2B2A32', hairlineStrong: '#8E8B9E', ink: '#F5F3EF', text: '#C9C5D2', muted: '#9B96A8', faint: '#77737E',
+          accent: '#D7D5DF', accentHover: '#FDFCFA', accentAlt: '#8E8B9E',
+          chromeBg: 'linear-gradient(180deg,#FDFCFA,#E7E5DF)', chromeInk: '#17161A',
+          primaryBg: 'linear-gradient(180deg,#FDFCFA,#E7E5DF)', primaryInk: '#17161A', sheen: 'rgba(169,166,184,.35)',
+          primaryShadow: 'inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(0,0,0,.5),0 8px 18px rgba(215,213,223,.12)',
+          secondaryBg: 'linear-gradient(180deg,#232229,#1B1A20)', fieldBg: '#1E1D23', focusRing: 'rgba(215,213,223,.16)',
+          lusterStops: ['#1C1B21', '#26252F', '#2B2A31', '#232725', '#1C1B21'], stopNames: ['silver.850', 'marine.850', 'seagreen.900'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FDFDFB 8%,rgba(215,213,223,.88) 30%,#9997A4 62%,#4E4B5E 100%)',
+          pearlShadow: '0 8px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(23,22,26,.4)',
+          accentBar: 'linear-gradient(100deg,#4E4B5E,#D7D5DF 50%,#4E4B5E)', cardHoverShadow: '0 16px 34px rgba(0,0,0,.5)',
+          noiseBlend: 'screen', noiseOpacity: .04, plateFilter: 'saturate(.85) brightness(.75)', plateWash: 'linear-gradient(165deg,rgba(23,22,26,.85) 6%,rgba(78,75,94,.55) 60%,rgba(23,22,26,.4) 100%)', plateInk: '#C9C5D2',
+        },
+      },
+    };
+    T.freshwater = {
+      label: 'Freshwater', wordmark: 'FRESHWTR_OPS', legalName: 'FRESHWTR', cities: '/ ROTTERDAM \u2014 BUSAN /',
+      fontDisplay: "'Space Grotesk',sans-serif", displayWeight: 600, displayFontStyle: 'normal', displayTransform: 'none', displayTracking: '-.01em', displayLeading: 1.05,
+      fontText: "'Space Grotesk',sans-serif", fontMono: "'Azeret Mono',monospace",
+      wmSize: 14, wmTracking: '-.01em',
+      labelFont: "500 9.5px 'Azeret Mono',monospace", labelTracking: '.1em', slash: false,
+      btnFont: "600 13px 'Space Grotesk',sans-serif", btnTracking: '0', btnTrackingHover: '0', btnTransform: 'none', ctrlH: '38px',
+      radiusControl: '8px', radiusCard: '12px', gridGap: '0px', hairlineWidth: '1px',
+      tempo: '200ms', lift: '-1px', easing: 'cubic-bezier(.22,1,.36,1)', sheenSpeed: '2.4s', lusterCardSpeed: '5s',
+      lusterAngle: '90deg', lusterSpeed: '7s', lusterSpeedB: '9s', lusterSize: '220%',
+      scale: { hero: 34, heroEd: 26, title: 15, poster: 22, plate: 20, body: '12.5px' },
+      space: { hero: '24px 26px', section: '18px 24px', cell: '16px 20px', row: '10px 20px', nav: '12px 20px', stack: '14px', metaGap: '12px', linkGap: '6px', barH: '2px' },
+      heroAlign: 'left', posterAlign: 'left', barMargin: '0',
+      usage: { density: 'compact', displayScale: 'console-sm', accentBudget: 'signals-only', hoverIdiom: 'border-signal', imagery: 'none-data-only', labelIdiom: 'mono-data-only', alignment: 'left-utilitarian' },
+      modes: {
+        light: {
+          ground: '#FFFFFF', surface: '#FFFFFF', surfaceAlt: '#F1F3F4', surfaceHover: '#F6FBFD',
+          hairline: '#E3E5E7', hairlineStrong: '#D7DADC', ink: '#0E0F10', text: '#4A4F54', muted: '#4A4F54', faint: '#8A8F94',
+          accent: '#00B8E6', accentHover: '#0089B3', accentAlt: '#5FE1FF',
+          chromeBg: '#0E0F10', chromeInk: '#5FE1FF',
+          primaryBg: '#0E0F10', primaryInk: '#FFFFFF', sheen: 'rgba(95,225,255,.3)',
+          primaryShadow: 'inset 0 1px 0 rgba(255,255,255,.12),0 1px 2px rgba(14,15,16,.25),0 8px 18px rgba(0,184,230,.22)',
+          secondaryBg: '#FFFFFF', fieldBg: '#FFFFFF', focusRing: 'rgba(0,184,230,.16)',
+          lusterStops: ['#0089B3', '#5FE1FF', '#0089B3'], stopNames: ['cyan.600', 'cyan.300', 'cyan.600'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FDFEFF 8%,#C8EFFA 32%,#5FE1FF 64%,#0089B3 100%)',
+          pearlShadow: '0 6px 14px rgba(0,137,179,.25),inset 0 -2px 4px rgba(0,89,116,.3)',
+          accentBar: 'linear-gradient(90deg,#0089B3,#5FE1FF,#0089B3)', cardHoverShadow: '0 12px 26px rgba(0,137,179,.16)',
+          noiseBlend: 'multiply', noiseOpacity: 0, plateFilter: 'saturate(.9) contrast(1.05) brightness(.85)', plateWash: 'linear-gradient(165deg,rgba(14,15,16,.6) 6%,rgba(0,137,179,.45) 60%,rgba(14,15,16,.3) 100%)', plateInk: '#C8EFFA',
+        },
+        dark: {
+          ground: '#0E0F10', surface: '#16181A', surfaceAlt: '#111314', surfaceHover: '#1C2023',
+          hairline: '#24282B', hairlineStrong: '#2C3236', ink: '#F2F4F5', text: '#8A9298', muted: '#8A9298', faint: '#6E767B',
+          accent: '#5FE1FF', accentHover: '#33CCFF', accentAlt: '#00B8E6',
+          chromeBg: 'linear-gradient(180deg,#33CCFF,#00B8E6)', chromeInk: '#06272E',
+          primaryBg: 'linear-gradient(180deg,#33CCFF,#00B8E6)', primaryInk: '#06272E', sheen: 'rgba(255,255,255,.4)',
+          primaryShadow: 'inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(0,0,0,.4),0 8px 20px rgba(0,184,230,.35)',
+          secondaryBg: '#16181A', fieldBg: '#16181A', focusRing: 'rgba(0,184,230,.2)',
+          lusterStops: ['#0089B3', '#5FE1FF', '#0089B3'], stopNames: ['cyan.600', 'cyan.300', 'cyan.600'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FDFEFF 8%,#C8EFFA 32%,#33CCFF 64%,#005974 100%)',
+          pearlShadow: '0 8px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(0,39,46,.5)',
+          accentBar: 'linear-gradient(90deg,#0089B3,#5FE1FF,#0089B3)', cardHoverShadow: '0 16px 34px rgba(0,0,0,.5)',
+          noiseBlend: 'screen', noiseOpacity: 0, plateFilter: 'saturate(.9) brightness(.7)', plateWash: 'linear-gradient(165deg,rgba(14,15,16,.85) 6%,rgba(0,137,179,.5) 60%,rgba(14,15,16,.4) 100%)', plateInk: '#C8EFFA',
+        },
+      },
+    };
+    T.southsea = {
+      label: 'South Sea', wordmark: 'South Sea', legalName: 'SOUTH SEA ATELIER', cities: '/ PAPEETE \u2014 GEN\u00C8VE \u2014 TOKYO /',
+      fontDisplay: "'Zodiak',serif", displayWeight: 400, displayFontStyle: 'italic', displayTransform: 'none', displayTracking: '-.02em', displayLeading: 1.08,
+      fontText: "'General Sans',sans-serif", fontMono: "'IBM Plex Mono',monospace",
+      wmSize: 19, wmTracking: '-.01em',
+      labelFont: "500 10px 'General Sans',sans-serif", labelTracking: '.2em', slash: true,
+      btnFont: "500 12px 'General Sans',sans-serif", btnTracking: '.16em', btnTrackingHover: '.22em', btnTransform: 'uppercase', ctrlH: '48px',
+      radiusControl: '0px', radiusCard: '0px', gridGap: '0px', hairlineWidth: '1px',
+      tempo: '400ms', lift: '0px', easing: 'ease', sheenSpeed: '3.2s', lusterCardSpeed: '4.5s',
+      lusterAngle: '115deg', lusterSpeed: '10s', lusterSpeedB: '12s', lusterSize: '300%',
+      scale: { hero: 76, heroEd: 58, title: 26, poster: 112, plate: 32, body: '13px' },
+      space: { hero: '68px 60px', section: '44px 48px', cell: '36px 40px', row: '30px 34px', nav: '24px 44px', stack: '28px', metaGap: '30px', linkGap: '11px', barH: '1px' },
+      heroAlign: 'center', posterAlign: 'center', barMargin: 'auto',
+      usage: { density: 'airy', displayScale: 'editorial-lg', accentBudget: 'one-small-loud-thing', hoverIdiom: 'tracking-stretch', imagery: 'warm-photography', labelIdiom: 'slash-caps', alignment: 'centered-ceremonial' },
+      modes: {
+        light: {
+          ground: '#F3EDE4', surface: '#F3EDE4', surfaceAlt: '#E7DCCB', surfaceHover: '#EFE6D7',
+          hairline: '#DBCDB8', hairlineStrong: '#2E2018', ink: '#2E2018', text: '#6E5F4E', muted: '#6E5F4E', faint: '#9C8B7D',
+          accent: '#E8A184', accentHover: '#F0B49B', accentAlt: '#B4A692',
+          chromeBg: '#E8A184', chromeInk: '#2E2018',
+          primaryBg: 'linear-gradient(180deg,#3A2A1E,#241812)', primaryInk: '#F3EDE4', sheen: 'rgba(243,237,228,.35)',
+          primaryShadow: 'inset 0 1px 0 rgba(243,237,228,.18),0 10px 20px rgba(36,24,18,.22)',
+          secondaryBg: 'transparent', fieldBg: 'transparent', focusRing: 'rgba(232,161,132,.3)',
+          lusterStops: ['#F3EDE4', '#EFE4D0', '#EAD9BD', '#F0E7D6', '#F3EDE4'], stopNames: ['ecru.100', 'sand.200', 'champagne.300'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FCF4E2 8%,#E8CFA0 32%,#B98F52 64%,#6B4A22 100%)',
+          pearlShadow: '0 6px 14px rgba(46,32,24,.28),inset 0 -2px 4px rgba(26,20,12,.35)',
+          accentBar: 'linear-gradient(100deg,#CBA961,#F0DBAE 50%,#CBA961)', cardHoverShadow: '0 14px 30px rgba(46,32,24,.16)',
+          noiseBlend: 'multiply', noiseOpacity: .06, plateFilter: 'saturate(.92) brightness(.92)', plateWash: 'linear-gradient(180deg,rgba(29,20,14,.15) 40%,rgba(29,20,14,.6) 100%)', plateInk: '#F2E8DC',
+        },
+        dark: {
+          ground: '#1D140E', surface: '#1D140E', surfaceAlt: '#241A12', surfaceHover: '#2A1E15',
+          hairline: 'rgba(242,232,220,.14)', hairlineStrong: 'rgba(242,232,220,.35)', ink: '#F2E8DC', text: '#D9CCBC', muted: '#9C8B7D', faint: '#8A7563',
+          accent: '#E8A184', accentHover: '#F0B49B', accentAlt: '#DEC083',
+          chromeBg: '#E8A184', chromeInk: '#2E2018',
+          primaryBg: 'linear-gradient(180deg,#F0DBAE,#CBA961)', primaryInk: '#2A2013', sheen: 'rgba(255,248,228,.55)',
+          primaryShadow: 'inset 0 1px 0 rgba(255,250,235,.75),0 12px 28px rgba(216,181,110,.26)',
+          secondaryBg: 'transparent', fieldBg: 'transparent', focusRing: 'rgba(222,192,131,.22)',
+          lusterStops: ['#211B12', '#372B18', '#483922', '#2D2417', '#211B12'], stopNames: ['champagne.800', 'gold.700', 'dusk.850'],
+          pearl: 'radial-gradient(circle at 35% 28%,#FCF4E2 8%,#E8CFA0 32%,#B98F52 64%,#6B4A22 100%)',
+          pearlShadow: '0 8px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(26,20,12,.4)',
+          accentBar: 'linear-gradient(100deg,#6B4A22,#F0DBAE 50%,#6B4A22)', cardHoverShadow: '0 16px 34px rgba(0,0,0,.5)',
+          noiseBlend: 'screen', noiseOpacity: .05, plateFilter: 'saturate(.92) brightness(.8)', plateWash: 'linear-gradient(180deg,rgba(29,20,14,.3) 30%,rgba(29,20,14,.75) 100%)', plateInk: '#F2E8DC',
+        },
+      },
+    };
+    T.tahitian = {
+      label: 'Tahitian', wordmark: 'TAHITIAN', legalName: 'TAHITIAN', cities: '17\u00B032\u2032S \u2014 149\u00B034\u2032W',
+      fontDisplay: "'Anton',sans-serif", displayWeight: 400, displayFontStyle: 'normal', displayTransform: 'uppercase', displayTracking: '.004em', displayLeading: .9,
+      fontText: "'Space Grotesk',sans-serif", fontMono: "'IBM Plex Mono',monospace",
+      wmSize: 20, wmTracking: '.03em',
+      labelFont: "500 10px 'IBM Plex Mono',monospace", labelTracking: '.14em', slash: false,
+      btnFont: "500 12px 'IBM Plex Mono',monospace", btnTracking: '.1em', btnTrackingHover: '.1em', btnTransform: 'uppercase', ctrlH: '44px',
+      radiusControl: '0px', radiusCard: '0px', gridGap: '1px', hairlineWidth: '1px',
+      tempo: '300ms', lift: '0px', easing: 'ease', sheenSpeed: '3s', lusterCardSpeed: '6s',
+      lusterAngle: '115deg', lusterSpeed: '10s', lusterSpeedB: '12s', lusterSize: '230%',
+      scale: { hero: 108, heroEd: 72, title: 32, poster: 96, plate: 40, body: '13.5px' },
+      space: { hero: '36px 34px 42px', section: '28px 34px', cell: '26px 30px', row: '24px 28px', nav: '16px 30px', stack: '20px', metaGap: '22px', linkGap: '9px', barH: '4px' },
+      heroAlign: 'left', posterAlign: 'center', barMargin: '0',
+      usage: { density: 'poster-tight', displayScale: 'poster-xl', accentBudget: 'one-chrome-cell', hoverIdiom: 'edge-rule', imagery: 'grayscale-plates', labelIdiom: 'mono-caps', alignment: 'grid-locked' },
+      modes: {
+        light: {
+          ground: 'rgba(16,20,18,.16)', groundFill: '#C9CFCC', surface: '#EDF0EE', surfaceAlt: '#E4E9E6', surfaceHover: '#E4E9E6',
+          hairline: 'rgba(16,20,18,.16)', hairlineStrong: 'rgba(16,20,18,.35)', ink: '#131715', text: '#4A524E', muted: '#5E6763', faint: '#8B938F',
+          accent: '#0E7060', accentHover: '#0A5548', accentAlt: '#5F5680',
+          chromeBg: '#131715', chromeInk: '#7FE3CE',
+          primaryBg: '#131715', primaryInk: '#7FE3CE', sheen: 'rgba(127,227,206,.3)',
+          primaryShadow: '0 2px 6px rgba(16,20,18,.3)',
+          secondaryBg: 'transparent', fieldBg: '#F4F6F5', focusRing: 'rgba(14,112,96,.16)',
+          lusterStops: ['rgba(111,224,203,0)', 'rgba(111,224,203,.28)', 'rgba(195,180,232,.24)', 'rgba(156,169,232,.16)', 'rgba(111,224,203,0)'], stopNames: ['teal.300\u03B1', 'violet.300\u03B1', 'peri.300\u03B1'],
+          pearl: 'radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%)',
+          pearlShadow: '0 6px 14px rgba(16,20,18,.35),inset 0 1px 1px rgba(255,255,255,.2)',
+          accentBar: 'linear-gradient(100deg,#5FD9C4,#8FD8C8 20%,#C3B4E8 52%,#9CA9E8 74%,#5FD9C4)', cardHoverShadow: '0 14px 30px rgba(16,20,18,.18)',
+          noiseBlend: 'multiply', noiseOpacity: .04, plateFilter: 'grayscale(1) contrast(1.06) brightness(.65)', plateWash: 'linear-gradient(160deg,rgba(11,12,12,.25),rgba(11,12,12,.7))', plateInk: '#C3D2CC',
+        },
+        dark: {
+          ground: 'rgba(233,238,235,.11)', groundFill: '#222523', surface: '#0C0D0D', surfaceAlt: '#0B0C0C', surfaceHover: '#0E1110',
+          hairline: 'rgba(233,238,235,.11)', hairlineStrong: 'rgba(233,238,235,.28)', ink: '#EEF2EF', text: '#AEB4B0', muted: '#767C78', faint: '#4E544F',
+          accent: '#6FE0CB', accentHover: '#B8F0E4', accentAlt: '#C3B4E8',
+          chromeBg: 'linear-gradient(180deg,#141B19,#0D1211)', chromeInk: '#7FE3CE',
+          primaryBg: 'linear-gradient(180deg,#141B19,#0D1211)', primaryInk: '#7FE3CE', sheen: 'rgba(111,224,203,.25)',
+          primaryShadow: 'inset 0 1px 0 rgba(143,216,200,.16)',
+          secondaryBg: 'transparent', fieldBg: '#0E1110', focusRing: 'rgba(111,224,203,.14)',
+          lusterStops: ['rgba(111,224,203,0)', 'rgba(111,224,203,.28)', 'rgba(195,180,232,.24)', 'rgba(156,169,232,.16)', 'rgba(111,224,203,0)'], stopNames: ['teal.300\u03B1', 'violet.300\u03B1', 'peri.300\u03B1'],
+          pearl: 'radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%)',
+          pearlShadow: '0 8px 18px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.2)',
+          accentBar: 'linear-gradient(100deg,#5FD9C4,#8FD8C8 20%,#C3B4E8 52%,#9CA9E8 74%,#5FD9C4)', cardHoverShadow: '0 16px 34px rgba(0,0,0,.55)',
+          noiseBlend: 'screen', noiseOpacity: .05, plateFilter: 'grayscale(1) contrast(1.06) brightness(.6)', plateWash: 'linear-gradient(160deg,rgba(11,12,12,.2),rgba(11,12,12,.72))', plateInk: '#C3D2CC',
+        },
+      },
+    };
+    return T;
+  }
+
+  active() {
+    const T = this.themes();
+    const th = T[this.state.theme];
+    const m = th.modes[this.state.mode];
+    const wrap = (s) => th.slash ? '/ ' + s + ' /' : s;
+    const it = th.displayFontStyle === 'italic' ? 'italic ' : '';
+    const dfont = (px, lh) => it + th.displayWeight + ' ' + px + 'px/' + (lh || th.displayLeading) + ' ' + th.fontDisplay;
+    return Object.assign({}, th, m, {
+      groundFill: m.groundFill || m.ground,
+      heroFont: dfont(th.scale.hero), heroEdFont: dfont(th.scale.heroEd, 1.05),
+      indexTitleFont: dfont(th.scale.title, 1), posterFont: dfont(th.scale.poster, 1), plateTitleFont: dfont(th.scale.plate, 1.05),
+      wmFont: it + th.displayWeight + ' ' + th.wmSize + 'px/1 ' + th.fontDisplay,
+      heroAccentStyle: th.displayFontStyle === 'italic' ? 'italic' : 'normal',
+      bodySize: th.scale.body,
+      padHero: th.space.hero, padSection: th.space.section, padCell: th.space.cell, rowPad: th.space.row, navPad: th.space.nav,
+      stackGap: th.space.stack, metaGap: th.space.metaGap, linkGap: th.space.linkGap, barH: th.space.barH,
+      measure: th.usage.density === 'airy' ? '340px' : th.usage.density === 'compact' ? '460px' : '380px',
+      lusterOverlay: 'linear-gradient(' + th.lusterAngle + ',transparent 28%,' + m.lusterStops[1] + ' 44%,' + m.lusterStops[2] + ' 55%,' + m.lusterStops[3] + ' 64%,transparent 78%)',
+      lusterSurface: this.state.theme === 'tahitian' ? m.surface : 'linear-gradient(' + th.lusterAngle + ',' + m.lusterStops.join(',') + ')',
+      lIndex: wrap('INDEX'), lContact: wrap('CONTACT'), lPlate: wrap('PLATE 01 / NACRE'), lSelected: wrap('SELECTED \u2014 2024/26'),
+      lControls: wrap('CONTROLS'), lEmail: wrap('EMAIL / FOCUSED'), lHover: wrap('CARD / HOVER ME'),
+      lCollection: wrap('COLLECTION'), lAtelier: wrap('ATELIER'), lViewings: wrap('VIEWINGS \u2014 GEORGE ST.'),
+      lTagline: wrap('EXPERIMENTAL PRACTICE \u2014 SEEN ONCE'), lCities: th.cities,
+    });
+  }
+
+  renderVals() {
+    const T = this.themes();
+    const t = this.active();
+    const order = ['pearl', 'freshwater', 'southsea', 'tahitian'];
+    const themeBtns = order.map((k) => ({
+      label: T[k].label,
+      bg: this.state.theme === k ? '#1a1a1a' : '#FFFFFF',
+      fg: this.state.theme === k ? '#FFFFFF' : '#1a1a1a',
+      pick: () => this.setState({ theme: k }),
+    }));
+    const usageChips = Object.keys(T[this.state.theme].usage).map((k) => ({ k, v: T[this.state.theme].usage[k] }));
+    const rowKeys = ['ground', 'surface', 'surfaceAlt', 'surfaceHover', 'hairline', 'hairlineStrong', 'ink', 'text', 'muted', 'faint', 'accent', 'accentHover', 'accentAlt', 'chromeInk', 'primaryInk', 'focusRing'];
+    const hexish = (v) => (typeof v === 'string' && (v.startsWith('#') || v.startsWith('rgba'))) ? v : 'transparent';
+    const fontsNote = { pearl: 'Gambetta \u00B7 General Sans \u00B7 IBM Plex Mono', freshwater: 'Space Grotesk \u00B7 Azeret Mono', southsea: 'Zodiak \u00B7 General Sans', tahitian: 'Anton \u00B7 Space Grotesk \u00B7 IBM Plex Mono' };
+    const modeNotes = {
+      pearl: 'Mode swap inverts the primary: dark-neutral pill on light, light pill on dark. Marine Layer (#D7D5DF) never becomes a fill \u2014 it is highlight, ring, and selected-tint only.',
+      freshwater: 'Cyan is identical in both modes; the ground flips around it. Dark mode upgrades the primary from ink-block to cyan gradient \u2014 the only theme whose CTA changes hue across modes.',
+      southsea: 'Light keeps conch (#E8A184) as the only warm accent; dark adds the gold CTA family (#F0DBAE\u2192#CBA961). Chocolate ground has zero orange in it \u2014 warmth comes from accents only.',
+      tahitian: 'color.ground doubles as the exposed-grid hairline (cells sit on it, gap 1px). The pearl sphere and nacre plates DO NOT lighten in light mode \u2014 dark imagery on pale silver is the brand.',
+    };
+    const usageLine = (k) => { const u = T[k].usage; return 'usage: ' + u.density + ' \u00B7 ' + u.displayScale + ' \u00B7 ' + u.accentBudget + ' \u00B7 ' + u.hoverIdiom + ' \u00B7 ' + u.alignment; };
+    const specThemes = order.map((k) => ({
+      name: T[k].label, fonts: fontsNote[k], modeNote: modeNotes[k], usageLine: usageLine(k),
+      rows: rowKeys.map((key) => ({
+        token: 'color.' + key,
+        light: String(T[k].modes.light[key]), lightHex: hexish(T[k].modes.light[key]),
+        dark: String(T[k].modes.dark[key]), darkHex: hexish(T[k].modes.dark[key]),
+      })),
+    }));
+    const lusterDemos = order.map((k) => {
+      const th = T[k]; const d = th.modes.dark; const l = th.modes.light;
+      return {
+        name: th.label, params: th.lusterAngle + ' \u00B7 ' + th.lusterCardSpeed + ' \u00B7 size ' + th.lusterSize + (k === 'tahitian' ? ' \u00B7 blend screen' : ''),
+        bg: k === 'tahitian' ? 'linear-gradient(' + th.lusterAngle + ',' + d.lusterStops.join(',') + '),#0C0D0D' : 'linear-gradient(' + th.lusterAngle + ',' + d.lusterStops.join(',') + ')',
+        size: th.lusterSize, speed: th.lusterCardSpeed,
+        stops: 'dark: [' + d.stopNames.join(' \u00B7 ') + ']   light: [' + l.stopNames.join(' \u00B7 ') + ']',
+        note: k === 'pearl' ? 'Hover-only, on surfaces. Silver into marine with one breath of sea green \u2014 highlights, never rainbow.'
+          : k === 'freshwater' ? 'Always-on, utility only: progress and ETA bars. Never decorative, fastest cycle, hard cyan.'
+          : k === 'southsea' ? 'Hover on dark surfaces + the dvOrb sheen across the gold CTA. Candlelit \u2014 warm stops only, no cool color may enter.'
+          : 'Imagery plates only, alpha stops over photography at blend:screen. NEVER on type or flat surfaces \u2014 text accents use color.accent or surfaceFx.accentBar instead.',
+      };
+    });
+    const llmNotes = [
+      { theme: 'Pearl \u2014 the flagship neutral', voice: 'Comfortable, quietly premium; an italic serif interjection is the only flourish. Reads like a well-set book page that happens to have buttons.', rules: [
+        { k: 'usage.density = comfortable', text: 'Medium whitespace everywhere (space.hero 48px, rows 20px). Never poster-scale display, never console-tight rows \u2014 Pearl sits exactly between South Sea and Freshwater.' },
+        { k: 'shape.radiusControl = 999px', text: 'Geometry is the pill; cards 16px. Nothing square.' },
+        { k: 'usage.accentBudget = quiet-work-no-fills', text: 'Marine Layer #D7D5DF does quiet work only: primary top-highlight, focus ring, selected tint, hover sheen. It is never a button fill or a background.' },
+        { k: 'type.display', text: 'Gambetta italic appears INSIDE sentences and the wordmark, mid-size \u2014 never full-caps, never above type.scale.hero=62.' },
+        { k: 'luster + usage.hoverIdiom = lift-and-shadow', text: 'Luster is hover-only on cards, 115\u00B0/3.5s, neutral silver-marine stops; hover means lift (-1px) + shadow deepen at 300ms cubic-bezier(.22,1,.36,1).' },
+      ] },
+      { theme: 'Freshwater \u2014 the technical console', voice: 'Fun technical: crisp, fast, data-forward. Smallest type, tightest rows, most information per pixel of the four.', rules: [
+        { k: 'usage.density = compact', text: 'Tightest ramp: space.row 10px, space.nav 12px, type.scale.hero 34. If a Freshwater screen feels airy, it is off-theme.' },
+        { k: 'type.label = mono-data-only', text: 'Azeret Mono is for DATA ONLY: ids, labels, values. UI copy and buttons are Space Grotesk sentence case.' },
+        { k: 'usage.accentBudget = signals-only', text: 'Cyan #00B8E6 is a signal, not decoration: focus borders, selected states, live values, toggle knob. One cyan CTA maximum per view (dark mode only).' },
+        { k: 'usage.hoverIdiom = border-signal', text: 'Hover flips a border or underline to cyan; depth is one soft cyan underglow, never offset shadows.' },
+        { k: 'luster (utility)', text: 'Always-on and utilitarian: ETA/progress bars at 90\u00B0/5s/220%. It means "live", not "pretty". Fastest tempo: 200ms.' },
+        { k: 'usage.imagery = none-data-only', text: 'No mood photography. If a plate slot exists in shared markup, it renders as data visualization or stays functional.' },
+      ] },
+      { theme: 'South Sea \u2014 the couture atelier', voice: 'Editorial serif, candlelit, unhurried. The most whitespace, the slowest motion, ceremonial centering.', rules: [
+        { k: 'usage.density = airy', text: 'Most generous ramp of the four: space.hero 68px, rows 30px, stack 28px. Content floats; emptiness is the luxury cue.' },
+        { k: 'usage.alignment = centered-ceremonial', text: 'Heroes and poster wordmarks center; narrow measures (~340px). Rectangles only \u2014 radius 0 on every control; softness comes from type and space, never geometry.' },
+        { k: 'type.display (roman+italic mix)', text: 'Serif roman + italic mix inside a single headline; a hairline rule may sit in the gap between words (11a structure). Labels wear the slash convention "/ LABEL /" at .2em.' },
+        { k: 'usage.accentBudget = one-small-loud-thing', text: 'Conch #E8A184 does exactly one small loud thing per view: an arrow block, an underlined link, or a badge. Never large fills, never body text.' },
+        { k: 'usage.hoverIdiom = tracking-stretch', text: 'Hover stretches letter-spacing (.16em\u2192.22em) at 400ms \u2014 no vertical lift in this theme (motion.lift = 0).' },
+        { k: 'luster (dark = gold)', text: 'CTA gradient #F0DBAE\u2192#CBA961 with the dvOrb sheen; luster stops are champagne/gold/dusk \u2014 cool hues are forbidden on dark South Sea.' },
+      ] },
+      { theme: 'Tahitian \u2014 the poster brutalist', voice: 'Engineered, not literary. Druk-weight condensed caps at poster scale on an exposed grid; no serif anywhere, ever.', rules: [
+        { k: 'usage.displayScale = poster-xl', text: 'Display is Anton, uppercase, huge (type.scale.hero 108, index titles 32) at leading .88\u2013.92. Text is Space Grotesk; microlabels IBM Plex Mono caps at .1\u2013.18em.' },
+        { k: 'usage.alignment = grid-locked + shape.gridGap = 1px', text: 'The exposed grid IS the styling: cells sit on color.ground showing through 1px gaps. No borders, no radius, no shadows on cells. Every element lives in a cell.' },
+        { k: 'luster + usage.imagery = grayscale-plates', text: 'Luster lives on imagery plates only \u2014 alpha teal/violet/periwinkle stops over grayscale(1) photography at blend:screen. NEVER on type, buttons, or flat surfaces (locked in turn 14).' },
+        { k: 'surfaceFx.accentBar', text: 'Accent-border elements (underlines, rules) use the teal\u2192violet\u2192periwinkle gradient at 4px weight. Text accents use flat color.accent (teal) \u2014 one electric accent per view.' },
+        { k: 'color.chrome (one per view)', text: 'Exactly one chrome cell per view (CONTACT / primary CTA): teal-lit dark cell in dark mode; near-black cell with #7FE3CE ink in light mode.' },
+        { k: 'surfaceFx.pearl (mode-invariant)', text: 'The pearl sphere keeps identical dark stops in both modes \u2014 it must read as a black pearl on any ground. Appears small (nav branding), never as a large hero object.' },
+      ] },
+    ];
+    return {
+      t,
+      mode: this.state.mode,
+      navName: this.state.nav === 'grid' ? 'exposed grid (12a)' : 'editorial slash (11a)',
+      heroName: this.state.hero === 'poster' ? 'poster masthead (14a)' : 'editorial split (11a)',
+      navGrid: this.state.nav === 'grid', navSlash: this.state.nav !== 'grid',
+      heroPoster: this.state.hero === 'poster', heroEditorial: this.state.hero !== 'poster',
+      toggleMode: () => this.setState((s) => ({ mode: s.mode === 'dark' ? 'light' : 'dark' })),
+      toggleNav: () => this.setState((s) => ({ nav: s.nav === 'grid' ? 'slash' : 'grid' })),
+      toggleHero: () => this.setState((s) => ({ hero: s.hero === 'poster' ? 'editorial' : 'poster' })),
+      themeBtns, usageChips,
+      indexRows: [
+        { n: '01', name: 'K\u014Dura Fine Jewelry', meta: 'IDENTITY / 2026', span: '2 / 4' },
+        { n: '02', name: 'Ultramarine Records', meta: 'DIGITAL / 2025', span: '2 / 3' },
+      ],
+      stopChips: t.lusterStops.slice(1, 4).map((hex, i) => ({ hex, name: t.stopNames[Math.min(i, t.stopNames.length - 1)] })),
+      specThemes, lusterDemos, llmNotes,
+    };
+  }
+}
+</script>
+</body>
+</html>

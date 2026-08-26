@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Bebas+Neue&amp;family=Schibsted+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Azeret+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=gambetta@400,500&amp;f[]=satoshi@400,500,700,900&amp;f[]=zodiak@400,500,700&amp;f[]=boska@400,500,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFEDE8;font-family:'General Sans',system-ui,sans-serif}
+a{color:#1a1a1a}a:hover{color:#6B4E8E}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 'General Sans',sans-serif;color:#1a1a1a}
+.dv-tsub{font:400 12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.55);max-width:860px;margin:0 0 24px}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11.5px/1.4 'General Sans',sans-serif;color:rgba(0,0,0,.6);max-width:980px;flex-wrap:wrap}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
+.dv-opt:target .dv-oid{background:#6B4E8E;color:#fff}
+.dv-next{margin:26px 0 0;font:12px/1.5 'General Sans',sans-serif;color:rgba(0,0,0,.5)}
+.dv-fontnote{font:500 10.5px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.45)}
+@keyframes dvLuster{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes dvOrb{0%,100%{background-position:118% 0,center}50%{background-position:34% 0,center}}
+@keyframes dvBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t14">
+<div class="dv-thd"><a class="dv-tid" href="#t14">14</a><span class="dv-tname">Tahitian — off the serif, onto Druk-weight condensed. Bolder, and clearly not South Sea.</span></div>
+<p class="dv-tsub">You were right: Instrument Serif was the collision — it read as the same editorial-serif voice as South Sea's Boska. So Tahitian drops serif entirely and takes the display font its own theme file always intended: <strong>Anton</strong> (a free Druk-weight condensed heavy) for headlines, <strong>Space Grotesk</strong> for text, <strong>IBM Plex Mono</strong> keeping the microlabels. Structure is bolder — I borrowed the <em>bones</em> of your reference, not the look: an exposed hairline grid, registration ticks, numbered index rows, monochrome nacre plates. The one electric accent is a <strong>teal→violet nacre iridescence</strong> — a peacock-pearl thing flat gold can never do, so it reads maximally far from <a class="dv-oid" href="#13a">13a</a>. Replaces <a class="dv-oid" href="#12a">12a</a>/<a class="dv-oid" href="#12b">12b</a>. <span class="dv-fontnote">shown: Anton + Space Grotesk + IBM Plex Mono (free) · ideal: Druk + Neue Montreal (paid)</span></p>
+<div class="dv-opts">
+
+<!-- ============ 14a TAHITIAN — poster masthead ============ -->
+<div class="dv-opt" id="14a">
+  <div class="dv-olabel"><a class="dv-oid" href="#14a">14a</a><strong>Tahitian — poster masthead.</strong> The brand line at Druk scale on an exposed grid; sphere and nacre plate get their own cells; iridescence on one word only.</div>
+  <div class="dv-card" style="position:relative;width:980px;background:#0B0C0C;border-color:rgba(255,255,255,.07)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:relative;z-index:6;display:flex;flex-direction:column;gap:1px;background:rgba(233,238,235,.11)">
+      <div style="display:grid;grid-template-columns:1fr 150px 196px;gap:1px;background:rgba(233,238,235,.11)">
+        <div style="background:#0C0D0D;display:flex;align-items:center;gap:12px;padding:18px 32px">
+          <div style="width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%)"></div>
+          <span style="font:400 21px/1 'Anton',sans-serif;color:#EEF2EF;letter-spacing:.03em">TAHITIAN</span>
+        </div>
+        <div style="background:#0C0D0D;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:500 11px 'IBM Plex Mono',monospace;color:#767C78;letter-spacing:.1em"><span>INDEX</span><span>＋</span></div>
+        <div style="background:linear-gradient(180deg,#141B19,#0D1211);box-shadow:inset 0 1px 0 rgba(143,216,200,.16);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:500 11px 'IBM Plex Mono',monospace;color:#7FE3CE;letter-spacing:.1em;transition:color 300ms ease" style-hover="color:#B8F0E4"><span>CONTACT</span><span>→</span></div>
+      </div>
+      <div style="position:relative;background:#0C0D0D;padding:38px 34px 42px">
+        <div style="position:absolute;top:14px;right:16px;font:500 11px 'IBM Plex Mono',monospace;color:#3C423E">+</div>
+        <div style="position:absolute;bottom:14px;left:16px;font:500 11px 'IBM Plex Mono',monospace;color:#3C423E">+</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;font:500 11px 'IBM Plex Mono',monospace;color:#767C78;letter-spacing:.18em;margin-bottom:24px"><span>EXPERIMENTAL PRACTICE — SEEN ONCE</span><span>PAPEETE / TŌKYŌ — EST. 2019</span></div>
+        <div style="font: 400 116px/.88 'Anton',sans-serif; color: #EEF2EF; text-transform: uppercase; letter-spacing: .004em; line-height: 120px">Never the same<br><span style="background:linear-gradient(100deg,#6FE0CB,#C3B4E8 52%,#9CA9E8);-webkit-background-clip:text;background-clip:text;color:transparent">twice.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:1px;background:rgba(233,238,235,.11)">
+        <div style="background:#0C0D0D;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:28px 34px">
+          <div style="font:400 14px/1.65 'Space Grotesk',sans-serif;color:#AEB4B0;max-width:340px;text-wrap:pretty">Brand systems for water-born companies — surfaces that answer light instead of shouting over it.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+            <span style="font:500 12px 'IBM Plex Mono',monospace;color:#6FE0CB;letter-spacing:.1em;transition:color 300ms ease" style-hover="color:#B8F0E4">ALL WORK (34) →</span>
+            <span style="font:500 9.5px 'IBM Plex Mono',monospace;color:#4E544F;letter-spacing:.14em;text-align:right">FIG.01 —<br>THE PEARL IS<br>THE INTERFACE</span>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;min-height:224px">
+          <img src="./images/mother-of-pearl.jpg" alt="mother of pearl nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.06) brightness(.6)">
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(11,12,12,.2),rgba(11,12,12,.72))"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(111,224,203,.28) 46%,rgba(195,180,232,.24) 56%,rgba(156,169,232,.16) 66%,transparent 80%);background-size:230% 230%;animation:{{ lusterAnimA }};mix-blend-mode:screen"></div>
+          <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)"></div>
+          <div style="position:absolute;inset:0;padding:14px 18px;display:flex;justify-content:space-between;align-items:flex-end;box-sizing:border-box;font:500 10px 'IBM Plex Mono',monospace;color:#C3D2CC;letter-spacing:.1em"><span>PLATE 01 / NACRE</span><svg width="30" height="{{ plateArrowHeight }}" viewBox="0 0 30 112" preserveAspectRatio="xMidYMax meet" style="display: block; overflow: visible; width: 18px; height: 57px"><path d="M15 2 V106 M4 95 L15 108 L26 95" fill="none" stroke="#C3D2CC" stroke-width="{{ plateArrowStroke }}" stroke-linecap="square"></path></svg></div>
+        </div>
+      </div>
+      <div style="background:#0C0D0D;display:flex;justify-content:space-between;align-items:center;padding:15px 34px;font:500 10px 'IBM Plex Mono',monospace;color:#4E544F;letter-spacing:.16em"><span>17°32′S — 149°34′W</span><span style="display:flex;gap:13px"><span style="color:#9AA29D">01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span></span><span style="color:#6FE0CB">SHOWREEL ’26 ▶</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 14b TAHITIAN — numbered index ============ -->
+<div class="dv-opt" id="14b">
+  <div class="dv-olabel"><a class="dv-oid" href="#14b">14b</a><strong>Tahitian — numbered index.</strong> The work list rebuilt in condensed caps: mono ordinals, Druk-weight names, a monochrome plate anchoring the column; hover for the iridescent edge.</div>
+  <div class="dv-card" style="position:relative;width:980px;background:#0B0C0C;border-color:rgba(255,255,255,.07)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:relative;z-index:6;display:flex;flex-direction:column;gap:1px;background:rgba(233,238,235,.11)">
+      <div style="display:grid;grid-template-columns:360px 1fr 150px;gap:1px;background:rgba(233,238,235,.11)">
+        <div style="background:#0C0D0D;display:flex;align-items:center;padding:0 28px;min-height:52px;font:500 11px 'IBM Plex Mono',monospace;color:#767C78;letter-spacing:.14em">INDEX — SELECTED WORK</div>
+        <div style="background:#0C0D0D;display:flex;align-items:center;padding:0 28px;font:500 11px 'IBM Plex Mono',monospace;color:#4E544F;letter-spacing:.14em">2024 — 2026</div>
+        <div style="background:#0C0D0D;display:flex;align-items:center;justify-content:center;font:500 11px 'IBM Plex Mono',monospace;color:#6FE0CB;letter-spacing:.1em">FILTER ▾</div>
+      </div>
+      <div style="display:grid;grid-template-columns:360px 1fr;gap:1px;background:rgba(233,238,235,.11)">
+        <div style="position:relative;overflow:hidden;min-height:452px;background:#0C0D0D">
+          <img src="./images/iridescent.jpg" alt="iridescent nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.58)">
+          <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(11,12,12,.35) 6%,rgba(11,12,12,.55) 60%,rgba(11,12,12,.82) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(120deg,transparent 26%,rgba(111,224,203,.3) 44%,rgba(195,180,232,.26) 55%,rgba(156,169,232,.16) 66%,transparent 80%);background-size:230% 230%;animation:{{ lusterAnimB }};mix-blend-mode:screen"></div>
+          <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)"></div>
+          <div style="position:absolute;inset:0;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;color:#C3D2CC;letter-spacing:.16em">SELECTED — 34 ENTRIES</div>
+            <div style="font:400 46px/.9 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">The<br>index</div>
+          </div>
+        </div>
+        <div style="background:#0C0D0D;display:flex;flex-direction:column">
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(233,238,235,.1);transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #6FE0CB;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">01</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Kōura Fine Jewelry</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#6FE0CB;letter-spacing:.1em">IDENTITY / 2026</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(233,238,235,.1);transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #9CA9E8;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">02</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Ultramarine Records</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#9CA9E8;letter-spacing:.1em">DIGITAL / 2025</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(233,238,235,.1);transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #C3B4E8;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">03</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Mono No Aware</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#C3B4E8;letter-spacing:.1em">EXHIBITION / 2025</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(233,238,235,.1);transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #6FE0CB;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">04</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Overtone Studio</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#6FE0CB;letter-spacing:.1em">SYSTEM / 2024</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(233,238,235,.1);transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #9CA9E8;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">05</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Nacre &amp; Co.</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#9CA9E8;letter-spacing:.1em">PACKAGING / 2024</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 3px 0 0 #C3B4E8;background:#0E1110">
+            <div style="display:flex;align-items:baseline;gap:18px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#5C625E">06</span><span style="font:400 30px/1 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Papeete Port Auth.</span></div>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:#C3B4E8;letter-spacing:.1em">WAYFINDING / 2023</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:#0C0D0D;display:flex;justify-content:space-between;align-items:center;padding:15px 28px;font:500 10px 'IBM Plex Mono',monospace;color:#4E544F;letter-spacing:.16em"><span>SHOWING 01 — 06 / 34</span><span style="color:#6FE0CB;transition:color 300ms ease" style-hover="color:#B8F0E4">VIEW FULL ARCHIVE →</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 14c TAHITIAN — type lockup / distinction ============ -->
+<div class="dv-opt" id="14c">
+  <div class="dv-olabel"><a class="dv-oid" href="#14c">14c</a><strong>Tahitian — the type system, stated.</strong> Wordmark at poster weight plus the specimen, and a side-by-side that shows the serif is gone.</div>
+  <div class="dv-card" style="position:relative;width:980px;background:#0B0C0C;border-color:rgba(255,255,255,.07)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:relative;z-index:6;display:grid;grid-template-columns:1fr 350px;gap:1px;background:rgba(233,238,235,.11)">
+      <div style="background:#0C0D0D;padding:34px 34px 30px;display:flex;flex-direction:column;justify-content:space-between;gap:26px">
+        <div style="display:flex;justify-content:space-between;font:500 11px 'IBM Plex Mono',monospace;color:#767C78;letter-spacing:.18em"><span>WORDMARK</span><span>ANTON — DRUK WEIGHT</span></div>
+        <div>
+          <div style="font:400 132px/.82 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Tahitian</div>
+          <div style="height:5px;margin-top:14px;background:linear-gradient(100deg,#0E1311 0%,#3D4B45 18%,#E4EEE6 34%,#75877D 48%,#161C19 64%,#33403A 82%,#080C0A 100%)"></div>
+        </div>
+        <div style="font:400 14px/1.6 'Space Grotesk',sans-serif;color:#AEB4B0;max-width:400px;text-wrap:pretty">Condensed, structural, no serif anywhere. The voice is engineered, not literary — the opposite corner of the room from South Sea.</div>
+      </div>
+      <div style="background:#0C0D0D;display:flex;flex-direction:column;gap:1px;background:rgba(233,238,235,.11)">
+        <div style="background:#0C0D0D;padding:26px 28px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#767C78;letter-spacing:.18em">TYPE SYSTEM</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:400 26px 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase;letter-spacing:.01em">Display</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:#5C625E;letter-spacing:.12em">ANTON</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 20px 'Space Grotesk',sans-serif;color:#DDE2DF">Text &amp; UI</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:#5C625E;letter-spacing:.12em">SPACE GROTESK</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 15px 'IBM Plex Mono',monospace;color:#DDE2DF;letter-spacing:.02em">LABEL / META</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:#5C625E;letter-spacing:.12em">IBM PLEX MONO</span></div>
+        </div>
+        <div style="display:flex;gap:1px;background:rgba(233,238,235,.11)">
+          <div style="flex:1;background:#0C0D0D;padding:20px 0 16px;display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="font:400 58px/.8 'Anton',sans-serif;color:#EEF2EF;text-transform:uppercase">Aa</div>
+            <div style="font:500 9px 'IBM Plex Mono',monospace;color:#6FE0CB;letter-spacing:.12em">TAHITIAN — NOW</div>
+          </div>
+          <div style="flex:1;background:#0C0D0D;padding:20px 0 16px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative">
+            <div style="font:400 58px/.8 'Zodiak',serif;color:#5A605C">Aa</div>
+            <div style="font:500 9px 'IBM Plex Mono',monospace;color:#5C625E;letter-spacing:.12em;text-decoration:line-through">SERIF — RETIRED</div>
+          </div>
+        </div>
+        <div style="background:#0C0D0D;padding:16px 28px;font:500 10px 'IBM Plex Mono',monospace;color:#4E544F;letter-spacing:.14em">CLEAR OF SOUTH SEA / <a href="#13a" style="color:#6FE0CB;text-decoration:none">SEE 13A ↗</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "bolder still / dial the scale back" · "grow 14b into the full Tahitian page" · "iridescent accent stronger / scarcer" · "lock Tahitian's type — roll Anton across every Tahitian screen"</p>
+</section>
+
+<section class="dv-turn" id="t13">
+<div class="dv-thd"><a class="dv-tid" href="#t13">13</a><span class="dv-tname">South Sea footer — the Gielly Green bones, remixed further out</span></div>
+<p class="dv-tsub">Taken from the reference: the dark plum-chocolate ground, underline fields, and dotted-leader hours. Changed up: the wordmark moves to the <strong>bottom at poster scale</strong> instead of the top corner, your golden-pearl photograph fills the dead space the reference leaves empty, labels go slash-style per <a class="dv-oid" href="#11b">11b</a>, and conch carries SIGN UP + hover states. Real images, no placeholders.</p>
+<div class="dv-opts">
+
+<!-- ============ 13a SOUTH SEA — footer ============ -->
+<div class="dv-opt" id="13a">
+  <div class="dv-olabel"><a class="dv-oid" href="#13a">13a</a><strong>South Sea — atelier footer.</strong> Newsletter, viewings with dotted leaders, poster wordmark; chocolate + conch per <a class="dv-oid" href="#11a">11a</a>/<a class="dv-oid" href="#11b">11b</a>.</div>
+  <div class="dv-card" style="width:980px;background:#1D140E;position:relative;border-color:rgba(255,255,255,.08)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:grid;grid-template-columns:340px 1fr;gap:44px;padding:40px 40px 34px;position:relative;z-index:6">
+      <div style="position:relative;overflow:hidden;min-height:300px">
+        <img src="./golden-pearl-mrqnuly2-0bl6.jpg" alt="golden pearl in shell" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) brightness(.92)">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,20,14,.12) 40%,rgba(29,20,14,.65) 100%)"></div>
+        <div style="position:absolute;left:16px;bottom:14px;font:400 10px 'General Sans',sans-serif;color:#F2E8DC;letter-spacing:.2em">/ HARVEST 2026 /</div>
+      </div>
+      <div>
+        <div style="font:400 19px/1.55 'Zodiak',serif;font-style:italic;color:#F2E8DC;max-width:480px;text-wrap:pretty">One letter a season — what left the vault, what entered it, and nothing else.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px">
+          <div style="border-bottom:1px solid rgba(242,232,220,.3);padding-bottom:9px;font:400 12.5px 'General Sans',sans-serif;color:#8A7563">Firstname</div>
+          <div style="border-bottom:1px solid rgba(242,232,220,.3);padding-bottom:9px;font:400 12.5px 'General Sans',sans-serif;color:#8A7563">Lastname</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(242,232,220,.3);padding-bottom:9px;margin-top:24px">
+          <span style="font:400 12.5px 'General Sans',sans-serif;color:#8A7563">Your email address</span>
+          <span style="font:500 11px 'General Sans',sans-serif;color:#E8A184;letter-spacing:.18em;transition:color 300ms ease" style-hover="color:#F0B49B">SIGN UP</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:28px;margin-top:34px">
+          <div>
+            <div style="font:400 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.2em;margin-bottom:14px">/ COLLECTION /</div>
+            <div style="display:flex;flex-direction:column;gap:9px;font:450 13px 'General Sans',sans-serif;color:#D9CCBC"><span style="transition:color 300ms ease" style-hover="color:#E8A184">The Keshi Line</span><span style="transition:color 300ms ease" style-hover="color:#E8A184">Baroque Nº 1–12</span><span style="transition:color 300ms ease" style-hover="color:#E8A184">Gift Card</span></div>
+          </div>
+          <div>
+            <div style="font:400 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.2em;margin-bottom:14px">/ ATELIER /</div>
+            <div style="display:flex;flex-direction:column;gap:9px;font:450 13px 'General Sans',sans-serif;color:#D9CCBC"><span style="transition:color 300ms ease" style-hover="color:#E8A184">Our Ethos</span><span style="transition:color 300ms ease" style-hover="color:#E8A184">Grading</span><span style="transition:color 300ms ease" style-hover="color:#E8A184">Appointments</span></div>
+          </div>
+          <div>
+            <div style="font:400 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.2em;margin-bottom:14px">/ VIEWINGS — GEORGE ST. /</div>
+            <div style="display:flex;flex-direction:column;gap:9px;font:450 12px 'General Sans',sans-serif;color:#D9CCBC">
+              <div style="display:flex;align-items:baseline;gap:8px"><span>Tuesday</span><span style="flex:1;border-bottom:1px dotted rgba(242,232,220,.3)"></span><span>10 — 18</span></div>
+              <div style="display:flex;align-items:baseline;gap:8px"><span>Thursday</span><span style="flex:1;border-bottom:1px dotted rgba(242,232,220,.3)"></span><span>10 — 20</span></div>
+              <div style="display:flex;align-items:baseline;gap:8px"><span>Saturday</span><span style="flex:1;border-bottom:1px dotted rgba(242,232,220,.3)"></span><span style="color:#E8A184">By appointment</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(242,232,220,.14);padding:26px 40px 22px;position:relative;z-index:6">
+      <div style="font:400 108px/1 'Zodiak',serif;font-style:italic;color:#F2E8DC;letter-spacing:-.02em;text-align:center">South Sea</div>
+      <div style="display:flex;justify-content:space-between;margin-top:20px;font:400 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.16em"><span>© 2026 SOUTH SEA ATELIER</span><span>/ PAPEETE — GENÈVE — TOKYO /</span><span style="color:#E8A184">INSTAGRAM ↗</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "wordmark smaller / left-aligned" · "swap the photo" · "hours block per city" · "lock South Sea — on to the full pages"</p>
+</section>
+
+<section class="dv-turn" id="t12">
+<div class="dv-thd"><a class="dv-tid" href="#t12">12</a><span class="dv-tname">Tahitian — turn 10 revoked; 4a's spirit + an exposed asymmetric grid, 2% more finesse</span></div>
+<p class="dv-tsub">The bold round is gone. This keeps <a class="dv-oid" href="#4a">4a</a>'s voice intact — Instrument Serif display, mono microlabels, the drifting nacre plates, peacock staying scarce — and borrows only the <strong>structure</strong> from your reference: visible hairline gridwork, asymmetric column splits, corner-labeled cells, the brand object sitting alone in a cell of negative space. Finesse pass: filled cells get a 1px top light, the contact cell is the single chrome accent, plates keep their inset luster edge. <a class="dv-oid" href="#12a">12a</a> hero, <a class="dv-oid" href="#12b">12b</a> the index as a staggered grid.</p>
+<div class="dv-opts">
+
+<!-- ============ 12a TAHITIAN — exposed-grid hero ============ -->
+<div class="dv-opt" id="12a">
+  <div class="dv-olabel"><a class="dv-oid" href="#12a">12a</a><strong>Tahitian — exposed-grid hero.</strong> 4a's headline and plate, rehung on visible hairlines; the sphere gets its own cell.</div>
+  <div class="dv-card" style="width:980px;background:#191E1C">
+    <div style="display:grid;grid-template-columns:1fr 150px 170px;gap:1px">
+      <div style="background:#0A0C0B;display:flex;align-items:center;gap:10px;padding:20px 36px">
+        <div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%)"></div>
+        <span style="font:600 14px/1 'General Sans',sans-serif;color:#E9EEEC;letter-spacing:.3em">TAHITIAN</span>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.08em"><span>MENU</span><span style="letter-spacing:-.02em">==</span></div>
+      <div style="background:linear-gradient(180deg,#1E2622,#121715);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font:500 11px 'IBM Plex Mono',monospace;color:#8FD8C8;letter-spacing:.08em;transition:color 300ms ease" style-hover="color:#45C4AC"><span>CONTACT</span><span>→</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:420px 1fr 250px;grid-template-rows:56px 1fr 64px;gap:1px;margin-top:1px">
+      <div style="background:#0A0C0B;grid-row:1 / 4;padding:40px 36px;display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.14em;margin-bottom:22px">EXPERIMENTAL PRACTICE — PAPEETE / TOKYO</div>
+          <div style="font:400 58px/1.06 'Instrument Serif',serif;color:#E9EEEC;letter-spacing:-.01em">Seen once, <em style="font-style:italic;color:#8FD8C8">never the same twice.</em></div>
+        </div>
+        <div style="font:400 12.5px/1.7 'General Sans',sans-serif;color:#AEB7B3;max-width:300px;text-wrap:pretty">Brand systems for water-born companies — surfaces that answer light instead of shouting over it.</div>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.14em"><span>SYSTEM — OVERTONE</span><span>EST. 2019</span></div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:center;font:500 10px 'IBM Plex Mono',monospace;color:#45C4AC;letter-spacing:.14em">ALL WORK (34)</div>
+      <div style="background:#0A0C0B;display:flex;align-items:flex-end;padding:24px;font:400 11px/1.8 'IBM Plex Mono',monospace;color:#5C6662">
+        <div>fig. 01 —<br>the pearl is the interface</div>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:center;min-height:250px">
+        <div style="width:128px;height:128px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%);box-shadow:0 24px 48px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.2)"></div>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;padding:0 24px;font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.1em">BRAND / ART DIRECTION / WEBGL</div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:flex-end;padding:0 24px;font:500 11px 'IBM Plex Mono',monospace;color:#45C4AC;letter-spacing:.08em">SHOWREEL ’26 ▶</div>
+    </div>
+    <div style="position:relative;height:180px;overflow:hidden;margin-top:1px">
+      <img src="./images/abalone.jpg" alt="abalone nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.75)">
+      <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(9,13,11,.9) 6%,rgba(18,59,51,.68) 52%,rgba(31,109,92,.38) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(143,216,200,.30) 44%,rgba(232,178,208,.24) 55%,rgba(127,168,232,.18) 64%,transparent 78%);background-size:230% 230%;animation:dvLuster 9s ease-in-out infinite;mix-blend-mode:screen"></div>
+      <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -40px 52px rgba(4,7,6,.6)"></div>
+      <div style="position:absolute;inset:0;padding:16px 24px;display:flex;justify-content:space-between;align-items:flex-end;box-sizing:border-box;font:500 10px 'IBM Plex Mono',monospace;color:#B9CDC6;letter-spacing:.1em"><span>PLATE 01 / ABALONE</span><span>SCROLL ↓</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 12b TAHITIAN — staggered index ============ -->
+<div class="dv-opt" id="12b">
+  <div class="dv-olabel"><a class="dv-oid" href="#12b">12b</a><strong>Tahitian — staggered index.</strong> The work list as asymmetric cells: one tall plate anchors the left, rows offset around it; hover a row for the nacre edge.</div>
+  <div class="dv-card" style="width:980px;background:#191E1C">
+    <div style="display:grid;grid-template-columns:380px 1fr 180px;gap:1px">
+      <div style="position:relative;overflow:hidden;grid-row:1 / 5;min-height:420px">
+        <img src="./images/iridescent.jpg" alt="iridescent nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.7)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(13,11,17,.9) 6%,rgba(43,33,64,.68) 52%,rgba(74,58,107,.4) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(180,160,224,.30) 44%,rgba(232,178,208,.24) 55%,rgba(143,216,200,.16) 64%,transparent 78%);background-size:230% 230%;animation:dvLuster 11s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -40px 52px rgba(5,4,8,.6)"></div>
+        <div style="position:absolute;inset:0;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="font:500 10px 'IBM Plex Mono',monospace;color:#C3BAD8;letter-spacing:.12em">SELECTED — 2024/26</div>
+          <div style="font:400 34px/1.15 'Instrument Serif',serif;color:#F4F1F9">The index, <em style="font-style:italic;color:#C3B4E8">turned to the light.</em></div>
+        </div>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:space-between;padding:0 24px;min-height:56px;font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.14em"><span>INDEX</span><span>34 ENTRIES</span></div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:center;min-height:56px;font:500 10px 'IBM Plex Mono',monospace;color:#45C4AC;letter-spacing:.1em">FILTER ▾</div>
+      <div style="background:#0A0C0B;grid-column:2 / 4;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 0 0 0 1px #2E4A42;background:#0D1211">
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783">01</span><span style="font:400 24px 'Instrument Serif',serif;color:#E9EEEC">Kōura Fine Jewelry</span></div>
+        <span style="font:500 10px 'IBM Plex Mono',monospace;color:#8FD8C8;letter-spacing:.1em">IDENTITY / 2026</span>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 0 0 0 1px #2E4A42;background:#0D1211">
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783">02</span><span style="font:400 24px 'Instrument Serif',serif;color:#E9EEEC">Ultramarine Records</span></div>
+        <span style="font:500 10px 'IBM Plex Mono',monospace;color:#C3B4E8;letter-spacing:.1em">DIGITAL / 2025</span>
+      </div>
+      <div style="background:#0A0C0B;display:flex;align-items:center;justify-content:center;padding:22px 12px;font:400 11px/1.7 'IBM Plex Mono',monospace;color:#5C6662;text-align:center">fig. 02 —<br>held, not shown</div>
+      <div style="background:#0A0C0B;grid-column:2 / 4;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;transition:box-shadow 300ms ease,background 300ms ease" style-hover="box-shadow:inset 0 0 0 1px #2E4A42;background:#0D1211">
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783">03</span><span style="font:400 24px 'Instrument Serif',serif;color:#E9EEEC">Mono No Aware</span></div>
+        <span style="font:500 10px 'IBM Plex Mono',monospace;color:#9CC4DE;letter-spacing:.1em">EXHIBITION / 2025</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "12a grid tighter / airier" · "sphere cell bigger" · "merge 12a+12b into the full Tahitian page" · "back to South Sea"</p>
+</section>
+
+<section class="dv-turn" id="t11">
+<div class="dv-thd"><a class="dv-tid" href="#t11">11</a><span class="dv-tname">South Sea, fresh round — conch peach + deep chocolate replace the orangey amber</span></div>
+<p class="dv-tsub">Tahitian pinned. New South Sea pair: the amber-brown is gone — the neutral is now a <strong>deep dark chocolate</strong> (espresso-cacao, no orange in it) and the warmth comes from a single <strong>conch peach</strong> accent used the way your references use it: a small arrow block, one underlined link, bracket glyphs. <a class="dv-oid" href="#11a">11a</a> ecru editorial hero — roman/italic serif mixing, slash nav, hairline meta rows. <a class="dv-oid" href="#11b">11b</a> the dark side — chocolate-black ground, thin display with brackets, slash labels, underline field. Rectangles stay. <span class="dv-fontnote">shown: Zodiak + Boska + General Sans (free) · ideal: Canela / Hatton (paid)</span></p>
+<div class="dv-opts">
+
+<!-- ============ 11a SOUTH SEA — conch/chocolate light ============ -->
+<div class="dv-opt" id="11a">
+  <div class="dv-olabel"><a class="dv-oid" href="#11a">11a</a><strong>South Sea — ecru editorial.</strong> Chocolate ink, conch doing the small loud things; serif roman + italic mixing with a rule in the gap.</div>
+  <div class="dv-card" style="width:980px;background:#F3EDE4;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.06;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 40px 0;position:relative;z-index:6">
+      <div style="display:flex;align-items:center;gap:16px;font:450 12.5px 'General Sans',sans-serif;color:#2E2018">
+        <span>About</span><span style="color:#B4A692">/</span><span>Collection</span><span style="color:#B4A692">/</span><span>Atelier</span><span style="color:#B4A692">/</span><span>Journal</span>
+      </div>
+      <div style="font:400 26px/1 'Zodiak',serif;color:#E8A184">↗</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:40px;padding:44px 40px 0;position:relative;z-index:6;align-items:start">
+      <div>
+        <div style="font:400 64px/1.05 'Zodiak',serif;color:#2E2018;letter-spacing:-.02em">South Sea</div>
+        <div style="display:flex;align-items:baseline;gap:22px;font:400 64px/1.05 'Zodiak',serif;color:#2E2018;letter-spacing:-.02em"><span style="font-style:italic">Radiance</span><span style="flex:1;min-width:90px;border-bottom:1px solid #2E2018;transform:translateY(-14px)"></span><span>Kept</span></div>
+      </div>
+      <div style="padding-top:8px">
+        <div style="font:500 11px 'General Sans',sans-serif;color:#2E2018;letter-spacing:.12em;border-bottom:1px solid #2E2018;display:inline-block;padding-bottom:3px">TALK TO THE ATELIER</div>
+        <div style="display:flex;gap:14px;align-items:flex-start;margin-top:18px">
+          <div style="width:74px;height:56px;flex:none;background:repeating-linear-gradient(45deg,#E7DCCB 0,#E7DCCB 8px,#EFE6D7 8px,#EFE6D7 16px);display:flex;align-items:center;justify-content:center"><span style="width:26px;height:26px;background:#2E2018;color:#F3EDE4;display:flex;align-items:center;justify-content:center;font-size:13px;align-self:flex-end;margin-top:auto">→</span></div>
+          <div style="font:400 12.5px/1.7 'General Sans',sans-serif;color:#6E5F4E;text-wrap:pretty">Cultured over years, chosen in a morning. Each pearl is kept, graded, and set by the same four hands.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:26px 40px 14px;font:450 12px 'General Sans',sans-serif;color:#2E2018;position:relative;z-index:6"><span>Pinctada maxima</span><span>Harvest 2026</span><span>Grade AAA</span></div>
+    <div style="margin:0 40px;height:170px;background:repeating-linear-gradient(45deg,#E7DCCB 0,#E7DCCB 10px,#EFE6D7 10px,#EFE6D7 20px);display:flex;align-items:center;justify-content:center;position:relative;z-index:6"><span style="font:400 10px 'IBM Plex Mono',monospace;color:#8A7B6C">[ full-bleed still — pearl on linen, golden hour ]</span></div>
+    <div style="display:flex;align-items:center;gap:12px;padding:24px 40px 30px;position:relative;z-index:6">
+      <div style="height:48px;display:flex;align-items:center;justify-content:center;padding:0 26px;background:linear-gradient(180deg,#3A2A1E,#241812);color:#F3EDE4;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;box-shadow:inset 0 1px 0 rgba(243,237,228,.18),0 10px 20px rgba(36,24,18,.22);transition:letter-spacing 400ms ease,box-shadow 400ms ease" style-hover="letter-spacing:.22em;box-shadow:inset 0 1px 0 rgba(243,237,228,.18),0 14px 26px rgba(36,24,18,.3)">ADD TO BAG</div>
+      <div style="height:48px;display:flex;align-items:center;justify-content:center;padding:0 26px;border:1px solid #2E2018;color:#2E2018;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;transition:background 400ms ease,color 400ms ease" style-hover="background:#2E2018;color:#F3EDE4">RESERVE</div>
+      <div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#E8A184;color:#2E2018;font-size:16px;transition:background 300ms ease" style-hover="background:#F0B49B">→</div>
+      <div style="margin-left:auto;display:flex;gap:10px">
+        <span style="padding:6px 12px;border:1px solid #DBCDB8;font:500 10px 'General Sans',sans-serif;color:#6E5F4E;letter-spacing:.14em">Nº 04</span>
+        <span style="padding:6px 12px;background:#E8A184;color:#2E2018;font:500 10px 'General Sans',sans-serif;letter-spacing:.14em">LAST TWO</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 11b SOUTH SEA — chocolate dark ============ -->
+<div class="dv-opt" id="11b">
+  <div class="dv-olabel"><a class="dv-oid" href="#11b">11b</a><strong>South Sea — chocolate dark.</strong> Deep cacao ground (no orange), thin bracketed display, slash labels, underline field; conch stays scarce.</div>
+  <div class="dv-card" style="width:980px;background:#1D140E;position:relative;border-color:rgba(255,255,255,.08)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 40px;position:relative;z-index:6">
+      <div style="font:400 17px/1 'Zodiak',serif;font-style:italic;color:#F2E8DC">South Sea</div>
+      <div style="display:flex;gap:26px;font:500 10.5px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.18em"><span>ABOUT</span><span>COLLECTION</span><span>ATELIER</span><span style="color:#E8A184">[ CONTACT ]</span></div>
+    </div>
+    <div style="padding:46px 40px 40px;text-align:center;position:relative;z-index:6">
+      <div style="font:400 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.22em;margin-bottom:20px">/ BY APPOINTMENT ONLY /</div>
+      <div style="font:300 92px/1 'Boska',serif;color:#F2E8DC;letter-spacing:.04em"><span style="color:#E8A184;font-weight:400">{</span> THE VAULT <span style="color:#E8A184;font-weight:400">}</span></div>
+      <div style="font:400 15px/1.7 'Zodiak',serif;font-style:italic;color:#B4A18E;max-width:420px;margin:18px auto 0">Twelve pearls a season leave the atelier. The rest wait in the dark, getting better at it.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;padding:0 40px 36px;position:relative;z-index:6;align-items:end">
+      <div>
+        <div style="font:500 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.2em;margin-bottom:12px">/ ENTER YOUR EMAIL /</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(242,232,220,.35);padding-bottom:10px"><span style="font:400 14px 'Zodiak',serif;font-style:italic;color:#8A7563">your@address.com</span><span style="color:#E8A184;letter-spacing:-.05em">⟶</span></div>
+      </div>
+      <div style="text-align:center">
+        <div style="height:48px;display:inline-flex;align-items:center;justify-content:center;padding:0 28px;border:1px solid rgba(242,232,220,.3);color:#F2E8DC;font:500 11px 'General Sans',sans-serif;letter-spacing:.18em;transition:border-color 400ms ease,color 400ms ease,background 400ms ease" style-hover="border-color:#E8A184;color:#E8A184">REQUEST A VIEWING</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px">
+        <span style="padding:6px 12px;border:1px solid rgba(242,232,220,.2);font:500 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.14em">PAPEETE</span>
+        <span style="padding:6px 12px;border:1px solid rgba(242,232,220,.2);font:500 10px 'General Sans',sans-serif;color:#9C8B7D;letter-spacing:.14em">GENÈVE</span>
+        <span style="padding:6px 12px;background:#E8A184;color:#2E2018;font:500 10px 'General Sans',sans-serif;letter-spacing:.14em">TOKYO — NEW</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "conch stronger / scarcer" · "chocolate warmer / cooler" · "merge 11a with the 6d element sheet" · "back to Tahitian"</p>
+</section>
+
+<section class="dv-turn" id="t9">
+<div class="dv-thd"><a class="dv-tid" href="#t9">9</a><span class="dv-tname">Dark trio — Pearl 8a, Freshwater 7a, South Sea 6d+finesse · luster is a token</span></div>
+<p class="dv-tsub">Locked: Pearl = <a class="dv-oid" href="#8a">8a</a> pill · Freshwater = <a class="dv-oid" href="#7a">7a</a>. Below, each theme in dark. South Sea gets the finesse it was missing: the amber CTA now carries the same nacre-sheen sweep Pearl's primary has (gold-tinted), and a candlelit luster surface. On configurability — <strong>yes, the shimmer is a token, not a hardcoded gradient</strong>: the contract exposes <span class="dv-fontnote">luster = { angle, stops[], speed }</span> and every theme overrides just the stops. Each card's footer strip shows that theme's actual stop values — same animation keyframe, three different personalities. Hover the luster surfaces.</p>
+<div class="dv-opts">
+
+<!-- ============ 9a PEARL — dark ============ -->
+<div class="dv-opt" id="9a">
+  <div class="dv-olabel"><a class="dv-oid" href="#9a">9a</a><strong>Pearl — dark.</strong> Squid Ink ground, light primary pill, marine does the same quiet work; luster card re-stopped for dark. <span class="dv-fontnote">same tokens as <a class="dv-oid" href="#8a">8a</a></span></div>
+  <div class="dv-card" style="width:640px;background:#17161A;position:relative;border-color:rgba(255,255,255,.08)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.04;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #2B2A32;position:relative;z-index:6">
+      <div style="font:400 20px/1 'Gambetta',serif;font-style:italic;color:#F5F3EF;letter-spacing:-.02em">pearl<span style="font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9px;vertical-align:super;color:#9B96A8;margin-left:1px">®</span></div>
+      <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em">ELEMENTS / DARK</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:6">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 22px;border-radius:999px;color:#17161A;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(115deg,transparent 35%,rgba(169,166,184,.35) 50%,transparent 65%),linear-gradient(180deg,#FDFCFA,#E7E5DF);background-size:260% 100%,100% 100%;background-position:118% 0,center;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(0,0,0,.5),0 8px 18px rgba(215,213,223,.12);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);animation:dvOrb 2.8s ease-in-out infinite;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 3px rgba(0,0,0,.5),0 12px 26px rgba(215,213,223,.2)">Primary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 22px;border-radius:999px;border:1px solid #3A3944;color:#F5F3EF;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(180deg,#232229,#1B1A20);box-shadow:0 1px 2px rgba(0,0,0,.4);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#8E8B9E;box-shadow:0 0 0 3px rgba(215,213,223,.14),0 2px 6px rgba(0,0,0,.4)">Secondary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 6px;color:#F5F3EF;font:500 13.5px 'General Sans',sans-serif;border-bottom:1px solid transparent;transition:border-color 300ms ease" style-hover="border-color:#8E8B9E">Quiet</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div><div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#77737E;letter-spacing:.12em;margin-bottom:6px">EMAIL / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-radius:999px;background:#1E1D23;border:1px solid #8E8B9E;box-shadow:0 0 0 3px rgba(215,213,223,.16);font:400 13px 'General Sans',sans-serif;color:#F5F3EF">you@studio.co<span style="color:#9B96A8;animation:dvBlink 1.1s steps(1) infinite">▏</span></div></div>
+        <div style="display:flex;gap:4px;padding:4px;border:1px solid #2B2A32;border-radius:999px;background:#1E1D23;justify-self:start">
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Light</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;background:#D7D5DF;color:#17161A;font:500 11.5px 'General Sans',sans-serif">Dark</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Auto</span>
+        </div>
+      </div>
+      <div style="border-radius:16px;border:1px solid #2B2A32;padding:20px 24px;display:flex;align-items:center;gap:18px;background:linear-gradient(115deg,#1C1B21 0%,#26252F 30%,#2B2A31 52%,#232725 70%,#1C1B21 100%);background-size:300% 100%;background-position:0% 50%;transition:box-shadow 400ms ease,transform 400ms cubic-bezier(.22,1,.36,1)" style-hover="animation:dvLuster 3.5s ease-in-out infinite;transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.5)">
+        <div style="width:52px;height:52px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 28%,#FDFDFB 8%,rgba(215,213,223,.88) 30%,#9997A4 62%,#4E4B5E 100%);box-shadow:0 8px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(23,22,26,.4)"></div>
+        <div style="min-width:0">
+          <div style="font:500 10px 'IBM Plex Mono',monospace;color:#77737E;letter-spacing:.12em;margin-bottom:5px">CARD / HOVER ME</div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#F5F3EF;letter-spacing:-.01em">Nacre, after dark <span style="font-family:'Gambetta',serif;font-style:italic;font-weight:400;color:#C9C5D2">— same token, deeper stops.</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font:400 10.5px 'IBM Plex Mono',monospace;color:#77737E;border-top:1px solid #2B2A32;padding-top:14px">
+        <span style="color:#9B96A8">luster:</span><span>115° ·</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#2B2A31;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>silver.850</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#26252F;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>marine.850</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#232725;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>seagreen.900</span>
+        <span>· 3.5s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 9b FRESHWATER — dark ============ -->
+<div class="dv-opt" id="9b">
+  <div class="dv-olabel"><a class="dv-oid" href="#9b">9b</a><strong>Freshwater — dark.</strong> 7a's soft geometry on the console's home turf; cyan primary, glow rings; the ETA bar is the same luster token, cyan stops. <span class="dv-fontnote">same tokens as <a class="dv-oid" href="#7a">7a</a></span></div>
+  <div class="dv-card" style="width:640px;background:#0E0F10;border-color:rgba(255,255,255,.08)">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #24282B">
+      <div style="font:600 14px 'Space Grotesk',sans-serif;color:#F2F4F5;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+      <div style="font:500 10px 'Azeret Mono',monospace;color:#6E767B;letter-spacing:.1em">ELEMENTS / DARK</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border-radius:8px;background:linear-gradient(180deg,#33CCFF,#00B8E6);color:#06272E;font:600 13px 'Space Grotesk',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(0,0,0,.4),0 8px 20px rgba(0,184,230,.35);transition:transform 200ms cubic-bezier(.22,1,.36,1),box-shadow 200ms ease" style-hover="transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 2px 4px rgba(0,0,0,.4),0 12px 26px rgba(0,184,230,.5)">Commit reroute</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border:1px solid #2C3236;color:#F2F4F5;border-radius:8px;font:600 13px 'Space Grotesk',sans-serif;transition:border-color 200ms ease,box-shadow 200ms ease" style-hover="border-color:#00B8E6;box-shadow:0 2px 10px rgba(0,184,230,.2)">Simulate first</div>
+        <div style="font:500 11px 'Azeret Mono',monospace;color:#6E767B;border-bottom:1px solid #24282B;padding-bottom:2px">DISCARD</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#6E767B;letter-spacing:.1em;margin-bottom:6px">VESSEL_ID</div><div style="height:40px;display:flex;align-items:center;padding:0 12px;background:#16181A;border:1px solid #2C3236;border-radius:8px;font:500 12.5px 'Azeret Mono',monospace;color:#F2F4F5">HMM-COPENHAGEN-07</div></div>
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#6E767B;letter-spacing:.1em;margin-bottom:6px">NEW_ROUTE / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#16181A;border:1px solid #00B8E6;border-radius:8px;box-shadow:0 0 0 3px rgba(0,184,230,.2);font:500 12.5px 'Azeret Mono',monospace;color:#F2F4F5">VIA_SUEZ_EXPRESS<span style="color:#5FE1FF">▾</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;gap:4px;padding:4px;border:1px solid #24282B;border-radius:10px;background:#111314">
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;font:500 11px 'Azeret Mono',monospace;color:#8A9298">STANDARD</div>
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;background:rgba(0,184,230,.16);color:#5FE1FF;font:500 11px 'Azeret Mono',monospace;box-shadow:inset 0 0 0 1px rgba(0,184,230,.35)">EXPRESS</div>
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;font:500 11px 'Azeret Mono',monospace;color:#8A9298">CRITICAL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font:500 10px 'Azeret Mono',monospace;color:#6E767B;letter-spacing:.08em">NOTIFY</span>
+          <div style="width:44px;height:24px;border-radius:999px;background:linear-gradient(180deg,#33CCFF,#00B8E6);position:relative"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#0E0F10"></div></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font:500 10px 'Azeret Mono',monospace;color:#6E767B;letter-spacing:.1em;margin-bottom:8px"><span>ETA_CONFIDENCE</span><span style="color:#5FE1FF">87%</span></div>
+        <div style="height:8px;border-radius:999px;background:#1C2023;position:relative;overflow:hidden"><div style="position:absolute;inset:0;width:87%;border-radius:999px;background:linear-gradient(90deg,#0089B3,#5FE1FF,#0089B3);background-size:220% 100%;animation:dvLuster 5s ease-in-out infinite"></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font:400 10.5px 'Azeret Mono',monospace;color:#6E767B;border-top:1px solid #24282B;padding-top:14px">
+        <span style="color:#8A9298">luster:</span><span>90° ·</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#0089B3"></span><span>cyan.600</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#5FE1FF"></span><span>cyan.300</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#0089B3"></span><span>cyan.600</span>
+        <span>· 5s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 9c SOUTH SEA — dark, plus finesse ============ -->
+<div class="dv-opt" id="9c">
+  <div class="dv-olabel"><a class="dv-oid" href="#9c">9c</a><strong>South Sea — dark, golden hour.</strong> Dusk ground under a champagne haze; the CTA turns luminous gold — light lands on it instead of amber sitting in it; the luster surface shimmers like late sun on water. Rectangles stay per <a class="dv-oid" href="#6d">6d</a>. <span class="dv-fontnote">Zodiak + General Sans</span></div>
+  <div class="dv-card" style="width:640px;background:radial-gradient(ellipse at 80% -25%,rgba(236,213,166,.2),transparent 62%),#1B1611;position:relative;border-color:rgba(255,255,255,.08)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:screen;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:1px solid #3A2E1D;position:relative;z-index:6">
+      <div style="font:500 15px/1 'Zodiak',serif;color:#F4EEDF;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="font:500 9.5px 'General Sans',sans-serif;color:#DEC083;letter-spacing:.2em">ELEMENTS / DARK</div>
+    </div>
+    <div style="padding:26px 32px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:6">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:300px">
+        <div style="height:50px;display:flex;align-items:center;justify-content:center;color:#2A2013;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;background:linear-gradient(115deg,transparent 35%,rgba(255,248,228,.55) 50%,transparent 65%),linear-gradient(180deg,#F0DBAE,#CBA961);background-size:260% 100%,100% 100%;background-position:118% 0,center;box-shadow:inset 0 1px 0 rgba(255,250,235,.75),0 12px 28px rgba(216,181,110,.26);transition:letter-spacing 400ms ease,box-shadow 400ms ease" style-hover="letter-spacing:.22em;animation:dvOrb 3.2s ease-in-out infinite;box-shadow:inset 0 1px 0 rgba(255,250,235,.75),0 16px 36px rgba(216,181,110,.42)">ADD TO BAG</div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(222,192,131,.5);color:#F4EEDF;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;transition:background 400ms ease,color 400ms ease,border-color 400ms ease" style-hover="background:#F4EEDF;color:#241D12;border-color:#F4EEDF">RESERVE IN BOUTIQUE</div>
+        <div style="align-self:center;font:500 11px 'General Sans',sans-serif;color:#F4EEDF;letter-spacing:.14em;border-bottom:1px solid rgba(222,192,131,.6);padding-bottom:4px">BOOK A PRIVATE VIEWING</div>
+      </div>
+      <div style="max-width:320px">
+        <div style="font:500 10px 'General Sans',sans-serif;color:#A6947A;letter-spacing:.16em;margin-bottom:8px">EMAIL FOR THE WAITLIST</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(222,192,131,.45);padding:0 0 10px"><span style="font:400 15px 'Zodiak',serif;font-style:italic;color:#A6947A">your@address.com</span><span style="font:500 11px 'General Sans',sans-serif;color:#DEC083;letter-spacing:.14em">JOIN →</span></div>
+      </div>
+      <div style="border:1px solid #3A2E1D;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(115deg,#211B12 0%,#372B18 28%,#483922 50%,#2D2417 70%,#211B12 100%);background-size:300% 100%;background-position:0% 50%;transition:box-shadow 400ms ease,transform 400ms cubic-bezier(.22,1,.36,1)" style-hover="animation:dvLuster 4.5s ease-in-out infinite;transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.5)">
+        <div>
+          <div style="font:500 9.5px 'General Sans',sans-serif;color:#DEC083;letter-spacing:.2em;margin-bottom:6px">SURFACE / HOVER ME</div>
+          <div style="font:400 17px 'Zodiak',serif;font-style:italic;color:#F4EEDF">Golden hour, held still.</div>
+        </div>
+        <div style="width:46px;height:46px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 28%,#FCF4E2 8%,#E8CFA0 32%,#B98F52 64%,#6B4A22 100%);box-shadow:0 8px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(26,20,12,.4)"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font:400 10.5px 'General Sans',sans-serif;color:#A6947A;border-top:1px solid #3A2E1D;padding-top:14px;letter-spacing:.04em">
+        <span style="color:#DEC083">luster:</span><span>115° ·</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#372B18;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>champagne.800</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#483922;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>gold.700</span>
+        <span style="width:10px;height:10px;border-radius:3px;background:#2D2417;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span><span>dusk.850</span>
+        <span>· 4.5s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "gold sheen on light-mode South Sea too" · "tune a dark ground" · "lock the trio — build the four full pages + token spec, light/dark toggles included"</p>
+</section>
+
+<section class="dv-turn" id="t8">
+<div class="dv-thd"><a class="dv-tid" href="#t8">8</a><span class="dv-tname">Locks + Pearl gets its pizzazz — marine layer as the finesse color, nacre luster on hover</span></div>
+<p class="dv-tsub">Locked: Freshwater = <a class="dv-oid" href="#7a">7a</a> · South Sea reverts to rectangular <a class="dv-oid" href="#6d">6d</a> (the shape split now comes from Freshwater's 8px radius, so both can't read as "rectangular"). Pearl stays intentionally vanilla — dark-neutral primary — but <strong>Marine Layer #D7D5DF</strong> now does quiet work everywhere: a cool top-highlight inside the primary, a nacre sheen that sweeps across it on hover, the focus ring, selected-state tints. Two shapes: <a class="dv-oid" href="#8a">8a</a> pill, <a class="dv-oid" href="#8b">8b</a> rectangle with very soft 10px corners. Both include the demo card you asked for — <strong>hover it</strong>: the whole surface drifts through an iridescent luster like the sphere.</p>
+<div class="dv-opts">
+
+<!-- ============ 8a PEARL — pill + marine finesse ============ -->
+<div class="dv-opt" id="8a">
+  <div class="dv-olabel"><a class="dv-oid" href="#8a">8a</a><strong>Pearl — pill.</strong> Full-round buttons; marine top-highlight, nacre sheen sweep on hover, marine focus ring. <span class="dv-fontnote">General Sans + Gambetta + IBM Plex Mono</span></div>
+  <div class="dv-card" style="width:640px;background:#F5F3EF;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #DEDAD2;position:relative;z-index:6">
+      <div style="font:400 20px/1 'Gambetta',serif;font-style:italic;color:#17161A;letter-spacing:-.02em">pearl<span style="font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9px;vertical-align:super;color:#9B96A8;margin-left:1px">®</span></div>
+      <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em">ELEMENTS / PILL</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:6">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 22px;border-radius:999px;color:#F5F3EF;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(115deg,transparent 35%,rgba(215,213,223,.28) 50%,transparent 65%),linear-gradient(180deg,#26252C,#17161A);background-size:260% 100%,100% 100%;background-position:118% 0,center;box-shadow:inset 0 1px 0 rgba(215,213,223,.35),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);animation:dvOrb 2.8s ease-in-out infinite;box-shadow:inset 0 1px 0 rgba(215,213,223,.5),0 2px 3px rgba(23,22,26,.3),0 12px 22px rgba(23,22,26,.2)">Primary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 22px;border-radius:999px;border:1px solid #D8D4CC;color:#17161A;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(180deg,#FDFCFA,#F3F1EC);box-shadow:0 1px 2px rgba(23,22,26,.06);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#B8B5C6;box-shadow:0 0 0 3px rgba(215,213,223,.35),0 2px 6px rgba(23,22,26,.08)">Secondary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 6px;color:#17161A;font:500 13.5px 'General Sans',sans-serif;border-bottom:1px solid transparent;transition:border-color 300ms ease" style-hover="border-color:#B8B5C6">Quiet</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div><div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em;margin-bottom:6px">EMAIL / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-radius:999px;background:#FBFAF7;border:1px solid #B8B5C6;box-shadow:0 0 0 3px rgba(215,213,223,.5);font:400 13px 'General Sans',sans-serif;color:#17161A">you@studio.co<span style="color:#9B96A8;animation:dvBlink 1.1s steps(1) infinite">▏</span></div></div>
+        <div style="display:flex;gap:4px;padding:4px;border:1px solid #DEDAD2;border-radius:999px;background:#FBFAF7;justify-self:start">
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;background:#D7D5DF;color:#17161A;font:500 11.5px 'General Sans',sans-serif">Light</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Dark</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:999px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Auto</span>
+        </div>
+      </div>
+      <div style="border-radius:16px;border:1px solid #DEDAD2;padding:22px 24px;display:flex;align-items:center;gap:18px;background:linear-gradient(115deg,#FBFAF7 0%,#F2F1F6 26%,#E9E8F0 44%,#F5F4F7 62%,#EDF1EE 78%,#FBFAF7 100%);background-size:300% 100%;background-position:0% 50%;transition:box-shadow 400ms ease,transform 400ms cubic-bezier(.22,1,.36,1)" style-hover="animation:dvLuster 3.5s ease-in-out infinite;transform:translateY(-2px);box-shadow:0 14px 30px rgba(23,22,26,.1)">
+        <div style="width:52px;height:52px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 28%,#FDFDFB 8%,rgba(215,213,223,.92) 30%,#C8C7CF 62%,#A9A6B8 100%);box-shadow:0 6px 14px rgba(23,22,26,.14),inset 0 -2px 4px rgba(122,118,138,.3)"></div>
+        <div style="min-width:0">
+          <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em;margin-bottom:5px">CARD / HOVER ME</div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#17161A;letter-spacing:-.01em">Nacre surface <span style="font-family:'Gambetta',serif;font-style:italic;font-weight:400">— the luster lives here.</span></div>
+          <div style="font:400 12.5px/1.55 'General Sans',sans-serif;color:#6E6A78;margin-top:4px">On hover the surface drifts through silver and marine, with one breath of dusty sea green — highlights, never rainbow.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 8b PEARL — soft rectangle + marine finesse ============ -->
+<div class="dv-opt" id="8b">
+  <div class="dv-olabel"><a class="dv-oid" href="#8b">8b</a><strong>Pearl — soft rectangle.</strong> 10px corners, same marine finesse; sits closer to the docs-tool register. <span class="dv-fontnote">General Sans + Gambetta + IBM Plex Mono</span></div>
+  <div class="dv-card" style="width:640px;background:#F5F3EF;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #DEDAD2;position:relative;z-index:6">
+      <div style="font:400 20px/1 'Gambetta',serif;font-style:italic;color:#17161A;letter-spacing:-.02em">pearl<span style="font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9px;vertical-align:super;color:#9B96A8;margin-left:1px">®</span></div>
+      <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em">ELEMENTS / SOFT RECT</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:6">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border-radius:10px;color:#F5F3EF;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(115deg,transparent 35%,rgba(215,213,223,.28) 50%,transparent 65%),linear-gradient(180deg,#26252C,#17161A);background-size:260% 100%,100% 100%;background-position:118% 0,center;box-shadow:inset 0 1px 0 rgba(215,213,223,.35),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);animation:dvOrb 2.8s ease-in-out infinite;box-shadow:inset 0 1px 0 rgba(215,213,223,.5),0 2px 3px rgba(23,22,26,.3),0 12px 22px rgba(23,22,26,.2)">Primary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border-radius:10px;border:1px solid #D8D4CC;color:#17161A;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(180deg,#FDFCFA,#F3F1EC);box-shadow:0 1px 2px rgba(23,22,26,.06);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#B8B5C6;box-shadow:0 0 0 3px rgba(215,213,223,.35),0 2px 6px rgba(23,22,26,.08)">Secondary</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 6px;color:#17161A;font:500 13.5px 'General Sans',sans-serif;border-bottom:1px solid transparent;transition:border-color 300ms ease" style-hover="border-color:#B8B5C6">Quiet</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div><div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em;margin-bottom:6px">EMAIL / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-radius:10px;background:#FBFAF7;border:1px solid #B8B5C6;box-shadow:0 0 0 3px rgba(215,213,223,.5);font:400 13px 'General Sans',sans-serif;color:#17161A">you@studio.co<span style="color:#9B96A8;animation:dvBlink 1.1s steps(1) infinite">▏</span></div></div>
+        <div style="display:flex;gap:4px;padding:4px;border:1px solid #DEDAD2;border-radius:12px;background:#FBFAF7;justify-self:start">
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:8px;background:#D7D5DF;color:#17161A;font:500 11.5px 'General Sans',sans-serif">Light</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:8px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Dark</span>
+          <span style="height:28px;display:flex;align-items:center;padding:0 14px;border-radius:8px;color:#77737E;font:450 11.5px 'General Sans',sans-serif">Auto</span>
+        </div>
+      </div>
+      <div style="border-radius:12px;border:1px solid #DEDAD2;padding:22px 24px;display:flex;align-items:center;gap:18px;background:linear-gradient(115deg,#FBFAF7 0%,#F2F1F6 26%,#E9E8F0 44%,#F5F4F7 62%,#EDF1EE 78%,#FBFAF7 100%);background-size:300% 100%;background-position:0% 50%;transition:box-shadow 400ms ease,transform 400ms cubic-bezier(.22,1,.36,1)" style-hover="animation:dvLuster 3.5s ease-in-out infinite;transform:translateY(-2px);box-shadow:0 14px 30px rgba(23,22,26,.1)">
+        <div style="width:52px;height:52px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 28%,#FDFDFB 8%,rgba(215,213,223,.92) 30%,#C8C7CF 62%,#A9A6B8 100%);box-shadow:0 6px 14px rgba(23,22,26,.14),inset 0 -2px 4px rgba(122,118,138,.3)"></div>
+        <div style="min-width:0">
+          <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em;margin-bottom:5px">CARD / HOVER ME</div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#17161A;letter-spacing:-.01em">Nacre surface <span style="font-family:'Gambetta',serif;font-style:italic;font-weight:400">— the luster lives here.</span></div>
+          <div style="font:400 12.5px/1.55 'General Sans',sans-serif;color:#6E6A78;margin-top:4px">On hover the surface drifts through silver and marine, with one breath of dusty sea green — highlights, never rainbow.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "8a/8b wins" · "more/less marine in the primary" · "luster card: slower / stronger" · "lock everything — build the four full pages + token spec"</p>
+</section>
+
+<section class="dv-turn" id="t7">
+<div class="dv-thd"><a class="dv-tid" href="#t7">7</a><span class="dv-tname">Button-shape split — Freshwater dials back the brutalism, South Sea leaves the rectangle</span></div>
+<p class="dv-tsub">You're ~70% on <a class="dv-oid" href="#6a">6a</a> but it leans too brutalist, and Freshwater + South Sea shouldn't both be rectangular. Two temperatures for each. Freshwater: <a class="dv-oid" href="#7a">7a</a> rounds the geometry and swaps the hard offset shadows for a soft cyan underglow (friendliest); <a class="dv-oid" href="#7b">7b</a> keeps the crisp near-square edges but deletes the offset-shadow trick entirely — quiet hairlines, cyan as a thin signal. South Sea: <a class="dv-oid" href="#7c">7c</a> goes full pill (couture register); <a class="dv-oid" href="#7d">7d</a> is a cushion radius with an inner gold keyline — jewelry-box, less fashion-house. Fields, steppers, and badges follow each button's shape logic.</p>
+<div class="dv-opts">
+
+<!-- ============ 7a FRESHWATER — soft utility ============ -->
+<div class="dv-opt" id="7a">
+  <div class="dv-olabel"><a class="dv-oid" href="#7a">7a</a><strong>Freshwater — soft utility.</strong> 8px radius, offset shadows → soft cyan underglow, sentence-case buttons; mono stays for data only. <span class="dv-fontnote">Space Grotesk + Azeret Mono</span></div>
+  <div class="dv-card" style="width:640px;background:#FFFFFF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #E3E5E7">
+      <div style="font:600 14px 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+      <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ELEMENTS / SOFT</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;background:#0E0F10;color:#fff;border-radius:8px;font:600 13px 'Space Grotesk',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 2px rgba(14,15,16,.25),0 8px 18px rgba(0,184,230,.22);transition:transform 200ms cubic-bezier(.22,1,.36,1),box-shadow 200ms ease" style-hover="transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(14,15,16,.25),0 12px 24px rgba(0,184,230,.3)">Commit reroute</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border:1px solid #D7DADC;color:#0E0F10;border-radius:8px;font:600 13px 'Space Grotesk',sans-serif;background:#fff;transition:border-color 200ms ease,box-shadow 200ms ease" style-hover="border-color:#00B8E6;box-shadow:0 2px 8px rgba(0,184,230,.14)">Simulate first</div>
+        <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94;border-bottom:1px solid #E3E5E7;padding-bottom:2px">DISCARD</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">VESSEL_ID</div><div style="height:40px;display:flex;align-items:center;padding:0 12px;border:1px solid #D7DADC;border-radius:8px;font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10">HMM-COPENHAGEN-07</div></div>
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">NEW_ROUTE / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border:1px solid #00B8E6;border-radius:8px;box-shadow:0 0 0 3px rgba(0,184,230,.16);font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10">VIA_SUEZ_EXPRESS<span style="color:#00B8E6">▾</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;gap:4px;padding:4px;border:1px solid #E3E5E7;border-radius:10px">
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">STANDARD</div>
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;background:#0E0F10;color:#5FE1FF;font:500 11px 'Azeret Mono',monospace">EXPRESS</div>
+          <div style="height:30px;display:flex;align-items:center;padding:0 14px;border-radius:6px;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">CRITICAL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.08em">NOTIFY</span>
+          <div style="width:44px;height:24px;border-radius:999px;background:#0E0F10;position:relative"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#5FE1FF"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0089B3;background:#E1F8FF;padding:4px 10px;border-radius:6px">● DELAYED</span>
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;background:#F1F3F4;padding:4px 10px;border-radius:6px">● TRANSIT</span>
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#fff;background:#0E0F10;padding:4px 10px;border-radius:6px">● ARRIVED</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 7b FRESHWATER — crisp, quiet ============ -->
+<div class="dv-opt" id="7b">
+  <div class="dv-olabel"><a class="dv-oid" href="#7b">7b</a><strong>Freshwater — crisp but quiet.</strong> Keeps the near-square 2px edges, deletes the offset shadows; cyan becomes a thin signal (underlines, left rules), depth from one soft shadow. <span class="dv-fontnote">Space Grotesk + Azeret Mono</span></div>
+  <div class="dv-card" style="width:640px;background:#FFFFFF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #E3E5E7">
+      <div style="font:600 14px 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+      <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ELEMENTS / CRISP</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;background:#0E0F10;color:#fff;border-radius:2px;font:600 13px 'Space Grotesk',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 6px 14px rgba(14,15,16,.16);transition:color 200ms ease,box-shadow 200ms ease" style-hover="color:#5FE1FF;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 18px rgba(14,15,16,.22)">Commit reroute</div>
+        <div style="height:42px;display:flex;align-items:center;padding:0 20px;border:1px solid #D7DADC;color:#0E0F10;border-radius:2px;font:600 13px 'Space Grotesk',sans-serif;transition:border-color 200ms ease" style-hover="border-color:#0E0F10">Simulate first</div>
+        <div style="font:500 11px 'Azeret Mono',monospace;color:#4A4F54;border-bottom:1px solid #00B8E6;padding-bottom:2px">DISCARD</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">VESSEL_ID</div><div style="height:40px;display:flex;align-items:center;padding:0 12px;border:1px solid #D7DADC;border-radius:2px;font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10">HMM-COPENHAGEN-07</div></div>
+        <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">NEW_ROUTE / FOCUSED</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border:1px solid #0E0F10;border-radius:2px;border-bottom:2px solid #00B8E6;font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10">VIA_SUEZ_EXPRESS<span style="color:#00B8E6">▾</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex">
+          <div style="height:34px;display:flex;align-items:center;padding:0 14px;border:1px solid #E3E5E7;border-right:none;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">STANDARD</div>
+          <div style="height:34px;display:flex;align-items:center;padding:0 14px;border:1px solid #0E0F10;font:500 11px 'Azeret Mono',monospace;color:#0E0F10;box-shadow:inset 0 -2px 0 #00B8E6">EXPRESS</div>
+          <div style="height:34px;display:flex;align-items:center;padding:0 14px;border:1px solid #E3E5E7;border-left:none;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">CRITICAL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.08em">NOTIFY</span>
+          <div style="width:44px;height:24px;border-radius:2px;background:#0E0F10;position:relative"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:1px;background:#5FE1FF"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0089B3;padding:4px 10px;border-radius:2px;box-shadow:inset 2px 0 0 #00B8E6,inset 0 0 0 1px #C8EFFA">DELAYED</span>
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#4A4F54;padding:4px 10px;border-radius:2px;box-shadow:inset 2px 0 0 #C6CBCE,inset 0 0 0 1px #E3E5E7">TRANSIT</span>
+        <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;padding:4px 10px;border-radius:2px;box-shadow:inset 2px 0 0 #0E0F10,inset 0 0 0 1px #D7DADC">ARRIVED</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 7c SOUTH SEA — pill ============ -->
+<div class="dv-opt" id="7c">
+  <div class="dv-olabel"><a class="dv-oid" href="#7c">7c</a><strong>South Sea — pill.</strong> Full-round CTAs in the amber gradient, pill stepper and badges; couture register, maximum distance from Freshwater. <span class="dv-fontnote">Zodiak + General Sans</span></div>
+  <div class="dv-card" style="width:640px;background:#F8F3EA;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.09;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:1px solid #E3D8C2;position:relative;z-index:6">
+      <div style="font:500 15px/1 'Zodiak',serif;color:#241D12;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="font:500 9.5px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em">ELEMENTS / PILL</div>
+    </div>
+    <div style="padding:26px 32px;display:flex;flex-direction:column;gap:22px;position:relative;z-index:6">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:300px">
+        <div style="height:50px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:linear-gradient(180deg,#7A5426,#5C3D1A);color:#F7EDD9;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 10px 20px rgba(92,61,26,.22);transition:letter-spacing 400ms ease,box-shadow 400ms ease" style-hover="letter-spacing:.22em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 14px 26px rgba(92,61,26,.3)">ADD TO BAG</div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:center;border-radius:999px;border:1px solid #241D12;color:#241D12;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;transition:background 400ms ease,color 400ms ease" style-hover="background:#241D12;color:#F4EEDF">RESERVE IN BOUTIQUE</div>
+        <div style="align-self:center;font:500 11px 'General Sans',sans-serif;color:#241D12;letter-spacing:.14em;border-bottom:1px solid #B9A984;padding-bottom:4px">BOOK A PRIVATE VIEWING</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="display:flex;align-items:center;border:1px solid #D8CBAF;border-radius:999px;overflow:hidden"><span style="width:40px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">−</span><span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#241D12;font:500 13px 'General Sans',sans-serif;border-left:1px solid #D8CBAF;border-right:1px solid #D8CBAF">1</span><span style="width:40px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">+</span></div>
+        <span style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.16em">QUANTITY</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span style="padding:6px 14px;border:1px solid #D8CBAF;border-radius:999px;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em">Nº 04</span>
+        <span style="padding:6px 14px;background:#241D12;color:#F4EEDF;border-radius:999px;font:500 10px 'General Sans',sans-serif;letter-spacing:.14em">LAST TWO</span>
+        <span style="padding:6px 14px;border:1px solid #D8CBAF;border-radius:999px;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em"><span style="color:#5E7A45">●</span> IN THE VAULT</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 7d SOUTH SEA — cushion keyline ============ -->
+<div class="dv-opt" id="7d">
+  <div class="dv-olabel"><a class="dv-oid" href="#7d">7d</a><strong>South Sea — cushion keyline.</strong> 10px cushion radius with an inner gold hairline set 3px in — jewelry-box, more reserved than the pill. <span class="dv-fontnote">Zodiak + General Sans</span></div>
+  <div class="dv-card" style="width:640px;background:#F8F3EA;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.09;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:1px solid #E3D8C2;position:relative;z-index:6">
+      <div style="font:500 15px/1 'Zodiak',serif;color:#241D12;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="font:500 9.5px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em">ELEMENTS / CUSHION</div>
+    </div>
+    <div style="padding:26px 32px;display:flex;flex-direction:column;gap:22px;position:relative;z-index:6">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:300px">
+        <div style="height:50px;padding:3px;border-radius:10px;background:linear-gradient(180deg,#7A5426,#5C3D1A);box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 10px 20px rgba(92,61,26,.22);transition:letter-spacing 400ms ease,box-shadow 400ms ease;display:flex;color:#F7EDD9;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em" style-hover="letter-spacing:.22em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 14px 26px rgba(92,61,26,.3)"><span style="flex:1;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,224,170,.35);border-radius:7px">ADD TO BAG</span></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid #241D12;color:#241D12;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;transition:background 400ms ease,color 400ms ease" style-hover="background:#241D12;color:#F4EEDF">RESERVE IN BOUTIQUE</div>
+        <div style="align-self:center;font:500 11px 'General Sans',sans-serif;color:#241D12;letter-spacing:.14em;border-bottom:1px solid #B9A984;padding-bottom:4px">BOOK A PRIVATE VIEWING</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="display:flex;align-items:center;border:1px solid #D8CBAF;border-radius:10px;overflow:hidden"><span style="width:40px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">−</span><span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#241D12;font:500 13px 'General Sans',sans-serif;border-left:1px solid #D8CBAF;border-right:1px solid #D8CBAF">1</span><span style="width:40px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">+</span></div>
+        <span style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.16em">QUANTITY</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span style="padding:6px 13px;border:1px solid #D8CBAF;border-radius:7px;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em">Nº 04</span>
+        <span style="padding:6px 13px;background:#241D12;color:#F4EEDF;border-radius:7px;font:500 10px 'General Sans',sans-serif;letter-spacing:.14em">LAST TWO</span>
+        <span style="padding:6px 13px;border:1px solid #D8CBAF;border-radius:7px;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em"><span style="color:#5E7A45">●</span> IN THE VAULT</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "7a but keep one offset-shadow moment" · "7c pill, but only on the primary" · "lock these two and build the four full pages"</p>
+</section>
+
+<section class="dv-turn" id="t6">
+<div class="dv-thd"><a class="dv-tid" href="#t6">6</a><span class="dv-tname">Securing round — a second screen per theme (common elements everywhere) + Freshwater catch-up</span></div>
+<p class="dv-tsub">Locked: South Sea = <a class="dv-oid" href="#3c">3c</a> (its CTA is now the deep amber-brown from your photo — applied in place, try the hover) · Tahitian = <a class="dv-oid" href="#4a">4a</a>/<a class="dv-oid" href="#4b">4b</a> · Pearl = <a class="dv-oid" href="#5a">5a</a> with <strong>Gambetta restored</strong> (paid suggestion moves Canela → <strong>Signifier</strong>, whose italic has the same soft calligraphic pull Gambetta has; Canela is stiffer). Buttons got the understated elevation pass everywhere: 1px inner highlight + tight and soft shadow pair, lift on hover — no glows, no gradients louder than 6%. Below: Freshwater's catch-up screen first (it was the laggard), then a components sheet per theme so every register proves buttons, fields, toggles, and badges — Pearl's is doc-site-specific.</p>
+<div class="dv-opts">
+
+<!-- ============ 6a FRESHWATER — screen 2: reroute console ============ -->
+<div class="dv-opt" id="6a">
+  <div class="dv-olabel"><a class="dv-oid" href="#6a">6a</a><strong>Freshwater — screen 2, "Reroute"</strong> (light): the catch-up — form controls, toggles, badges and the new offset-shadow buttons; the console blinks back. <span class="dv-fontnote">shown: Space Grotesk + Azeret Mono (free) · ideal: Söhne Breit + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FFFFFF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:2px solid #0E0F10">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font:600 16px 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+        <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.08em">FLEET / SHP-4818 / REROUTE</div>
+      </div>
+      <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94">DRAFT_SAVED 12:04:31<span style="color:#00B8E6;animation:dvBlink 1.1s steps(1) infinite">_</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.15fr 1fr">
+      <div style="padding:28px 32px;border-right:1px solid #E3E5E7">
+        <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:18px">REROUTE_SHIPMENT //</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 12px">
+          <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">VESSEL_ID</div><div style="height:40px;display:flex;align-items:center;padding:0 12px;border:1px solid #0E0F10;font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10;box-shadow:3px 3px 0 #E9FBFF">HMM-COPENHAGEN-07</div></div>
+          <div><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:6px">NEW_ROUTE</div><div style="height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border:1px solid #E3E5E7;font:500 12.5px 'Azeret Mono',monospace;color:#0E0F10">VIA_SUEZ_EXPRESS<span style="color:#00B8E6">▾</span></div></div>
+        </div>
+        <div style="margin-top:18px"><div style="font:500 9.5px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:8px">PRIORITY</div>
+          <div style="display:flex;gap:6px">
+            <div style="height:34px;display:flex;align-items:center;padding:0 14px;border:1px solid #E3E5E7;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">STANDARD</div>
+            <div style="height:34px;display:flex;align-items:center;padding:0 14px;background:#0E0F10;color:#5FE1FF;font:500 11px 'Azeret Mono',monospace;box-shadow:3px 3px 0 #B8F2FF">EXPRESS</div>
+            <div style="height:34px;display:flex;align-items:center;padding:0 14px;border:1px solid #E3E5E7;font:500 11px 'Azeret Mono',monospace;color:#4A4F54">CRITICAL</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding:14px 0;border-top:1px solid #EEF0F1;border-bottom:1px solid #EEF0F1">
+          <div style="font:500 11px 'Azeret Mono',monospace;color:#0E0F10;letter-spacing:.06em">NOTIFY_CONSIGNEE</div>
+          <div style="width:44px;height:24px;background:#0E0F10;position:relative;transition:background 300ms ease"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;background:#5FE1FF"></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:24px">
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;background:#0E0F10;color:#fff;font:600 12px 'Space Grotesk',sans-serif;box-shadow:4px 4px 0 #B8F2FF;transition:transform 200ms cubic-bezier(.22,1,.36,1),box-shadow 200ms ease" style-hover="transform:translate(2px,2px);box-shadow:2px 2px 0 #7FE8FF">Commit reroute</div>
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;border:1px solid #0E0F10;color:#0E0F10;font:600 12px 'Space Grotesk',sans-serif;transition:box-shadow 200ms ease" style-hover="box-shadow:3px 3px 0 #E9FBFF">Simulate first</div>
+          <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94;border-bottom:1px solid #E3E5E7;padding-bottom:2px">DISCARD</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB">
+          <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:12px">STATUS_VOCAB</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0089B3;background:#E1F8FF;padding:4px 9px">● DELAYED</span>
+            <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;background:#F1F3F4;padding:4px 9px">● TRANSIT</span>
+            <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;background:#F1F3F4;padding:4px 9px">● CUSTOMS</span>
+            <span style="font:600 10.5px 'Azeret Mono',monospace;color:#fff;background:#0E0F10;padding:4px 9px">● ARRIVED</span>
+          </div>
+        </div>
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:10px"><span>ETA_CONFIDENCE</span><span style="color:#0089B3">87%</span></div>
+          <div style="height:8px;background:#F1F3F4;position:relative;overflow:hidden"><div style="position:absolute;inset:0;width:87%;background:linear-gradient(90deg,#33CCFF,#7FE8FF,#33CCFF);background-size:220% 100%;animation:dvLuster 5s ease-in-out infinite"></div></div>
+        </div>
+        <div style="flex:1;padding:22px 28px;font:500 11px/2 'Azeret Mono',monospace;color:#4A4F54">
+          <div style="color:#8A8F94;letter-spacing:.1em;margin-bottom:6px;font-size:10px">EVENT_LOG</div>
+          <div>12:01:44 <span style="color:#0E0F10">route_check</span> OK</div>
+          <div>12:02:19 <span style="color:#0E0F10">capacity_hold</span> OK</div>
+          <div>12:04:31 <span style="color:#0089B3">awaiting_commit</span><span style="color:#00B8E6;animation:dvBlink 1.1s steps(1) infinite">▌</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 6b PEARL — screen 2: docs page ============ -->
+<div class="dv-opt" id="6b">
+  <div class="dv-olabel"><a class="dv-oid" href="#6b">6b</a><strong>Pearl — screen 2, the docs page itself.</strong> Sidebar, prose, live demo surface, code block, props table — where the system will actually live. <span class="dv-fontnote">shown: General Sans + Gambetta + IBM Plex Mono (free) · ideal: Neue Haas Grotesk + Signifier + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F5F3EF;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:1px solid #DEDAD2;position:relative;z-index:6">
+      <div style="font:400 21px/1 'Gambetta',serif;font-style:italic;color:#17161A;letter-spacing:-.02em">pearl<span style="font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9px;vertical-align:super;color:#9B96A8;margin-left:1px">®</span></div>
+      <div style="display:flex;align-items:center;gap:22px;font:450 12.5px/1 'General Sans',sans-serif;color:#5C5866"><span>Foundations</span><span style="color:#17161A;border-bottom:1px solid #A9B4AD;padding-bottom:3px">Components</span><span>Themes</span><span>Playground</span><span style="display:inline-block;width:1px;height:12px;background:#CFCABF"></span><span style="color:#17161A">GitHub ↗</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr 148px;position:relative;z-index:6">
+      <div style="border-right:1px solid #DEDAD2;padding:24px 0 28px">
+        <div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.14em;padding:0 24px;margin-bottom:10px">FOUNDATIONS</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Color &amp; nacre</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Type registers</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Motion</div>
+        <div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.14em;padding:0 24px;margin:18px 0 10px">COMPONENTS</div>
+        <div style="display:flex;align-items:center;gap:8px;font:500 13px 'General Sans',sans-serif;color:#17161A;padding:7px 24px;background:#ECEAE3;border-right:2px solid #17161A;margin-right:-1px"><span style="width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F4F6F3,#A9B4AD)"></span>Button</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Input</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Select</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Table</div>
+        <div style="font:450 13px 'General Sans',sans-serif;color:#5C5866;padding:7px 24px">Dialog</div>
+      </div>
+      <div style="padding:32px 36px 36px;min-width:0">
+        <div style="font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.12em;margin-bottom:14px">COMPONENTS / BUTTON</div>
+        <div style="font:500 40px/1.05 'General Sans',sans-serif;color:#17161A;letter-spacing:-.03em">Button</div>
+        <div style="font:400 14px/1.65 'General Sans',sans-serif;color:#6E6A78;max-width:480px;margin-top:12px">One component, three emphases. The primary carries a 1px inner highlight and a paired shadow — <span style="font-family:'Gambetta',serif;font-style:italic">quiet depth,</span> never glow.</div>
+        <div style="margin-top:22px;border:1px solid #DEDAD2;background:#FBFAF7;padding:26px;display:flex;align-items:center;gap:12px">
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;background:linear-gradient(180deg,#26252C,#17161A);color:#F5F3EF;border-radius:3px;font:500 13.5px 'General Sans',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 3px rgba(23,22,26,.3),0 12px 22px rgba(23,22,26,.2)">Primary</div>
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;border:1px solid #D8D4CC;color:#17161A;border-radius:3px;font:500 13.5px 'General Sans',sans-serif;background:linear-gradient(180deg,#FDFCFA,#F3F1EC);box-shadow:0 1px 2px rgba(23,22,26,.06);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#A9B4AD;box-shadow:0 2px 6px rgba(23,22,26,.1)">Secondary</div>
+          <div style="height:42px;display:flex;align-items:center;padding:0 8px;color:#17161A;font:500 13.5px 'General Sans',sans-serif;border-bottom:1px solid transparent;transition:border-color 300ms ease" style-hover="border-color:#A9B4AD">Quiet</div>
+          <div style="margin-left:auto;font:500 10px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.1em">SURFACE / DEMO</div>
+        </div>
+        <div style="margin-top:16px;background:#17161A;border-radius:6px;padding:18px 22px;font:400 12px/1.8 'IBM Plex Mono',monospace;color:#C9C5D2;overflow:hidden">
+          <span style="color:#8FA99B">&lt;Button</span> <span style="color:#D6CDC0">emphasis</span>=<span style="color:#9ED6C4">"primary"</span> <span style="color:#D6CDC0">size</span>=<span style="color:#9ED6C4">"md"</span><span style="color:#8FA99B">&gt;</span>Read the docs<span style="color:#8FA99B">&lt;/Button&gt;</span>
+        </div>
+        <div style="margin-top:20px">
+          <div style="display:grid;grid-template-columns:1fr 1.2fr .8fr;padding:9px 0;border-bottom:1px solid #17161A;font:500 10px 'IBM Plex Mono',monospace;color:#17161A;letter-spacing:.1em"><span>PROP</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1.2fr .8fr;padding:10px 0;border-bottom:1px solid #DEDAD2;font:400 12px 'IBM Plex Mono',monospace;color:#3E3B46"><span>emphasis</span><span style="color:#77737E">primary | secondary | quiet</span><span>primary</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1.2fr .8fr;padding:10px 0;border-bottom:1px solid #DEDAD2;font:400 12px 'IBM Plex Mono',monospace;color:#3E3B46"><span>size</span><span style="color:#77737E">sm | md | lg</span><span>md</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1.2fr .8fr;padding:10px 0;font:400 12px 'IBM Plex Mono',monospace;color:#3E3B46"><span>disabled</span><span style="color:#77737E">boolean</span><span>false</span></div>
+        </div>
+      </div>
+      <div style="border-left:1px solid #DEDAD2;padding:32px 22px">
+        <div style="font:500 9.5px 'IBM Plex Mono',monospace;color:#9B96A8;letter-spacing:.14em;margin-bottom:12px">ON THIS PAGE</div>
+        <div style="font:450 12px 'General Sans',sans-serif;color:#17161A;padding:5px 0;border-left:2px solid #17161A;padding-left:10px;margin-left:-12px">Emphases</div>
+        <div style="font:450 12px 'General Sans',sans-serif;color:#77737E;padding:5px 0">Sizes</div>
+        <div style="font:450 12px 'General Sans',sans-serif;color:#77737E;padding:5px 0">Tokens used</div>
+        <div style="font:450 12px 'General Sans',sans-serif;color:#77737E;padding:5px 0">Accessibility</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 6c TAHITIAN — screen 2: components dark ============ -->
+<div class="dv-opt" id="6c">
+  <div class="dv-olabel"><a class="dv-oid" href="#6c">6c</a><strong>Tahitian — screen 2, common elements</strong> (dark): buttons with a nacre inner edge, peacock focus ring, overtone tags, toggle. <span class="dv-fontnote">same tokens as <a class="dv-oid" href="#4a">4a</a></span></div>
+  <div class="dv-card" style="width:980px;background:#0A0C0B">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 36px;border-bottom:1px solid #191E1C">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%)"></div>
+        <span style="font:600 13px/1 'General Sans',sans-serif;color:#E9EEEC;letter-spacing:.3em">TAHITIAN</span>
+      </div>
+      <div style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.12em">COMPONENTS / DARK IS DEFAULT</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div style="padding:26px 36px;border-right:1px solid #191E1C;border-bottom:1px solid #191E1C">
+        <div style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.12em;margin-bottom:16px">ACTIONS</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;background:linear-gradient(180deg,#1E2622,#121715);color:#E9EEEC;font:500 13px 'General Sans',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 0 1px #242C28,0 10px 22px rgba(0,0,0,.45);transition:color 300ms ease,box-shadow 300ms ease" style-hover="color:#8FD8C8;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 0 1px #2E4A42,0 12px 26px rgba(0,0,0,.55)">Start a project</div>
+          <div style="height:42px;display:flex;align-items:center;padding:0 20px;color:#E9EEEC;font:500 13px 'General Sans',sans-serif;box-shadow:inset 0 0 0 1px #242C28;transition:box-shadow 300ms ease" style-hover="box-shadow:inset 0 0 0 1px #45C4AC">Showreel</div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#45C4AC;letter-spacing:.08em;border-bottom:1px solid rgba(69,196,172,.35);padding-bottom:2px">ALL WORK →</div>
+        </div>
+      </div>
+      <div style="padding:26px 36px;border-bottom:1px solid #191E1C">
+        <div style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.12em;margin-bottom:16px">FIELD / FOCUSED</div>
+        <div style="height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#0E1110;box-shadow:0 0 0 1px #45C4AC,0 0 20px rgba(69,196,172,.18);font:400 13px 'General Sans',sans-serif;color:#E9EEEC">hello@atoll.studio<span style="color:#45C4AC;animation:dvBlink 1.1s steps(1) infinite">▏</span></div>
+        <div style="font:400 11px 'IBM Plex Mono',monospace;color:#7E8783;margin-top:8px">focus ring = overtone, 1px + bloom</div>
+      </div>
+      <div style="padding:26px 36px;border-right:1px solid #191E1C">
+        <div style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.12em;margin-bottom:16px">OVERTONE TAGS</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="padding:6px 12px;font:500 11px 'IBM Plex Mono',monospace;color:#8FD8C8;box-shadow:inset 0 0 0 1px rgba(69,196,172,.4);background:linear-gradient(160deg,rgba(18,59,51,.35),transparent)">PEACOCK</span>
+          <span style="padding:6px 12px;font:500 11px 'IBM Plex Mono',monospace;color:#C3B4E8;box-shadow:inset 0 0 0 1px rgba(124,100,176,.45);background:linear-gradient(160deg,rgba(43,33,64,.4),transparent)">AUBERGINE</span>
+          <span style="padding:6px 12px;font:500 11px 'IBM Plex Mono',monospace;color:#9CC4DE;box-shadow:inset 0 0 0 1px rgba(76,144,188,.4);background:linear-gradient(160deg,rgba(23,48,63,.4),transparent)">STEEL</span>
+        </div>
+      </div>
+      <div style="padding:26px 36px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font:500 10px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.12em;margin-bottom:10px">MOTION_REDUCED</div>
+          <div style="font:400 12px 'General Sans',sans-serif;color:#AEB7B3">Luster drift honors prefers-reduced-motion</div>
+        </div>
+        <div style="width:46px;height:26px;border-radius:999px;background:linear-gradient(160deg,#123B33,#1F6D5C);position:relative;box-shadow:inset 0 1px 2px rgba(0,0,0,.5)"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F4F6F3,#B9C6BD);box-shadow:0 1px 3px rgba(0,0,0,.5)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 6d SOUTH SEA — screen 2: atelier elements ============ -->
+<div class="dv-opt" id="6d">
+  <div class="dv-olabel"><a class="dv-oid" href="#6d">6d</a><strong>South Sea — screen 2, atelier elements</strong> (champagne): the amber-brown CTA family from your photo, hairline fields, stepper, badges — with the heavier warm grain. <span class="dv-fontnote">same tokens as <a class="dv-oid" href="#3c">3c</a></span></div>
+  <div class="dv-card" style="width:980px;background:#F8F3EA;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.09;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 44px;border-bottom:1px solid #E3D8C2;position:relative;z-index:6">
+      <div style="font:500 18px/1 'Zodiak',serif;color:#241D12;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em">ATELIER — COMMON ELEMENTS</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:6">
+      <div style="padding:30px 44px;border-right:1px solid #E3D8C2;border-bottom:1px solid #E3D8C2">
+        <div style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em;margin-bottom:16px">ACTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:300px">
+          <div style="height:50px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#7A5426,#5C3D1A);color:#F7EDD9;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 10px 20px rgba(92,61,26,.22);transition:letter-spacing 400ms ease,box-shadow 400ms ease" style-hover="letter-spacing:.22em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 14px 26px rgba(92,61,26,.3)">ADD TO BAG</div>
+          <div style="height:50px;display:flex;align-items:center;justify-content:center;border:1px solid #241D12;color:#241D12;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;transition:background 400ms ease,color 400ms ease" style-hover="background:#241D12;color:#F4EEDF">RESERVE IN BOUTIQUE</div>
+          <div style="align-self:center;font:500 11px 'General Sans',sans-serif;color:#241D12;letter-spacing:.14em;border-bottom:1px solid #B9A984;padding-bottom:4px">BOOK A PRIVATE VIEWING</div>
+        </div>
+      </div>
+      <div style="padding:30px 44px;border-bottom:1px solid #E3D8C2">
+        <div style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em;margin-bottom:16px">FIELDS</div>
+        <div style="max-width:320px">
+          <div style="font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.16em;margin-bottom:8px">EMAIL FOR THE WAITLIST</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #241D12;padding:0 0 10px"><span style="font:400 15px 'Zodiak',serif;font-style:italic;color:#8B7F6A">your@address.com</span><span style="font:500 11px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.14em">JOIN →</span></div>
+          <div style="display:flex;align-items:center;gap:18px;margin-top:24px">
+            <div style="display:flex;align-items:center;border:1px solid #D8CBAF"><span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">−</span><span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#241D12;font:500 13px 'General Sans',sans-serif;border-left:1px solid #D8CBAF;border-right:1px solid #D8CBAF">1</span><span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#7A6E5C;font-size:14px">+</span></div>
+            <span style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.16em">QUANTITY</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:26px 44px;grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;gap:10px">
+          <span style="padding:6px 12px;border:1px solid #D8CBAF;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em">Nº 04</span>
+          <span style="padding:6px 12px;background:#241D12;color:#F4EEDF;font:500 10px 'General Sans',sans-serif;letter-spacing:.14em">LAST TWO</span>
+          <span style="padding:6px 12px;border:1px solid #D8CBAF;font:500 10px 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em"><span style="color:#5E7A45">●</span> IN THE VAULT</span>
+        </div>
+        <div style="font:400 13px 'Zodiak',serif;font-style:italic;color:#8B7F6A">Every element earns its silence.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "secure all four — build the four full pages + token spec" · "Freshwater still needs X" · "tune the amber" · "grain level on South Sea"</p>
+</section>
+
+<section class="dv-turn" id="t5">
+<div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">Pearl 4c refined — nav + wordmark re-typed away from Tahitian, Zodiak italic (Canela stand-in), subtle film grain</span></div>
+<p class="dv-tsub">Three notes addressed. (1) The top nav no longer shares Tahitian's mono voice: the wordmark is now an editorial italic lockup, the links are sentence-case General Sans with a hairline rule — quiet, printed, not console-y. (2) The display italic moves from Gambetta to <strong>Zodiak</strong> — a high-contrast free serif that reads much closer to Canela; I kept your tightened tracking. Licensed ideal stays <strong>Canela</strong> (swap is one token). (3) A faint film grain now sits over the whole Pearl surface — kept very subtle so it stays "porcelain," not "poster." My take below on Pearl vs. South Sea for grain.</p>
+<div class="dv-opts">
+
+<!-- ============ 5a PEARL — canon refined ============ -->
+<div class="dv-opt" id="5a">
+  <div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a><strong>Pearl — canon, refined.</strong> Editorial italic wordmark + sentence-case nav (distinct from Tahitian's mono), Gambetta display italic (restored), ambient sphere, faint film grain. <span class="dv-fontnote">shown: General Sans + Gambetta italic + IBM Plex Mono (free) · ideal: Neue Haas Grotesk + Signifier italic + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F5F3EF;position:relative">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:multiply;background:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 40px;border-bottom:1px solid #DEDAD2;position:relative;z-index:6">
+      <div style="font:400 26px/1 'Gambetta',serif;font-style:italic;color:#17161A;letter-spacing:-.02em">pearl<span style="font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;vertical-align:super;color:#9B96A8;letter-spacing:0;margin-left:1px">®</span></div>
+      <div style="display:flex;align-items:center;gap:26px;font:450 13px/1 'General Sans',sans-serif;color:#5C5866">
+        <span>Foundations</span><span>Components</span><span>Themes</span><span>Playground</span>
+        <span style="display:inline-block;width:1px;height:12px;background:#CFCABF"></span>
+        <span style="color:#17161A">GitHub ↗</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:64px 40px 0;position:relative;z-index:6">
+      <div>
+        <div style="font:500 11px/1 'IBM Plex Mono',monospace;color:#77737E;letter-spacing:.14em;margin-bottom:28px">A DESIGN SYSTEM FOR IDENTITIES THAT REFUSE SAMENESS</div>
+        <div style="font:500 84px/1.02 'General Sans',sans-serif;color:#17161A;letter-spacing:-.04em;max-width:640px">The world is your <span style="font-family:'Gambetta',serif;font-style:italic;font-weight:400;letter-spacing:-.055em">oyster.</span></div>
+      </div>
+      <div style="flex:none;padding-top:12px">
+        <div style="width:168px;height:168px;border-radius:50%;background:linear-gradient(115deg,transparent 32%,rgba(158,214,196,.38) 44%,rgba(214,228,255,.42) 52%,rgba(255,214,236,.30) 60%,transparent 72%) no-repeat,radial-gradient(circle at 34% 30%,#FEFEFC 0%,#F0EFEC 26%,#DEE3DF 50%,#C3CCC6 72%,#A9B4AD 100%);background-size:260% 260%,100% 100%;background-position:118% 0,center;box-shadow:0 18px 40px rgba(70,80,76,.22),inset 0 -8px 22px rgba(143,160,151,.30),inset 6px 4px 18px rgba(214,205,192,.18);animation:dvOrb 9s ease-in-out infinite"></div>
+        <div style="width:130px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(70,80,76,.28),transparent 68%);margin:14px auto 0"></div>
+      </div>
+    </div>
+    <div style="padding:0 40px;position:relative;z-index:6">
+      <div style="height:1px;margin:44px 0 0;background:linear-gradient(90deg,#D6E4DD,#CFE0EA,#EAE0CC,#E8D2DC 80%,transparent);background-size:180% 100%;animation:dvLuster 12s ease-in-out infinite"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:28px 0 44px">
+        <div style="font:400 15px/1.6 'General Sans',sans-serif;color:#6E6A78;max-width:420px">An open-source system engineered to be cloned, re-tokened, and made unrecognizably someone else's.</div>
+        <div style="display:flex;gap:10px">
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;background:linear-gradient(180deg,#26252C,#17161A);color:#F5F3EF;border-radius:3px;font:500 14px 'General Sans',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 3px rgba(23,22,26,.3),0 12px 22px rgba(23,22,26,.2)">Read the docs</div>
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;border:1px solid #D8D4CC;color:#17161A;border-radius:3px;font:500 14px 'General Sans',sans-serif;background:linear-gradient(180deg,#FDFCFA,#F3F1EC);box-shadow:0 1px 2px rgba(23,22,26,.06);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#A9B4AD;box-shadow:0 2px 6px rgba(23,22,26,.1)">Open playground</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #DEDAD2;position:relative;z-index:6">
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">01</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Token contract</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">02</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Three registers</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">03</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Override contract</div></div>
+      <div style="padding:20px 40px"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">04</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">A11y as a feature</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next"><strong>Grain — my take:</strong> keep a <em>faint</em> grain on Pearl (it reads as paper/porcelain tooth and warms the flat off-white — as shown here at 5%), and save a heavier, warmer film grain for South Sea, where it becomes a deliberate luxury-print texture over the champagne. Different intent, same token (<code>--texture-grain</code>) at two intensities. · Try next: "push/kill Pearl grain" · "add the South Sea grain to <a class="dv-oid" href="#1g">1g</a>" · "lock <a class="dv-oid" href="#5a">5a</a>, build the full docs site"</p>
+</section>
+
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Tahitian secured (real nacre imagery, animated luster, TAHITIAN wordmark) + the light-mode proof + Pearl canonized (<a class="dv-oid" href="#1a">1a</a> layout × <a class="dv-oid" href="#1b">1b</a> vibe)</span></div>
+<p class="dv-tsub">Dark stays Tahitian's default on load; <a class="dv-oid" href="#4b">4b</a> proves the same contract holds in light — the plates keep their dark nacre (they're the brand), only the chrome flips. The plates now sit on real shell photography from your repo with a slow-drifting overtone sweep modeled on the black pearl you attached: green body, a pink mid-band, dark rim. <a class="dv-oid" href="#4c">4c</a> canonizes Pearl — <a class="dv-oid" href="#1a">1a</a>'s editorial layout, <a class="dv-oid" href="#1b">1b</a>'s porcelain palette, and the sphere (now ambient-animated, with its ground shadow) as the brand object. Freshwater's delta chip and South Sea's CTA also picked up their first motion tokens.</p>
+<div class="dv-opts">
+
+<!-- ============ 4a TAHITIAN — Overtone Plates, secured (dark default) ============ -->
+<div class="dv-opt" id="4a">
+  <div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a><strong>Tahitian — "Overtone Plates"</strong> (dark, default on load): real abalone / nacre photography under duotone overtone glass; the luster drifts slowly, like turning the pearl in your hand. <span class="dv-fontnote">shown: Instrument Serif + General Sans (free) · ideal: Editorial New + Neue Montreal (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#0A0C0B">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 36px;border-bottom:1px solid #191E1C">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%);box-shadow:0 2px 6px rgba(0,0,0,.5)"></div>
+        <span style="font:600 14px/1 'General Sans',sans-serif;color:#E9EEEC;letter-spacing:.3em">TAHITIAN</span>
+      </div>
+      <div style="display:flex;gap:24px;font:500 11px/1 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.06em"><span>INDEX</span><span>STUDIO</span><span>JOURNAL</span><span style="color:#45C4AC">ALL WORK (34)</span></div>
+    </div>
+    <div style="padding:54px 36px 42px">
+      <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.14em;margin-bottom:24px">EXPERIMENTAL PRACTICE — PAPEETE / TOKYO</div>
+      <div style="font:400 76px/1.04 'Instrument Serif',serif;color:#E9EEEC;letter-spacing:-.01em;max-width:780px">Seen once, <em style="font-style:italic;color:#8FD8C8">never the same twice.</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#191E1C;border-top:1px solid #191E1C">
+      <div style="position:relative;height:216px;overflow:hidden">
+        <img src="./images/abalone.jpg" alt="abalone nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.75)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(9,13,11,.9) 6%,rgba(18,59,51,.68) 52%,rgba(31,109,92,.38) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(143,216,200,.30) 44%,rgba(232,178,208,.24) 55%,rgba(127,168,232,.18) 64%,transparent 78%);background-size:230% 230%;animation:dvLuster 9s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -40px 52px rgba(4,7,6,.6)"></div>
+        <div style="position:absolute;inset:0;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#B9CDC6;letter-spacing:.1em"><span>01</span><span>IDENTITY / 2026</span></div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#F2F7F5">Kōura Fine Jewelry</div>
+        </div>
+      </div>
+      <div style="position:relative;height:216px;overflow:hidden">
+        <img src="./images/iridescent.jpg" alt="iridescent nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.7)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(13,11,17,.9) 6%,rgba(43,33,64,.68) 52%,rgba(74,58,107,.4) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(180,160,224,.30) 44%,rgba(232,178,208,.24) 55%,rgba(143,216,200,.16) 64%,transparent 78%);background-size:230% 230%;animation:dvLuster 11s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -40px 52px rgba(5,4,8,.6)"></div>
+        <div style="position:absolute;inset:0;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#C3BAD8;letter-spacing:.1em"><span>02</span><span>DIGITAL / 2025</span></div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#F4F1F9">Ultramarine Records</div>
+        </div>
+      </div>
+      <div style="position:relative;height:216px;overflow:hidden">
+        <img src="./images/mother-of-pearl.jpg" alt="mother of pearl" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) brightness(.7)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(10,13,15,.9) 6%,rgba(23,48,63,.68) 52%,rgba(43,91,122,.4) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(140,190,224,.30) 44%,rgba(232,178,208,.22) 55%,rgba(143,216,200,.16) 64%,transparent 78%);background-size:230% 230%;animation:dvLuster 13s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -40px 52px rgba(4,6,8,.6)"></div>
+        <div style="position:absolute;inset:0;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#B4C8D4;letter-spacing:.1em"><span>03</span><span>EXHIBITION / 2025</span></div>
+          <div style="font:500 17px 'General Sans',sans-serif;color:#F0F5F8">Mono No Aware</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 36px;border-top:1px solid #191E1C;font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.08em">
+      <span>BRAND SYSTEMS / ART DIRECTION / WEBGL</span><span style="color:#45C4AC">SHOWREEL ’26 ▶</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 4b TAHITIAN — Light-mode proof ============ -->
+<div class="dv-opt" id="4b">
+  <div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a><strong>Tahitian — light mode</strong> (same contract): the chrome flips to porcelain-grey, accents deepen for AA; the plates stay dark nacre — the brand object doesn't bleach. <span class="dv-fontnote">same tokens, mode-flipped</span></div>
+  <div class="dv-card" style="width:980px;background:#F2F4F3">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 36px;border-bottom:1px solid #DFE4E2">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 36% 28%,rgba(214,232,226,.95),transparent 42%),radial-gradient(circle at 62% 76%,rgba(216,164,192,.4),transparent 52%),radial-gradient(circle at 50% 50%,#3A4642 20%,#161C1A 85%);box-shadow:0 2px 6px rgba(20,30,27,.35)"></div>
+        <span style="font:600 14px/1 'General Sans',sans-serif;color:#141917;letter-spacing:.3em">TAHITIAN</span>
+      </div>
+      <div style="display:flex;gap:24px;font:500 11px/1 'IBM Plex Mono',monospace;color:#6C7672;letter-spacing:.06em"><span>INDEX</span><span>STUDIO</span><span>JOURNAL</span><span style="color:#0F7A66">ALL WORK (34)</span></div>
+    </div>
+    <div style="padding:44px 36px 34px">
+      <div style="font:500 11px 'IBM Plex Mono',monospace;color:#6C7672;letter-spacing:.14em;margin-bottom:20px">LIGHT MODE — SAME TOKEN CONTRACT</div>
+      <div style="font:400 56px/1.06 'Instrument Serif',serif;color:#141917;letter-spacing:-.01em;max-width:720px">Same pearl, <em style="font-style:italic;color:#0F7A66">held to daylight.</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#DFE4E2;border-top:1px solid #DFE4E2">
+      <div style="position:relative;height:192px;overflow:hidden">
+        <img src="./images/abalone.jpg" alt="abalone nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.78)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(9,13,11,.86) 6%,rgba(18,59,51,.6) 52%,rgba(31,109,92,.34) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(143,216,200,.30) 44%,rgba(232,178,208,.24) 55%,transparent 76%);background-size:230% 230%;animation:dvLuster 9s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#B9CDC6;letter-spacing:.1em"><span>01</span><span>IDENTITY / 2026</span></div>
+          <div style="font:500 16px 'General Sans',sans-serif;color:#F2F7F5">Kōura Fine Jewelry</div>
+        </div>
+      </div>
+      <div style="position:relative;height:192px;overflow:hidden">
+        <img src="./images/iridescent.jpg" alt="iridescent nacre" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.72)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(13,11,17,.86) 6%,rgba(43,33,64,.6) 52%,rgba(74,58,107,.36) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(180,160,224,.30) 44%,rgba(232,178,208,.24) 55%,transparent 76%);background-size:230% 230%;animation:dvLuster 11s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#C3BAD8;letter-spacing:.1em"><span>02</span><span>DIGITAL / 2025</span></div>
+          <div style="font:500 16px 'General Sans',sans-serif;color:#F4F1F9">Ultramarine Records</div>
+        </div>
+      </div>
+      <div style="position:relative;height:192px;overflow:hidden">
+        <img src="./images/mother-of-pearl.jpg" alt="mother of pearl" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) brightness(.72)">
+        <div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(10,13,15,.86) 6%,rgba(23,48,63,.6) 52%,rgba(43,91,122,.36) 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(140,190,224,.30) 44%,rgba(232,178,208,.22) 55%,transparent 76%);background-size:230% 230%;animation:dvLuster 13s ease-in-out infinite;mix-blend-mode:screen"></div>
+        <div style="position:absolute;inset:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#B4C8D4;letter-spacing:.1em"><span>03</span><span>EXHIBITION / 2025</span></div>
+          <div style="font:500 16px 'General Sans',sans-serif;color:#F0F5F8">Mono No Aware</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 36px;border-top:1px solid #DFE4E2;font:500 11px 'IBM Plex Mono',monospace;color:#6C7672;letter-spacing:.08em">
+      <span>BRAND SYSTEMS / ART DIRECTION / WEBGL</span><span style="color:#0F7A66">SHOWREEL ’26 ▶</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 4c PEARL — Canon (1a layout × 1b vibe) ============ -->
+<div class="dv-opt" id="4c">
+  <div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a><strong>Pearl — canon.</strong> <a class="dv-oid" href="#1a">1a</a>'s editorial layout on <a class="dv-oid" href="#1b">1b</a>'s porcelain palette; the sphere is now the brand object — ambient luster drift, ground shadow, sea-green undertone. <span class="dv-fontnote">shown: General Sans + IBM Plex Mono + Gambetta italic (free) · ideal: Neue Haas Grotesk + Söhne Mono + Signifier (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F5F3EF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px;border-bottom:1px solid #DEDAD2">
+      <div style="font:600 15px/1 'General Sans',sans-serif;color:#17161A;letter-spacing:.34em">P E A R L</div>
+      <div style="display:flex;gap:28px;font:500 11px/1 'IBM Plex Mono',monospace;color:#77737E;letter-spacing:.04em"><span>INDEX</span><span>FOUNDATIONS</span><span>COMPONENTS</span><span>PLAYGROUND</span><span style="color:#17161A">GITHUB ↗</span></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:64px 40px 0">
+      <div>
+        <div style="font:500 11px/1 'IBM Plex Mono',monospace;color:#77737E;letter-spacing:.14em;margin-bottom:28px">A DESIGN SYSTEM FOR IDENTITIES THAT REFUSE SAMENESS</div>
+        <div style="font:500 84px/1.02 'General Sans',sans-serif;color:#17161A;letter-spacing:-.04em;max-width:640px">The world is your <span style="font-family: 'Gambetta',serif; font-style: italic; font-weight: 400; letter-spacing: -6px">oyster.</span></div>
+      </div>
+      <div style="flex:none;padding-top:12px">
+        <div style="width:168px;height:168px;border-radius:50%;background:linear-gradient(115deg,transparent 32%,rgba(158,214,196,.38) 44%,rgba(214,228,255,.42) 52%,rgba(255,214,236,.30) 60%,transparent 72%) no-repeat,radial-gradient(circle at 34% 30%,#FEFEFC 0%,#F0EFEC 26%,#DEE3DF 50%,#C3CCC6 72%,#A9B4AD 100%);background-size:260% 260%,100% 100%;background-position:118% 0,center;box-shadow:0 18px 40px rgba(70,80,76,.22),inset 0 -8px 22px rgba(143,160,151,.30),inset 6px 4px 18px rgba(214,205,192,.18);animation:dvOrb 9s ease-in-out infinite"></div>
+        <div style="width:130px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(70,80,76,.28),transparent 68%);margin:14px auto 0"></div>
+      </div>
+    </div>
+    <div style="padding:0 40px">
+      <div style="height:1px;margin:44px 0 0;background:linear-gradient(90deg,#D6E4DD,#CFE0EA,#EAE0CC,#E8D2DC 80%,transparent);background-size:180% 100%;animation:dvLuster 12s ease-in-out infinite"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:28px 0 44px">
+        <div style="font:400 15px/1.6 'General Sans',sans-serif;color:#6E6A78;max-width:420px">An open-source system engineered to be cloned, re-tokened, and made unrecognizably someone else's.</div>
+        <div style="display:flex;gap:10px">
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;background:linear-gradient(180deg,#26252C,#17161A);color:#F5F3EF;border-radius:3px;font:500 14px 'General Sans',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(23,22,26,.3),0 8px 16px rgba(23,22,26,.14);transition:transform 300ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease" style-hover="transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 3px rgba(23,22,26,.3),0 12px 22px rgba(23,22,26,.2)">Read the docs</div>
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;border:1px solid #D8D4CC;color:#17161A;border-radius:3px;font:500 14px 'General Sans',sans-serif;background:linear-gradient(180deg,#FDFCFA,#F3F1EC);box-shadow:0 1px 2px rgba(23,22,26,.06);transition:border-color 300ms ease,box-shadow 300ms ease" style-hover="border-color:#A9B4AD;box-shadow:0 2px 6px rgba(23,22,26,.1)">Open playground</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #DEDAD2">
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">01</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Token contract</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">02</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Three registers</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #DEDAD2"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">03</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Override contract</div></div>
+      <div style="padding:20px 40px"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#77737E">04</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">A11y as a feature</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "lock <a class="dv-oid" href="#4a">4a</a> + <a class="dv-oid" href="#4c">4c</a>, build the full pages" · "push the plate luster further / dial it back" · "same finesse pass on <a class="dv-oid" href="#3a">3a</a>'s full page next"</p>
+</section>
+
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Comment round — Freshwater merged (<a class="dv-oid" href="#2b">2b</a> body, <a class="dv-oid" href="#2a">2a</a> voice) + new ideas for Tahitian and South Sea</span></div>
+<p class="dv-tsub">Scrapped and removed per your comments: 1c, 1e, 1h, 2c. Pearl locks to <a class="dv-oid" href="#1b">1b</a> exactly as-is for corporate use. <a class="dv-oid" href="#3b">3b</a> replaces the Tahitian direction — the iridescence moves out of the display type and into the work itself. South Sea keeps <a class="dv-oid" href="#1g">1g</a> as the flagship; <a class="dv-oid" href="#3c">3c</a> is its second act.</p>
+<div class="dv-opts">
+
+<!-- ============ 3a FRESHWATER — Baroque Ops (2a × 2b merge) ============ -->
+<div class="dv-opt" id="3a">
+  <div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a><strong>Freshwater — "Baroque Ops"</strong> (light): <a class="dv-oid" href="#2b">2b</a>'s oversized numerals and iridescent flashes wearing <a class="dv-oid" href="#2a">2a</a>'s FRESHWTR_OPS voice. <span class="dv-fontnote">shown: Space Grotesk + Azeret Mono (free) · ideal: Söhne Breit + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FDFDFD">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 32px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font:600 16px 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+        <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.08em">v4.2.0 / US-EAST</div>
+      </div>
+      <div style="display:flex;gap:20px;font:500 11px 'Azeret Mono',monospace;color:#8A8F94"><span style="color:#0E0F10;border-bottom:2px solid #33CCFF;padding-bottom:2px">TODAY</span><span>7D</span><span>30D</span><span>QTD</span><span>CUSTOM</span></div>
+    </div>
+    <div style="border-top:2px solid #0E0F10;display:grid;grid-template-columns:1.25fr 1fr">
+      <div style="padding:36px 32px;border-right:1px solid #E8EAEB">
+        <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:14px">THROUGHPUT_24H</div>
+        <div style="font:600 96px/0.95 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.04em;font-variant-numeric:tabular-nums">18.4<span style="font-size:44px;color:#9BA0A5">k</span></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px">
+          <span style="font:600 12px 'Azeret Mono',monospace;color:#0E0F10;background:linear-gradient(95deg,#B8F2FF,#E1FAFF,#CBEFFA,#B8F2FF);background-size:220% 100%;animation:dvLuster 7s ease-in-out infinite;padding:5px 10px">▲ +2.1% TODAY</span>
+          <span style="font:400 12px 'Space Grotesk',sans-serif;color:#8A8F94">synced 4 min ago</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:88px;margin-top:34px">
+          <div style="flex:1;height:34%;background:#E8EAEB"></div><div style="flex:1;height:48%;background:#E8EAEB"></div><div style="flex:1;height:41%;background:#E8EAEB"></div><div style="flex:1;height:58%;background:#E8EAEB"></div><div style="flex:1;height:52%;background:#E8EAEB"></div><div style="flex:1;height:66%;background:#E8EAEB"></div><div style="flex:1;height:74%;background:#E8EAEB"></div><div style="flex:1;height:69%;background:#E8EAEB"></div><div style="flex:1;height:82%;background:#E8EAEB"></div><div style="flex:1;height:90%;background:linear-gradient(180deg,#33CCFF,#7FE8FF)"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ACTIVE_VESSELS</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">247</div></div>
+          <span style="font:500 11px 'Azeret Mono',monospace;color:#00A3CC">▲ 12</span>
+        </div>
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ON_TIME</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">94.2<span style="font-size:14px;color:#9BA0A5">%</span></div></div>
+          <span style="font:500 11px 'Azeret Mono',monospace;color:#00A3CC">▲ 0.8</span>
+        </div>
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">NEEDS_TRIAGE</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">12</div></div>
+          <span style="height:30px;display:flex;align-items:center;padding:0 12px;background:#0E0F10;color:#5FE1FF;font:600 11px 'Azeret Mono',monospace">TRIAGE →</span>
+        </div>
+        <div style="flex:1;padding:22px 28px;background:linear-gradient(120deg,#F2FCFF 0%,#FDFDFD 55%,#FFF5FB 100%)">
+          <div style="font:500 10px 'Azeret Mono',monospace;color:#0089B3;letter-spacing:.1em;margin-bottom:8px">ANOMALY_DETECTED</div>
+          <div style="font:500 13px/1.5 'Space Grotesk',sans-serif;color:#0E0F10">Rotterdam berth wait 2.4× above 90-day median. <span style="border-bottom:1px solid #33CCFF">Inspect</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 3b TAHITIAN — Overtone Plates ============ -->
+<div class="dv-opt" id="3b">
+  <div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a><strong>Tahitian — "Overtone Plates"</strong> (dark): replaces 1c — no gradient display type; the iridescence lives in the work, as duotone project plates over a near-black lagoon. <span class="dv-fontnote">shown: Instrument Serif + General Sans (free) · ideal: Editorial New + Neue Montreal (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#0A0C0B">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 36px;border-bottom:1px solid #191E1C">
+      <div style="font:600 15px/1 'General Sans',sans-serif;color:#E9EEEC;letter-spacing:.02em">atoll<span style="color:#45C4AC">—</span>archive</div>
+      <div style="display:flex;gap:24px;font:500 11px/1 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.06em"><span>INDEX</span><span>STUDIO</span><span>JOURNAL</span><span style="color:#45C4AC">ALL WORK (34)</span></div>
+    </div>
+    <div style="padding:54px 36px 42px">
+      <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.14em;margin-bottom:24px">EXPERIMENTAL PRACTICE — PAPEETE / TOKYO</div>
+      <div style="font:400 76px/1.04 'Instrument Serif',serif;color:#E9EEEC;letter-spacing:-.01em;max-width:780px">Seen once, <em style="font-style:italic;color:#8FD8C8">never the same twice.</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#191E1C;border-top:1px solid #191E1C">
+      <div style="height:216px;background:linear-gradient(160deg,#0E1412 10%,#123B33 62%,#1F6D5C);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box" style-hover="background:linear-gradient(160deg,#123B33 10%,#1F6D5C 62%,#45C4AC)">
+        <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#9FB5AD;letter-spacing:.1em"><span>01</span><span>IDENTITY / 2026</span></div>
+        <div style="font:500 17px 'General Sans',sans-serif;color:#EDF4F1">Kōura Fine Jewelry</div>
+      </div>
+      <div style="height:216px;background:linear-gradient(160deg,#100F14 10%,#2B2140 62%,#4A3A6B);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box" style-hover="background:linear-gradient(160deg,#2B2140 10%,#4A3A6B 62%,#7C64B0)">
+        <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#ACA3C4;letter-spacing:.1em"><span>02</span><span>DIGITAL / 2025</span></div>
+        <div style="font:500 17px 'General Sans',sans-serif;color:#F0EDF6">Ultramarine Records</div>
+      </div>
+      <div style="height:216px;background:linear-gradient(160deg,#0D1214 10%,#17303F 62%,#2B5B7A);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box" style-hover="background:linear-gradient(160deg,#17303F 10%,#2B5B7A 62%,#4C90BC)">
+        <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:#9AB4C4;letter-spacing:.1em"><span>03</span><span>EXHIBITION / 2025</span></div>
+        <div style="font:500 17px 'General Sans',sans-serif;color:#EDF3F6">Mono No Aware</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 36px;border-top:1px solid #191E1C;font:500 11px 'IBM Plex Mono',monospace;color:#7E8783;letter-spacing:.08em">
+      <span>BRAND SYSTEMS / ART DIRECTION / WEBGL</span><span style="color:#45C4AC">SHOWREEL ’26 ▶</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 3c SOUTH SEA — Atelier Detail ============ -->
+<div class="dv-opt" id="3c">
+  <div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a><strong>South Sea — "Atelier Detail"</strong> (light champagne): <a class="dv-oid" href="#1g">1g</a> stays as the flagship hero; this is its second act — the product page, proving the whitespace luxury survives commerce mechanics. <span class="dv-fontnote">shown: Zodiak + General Sans (free) · ideal: Canela + Söhne (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F8F3EA">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 44px">
+      <div style="font:500 11px/1 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em">← THE MERIDIAN COLLECTION</div>
+      <div style="font:500 20px/1 'Zodiak',serif;color:#241D12;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="font:500 11px/1 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em">BAG (2)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:48px;padding:12px 44px 52px;align-items:start">
+      <div>
+        <img src="./golden-pearl-mrqnuly2-0bl6.jpg" alt="Strand Nº 04 — golden South Sea pearls" style="width:100%;height:540px;object-fit:cover;display:block">
+        <div style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.18em;margin-top:12px">PINCTADA MAXIMA — BROOME, W. AUSTRALIA</div>
+      </div>
+      <div style="padding-top:8px">
+        <div style="font:500 11px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em;margin-bottom:16px">Nº 04 — MERIDIAN</div>
+        <div style="font:400 52px/1.05 'Zodiak',serif;color:#241D12;letter-spacing:-.01em">Strand Nº 04</div>
+        <div style="display:flex;align-items:baseline;gap:14px;margin-top:14px">
+          <span style="font:500 13px 'General Sans',sans-serif;color:#241D12;letter-spacing:.1em">FROM $14,800</span>
+          <span style="font:400 12px 'General Sans',sans-serif;color:#8B7F6A">or 4 × $3,700</span>
+        </div>
+        <div style="font:400 14px/1.7 'General Sans',sans-serif;color:#6E6250;max-width:380px;margin-top:18px">Thirty-one golden pearls, matched over two harvests and strung by hand on silk. Each strand ships with its grading dossier and the farm's coordinates.</div>
+        <div style="margin-top:26px">
+          <div style="font:500 10px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em;margin-bottom:10px">DIAMETER</div>
+          <div style="display:flex;gap:8px">
+            <div style="height:40px;padding:0 16px;display:flex;align-items:center;border:1px solid #D8CBAF;color:#6E6250;font:500 12px 'General Sans',sans-serif">12 mm</div>
+            <div style="height:40px;padding:0 16px;display:flex;align-items:center;background:#241D12;color:#F4EEDF;font:500 12px 'General Sans',sans-serif">13 mm</div>
+            <div style="height:40px;padding:0 16px;display:flex;align-items:center;border:1px solid #D8CBAF;color:#6E6250;font:500 12px 'General Sans',sans-serif">14 mm</div>
+            <div style="height:40px;padding:0 16px;display:flex;align-items:center;border:1px solid #D8CBAF;color:#6E6250;font:500 12px 'General Sans',sans-serif">15 mm</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:28px">
+          <div style="height:52px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#7A5426,#5C3D1A);color:#F7EDD9;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 10px 20px rgba(92,61,26,.22);transition:letter-spacing 400ms ease,box-shadow 400ms ease" style-hover="letter-spacing:.22em;box-shadow:inset 0 1px 0 rgba(255,224,170,.3),0 14px 26px rgba(92,61,26,.3)">ADD TO BAG — $14,800</div>
+          <div style="align-self:center;font:500 11px 'General Sans',sans-serif;color:#241D12;letter-spacing:.14em;border-bottom:1px solid #B9A984;padding-bottom:4px">BOOK A PRIVATE VIEWING</div>
+        </div>
+        <div style="margin-top:30px;border-top:1px solid #E3D8C2">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #E3D8C2;font:500 12px 'General Sans',sans-serif;color:#241D12;letter-spacing:.1em"><span>PROVENANCE &amp; GRADING</span><span style="color:#A98D55">+</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #E3D8C2;font:500 12px 'General Sans',sans-serif;color:#241D12;letter-spacing:.1em"><span>CRAFT &amp; SETTING</span><span style="color:#A98D55">+</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;font:500 12px 'General Sans',sans-serif;color:#241D12;letter-spacing:.1em"><span>CARE, EXCHANGE &amp; GUARANTEE</span><span style="color:#A98D55">+</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "lock <a class="dv-oid" href="#3a">3a</a>, build the full Freshwater page" · "another Tahitian angle" · "full Pearl docs site from <a class="dv-oid" href="#1b">1b</a>, light + dark"</p>
+</section>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Freshwater overhauled ("fun technical", neon-blue nacre)</span></div>
+<p class="dv-tsub">Freshwater now takes its cue from the baroque pearl you attached: stark white + black typography, with the pearl's electric ice-blue flashing at interaction points — crisp, technical, a little playful. <a class="dv-oid" href="#1b">1b</a>'s sphere now carries a sea-green hint and a hover shimmer (try it).</p>
+<div class="dv-opts">
+
+<!-- ============ 2a FRESHWATER — Ice Console ============ -->
+<div class="dv-opt" id="2a">
+  <div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a><strong>Freshwater — "Ice Console"</strong> (light): stark B/W ops console; neon ice-blue only where the system speaks — statuses, deltas, selection. <span class="dv-fontnote">shown: Space Grotesk + Azeret Mono (free) · ideal: Neue Montreal + NM Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FFFFFF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:2px solid #0E0F10">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font:600 16px 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.01em">FRESHWTR<span style="color:#00B8E6">_</span>OPS</div>
+        <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.08em">v4.2.0 / US-EAST</div>
+      </div>
+      <div style="display:flex;gap:2px">
+        <div style="padding:8px 14px;background:#0E0F10;color:#fff;font:500 12px 'Space Grotesk',sans-serif">Fleet</div>
+        <div style="padding:8px 14px;border:1px solid #E3E5E7;color:#0E0F10;font:500 12px 'Space Grotesk',sans-serif">Routes</div>
+        <div style="padding:8px 14px;border:1px solid #E3E5E7;color:#0E0F10;font:500 12px 'Space Grotesk',sans-serif">Alerts <span style="color:#00B8E6">3</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #E3E5E7">
+      <div style="padding:20px 28px;border-right:1px solid #E3E5E7"><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ACTIVE_VESSELS</div><div style="font:600 34px/1.1 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">247</div></div>
+      <div style="padding:20px 28px;border-right:1px solid #E3E5E7"><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">ON_TIME</div><div style="font:600 34px/1.1 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">94.2<span style="font-size:18px;color:#00B8E6">%</span></div></div>
+      <div style="padding:20px 28px;border-right:1px solid #E3E5E7"><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">THROUGHPUT_24H</div><div style="font:600 34px/1.1 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">18.4k <span style="font:500 12px 'Azeret Mono',monospace;color:#00A3CC">▲2.1%</span></div></div>
+      <div style="padding:20px 28px;background:linear-gradient(135deg,#E9FBFF,#F4FDFF 60%,#FFF)"><div style="font:500 10px 'Azeret Mono',monospace;color:#0089B3;letter-spacing:.1em">ATTENTION</div><div style="font:600 34px/1.1 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">12 <span style="font:500 11px 'Azeret Mono',monospace;color:#0089B3">→ TRIAGE</span></div></div>
+    </div>
+    <div style="display:flex;gap:8px;padding:12px 28px;border-bottom:1px solid #E3E5E7;align-items:center">
+      <div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">FILTER //</div>
+      <div style="padding:4px 10px;background:#0E0F10;color:#5FE1FF;font:500 11px 'Azeret Mono',monospace">status:delayed ×</div>
+      <div style="padding:4px 10px;border:1px solid #E3E5E7;color:#0E0F10;font:500 11px 'Azeret Mono',monospace">carrier ▾</div>
+      <div style="padding:4px 10px;border:1px solid #E3E5E7;color:#0E0F10;font:500 11px 'Azeret Mono',monospace">region ▾</div>
+      <div style="margin-left:auto;font:500 11px 'Azeret Mono',monospace;color:#8A8F94">247 RESULTS / 0.04s</div>
+    </div>
+    <div style="display:grid;grid-template-columns:44px 1.5fr .9fr .7fr .8fr .8fr;padding:9px 28px;border-bottom:1px solid #0E0F10;font:600 10px 'Azeret Mono',monospace;color:#0E0F10;letter-spacing:.1em">
+      <span>SEL</span><span>SHIPMENT</span><span>CARRIER</span><span>ETA</span><span>VALUE_USD</span><span>STATUS</span>
+    </div>
+    <div style="display:grid;grid-template-columns:44px 1.5fr .9fr .7fr .8fr .8fr;padding:12px 28px;border-bottom:1px solid #EEF0F1;align-items:center;background:linear-gradient(90deg,#EAFBFF 0%,#FFFFFF 40%)">
+      <span style="color:#00B8E6;font-size:13px">☑</span>
+      <span style="font:500 13px 'Space Grotesk',sans-serif;color:#0E0F10">Busan → Hamburg <span style="font:400 10.5px 'Azeret Mono',monospace;color:#8A8F94">SHP-4818</span></span>
+      <span style="font:400 12px 'Space Grotesk',sans-serif;color:#4A4F54">HMM</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">JUL_21</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">212,900</span>
+      <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0089B3;background:#E1F8FF;padding:3px 8px;justify-self:start">● DELAYED</span>
+    </div>
+    <div style="display:grid;grid-template-columns:44px 1.5fr .9fr .7fr .8fr .8fr;padding:12px 28px;border-bottom:1px solid #EEF0F1;align-items:center">
+      <span style="color:#C9CDD1;font-size:13px">☐</span>
+      <span style="font:500 13px 'Space Grotesk',sans-serif;color:#0E0F10">Shenzhen → Long Beach <span style="font:400 10.5px 'Azeret Mono',monospace;color:#8A8F94">SHP-4820</span></span>
+      <span style="font:400 12px 'Space Grotesk',sans-serif;color:#4A4F54">COSCO</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">JUL_22</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">86,200</span>
+      <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;background:#F1F3F4;padding:3px 8px;justify-self:start">● TRANSIT</span>
+    </div>
+    <div style="display:grid;grid-template-columns:44px 1.5fr .9fr .7fr .8fr .8fr;padding:12px 28px;border-bottom:1px solid #EEF0F1;align-items:center">
+      <span style="color:#C9CDD1;font-size:13px">☐</span>
+      <span style="font:500 13px 'Space Grotesk',sans-serif;color:#0E0F10">Santos → Antwerp <span style="font:400 10.5px 'Azeret Mono',monospace;color:#8A8F94">SHP-4812</span></span>
+      <span style="font:400 12px 'Space Grotesk',sans-serif;color:#4A4F54">Hapag-Lloyd</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">AUG_02</span>
+      <span style="font:500 11.5px 'Azeret Mono',monospace;color:#0E0F10">97,350</span>
+      <span style="font:600 10.5px 'Azeret Mono',monospace;color:#0E0F10;background:#F1F3F4;padding:3px 8px;justify-self:start">● CUSTOMS</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 28px">
+      <div style="display:flex;gap:8px">
+        <div style="height:36px;display:flex;align-items:center;padding:0 16px;background:#0E0F10;color:#fff;font:600 12px 'Space Grotesk',sans-serif">Bulk reroute (1)</div>
+        <div style="height:36px;display:flex;align-items:center;padding:0 16px;border:1px solid #0E0F10;color:#0E0F10;font:600 12px 'Space Grotesk',sans-serif">Export CSV</div>
+      </div>
+      <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94">01—08 / 247 <span style="color:#00B8E6">‹ ›</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 2b FRESHWATER — Baroque Metrics ============ -->
+<div class="dv-opt" id="2b">
+  <div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a><strong>Freshwater — "Baroque Metrics"</strong> (light): same B/W + ice-blue system, more playful — oversized numerals, iridescent flashes borrowed straight from the pearl's interior. <span class="dv-fontnote">shown: Space Grotesk + Azeret Mono (free) · ideal: Söhne Breit + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FDFDFD">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 32px">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;color:#0E0F10">liquidity<span style="background:linear-gradient(95deg,#33CCFF,#7FE8FF 45%,#C9B8FF 75%,#FFB8E1);-webkit-background-clip:text;background-clip:text;color:transparent">.dash</span></div>
+      <div style="display:flex;gap:20px;font:500 11px 'Azeret Mono',monospace;color:#8A8F94"><span style="color:#0E0F10;border-bottom:2px solid #33CCFF;padding-bottom:2px">TODAY</span><span>7D</span><span>30D</span><span>QTD</span><span>CUSTOM</span></div>
+    </div>
+    <div style="border-top:2px solid #0E0F10;display:grid;grid-template-columns:1.25fr 1fr">
+      <div style="padding:36px 32px;border-right:1px solid #E8EAEB">
+        <div style="font:500 11px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em;margin-bottom:14px">NET_CASH_POSITION</div>
+        <div style="font:600 96px/0.95 'Space Grotesk',sans-serif;color:#0E0F10;letter-spacing:-.04em;font-variant-numeric:tabular-nums">$4.82<span style="font-size:44px;color:#9BA0A5">M</span></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px">
+          <span style="font:600 12px 'Azeret Mono',monospace;color:#0E0F10;background:linear-gradient(95deg,#B8F2FF,#E1FAFF);padding:5px 10px">▲ +$212K TODAY</span>
+          <span style="font:400 12px 'Space Grotesk',sans-serif;color:#8A8F94">reconciled 4 min ago</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:88px;margin-top:34px">
+          <div style="flex:1;height:34%;background:#E8EAEB"></div><div style="flex:1;height:48%;background:#E8EAEB"></div><div style="flex:1;height:41%;background:#E8EAEB"></div><div style="flex:1;height:58%;background:#E8EAEB"></div><div style="flex:1;height:52%;background:#E8EAEB"></div><div style="flex:1;height:66%;background:#E8EAEB"></div><div style="flex:1;height:74%;background:#E8EAEB"></div><div style="flex:1;height:69%;background:#E8EAEB"></div><div style="flex:1;height:82%;background:#E8EAEB"></div><div style="flex:1;height:90%;background:linear-gradient(180deg,#33CCFF,#7FE8FF)"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">BURN_RATE</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">$318K<span style="font-size:14px;color:#9BA0A5">/mo</span></div></div>
+          <span style="font:500 11px 'Azeret Mono',monospace;color:#00A3CC">▼ 4.2%</span>
+        </div>
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">RUNWAY</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">15.1<span style="font-size:14px;color:#9BA0A5"> months</span></div></div>
+          <span style="font:500 11px 'Azeret Mono',monospace;color:#00A3CC">▲ 0.8</span>
+        </div>
+        <div style="padding:22px 28px;border-bottom:1px solid #E8EAEB;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font:500 10px 'Azeret Mono',monospace;color:#8A8F94;letter-spacing:.1em">PENDING_APPROVALS</div><div style="font:600 26px 'Space Grotesk',sans-serif;color:#0E0F10;font-variant-numeric:tabular-nums">7</div></div>
+          <span style="height:30px;display:flex;align-items:center;padding:0 12px;background:#0E0F10;color:#5FE1FF;font:600 11px 'Azeret Mono',monospace">REVIEW →</span>
+        </div>
+        <div style="flex:1;padding:22px 28px;background:linear-gradient(120deg,#F2FCFF 0%,#FDFDFD 55%,#FFF5FB 100%)">
+          <div style="font:500 10px 'Azeret Mono',monospace;color:#0089B3;letter-spacing:.1em;margin-bottom:8px">ANOMALY_DETECTED</div>
+          <div style="font:500 13px/1.5 'Space Grotesk',sans-serif;color:#0E0F10">Vendor payment 2.4× above 90-day median. <span style="border-bottom:1px solid #33CCFF">Inspect</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">Freshwater merge shipped as <a class="dv-oid" href="#3a">3a</a> · Pearl grey-green (2c) scrapped — Pearl stays on <a class="dv-oid" href="#1b">1b</a></p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Pearl brand theme (the new flagship) + one direction pair per pearl theme</span></div>
+<p class="dv-tsub">Each card is a hero-scale crop, shown in its most flattering mode — full pages with light/dark toggles come after you pick directions. Font notes under each card mark what's free vs. the paid ideal. Showcase pairings: Tahitian → experimental creative studio · Freshwater → data-dense enterprise SaaS · South Sea → luxury maison e-commerce.</p>
+<div class="dv-opts">
+
+<!-- ============ 1a PEARL — Nacre Editorial ============ -->
+<div class="dv-opt" id="1a">
+  <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a><strong>Pearl — “Nacre Editorial.”</strong> Serif-italic lowercase wordmark, ink-primary, iridescence as a single hairline seam. <span class="dv-fontnote">shown: Gambetta + General Sans (free) · ideal: Signifier + Söhne (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FBFAF7">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 40px;border-bottom:1px solid #E5E2DA">
+      <div style="font:500 26px/1 'Gambetta',serif;font-style:italic;color:#17161A;letter-spacing:-.01em">pearl<span style="font-style:normal;font-size:12px;vertical-align:super;color:#9B96A8">®</span></div>
+      <div style="display:flex;gap:28px;font:500 12px/1 'IBM Plex Mono',monospace;color:#6E6A78;letter-spacing:.04em">
+        <span>INDEX</span><span>FOUNDATIONS</span><span>COMPONENTS</span><span>PLAYGROUND</span>
+        <span style="color:#17161A">GITHUB ↗</span>
+      </div>
+    </div>
+    <div style="padding:72px 40px 0">
+      <div style="font:500 11px/1 'IBM Plex Mono',monospace;color:#8E88A0;letter-spacing:.14em;margin-bottom:28px">A DESIGN SYSTEM FOR IDENTITIES THAT REFUSE SAMENESS</div>
+      <div style="font:500 84px/1.02 'General Sans',sans-serif;color:#17161A;letter-spacing:-.035em;max-width:820px">Structure is fixed.<br>Identity is <span style="font-family:'Gambetta',serif;font-style:italic;font-weight:400;letter-spacing:0">yours.</span></div>
+      <div style="height:1px;margin:52px 0 0;background:linear-gradient(90deg,#E3D5EC,#CFE0EA,#EAE0CC,#E8D2DC 80%,transparent)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:28px 0 44px">
+        <div style="font:400 15px/1.6 'General Sans',sans-serif;color:#6E6A78;max-width:420px">The world is your oyster: clone it, re-token it, and the same components become a different product entirely.</div>
+        <div style="display:flex;gap:10px">
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;background:#17161A;color:#FBFAF7;border-radius:3px;font:500 14px 'General Sans',sans-serif">Read the docs</div>
+          <div style="height:44px;display:flex;align-items:center;padding:0 22px;border:1px solid #D8D4CC;color:#17161A;border-radius:3px;font:500 14px 'General Sans',sans-serif">Open playground</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #E5E2DA">
+      <div style="padding:20px 40px;border-right:1px solid #E5E2DA"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#8E88A0">01</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Token contract</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #E5E2DA"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#8E88A0">02</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Three registers</div></div>
+      <div style="padding:20px 40px;border-right:1px solid #E5E2DA"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#8E88A0">03</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">Override contract</div></div>
+      <div style="padding:20px 40px"><div style="font:500 11px 'IBM Plex Mono',monospace;color:#8E88A0">04</div><div style="font:500 14px 'General Sans',sans-serif;color:#17161A;margin-top:6px">A11y as a feature</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 1b PEARL — Porcelain Index ============ -->
+<div class="dv-opt" id="1b">
+  <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a><strong>Pearl — “Porcelain Index.”</strong> Tracked-caps wordmark, OBYS-style index grid, one pearlescent object as the only color. <span class="dv-fontnote">shown: General Sans + IBM Plex Mono (free) · ideal: Neue Haas Grotesk + Söhne Mono (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F5F3EF">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px">
+      <div style="font:600 15px/1 'General Sans',sans-serif;color:#17161A;letter-spacing:.34em">P E A R L</div>
+      <div style="font:500 11px/1 'IBM Plex Mono',monospace;color:#77737E">DS/DOCS — V1.0</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:0;border-top:1px solid #DEDAD2">
+      <div style="padding:56px 40px 48px;border-right:1px solid #DEDAD2">
+        <div style="font:500 108px/0.96 'General Sans',sans-serif;color:#17161A;letter-spacing:-.045em">The world<br>is your<br>oyster<span style="color: #D2CACF">.</span></div>
+        <div style="margin-top:40px;font:400 14px/1.65 'General Sans',sans-serif;color:#6E6A78;max-width:360px">An open-source system engineered to be cloned, re-tokened, and made unrecognizably someone else's.</div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #DEDAD2;padding:32px">
+          <div style="width:150px;height:150px;border-radius:50%;background:linear-gradient(115deg,transparent 32%,rgba(158,214,196,.38) 44%,rgba(214,228,255,.42) 52%,rgba(255,214,236,.30) 60%,transparent 72%) no-repeat,radial-gradient(circle at 34% 30%,#FEFEFC 0%,#F0EFEC 26%,#DEE3DF 50%,#C3CCC6 72%,#A9B4AD 100%);background-size:260% 260%,100% 100%;background-position:118% 0,center;box-shadow:0 18px 40px rgba(70,80,76,.22), inset 0 -8px 22px rgba(143,160,151,.30), inset 6px 4px 18px rgba(214,205,192,.18);transition:background-position 900ms cubic-bezier(.22,1,.36,1),box-shadow 700ms ease" style-hover="background-position:-24% 0,center;box-shadow:0 22px 48px rgba(70,80,76,.28), inset 0 -8px 22px rgba(143,160,151,.34), inset 6px 4px 18px rgba(214,205,192,.22)" data-comment-anchor="8604fd7677-div"></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;padding:16px 28px;border-bottom:1px solid #DEDAD2;font:500 13px 'General Sans',sans-serif;color:#17161A"><span>Foundations</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#77737E">01</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 28px;border-bottom:1px solid #DEDAD2;font:500 13px 'General Sans',sans-serif;color:#17161A"><span>Components</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#77737E">02</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 28px;border-bottom:1px solid #DEDAD2;font:500 13px 'General Sans',sans-serif;color:#17161A"><span>Themes ×6</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#77737E">03</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 28px;font:500 13px 'General Sans',sans-serif;color:#17161A"><span>Decisions (ADR)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#77737E">04</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 1d TAHITIAN — Aubergine Editorial ============ -->
+<div class="dv-opt" id="1d">
+  <div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a><strong>Tahitian — “Aubergine Editorial”</strong> (dark): same register, quieter — oversized index list, aubergine as the single accent, no gradient. <span class="dv-fontnote">shown: Bebas Neue + Schibsted Grotesk (free) · ideal: Druk Wide + Söhne (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#0D0C10">
+    <div style="display:grid;grid-template-columns:220px 1fr">
+      <div style="border-right:1px solid #201E26;padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;min-height:560px">
+        <div style="font:400 20px/1.1 'Bebas Neue',sans-serif;color:#F0EDF4;letter-spacing:.03em;text-transform:uppercase">TAHITIAN</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font:500 11px 'IBM Plex Mono',monospace;color:#7B7787">
+          <span>PARIS — PAPEETE</span><span>EST. 2019</span><span style="color:#A98FE8">HELLO@NOIR.FR</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="padding:36px 36px 24px;border-bottom:1px solid #201E26">
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7B7787;letter-spacing:.12em;margin-bottom:14px">SELECTED WORK 2024—2026</div>
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:26px 36px;border-bottom:1px solid #201E26">
+          <div style="font:400 64px/1 'Bebas Neue',sans-serif;color:#F0EDF4;text-transform:uppercase;letter-spacing:.01em">Maison K.</div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7B7787">BRAND / 2026</div>
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:26px 36px;border-bottom:1px solid #201E26;background:#141218">
+          <div style="font:400 64px/1 'Bebas Neue',sans-serif;color:#A98FE8;text-transform:uppercase;letter-spacing:.01em">Ultramarine</div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#A98FE8">DIGITAL / 2025 ←</div>
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:26px 36px;border-bottom:1px solid #201E26">
+          <div style="font:400 64px/1 'Bebas Neue',sans-serif;color:#F0EDF4;text-transform:uppercase;letter-spacing:.01em">Ferment</div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7B7787">PACKAGING / 2025</div>
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:26px 36px">
+          <div style="font:400 64px/1 'Bebas Neue',sans-serif;color:#F0EDF4;text-transform:uppercase;letter-spacing:.01em">Basalte</div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:#7B7787">SPATIAL / 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 1f FRESHWATER — Lavender Everyday ============ -->
+<div class="dv-opt" id="1f">
+  <div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a><strong>Freshwater — “Lavender Everyday”</strong> (light): same SaaS density, warmer read — lavender/blush accents from freshwater pearl overtones, rounder radii. <span class="dv-fontnote">shown: Schibsted Grotesk + Satoshi (free) · ideal: ABC Diatype (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#FCFBFA">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid #EDE9E9">
+      <div style="display:flex;align-items:center;gap:24px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F5EFF7,#C9B8DF)" data-comment-anchor="fdd9f25545-div"></div><span style="font:600 15px 'Schibsted Grotesk',sans-serif;color:#221F26">Pearl CRM</span></div>
+        <div style="display:flex;gap:18px;font:500 13px 'Schibsted Grotesk',sans-serif;color:#6F6A76"><span style="color:#221F26;border-bottom:2px solid #8E76B8;padding-bottom:14px;margin-bottom:-16px">Pipeline</span><span>Contacts</span><span>Tasks</span><span>Inbox</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="height:36px;display:flex;align-items:center;padding:0 16px;background:#8E76B8;color:#fff;border-radius:999px;font:600 13px 'Schibsted Grotesk',sans-serif">New deal</div>
+        <div style="width:32px;height:32px;border-radius:50%;background:#EDE4F2;display:flex;align-items:center;justify-content:center;font:600 11px 'Schibsted Grotesk',sans-serif;color:#6B5590">AK</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:22px 28px 8px">
+      <div style="background:#F7F4F8;border-radius:14px;padding:18px"><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#6F6A76">Open pipeline</div><div style="font:600 26px 'Schibsted Grotesk',sans-serif;color:#221F26;margin-top:4px">$482,300</div><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#4E8A5C;margin-top:4px">▲ 12.4% vs last month</div></div>
+      <div style="background:#F7F4F8;border-radius:14px;padding:18px"><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#6F6A76">Win rate</div><div style="font:600 26px 'Schibsted Grotesk',sans-serif;color:#221F26;margin-top:4px">34.2%</div><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#4E8A5C;margin-top:4px">▲ 2.1 pts</div></div>
+      <div style="background:#F7F4F8;border-radius:14px;padding:18px"><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#6F6A76">Stalled deals</div><div style="font:600 26px 'Schibsted Grotesk',sans-serif;color:#221F26;margin-top:4px">17</div><div style="font:500 11.5px 'Schibsted Grotesk',sans-serif;color:#B3556A;margin-top:4px">▼ needs review</div></div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 28px 26px">
+      <sc-for list="{{ crmCols }}" as="col" hint-placeholder-count="3">
+        <div style="flex:1;background:#F9F7F6;border-radius:14px;padding:14px">
+          <div style="display:flex;justify-content:space-between;font:600 12px 'Schibsted Grotesk',sans-serif;color:#221F26;padding:0 4px 10px"><span>{{ col.stage }}</span><span style="color:#9A94A2">{{ col.count }}</span></div>
+          <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+            <div style="background:#fff;border:1px solid #EDE9E9;border-radius:10px;padding:12px;margin-bottom:8px">
+              <div style="font:600 12.5px 'Schibsted Grotesk',sans-serif;color:#221F26">{{ c.name }}</div>
+              <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="font:400 11.5px 'Schibsted Grotesk',sans-serif;color:#6F6A76">{{ c.owner }}</span><span style="font:600 11.5px 'Schibsted Grotesk',sans-serif;color:#6B5590">{{ c.amt }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 1g SOUTH SEA — Golden Hour Maison ============ -->
+<div class="dv-opt" id="1g">
+  <div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a><strong>South Sea — “Golden Hour Maison”</strong> (light champagne): luxury jewelry e-commerce, serif-forward, whitespace as the luxury. <span class="dv-fontnote">shown: Zodiak + General Sans (free) · ideal: Canela + Söhne (paid)</span></div>
+  <div class="dv-card" style="width:980px;background:#F8F3EA">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 44px">
+      <div style="display:flex;gap:26px;font:500 11px/1 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em"><span>COLLECTIONS</span><span>ATELIER</span></div>
+      <div style="font:500 24px/1 'Zodiak',serif;color:#241D12;letter-spacing:.12em">SOUTH SEA</div>
+      <div style="display:flex;gap:26px;font:500 11px/1 'General Sans',sans-serif;color:#7A6E5C;letter-spacing:.14em"><span>JOURNAL</span><span>BAG (1)</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.1fr;align-items:center;padding:30px 44px 54px;gap:48px">
+      <div>
+        <div style="font:500 11px 'General Sans',sans-serif;color:#A98D55;letter-spacing:.2em;margin-bottom:22px">THE MERIDIAN COLLECTION — Nº 04</div>
+        <div style="font:400 74px/1.06 'Zodiak',serif;color:#241D12;letter-spacing:-.015em">Light,<br>worn <em style="font-style:italic">slowly.</em></div>
+        <div style="font:400 15px/1.7 'General Sans',sans-serif;color:#6E6250;max-width:340px;margin:26px 0 34px">Golden pearls from the Pinctada maxima, set by hand over eleven weeks. Twelve pieces, once a year.</div>
+        <div style="display:flex;align-items:center;gap:22px">
+          <div style="height:50px;display:flex;align-items:center;padding:0 30px;background:#241D12;color:#F4EEDF;font:500 12px 'General Sans',sans-serif;letter-spacing:.16em">DISCOVER Nº 04</div>
+          <div style="font:500 12px 'General Sans',sans-serif;color:#241D12;letter-spacing:.14em;border-bottom:1px solid #B9A984;padding-bottom:4px">BOOK A VIEWING</div>
+        </div>
+      </div>
+      <div style="position:relative">
+        <img src="./golden-pearl-mrqnv30u-l3bt.jpg" alt="golden-pearl" width="1199" height="1581" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 1199px; aspect-ratio: 1199 / 1581">
+        <div style="position:absolute;bottom:-18px;left:-18px;background:#FDFBF6;border:1px solid #E3D8C2;padding:14px 18px">
+          <div style="font:400 13px 'Zodiak',serif;color:#241D12">Strand Nº 04 — 13mm</div>
+          <div style="font:500 11px 'General Sans',sans-serif;color:#A98D55;margin-top:3px;letter-spacing:.06em">FROM $14,800</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<p class="dv-next">1c, 1e, 1h scrapped per comments — replacements in turn <a class="dv-tid" href="#t3">3</a> · Pearl locked to <a class="dv-oid" href="#1b">1b</a> · South Sea flagship stays <a class="dv-oid" href="#1g">1g</a></p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;plateArrowHeight&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:96,&quot;min&quot;:24,&quot;max&quot;:140,&quot;step&quot;:4,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Tahitian (turn 14)&quot;},&quot;plateArrowStroke&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2,&quot;min&quot;:1,&quot;max&quot;:6,&quot;step&quot;:0.5,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Tahitian (turn 14)&quot;},&quot;lusterShimmer&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Tahitian (turn 14)&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const shimmer = this.props.lusterShimmer ?? true;
+    return {
+      plateArrowHeight: this.props.plateArrowHeight ?? 96,
+      plateArrowStroke: this.props.plateArrowStroke ?? 2,
+      lusterAnimA: shimmer ? 'dvLuster 10s ease-in-out infinite' : 'none',
+      lusterAnimB: shimmer ? 'dvLuster 12s ease-in-out infinite' : 'none',
+      crmCols: [
+        { stage: 'Qualified', count: 8, cards: [ { name: 'Northwind renewal', owner: 'Ana K.', amt: '$42k' }, { name: 'Osaka pilot', owner: 'Priya S.', amt: '$18k' } ] },
+        { stage: 'Proposal', count: 5, cards: [ { name: 'Fjord expansion', owner: 'Marc D.', amt: '$96k' }, { name: 'Atlas onboarding', owner: 'Ana K.', amt: '$27k' } ] },
+        { stage: 'Negotiation', count: 3, cards: [ { name: 'Helios enterprise', owner: 'June W.', amt: '$210k' }, { name: 'Verde add-on', owner: 'Marc D.', amt: '$12k' } ] },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

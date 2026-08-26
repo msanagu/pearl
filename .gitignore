@@ -18,5 +18,8 @@ npm-debug.log*
 # Vanilla-extract / Vite caches
 .vite/
 
-# Claude Design Handoffs
+# Claude Design Handoffs — tracked under docs/handoffs (the visual source of
+# truth for Pearl); this rule still catches handoff folders anywhere else.
 handoffs
+!docs/handoffs/
+!docs/handoffs/**
