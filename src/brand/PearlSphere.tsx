@@ -12,9 +12,7 @@ export function PearlSphere() {
   return (
     <div className={css.sphereWrap}>
       <div className={css.contact} aria-hidden="true" />
-      <div className={css.body}>
-        <div className={css.sheen} />
-      </div>
+      <div className={css.body} />
     </div>
   );
 }

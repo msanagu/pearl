@@ -318,6 +318,20 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     seaGreen: 'rgba(158, 214, 196, 0.38)',
     periwinkle: 'rgba(214, 228, 255, 0.42)',
     blush: 'rgba(255, 214, 236, 0.30)',
+    /**
+     * The sheen as a BAND, not a wash: transparent below 32% and above 72%, so
+     * light reads as a bounded highlight travelling across the surface rather
+     * than a tint covering it. Dropping the transparent stops is what made the
+     * previous sphere invisible. [4c]
+     */
+    sheenBand:
+      'linear-gradient(115deg, transparent 32%, rgba(158, 214, 196, 0.38) 44%, rgba(214, 228, 255, 0.42) 52%, rgba(255, 214, 236, 0.30) 60%, transparent 72%)',
+    /** Sheen layer oversized so it has room to travel across the body. [4c] */
+    sheenSize: '260% 260%',
+    /** Sheen start/end position; the animation drives it to `sheenTravelTo`. [4c] */
+    sheenFrom: '118% 0',
+    /** Midpoint of the sweep — the light crossing the face. [4c] */
+    sheenTo: '34% 0',
     /** Nacre body of the sphere — neutral, the hues ride on top. [4c] */
     bodyGradient:
       'radial-gradient(circle at 34% 30%, #FEFEFC 0%, #F0EFEC 26%, #DEE3DF 50%, #C3CCC6 72%, #A9B4AD 100%)',
@@ -332,7 +346,24 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     ruleSpeed: '12s',
     /** The hairline rule's own stops: sea green → blue → sand → blush. [4c] */
     ruleGradient: 'linear-gradient(90deg, #D6E4DD, #CFE0EA, #EAE0CC, #E8D2DC 80%, transparent)',
-    /** Hover drift on card surfaces — one pass, never a loop. [doc-site-poc.css.ts:300] */
+    /**
+     * Hover drift on card surfaces — one pass, never a loop.
+     *
+     * A RADIAL ellipse fading to transparent at 62%, inset well past the card's
+     * own box (`driftInset`), so what a hover shows is a soft bloom with no
+     * visible edge. A linear gradient clipped to `inset: 0` — the previous
+     * implementation — paints a hard-edged rectangle instead, which is a
+     * different effect entirely. [doc-site-poc.css.ts:292]
+     */
+    driftGradient:
+      'radial-gradient(ellipse at center, rgba(214, 228, 255, 0.42) 0%, rgba(158, 214, 196, 0.30) 34%, transparent 62%)',
+    /** How far the bloom spills past the card, so its edge never shows. */
+    driftInset: '-45%',
+    /** Resting and hovered positions — a ~30% diagonal traverse. */
+    driftFrom: 'translate3d(-16%, 8%, 0)',
+    driftTo: 'translate3d(14%, -8%, 0)',
+    /** Opacity ramps faster than the drift: light arrives, then settles. */
+    driftOpacityDuration: '700ms',
     driftDuration: '1000ms',
     driftEasing: 'cubic-bezier(0.22, 1, 0.36, 1)',
     /** Opacity the drift settles at on hover. [doc-site-poc.css.ts:316] */
@@ -353,12 +384,12 @@ globalStyle(
     content: '',
     position: 'absolute',
     zIndex: -1,
-    inset: 0,
-    background: `linear-gradient(${pearlCapabilities.luster.angle}, ${pearlCapabilities.luster.seaGreen}, ${pearlCapabilities.luster.periwinkle}, ${pearlCapabilities.luster.blush})`,
+    inset: pearlCapabilities.luster.driftInset,
+    background: pearlCapabilities.luster.driftGradient,
     opacity: 0,
     pointerEvents: 'none',
-    transform: 'translate3d(-6%, 4%, 0)',
-    transition: `opacity ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}, transform ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}`,
+    transform: pearlCapabilities.luster.driftFrom,
+    transition: `opacity ${pearlCapabilities.luster.driftOpacityDuration} ease, transform ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}`,
     '@media': {
       '(prefers-reduced-motion: reduce)': { transition: 'none' },
     },
@@ -369,6 +400,6 @@ globalStyle(
   `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`,
   {
     opacity: pearlCapabilities.luster.driftOpacity,
-    transform: 'translate3d(6%, -4%, 0)',
+    transform: pearlCapabilities.luster.driftTo,
   },
 );
