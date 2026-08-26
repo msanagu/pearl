@@ -57,19 +57,3 @@ export const WithHintAndError: Story = {
     </div>
   ),
 };
-
-export const Select: Story = {
-  args: { label: 'Country' },
-  render: (args) => (
-    <div style={{ maxWidth: 340 }}>
-      <Field {...args}>
-        {(props) => (
-          <select {...props}>
-            <option>USA</option>
-            <option>Canada</option>
-          </select>
-        )}
-      </Field>
-    </div>
-  ),
-};

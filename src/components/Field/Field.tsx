@@ -17,8 +17,9 @@ export interface FieldProps {
   /** Sizes the label/hint/error indent and cascades matching height/padding
    * to a nested `Input` via CSS custom properties — not a `size` prop
    * injected into children, so it composes safely with elements that have
-   * their own native `size` attribute (see the `Select` story). An `Input`
-   * nested here picks this up automatically regardless of its own `size`. */
+   * their own native `size` attribute — on a `<select>`, `size` sets the
+   * visible row count. An `Input` nested here picks this up automatically
+   * regardless of its own `size`. */
   size?: FieldSize;
   children: (injectedProps: FieldInjectedProps) => ReactNode;
 }

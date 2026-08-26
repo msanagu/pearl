@@ -5,8 +5,8 @@ import { fieldControlHeight, fieldPaddingX } from './fieldSize.css';
 
 // `size` is exposed as CSS custom properties on the container, not injected
 // as a React prop — that's how a nested `Input` picks it up without Field
-// forcing a `size` prop onto arbitrary children (a raw `<select size>` means
-// something else entirely; see the `Select` story). sm and md share padding
+// forcing a `size` prop onto arbitrary children (on a native `<select>`,
+// `size` sets the visible row count, not a scale). sm and md share padding
 // on purpose — only lg steps up.
 export const field = recipe({
   base: {
