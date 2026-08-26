@@ -131,16 +131,13 @@ const iconMapping = {
  * Wraps any `react-icons` icon component. Renders `data-component="icon"` for
  * the override contract (see docs/override-patterns.md).
  *
- * `react-icons` normalizes ~30 icon sets to one `IconType` signature, so the
- * set an icon comes from is an import detail — nothing about this component or
- * the override contract changes when it swaps. `iconLibraries.ts` records what
- * each evaluated set costs in character and coverage. The "Switching sets" and
- * "Switching styles" stories below are the demonstration.
+ * Every set shares one `IconType` signature, so which set an icon comes from is
+ * an import detail — swapping sets changes nothing here. The stories below
+ * demonstrate that.
  *
  * There is no `weight` prop. `react-icons` encodes weight in the icon *name*,
  * so Phosphor's six weights are six exports (`PiHeartThin` … `PiHeartDuotone`)
- * rather than one component and a prop. Sets that ship a single weight — most
- * of them — simply have nothing to express there.
+ * rather than one component and a prop.
  */
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',

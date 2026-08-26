@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "pearl-storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["storybook", "--no-open"],
+      "port": 6006
+    },
+    {
       "name": "resume-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "../resume", "run", "dev"],

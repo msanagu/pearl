@@ -22,10 +22,9 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
    * `PiHeart` from `react-icons/pi` (Phosphor), `LuHeart` from `react-icons/lu`
    * (Lucide), `RiHeartLine` from `react-icons/ri` (Remix).
    *
-   * `react-icons` normalizes every set to the same `IconType` signature, so
-   * swapping the icon set a theme draws from is a matter of changing the
-   * import — nothing here or in the override contract changes. See
-   * `iconLibraries.ts` for notes on the sets evaluated here.
+   * Every set shares the same `IconType` signature, so swapping sets is a
+   * matter of changing the import. `iconLibraries.ts` has notes on the sets
+   * evaluated here.
    */
   icon: IconType;
   /** Pixel size, forwarded to the underlying `<svg>`. @default 20 */
