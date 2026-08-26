@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Text } from './Text';
 
 /**
- * Token-driven typography. One component spans body → heading → display via
- * `variant`, while `as` picks the semantic element **independently** — so an
- * `h2` can look restrained and a visually-large label never forces a wrong
- * heading level.
+ * Token-driven typography. `typeScale` (size), `role` (theme-owned face),
+ * `as` (semantic element), and `weight` are four **independent** axes — so an
+ * `h2` can look restrained, a role can ride a larger scale step than its
+ * default, and a visually-large label never forces a wrong heading level.
  */
 const meta: Meta<typeof Text> = {
   title: 'Components/Text',
@@ -13,23 +13,28 @@ const meta: Meta<typeof Text> = {
   tags: ['autodocs'],
   args: {
     children: 'The quick brown fox jumps over the lazy dog',
-    variant: 'bodyMd',
+    typeScale: 'bodyMd',
     prominence: 'default',
   },
   argTypes: {
-    variant: {
+    typeScale: {
       control: 'select',
       options: [
         'caption', 'bodySm', 'bodyMd', 'bodyLg',
         'headingSm', 'headingMd', 'headingLg',
         'displaySm', 'displayLg',
       ],
-      description: 'Type-scale step (size + line-height + default weight).',
+      description: 'Size band: fontSize + lineHeight + tracking, and the default face when no `role` is set.',
     },
     role: {
       control: 'select',
       options: [undefined, 'inlineEmphasis', 'preheading', 'dataDigits'],
-      description: 'A theme-owned typographic job — mutually exclusive with variant.',
+      description: 'A theme-owned face treatment — independent of `typeScale`, combine freely.',
+    },
+    weight: {
+      control: 'select',
+      options: [undefined, 'regular', 'medium', 'semibold', 'bold'],
+      description: "Overrides the scale step's default weight.",
     },
     prominence: {
       control: 'radio',
@@ -37,7 +42,7 @@ const meta: Meta<typeof Text> = {
     },
     as: {
       control: 'text',
-      description: 'Semantic element — chosen independently of variant.',
+      description: 'Semantic element — chosen independently of typeScale/role.',
     },
   },
 };
@@ -53,7 +58,7 @@ export const Scale: Story = {
       {(
         ['displayLg', 'displaySm', 'headingLg', 'headingMd', 'headingSm', 'bodyLg', 'bodyMd', 'bodySm', 'caption'] as const
       ).map((v) => (
-        <Text key={v} variant={v} as="p">
+        <Text key={v} typeScale={v} as="p">
           {v} — The quick brown fox
         </Text>
       ))}
@@ -65,8 +70,8 @@ export const Scale: Story = {
 export const VariantVsElement: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <Text variant="headingSm" as="h2">headingSm as h2 (prominent section)</Text>
-      <Text variant="bodyMd" as="h2">bodyMd as h2 (quiet section label)</Text>
+      <Text typeScale="headingSm" as="h2">headingSm as h2 (prominent section)</Text>
+      <Text typeScale="bodyMd" as="h2">bodyMd as h2 (quiet section label)</Text>
     </div>
   ),
 };
@@ -74,18 +79,31 @@ export const VariantVsElement: Story = {
 /**
  * `role` targeting resolved live, in whichever theme is active in the
  * toolbar — switch themes to see it change. Pearl defines `inlineEmphasis`
- * (serif italic) and `preheading` (mono caps at the `caption` step); a theme
- * with no assignment for a role falls back to canon `bodyMd`, silently.
+ * (serif italic, no declared size — rides whatever `typeScale` it's set in,
+ * or ambient size with none) and `preheading` (mono caps, defaults to the
+ * `caption` step).
  */
 export const Roles: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <Text variant="bodyLg" as="p">
+      <Text typeScale="bodyLg" as="p">
         The world is your <Text as="span" role="inlineEmphasis">oyster</Text>.
       </Text>
       <Text role="preheading" as="span">Plate 01 / Nacre</Text>
       <Text role="dataDigits" as="span">1,204.50</Text>
     </div>
+  ),
+};
+
+/**
+ * `typeScale` and `role` are independent axes and compose freely — a role's
+ * face doesn't lock in its default size. This is the case that motivated the
+ * split: the Hero's ordinal numbers (`01`, `02`...) needed `preheading`'s
+ * mono/tracking treatment at a much larger size than its `caption` default.
+ */
+export const RoleAtLargerScale: Story = {
+  render: () => (
+    <Text role="preheading" typeScale="headingLg" as="span">01</Text>
   ),
 };
 

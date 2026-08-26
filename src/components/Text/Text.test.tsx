@@ -11,7 +11,7 @@ describe('Text', () => {
 
   it('renders the element passed via `as`, independent of variant', () => {
     render(
-      <Text as="h1" variant="bodyMd">
+      <Text as="h1" typeScale="bodyMd">
         Title
       </Text>,
     );
@@ -36,10 +36,10 @@ describe('Text', () => {
   });
 
   it('changes visual class between variants', () => {
-    const heading = render(<Text variant="headingLg">Heading</Text>);
+    const heading = render(<Text typeScale="headingLg">Heading</Text>);
     const headingClass = heading.getByText('Heading').className;
     heading.unmount();
-    const body = render(<Text variant="bodySm">Body</Text>);
+    const body = render(<Text typeScale="bodySm">Body</Text>);
     expect(body.getByText('Body').className).not.toBe(headingClass);
   });
 

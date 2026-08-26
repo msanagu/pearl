@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CaretDownIcon, FloppyDiskIcon, HeartIcon } from '@phosphor-icons/react';
+import { PiCaretDown, PiFloppyDisk } from 'react-icons/pi';
 import { Icon } from '../Icon';
 import { Button } from './Button';
 
@@ -84,12 +84,12 @@ export const WithIcon: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12 }}>
       <Button {...args}>
-        <Icon icon={FloppyDiskIcon} size={16} />
+        <Icon icon={PiFloppyDisk} size={16} />
         Save
       </Button>
       <Button {...args} variant="secondary">
         Open Menu
-         <Icon icon={CaretDownIcon} size={12} />
+         <Icon icon={PiCaretDown} size={12} />
       </Button>
     </div>
   ),

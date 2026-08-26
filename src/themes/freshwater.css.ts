@@ -15,7 +15,7 @@ import { vars } from '../theme.css';
  * comment on the corrected inverse-token model for the `*Inverse` fields).
  */
 
-const freshwaterLightPrimitives = {
+export const freshwaterLightPrimitives = {
   linen: '#ffffff',
   cloud: '#f4f4f5',
   ink: '#111113',
@@ -27,13 +27,9 @@ const freshwaterLightPrimitives = {
   tealDeep: '#0B7C79',
   tealMist: '#E3FBF8',
   scrim: 'rgba(17, 17, 19, 0.5)',
-  sage100: '#e8f5ec', sage300: '#b7dfc4', sage500: '#2e9e4f', sage700: '#1b5e2b',
-  clay100: '#fdeceb', clay300: '#f4b9b4', clay500: '#d64036', clay700: '#8f1d17',
-  honey100: '#fdf3e2', honey300: '#f2d59b', honey500: '#d9920b', honey700: '#7a4d09',
-  harbor100: '#ebf1fe', harbor300: '#b9ccf7', harbor500: '#3b6fe0', harbor700: '#1c3a80',
 };
 
-const freshwaterDarkPrimitives = {
+export const freshwaterDarkPrimitives = {
   abyss: '#0e0e10',
   charcoal: '#1a1a1d',
   moonlight: '#f5f5f7',
@@ -46,10 +42,16 @@ const freshwaterDarkPrimitives = {
   tealDusk: '#0F3B38',
   tealInk: '#052E2B',
   scrim: 'rgba(0, 0, 0, 0.6)',
-  sage100: '#12251a', sage300: '#2f6b41', sage500: '#3fbf6a', sage700: '#7ee2a0',
-  clay100: '#2a1513', clay300: '#7a2f28', clay500: '#e8574a', clay700: '#f5a8a0',
-  honey100: '#28200f', honey300: '#6e5316', honey500: '#e0a52a', honey700: '#f0cd7a',
-  harbor100: '#131d2e', harbor300: '#2c4a80', harbor500: '#5a8cf0', harbor700: '#9fc0f5',
+};
+
+// [derived] Sentiment families, one flattened 100 (lightest)→800 (darkest)
+// scale per hue, shared by both modes — a step number means the same
+// lightness regardless of which theme mode reads it.
+export const freshwaterSentiment = {
+  sage: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
+  clay: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  honey: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
+  harbor: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
 const freshwaterRadius = { control: '6px', surface: '10px', full: '9999px' };
@@ -82,6 +84,9 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     background: freshwaterLightPrimitives.linen,
     surface: freshwaterLightPrimitives.cloud,
     overlay: freshwaterLightPrimitives.scrim,
+    // Placeholder — Freshwater doesn't have its own alpha-neutral primitive
+    // yet (see pearl.css.ts's `inkAlpha` for the pattern to follow when it does).
+    overlaySubtle: 'rgba(0, 0, 0, 0.08)',
     backgroundInverse: freshwaterDarkPrimitives.abyss,
     surfaceInverse: freshwaterDarkPrimitives.charcoal,
     text: freshwaterLightPrimitives.ink,
@@ -101,10 +106,10 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     accentSubtle: freshwaterLightPrimitives.tealMist,
     onAccent: freshwaterLightPrimitives.linen,
     focusRing: freshwaterLightPrimitives.teal,
-    positive: { surface: freshwaterLightPrimitives.sage100, border: freshwaterLightPrimitives.sage300, text: freshwaterLightPrimitives.sage700, icon: freshwaterLightPrimitives.sage500 },
-    negative: { surface: freshwaterLightPrimitives.clay100, border: freshwaterLightPrimitives.clay300, text: freshwaterLightPrimitives.clay700, icon: freshwaterLightPrimitives.clay500 },
-    warn: { surface: freshwaterLightPrimitives.honey100, border: freshwaterLightPrimitives.honey300, text: freshwaterLightPrimitives.honey700, icon: freshwaterLightPrimitives.honey500 },
-    info: { surface: freshwaterLightPrimitives.harbor100, border: freshwaterLightPrimitives.harbor300, text: freshwaterLightPrimitives.harbor700, icon: freshwaterLightPrimitives.harbor500 },
+    positive: { surface: freshwaterSentiment.sage[100], border: freshwaterSentiment.sage[200], text: freshwaterSentiment.sage[700], icon: freshwaterSentiment.sage[500] },
+    negative: { surface: freshwaterSentiment.clay[100], border: freshwaterSentiment.clay[200], text: freshwaterSentiment.clay[600], icon: freshwaterSentiment.clay[500] },
+    warn: { surface: freshwaterSentiment.honey[100], border: freshwaterSentiment.honey[200], text: freshwaterSentiment.honey[700], icon: freshwaterSentiment.honey[500] },
+    info: { surface: freshwaterSentiment.harbor[100], border: freshwaterSentiment.harbor[200], text: freshwaterSentiment.harbor[700], icon: freshwaterSentiment.harbor[500] },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -119,6 +124,7 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     background: freshwaterDarkPrimitives.abyss,
     surface: freshwaterDarkPrimitives.charcoal,
     overlay: freshwaterDarkPrimitives.scrim,
+    overlaySubtle: 'rgba(255, 255, 255, 0.10)', // placeholder, see light mode's comment above
     backgroundInverse: freshwaterLightPrimitives.linen,
     surfaceInverse: freshwaterLightPrimitives.cloud,
     text: freshwaterDarkPrimitives.moonlight,
@@ -138,10 +144,10 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     accentSubtle: freshwaterDarkPrimitives.tealDusk,
     onAccent: freshwaterDarkPrimitives.tealInk,
     focusRing: freshwaterDarkPrimitives.turquoise,
-    positive: { surface: freshwaterDarkPrimitives.sage100, border: freshwaterDarkPrimitives.sage300, text: freshwaterDarkPrimitives.sage700, icon: freshwaterDarkPrimitives.sage500 },
-    negative: { surface: freshwaterDarkPrimitives.clay100, border: freshwaterDarkPrimitives.clay300, text: freshwaterDarkPrimitives.clay700, icon: freshwaterDarkPrimitives.clay500 },
-    warn: { surface: freshwaterDarkPrimitives.honey100, border: freshwaterDarkPrimitives.honey300, text: freshwaterDarkPrimitives.honey700, icon: freshwaterDarkPrimitives.honey500 },
-    info: { surface: freshwaterDarkPrimitives.harbor100, border: freshwaterDarkPrimitives.harbor300, text: freshwaterDarkPrimitives.harbor700, icon: freshwaterDarkPrimitives.harbor500 },
+    positive: { surface: freshwaterSentiment.sage[800], border: freshwaterSentiment.sage[600], text: freshwaterSentiment.sage[300], icon: freshwaterSentiment.sage[400] },
+    negative: { surface: freshwaterSentiment.clay[800], border: freshwaterSentiment.clay[700], text: freshwaterSentiment.clay[300], icon: freshwaterSentiment.clay[400] },
+    warn: { surface: freshwaterSentiment.honey[800], border: freshwaterSentiment.honey[600], text: freshwaterSentiment.honey[300], icon: freshwaterSentiment.honey[400] },
+    info: { surface: freshwaterSentiment.harbor[800], border: freshwaterSentiment.harbor[600], text: freshwaterSentiment.harbor[300], icon: freshwaterSentiment.harbor[400] },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,

@@ -41,7 +41,7 @@ export const hint = style({
   paddingLeft: fieldPaddingX,
 });
 
-// Error needs its own sentiment tone — Text's `tone` prop only covers
+// Error needs its own sentiment color — Text's `prominence` prop only covers
 // default/subtle — so it's a plain span, not `<Text>`.
 export const error = style({
   fontFamily: fontFamily.body,

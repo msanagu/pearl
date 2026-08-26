@@ -77,6 +77,10 @@ const preview: Preview = {
       // story is one block among many — forcing 100vh there just adds scroll.
       const minHeight = context.viewMode === 'docs' ? undefined : '100vh';
 
+      // Stories that render full-bleed layouts (heroes, doc pages) opt out of
+      // the default gutter with `parameters: { removePreviewPadding: true }`.
+      const removePreviewPadding = context.parameters.removePreviewPadding === true;
+
       return (
         <div
           className={`${themeClass} ${capabilityClass}`.trim()}
@@ -85,7 +89,7 @@ const preview: Preview = {
             color: vars.color.text,
             fontFamily: vars.fontFamily.body,
             minHeight,
-            padding: '2rem',
+            padding: removePreviewPadding ? undefined : '2rem',
             boxSizing: 'border-box',
           }}
         >

@@ -1,7 +1,7 @@
 import { createTheme } from '@vanilla-extract/css';
 import { vars } from '../theme.css';
 // Side-effect import — registers the real Boska @font-face rules.
-import './boska.css';
+import '../fonts/boska.css';
 
 /**
  * South Sea — one of Pearl's three named themes
@@ -21,7 +21,7 @@ import './boska.css';
  * comment on the corrected inverse-token model for the `*Inverse` fields).
  */
 
-const southSeaLightPrimitives = {
+export const southSeaLightPrimitives = {
   linen: '#ffffff',
   cloud: '#f4f4f5',
   ink: '#111113',
@@ -33,13 +33,9 @@ const southSeaLightPrimitives = {
   goldDeep: '#8F6529',
   goldMist: '#FBF1DE',
   scrim: 'rgba(17, 17, 19, 0.5)',
-  sage100: '#e8f5ec', sage300: '#b7dfc4', sage500: '#2e9e4f', sage700: '#1b5e2b',
-  clay100: '#fdeceb', clay300: '#f4b9b4', clay500: '#d64036', clay700: '#8f1d17',
-  honey100: '#fdf3e2', honey300: '#f2d59b', honey500: '#d9920b', honey700: '#7a4d09',
-  harbor100: '#ebf1fe', harbor300: '#b9ccf7', harbor500: '#3b6fe0', harbor700: '#1c3a80',
 };
 
-const southSeaDarkPrimitives = {
+export const southSeaDarkPrimitives = {
   abyss: '#0e0e10',
   charcoal: '#1a1a1d',
   moonlight: '#f5f5f7',
@@ -52,10 +48,16 @@ const southSeaDarkPrimitives = {
   goldDusk: '#3A2C14',
   goldInk: '#1A1206',
   scrim: 'rgba(0, 0, 0, 0.6)',
-  sage100: '#12251a', sage300: '#2f6b41', sage500: '#3fbf6a', sage700: '#7ee2a0',
-  clay100: '#2a1513', clay300: '#7a2f28', clay500: '#e8574a', clay700: '#f5a8a0',
-  honey100: '#28200f', honey300: '#6e5316', honey500: '#e0a52a', honey700: '#f0cd7a',
-  harbor100: '#131d2e', harbor300: '#2c4a80', harbor500: '#5a8cf0', harbor700: '#9fc0f5',
+};
+
+// [derived] Sentiment families, one flattened 100 (lightest)→800 (darkest)
+// scale per hue, shared by both modes — a step number means the same
+// lightness regardless of which theme mode reads it.
+export const southSeaSentiment = {
+  sage: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
+  clay: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  honey: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
+  harbor: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
 const southSeaRadius = { control: '6px', surface: '10px', full: '9999px' };
@@ -87,6 +89,9 @@ export const southSeaLightThemeClass = createTheme(vars, {
     background: southSeaLightPrimitives.linen,
     surface: southSeaLightPrimitives.cloud,
     overlay: southSeaLightPrimitives.scrim,
+    // Placeholder — South Sea doesn't have its own alpha-neutral primitive yet
+    // (see pearl.css.ts's `inkAlpha` for the pattern to follow when it does).
+    overlaySubtle: 'rgba(0, 0, 0, 0.08)',
     backgroundInverse: southSeaDarkPrimitives.abyss,
     surfaceInverse: southSeaDarkPrimitives.charcoal,
     text: southSeaLightPrimitives.ink,
@@ -106,10 +111,10 @@ export const southSeaLightThemeClass = createTheme(vars, {
     accentSubtle: southSeaLightPrimitives.goldMist,
     onAccent: southSeaLightPrimitives.linen,
     focusRing: southSeaLightPrimitives.gold,
-    positive: { surface: southSeaLightPrimitives.sage100, border: southSeaLightPrimitives.sage300, text: southSeaLightPrimitives.sage700, icon: southSeaLightPrimitives.sage500 },
-    negative: { surface: southSeaLightPrimitives.clay100, border: southSeaLightPrimitives.clay300, text: southSeaLightPrimitives.clay700, icon: southSeaLightPrimitives.clay500 },
-    warn: { surface: southSeaLightPrimitives.honey100, border: southSeaLightPrimitives.honey300, text: southSeaLightPrimitives.honey700, icon: southSeaLightPrimitives.honey500 },
-    info: { surface: southSeaLightPrimitives.harbor100, border: southSeaLightPrimitives.harbor300, text: southSeaLightPrimitives.harbor700, icon: southSeaLightPrimitives.harbor500 },
+    positive: { surface: southSeaSentiment.sage[100], border: southSeaSentiment.sage[200], text: southSeaSentiment.sage[700], icon: southSeaSentiment.sage[500] },
+    negative: { surface: southSeaSentiment.clay[100], border: southSeaSentiment.clay[200], text: southSeaSentiment.clay[600], icon: southSeaSentiment.clay[500] },
+    warn: { surface: southSeaSentiment.honey[100], border: southSeaSentiment.honey[200], text: southSeaSentiment.honey[700], icon: southSeaSentiment.honey[500] },
+    info: { surface: southSeaSentiment.harbor[100], border: southSeaSentiment.harbor[200], text: southSeaSentiment.harbor[700], icon: southSeaSentiment.harbor[500] },
   },
   radius: southSeaRadius,
   space: southSeaSpace,
@@ -124,6 +129,7 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     background: southSeaDarkPrimitives.abyss,
     surface: southSeaDarkPrimitives.charcoal,
     overlay: southSeaDarkPrimitives.scrim,
+    overlaySubtle: 'rgba(255, 255, 255, 0.10)', // placeholder, see light mode's comment above
     backgroundInverse: southSeaLightPrimitives.linen,
     surfaceInverse: southSeaLightPrimitives.cloud,
     text: southSeaDarkPrimitives.moonlight,
@@ -143,10 +149,10 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     accentSubtle: southSeaDarkPrimitives.goldDusk,
     onAccent: southSeaDarkPrimitives.goldInk,
     focusRing: southSeaDarkPrimitives.amber,
-    positive: { surface: southSeaDarkPrimitives.sage100, border: southSeaDarkPrimitives.sage300, text: southSeaDarkPrimitives.sage700, icon: southSeaDarkPrimitives.sage500 },
-    negative: { surface: southSeaDarkPrimitives.clay100, border: southSeaDarkPrimitives.clay300, text: southSeaDarkPrimitives.clay700, icon: southSeaDarkPrimitives.clay500 },
-    warn: { surface: southSeaDarkPrimitives.honey100, border: southSeaDarkPrimitives.honey300, text: southSeaDarkPrimitives.honey700, icon: southSeaDarkPrimitives.honey500 },
-    info: { surface: southSeaDarkPrimitives.harbor100, border: southSeaDarkPrimitives.harbor300, text: southSeaDarkPrimitives.harbor700, icon: southSeaDarkPrimitives.harbor500 },
+    positive: { surface: southSeaSentiment.sage[800], border: southSeaSentiment.sage[600], text: southSeaSentiment.sage[300], icon: southSeaSentiment.sage[400] },
+    negative: { surface: southSeaSentiment.clay[800], border: southSeaSentiment.clay[700], text: southSeaSentiment.clay[300], icon: southSeaSentiment.clay[400] },
+    warn: { surface: southSeaSentiment.honey[800], border: southSeaSentiment.honey[600], text: southSeaSentiment.honey[300], icon: southSeaSentiment.honey[400] },
+    info: { surface: southSeaSentiment.harbor[800], border: southSeaSentiment.harbor[600], text: southSeaSentiment.harbor[300], icon: southSeaSentiment.harbor[400] },
   },
   radius: southSeaRadius,
   space: southSeaSpace,

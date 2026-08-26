@@ -1,24 +1,49 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
-import { card, cardHeader, cardBody } from './Card.css';
+import { card, cardInteractive, cardHeader, cardBody } from './Card.css';
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-}
+export type CardProps =
+  | ({ href?: undefined; children?: ReactNode } & HTMLAttributes<HTMLDivElement>)
+  | ({ href: string; children?: ReactNode } & AnchorHTMLAttributes<HTMLAnchorElement>);
 
 // `Card.Header` / `Card.Body` are static-property namespacing, NOT a Context
 // compound component — there is no shared state, so none is used (ADR-0002,
 // composition-patterns-examples.md). Each subcomponent is independently simple
 // and renders the `data-component`/`data-part` override contract.
-function CardRoot({ children, className, ...rest }: CardProps) {
+//
+// `href` makes the whole card a link — `data-interactive` is the only signal
+// this file gives about it. Card stays theme-unaware (ADR-0007 rule 3: components
+// render correctly with zero extension capabilities); Pearl's own file is what
+// turns `data-interactive` into the luster hover glow, the same way `Text`
+// writes `data-role` without knowing what any theme does with it. A card with
+// no `href` is not interactive and never lusters, on any theme — luster signals
+// "this takes you somewhere," not "this is a card."
+function CardRoot({ children, className, href, ...rest }: CardProps) {
+  if (href !== undefined) {
+    return (
+      <a
+        data-component="card"
+        data-interactive="true"
+        href={href}
+        className={clsx(card, cardInteractive, className)}
+        {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {children}
+      </a>
+    );
+  }
   return (
-    <div data-component="card" className={clsx(card, className)} {...rest}>
+    <div
+      data-component="card"
+      className={clsx(card, className)}
+      {...(rest as HTMLAttributes<HTMLDivElement>)}
+    >
       {children}
     </div>
   );
 }
 
-function CardHeader({ children, className, ...rest }: CardProps) {
+function CardHeader({ children, className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-component="card"
@@ -31,7 +56,7 @@ function CardHeader({ children, className, ...rest }: CardProps) {
   );
 }
 
-function CardBody({ children, className, ...rest }: CardProps) {
+function CardBody({ children, className, ...rest }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-component="card"
@@ -47,11 +72,18 @@ function CardBody({ children, className, ...rest }: CardProps) {
 /**
  * A surface container. Compose `Card.Header` and `Card.Body` for structure; the
  * root is just the surface/border/radius shell (layout via CSS, no Context).
+ * Pass `href` to make the whole card a link — only then does it pick up hover
+ * feedback (and, on Pearl, the luster glow); a non-link card stays inert.
  *
  * @example
  * <Card>
- *   <Card.Header><Text variant="headingSm" as="h2">Profile</Text></Card.Header>
+ *   <Card.Header><Text typeScale="headingSm" as="h2">Profile</Text></Card.Header>
  *   <Card.Body>…</Card.Body>
+ * </Card>
+ *
+ * @example
+ * <Card href="/docs/theming">
+ *   <Card.Body>Theming guide</Card.Body>
  * </Card>
  */
 export const Card = Object.assign(CardRoot, {

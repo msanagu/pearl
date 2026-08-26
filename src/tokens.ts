@@ -35,6 +35,13 @@ export interface ColorTokens {
   surface: CSSVarFunction;
   /** Modal scrim / dimming overlay. */
   overlay: CSSVarFunction;
+  /**
+   * Quiet alpha wash for hover/focus backgrounds on ghost/icon-only controls —
+   * not `accentSubtle` (a solid, theme-branded tint; most themes' accent is a
+   * saturated brand hue, wrong for a "neutral" affordance). Composites over
+   * any surface underneath it, unlike a fixed solid token.
+   */
+  overlaySubtle: CSSVarFunction;
   /** Dark editorial/background plane within the active theme, not a theme switch. */
   backgroundInverse: CSSVarFunction;
   /** Surface placed on `backgroundInverse`. */

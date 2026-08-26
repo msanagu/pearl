@@ -9,7 +9,7 @@ export interface StackProps extends Omit<FlexBoxProps, 'direction'> {}
  *
  * @example
  * <Stack gap="lg">
- *   <Text variant="headingLg" as="h1">Settings</Text>
+ *   <Text typeScale="headingLg" as="h1">Settings</Text>
  *   <Card>…</Card>
  * </Stack>
  */

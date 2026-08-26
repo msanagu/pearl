@@ -1,27 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { color, controlHeight, radius, space } from '../tokens';
-import { useComputed } from './typeSpecimens';
 import * as css from './tokens.css';
 
 /**
- * Foundations → Tokens: a live specimen of the whole token contract, rendered
- * under whichever theme is active in the Storybook toolbar. This is not a
- * component — it's a validation surface for the token layer (ADR-0005 tiers,
- * ADR-0006 naming). Every swatch reads back its OWN resolved computed value
- * (via `useComputed`, shared with Typography.stories.tsx) rather than just
- * displaying the var() reference — a var name proves the wiring exists, not
- * that it resolves to what the theme intends. Colors/type are Pearl's
- * authored values (see docs/theme-revision-decisions.md); other themes are
- * still placeholders. Typography has its own page: Foundations/Typography.
+ * Foundations → Tokens/Semantic: a live specimen of the whole token contract,
+ * rendered under whichever theme is active in the Storybook toolbar. This is
+ * not a component — it's a validation surface for the semantic tier (ADR-0005
+ * tiers, ADR-0006 naming). Raw values live on Tokens/Primitives instead; this
+ * page is about the role each token plays, not its resolved hex.
  */
 
 function ColorSwatch({ name, cssVar }: { name: string; cssVar: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['background-color']);
   return (
     <div className={css.cell}>
-      <div ref={ref} className={css.swatch} style={{ background: cssVar }} />
+      <div className={css.swatch} style={{ background: cssVar }} />
       <span>{name}</span>
-      <span className={css.resolvedValue}>{resolved['background-color']}</span>
     </div>
   );
 }
@@ -34,55 +27,45 @@ function BorderSwatch({
   name: string;
   cssVar: string;
   /**
-   * `css.cell`/`css.resolvedValue` default to `color.textSubtle`, which is
-   * only legible on a light-register background. Pass the inverse token when
-   * this swatch sits inside an inverse panel — see the a11y finding this
-   * fixes: reusing the light-mode default here was a real WCAG AA failure
-   * (3.18:1), not a token defect.
+   * `css.cell` defaults to `color.textSubtle`, which is only legible on a
+   * light-register background. Pass the inverse token when this swatch sits
+   * inside an inverse panel — see the a11y finding this fixes: reusing the
+   * light-mode default here was a real WCAG AA failure (3.18:1), not a token
+   * defect.
    */
   captionColor?: string;
 }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['border-top-color']);
   return (
     <div className={css.cell}>
-      <div ref={ref} className={css.borderRule} style={{ borderTopColor: cssVar }} />
+      <div className={css.borderRule} style={{ borderTopColor: cssVar }} />
       <span style={captionColor ? { color: captionColor } : undefined}>{name}</span>
-      <span className={css.resolvedValue} style={captionColor ? { color: captionColor } : undefined}>
-        {resolved['border-top-color']}
-      </span>
     </div>
   );
 }
 
 function SpaceBar({ name, cssVar }: { name: string; cssVar: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['width']);
   return (
     <div className={css.cell} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
       <span style={{ width: 40 }}>{name}</span>
-      <div ref={ref} className={css.spaceBar} style={{ width: cssVar }} />
-      <span className={css.resolvedValue}>{resolved.width}</span>
+      <div className={css.spaceBar} style={{ width: cssVar }} />
     </div>
   );
 }
 
 function ControlHeightSwatch({ name, cssVar }: { name: string; cssVar: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['height']);
   return (
     <div className={css.cell} style={{ alignItems: 'center' }}>
-      <div ref={ref} className={css.controlHeightBar} style={{ width: 64, height: cssVar }} />
+      <div className={css.controlHeightBar} style={{ width: 64, height: cssVar }} />
       <span>{name}</span>
-      <span className={css.resolvedValue}>{resolved.height}</span>
     </div>
   );
 }
 
 function RadiusSwatch({ name, cssVar }: { name: string; cssVar: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['border-radius']);
   return (
     <div className={css.cell}>
-      <div ref={ref} className={css.radiusBox} style={{ borderRadius: cssVar }} />
+      <div className={css.radiusBox} style={{ borderRadius: cssVar }} />
       <span>{name}</span>
-      <span className={css.resolvedValue}>{resolved['border-radius']}</span>
     </div>
   );
 }
@@ -152,7 +135,7 @@ function TokensPreview() {
               captionColor={color.textInverseSubtle}
             />
           </div>
-          <span className={css.resolvedValue} style={{ color: color.textInverseSubtle }}>
+          <span className={css.subsectionTitle} style={{ color: color.textInverseSubtle }}>
             panel: backgroundInverse · card: surfaceInverse
           </span>
         </div>
@@ -234,7 +217,7 @@ function TokensPreview() {
 }
 
 const meta: Meta<typeof TokensPreview> = {
-  title: 'Foundations/Tokens',
+  title: 'Foundations/Tokens/Semantic',
   component: TokensPreview,
   parameters: { layout: 'fullscreen' },
 };

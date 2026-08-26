@@ -37,6 +37,17 @@ export const vars = createThemeContract({
     background: null,
     surface: null,
     overlay: null,
+    // A quiet alpha wash — hover/focus backgrounds on ghost/icon-only controls
+    // (a dismiss button, a quiet icon toggle) that must composite correctly
+    // over WHATEVER surface they sit on, not just `background`/`surface`. Not
+    // `accentSubtle`: that's a solid, theme-branded tint (fine for selected
+    // rows/active nav on a known surface), but most themes' accent is a fully
+    // saturated brand hue — an accent-anchored wash would read as neutral by
+    // accident in a desaturated theme and as a colored smear in a saturated
+    // one. Anchored on each mode's own neutral-ink extreme instead (see
+    // `pearl.css.ts`'s `inkAlpha`), same relationship `overlay` already has to
+    // that ink, just at a much lower alpha for a wash instead of a backdrop.
+    overlaySubtle: null,
     // Inverse tokens: section-scoped "render as if the OTHER mode were
     // active," without flipping the global mode — a dark band inside an
     // otherwise-light page (or vice versa). Same pattern as Material 3's

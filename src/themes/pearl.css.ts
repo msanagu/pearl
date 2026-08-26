@@ -44,58 +44,85 @@ export const pearlFonts = {
 };
 
 // ---- Color primitives ----
-
-const pearlLightPrimitives = {
-  linen: '#F5F3EF', // [4c] page background
-  porcelain: '#FBFAF7', // [spec] raised surface
-  chalk: '#FDFCFA', // [4c] secondary control top-stop / onAccent
-  ink: '#17161A', // [4c] primary text
-  slate: '#6E6A78', // [4c] body copy
-  // [amended] 4c's literal #77737E reads 4.18:1 against onAccent (linen) —
-  // fails WCAG AA normal text (4.5:1). Darkened within the same neutral
-  // family to 5.05:1; verified via Storybook's a11y addon on the Tokens story
-  // and by direct WCAG calculation. Same hue, same "quiet ink" role — this is
-  // a luminance correction, not a redesign.
-  pewter: '#6A6672', // labels, muted text, accent
-  hairline: '#DEDAD2', // [4c] default border
-  marineStrong: '#B8B5C6', // [spec] emphasis border
-  hairlineFaint: '#EAE7E0', // [derived] one step lighter than hairline
-  /** Marine Layer — quiet work only: focus ring, selected tint, sheen. Never a fill. */
-  marine: '#D7D5DF', // [spec]
-  scrim: 'rgba(23, 22, 26, 0.55)', // [derived]
-
-  // [derived] Sentiment families. No exploration source — authored low-chroma
-  // to sit inside Pearl's warm-neutral register rather than shout over it.
-  // (100 tint / 300 border / 500 icon / 700 text — see ADR-0005's worked example.)
-  // Verified via Storybook's a11y addon + direct WCAG calc on the Tokens
-  // story: 700-on-100 (text) is 6.7–8.5:1 (AA requires 4.5). 500-on-surface
-  // (icon, SC 1.4.11 non-text) is 4.27–5.73:1 (requires 3). Not re-audited
-  // for Tahitian/Freshwater/South Sea.
-  sage100: '#E8EDE6', sage300: '#BCCBB8', sage500: '#4A7350', sage700: '#2C4A32',
-  clay100: '#F3E8E5', clay300: '#DCBCB5', clay500: '#A34C40', clay700: '#71322A',
-  honey100: '#F3EDE1', honey300: '#D9C6A0', honey500: '#8F7434', honey700: '#634F22',
-  harbor100: '#E7EAEF', harbor300: '#BCC4D3', harbor500: '#546480', harbor700: '#364156',
+//
+// Three palettes, each a named hue family stepped 100 (lightest) → 900
+// (darkest), replacing the old light/dark-suffixed pairs (`pewter` vs
+// `pewterLight`, `hairline` light vs dark, etc). Dark mode is not a second
+// palette — it is the same palette read at different steps, exactly like
+// the sentiment families below already work (100/300/500/700 in both modes).
+//
+// - `alabaster` — warm neutral. Only populated at its pale end; Pearl never
+//   uses a dark step of this hue (that register belongs to squidInk).
+// - `squidInk` — cool near-black neutral: page background, surfaces, default
+//   border, dark-mode's border register. Only spans 600–900 (its dark end) —
+//   it has no light/pale step of its own. Dark-mode text ("moonlight") needs
+//   a near-white value, but that's `alabaster[300]` referenced directly, NOT
+//   a squidInk step: alabaster is warm (R>G>B) and squidInk's other steps are
+//   all cool (B>R>G), so a `squidInk[100]` alias would claim hue coherence
+//   squidInk doesn't actually have. It's a borrowed value, not squidInk's own.
+// - `marineLayer` — cool violet-gray accent. Quiet work only: focus ring,
+//   selected tint, muted/body text, sheen. Never a fill.
+//
+// `pewterLight` (`#9B96A8`) from the old dark-mode primitives was unused in
+// both the theme mapping and the assignment record — dropped rather than
+// carried forward as a step nothing references.
+export const alabaster = {
+  100: '#FDFCFA', // [4c] chalk — secondary control top-stop / onAccent
+  200: '#FBFAF7', // [spec] porcelain — raised surface
+  300: '#F5F3EF', // [4c] linen — page background
+  400: '#EAE7E0', // [derived] hairlineFaint — one step lighter than 500
+  500: '#DEDAD2', // [4c] hairline — default border
 };
 
-const pearlDarkPrimitives = {
-  obsidian: '#17161A', // [spec] page background
-  slateDeep: '#1E1D23', // [spec] raised surface
-  slateSunk: '#1B1A20', // [spec] recessed surface
-  moonlight: '#F5F3EF', // [spec] primary text
-  lavenderPale: '#C9C5D2', // [spec] body copy
-  pewterLight: '#9B96A8', // [spec] muted text
-  hairline: '#2B2A32', // [spec] default border
-  marineStrong: '#8E8B9E', // [spec] emphasis border
-  hairlineFaint: '#232229', // [spec] surfaceHover doubles as faint border
-  marine: '#D7D5DF', // [spec] accent — identical hex to light, inverted role
-  chalk: '#FDFCFA', // [spec] accent hover
-  scrim: 'rgba(0, 0, 0, 0.62)', // [derived]
+export const squidInk = {
+  600: '#2B2A32', // [spec] hairline — default border, dark mode
+  700: '#232229', // [spec] hairlineFaint — surfaceHover doubles as faint border
+  800: '#1E1D23', // [spec] slateDeep — raised surface
+  900: '#17161A', // [4c/spec] ink / obsidian — primary text (light) / page background (dark)
+};
 
-  // [derived] Sentiment families, lifted for a dark background.
-  sage100: '#16201A', sage300: '#33553B', sage500: '#5FA36E', sage700: '#9BD3A6',
-  clay100: '#281815', clay300: '#733A31', clay500: '#D46B5B', clay700: '#EFA89C',
-  honey100: '#241E10', honey300: '#6B5622', honey500: '#C6A055', honey700: '#E4CA92',
-  harbor100: '#171A21', harbor300: '#3A455C', harbor500: '#7E8CA8', harbor700: '#B9C3D6',
+/** Marine Layer — quiet work only: focus ring, selected tint, muted text, sheen. Never a fill. */
+export const marineLayer = {
+  100: '#D7D5DF', // [spec] marine — accent/focusRing/tint, identical hex both modes
+  200: '#C9C5D2', // [spec] lavenderPale — body copy, dark mode
+  300: '#B8B5C6', // [spec] marineStrong — emphasis border, light mode
+  400: '#8E8B9E', // [spec] marineStrong — emphasis border, dark mode
+  500: '#6E6A78', // [4c] slate — body copy, light mode
+  600: '#6A6672', // labels, muted text, accent — light mode
+};
+
+/**
+ * [derived] Alpha palettes — existing neutral steps re-rendered at partial
+ * opacity, keyed by percent in increments of 5 (only the percents actually
+ * used), so they composite over whatever's underneath instead of painting a
+ * fixed surface. Two separate palettes, not one: `squidInkAlpha` anchors on
+ * `squidInk[900]` (cool), `alabasterAlpha` on `alabaster[300]` (warm) —
+ * squidInk has no pale step of its own to use instead (see squidInk's
+ * comment above). Not anchored on `marineLayer` (accent) — most other
+ * themes' accent is a saturated brand hue, so an accent-anchored wash would
+ * be neutral here by coincidence and wrong everywhere else.
+ */
+export const squidInkAlpha = {
+  10: 'rgba(23, 22, 26, 0.10)',
+  55: 'rgba(23, 22, 26, 0.55)',
+};
+
+export const alabasterAlpha = {
+  10: 'rgba(245, 243, 239, 0.10)',
+};
+
+// [derived] Sentiment families, one flattened 100 (lightest)→800 (darkest)
+// scale per hue, shared by both modes — same rule as alabaster/squidInk
+// above. Light theme reads its surface/border/text/icon from the light end,
+// dark theme from the dark end; a step number always means the same
+// lightness in both. Verified via Storybook's a11y addon: 4.5:1+ text
+// contrast, 3:1+ icon contrast in both modes. Not re-audited for
+// Tahitian/Freshwater/South Sea.
+export const pearlSentiment = {
+  sage: { 100: '#E8EDE6', 200: '#BCCBB8', 300: '#9BD3A6', 400: '#5FA36E', 500: '#4A7350', 600: '#33553B', 700: '#2C4A32', 800: '#16201A' },
+  clay: { 100: '#F3E8E5', 200: '#DCBCB5', 300: '#EFA89C', 400: '#D46B5B', 500: '#A34C40', 600: '#733A31', 700: '#71322A', 800: '#281815' },
+  honey: { 100: '#F3EDE1', 200: '#E4CA92', 300: '#D9C6A0', 400: '#C6A055', 500: '#8F7434', 600: '#6B5622', 700: '#634F22', 800: '#241E10' },
+  harbor: { 100: '#E7EAEF', 200: '#BCC4D3', 300: '#B9C3D6', 400: '#7E8CA8', 500: '#546480', 600: '#3A455C', 700: '#364156', 800: '#171A21' },
 };
 
 // ---- Scales (Pearl's own — themes do not share a scale file) ----
@@ -141,42 +168,44 @@ const pearlText = {
 
 export const pearlLightThemeClass = createTheme(vars, {
   color: {
-    background: pearlLightPrimitives.linen,
-    surface: pearlLightPrimitives.porcelain,
-    overlay: pearlLightPrimitives.scrim,
-    // References the DARK primitives directly — cannot drift.
-    backgroundInverse: pearlDarkPrimitives.obsidian,
-    surfaceInverse: pearlDarkPrimitives.slateDeep,
+    background: alabaster[300],
+    surface: alabaster[200],
+    overlay: squidInkAlpha[55],
+    overlaySubtle: squidInkAlpha[10],
+    // References squidInk directly — cannot drift from the dark theme below,
+    // since both read the same module-scoped palette.
+    backgroundInverse: squidInk[900],
+    surfaceInverse: squidInk[800],
 
-    text: pearlLightPrimitives.ink,
-    textSubtle: pearlLightPrimitives.slate,
-    textInverse: pearlDarkPrimitives.moonlight,
-    textInverseSubtle: pearlDarkPrimitives.lavenderPale,
+    text: squidInk[900],
+    textSubtle: marineLayer[500],
+    textInverse: alabaster[300], // moonlight — borrowed, see squidInk's comment above
+    textInverseSubtle: marineLayer[200],
 
-    border: pearlLightPrimitives.hairline,
-    borderStrong: pearlLightPrimitives.marineStrong,
-    borderSubtle: pearlLightPrimitives.hairlineFaint,
-    borderInverse: pearlDarkPrimitives.hairline,
+    border: alabaster[500],
+    borderStrong: marineLayer[300],
+    borderSubtle: alabaster[400],
+    borderInverse: squidInk[600],
 
     // [4c] Primary CTA fill — the dark gradient's flat approximation (no
     // gradient token in canon yet; see decisions doc §8, "under evaluation").
-    primary: pearlLightPrimitives.ink,
-    onPrimary: pearlLightPrimitives.linen,
+    primary: squidInk[900],
+    onPrimary: alabaster[300],
 
     // Pearl is an ink-primary identity, but `accent` stays genuinely quiet —
     // it is NOT the button fill (that's `primary`, above). Reusing accent for
     // both would make every quiet use (focus borders, underlines, hover
     // states) go loud too.
-    accent: pearlLightPrimitives.pewter,
-    accentHover: pearlLightPrimitives.ink,
-    accentSubtle: pearlLightPrimitives.marine,
-    onAccent: pearlLightPrimitives.linen,
-    focusRing: pearlLightPrimitives.marine,
+    accent: marineLayer[600],
+    accentHover: squidInk[900],
+    accentSubtle: marineLayer[100],
+    onAccent: alabaster[300],
+    focusRing: marineLayer[100],
 
-    positive: { surface: pearlLightPrimitives.sage100, border: pearlLightPrimitives.sage300, text: pearlLightPrimitives.sage700, icon: pearlLightPrimitives.sage500 },
-    negative: { surface: pearlLightPrimitives.clay100, border: pearlLightPrimitives.clay300, text: pearlLightPrimitives.clay700, icon: pearlLightPrimitives.clay500 },
-    warn: { surface: pearlLightPrimitives.honey100, border: pearlLightPrimitives.honey300, text: pearlLightPrimitives.honey700, icon: pearlLightPrimitives.honey500 },
-    info: { surface: pearlLightPrimitives.harbor100, border: pearlLightPrimitives.harbor300, text: pearlLightPrimitives.harbor700, icon: pearlLightPrimitives.harbor500 },
+    positive: { surface: pearlSentiment.sage[100], border: pearlSentiment.sage[200], text: pearlSentiment.sage[700], icon: pearlSentiment.sage[500] },
+    negative: { surface: pearlSentiment.clay[100], border: pearlSentiment.clay[200], text: pearlSentiment.clay[700], icon: pearlSentiment.clay[500] },
+    warn: { surface: pearlSentiment.honey[100], border: pearlSentiment.honey[300], text: pearlSentiment.honey[700], icon: pearlSentiment.honey[500] },
+    info: { surface: pearlSentiment.harbor[100], border: pearlSentiment.harbor[200], text: pearlSentiment.harbor[700], icon: pearlSentiment.harbor[500] },
   },
   radius: pearlRadius,
   space: pearlSpace,
@@ -190,38 +219,39 @@ export const pearlLightThemeClass = createTheme(vars, {
 
 export const pearlDarkThemeClass = createTheme(vars, {
   color: {
-    background: pearlDarkPrimitives.obsidian,
-    surface: pearlDarkPrimitives.slateDeep,
-    overlay: pearlDarkPrimitives.scrim,
-    backgroundInverse: pearlLightPrimitives.linen,
-    surfaceInverse: pearlLightPrimitives.porcelain,
+    background: squidInk[900],
+    surface: squidInk[800],
+    overlay: 'rgba(0, 0, 0, 0.62)', // [derived] pure black, not squidInk-anchored — a backdrop must always darken, and squidInk has no dark-appropriate pale step to flip to for this mode
+    overlaySubtle: alabasterAlpha[10],
+    backgroundInverse: alabaster[300],
+    surfaceInverse: alabaster[200],
 
-    text: pearlDarkPrimitives.moonlight,
-    textSubtle: pearlDarkPrimitives.lavenderPale,
-    textInverse: pearlLightPrimitives.ink,
-    textInverseSubtle: pearlLightPrimitives.slate,
+    text: alabaster[300], // moonlight — borrowed, see squidInk's comment above
+    textSubtle: marineLayer[200],
+    textInverse: squidInk[900],
+    textInverseSubtle: marineLayer[500],
 
-    border: pearlDarkPrimitives.hairline,
-    borderStrong: pearlDarkPrimitives.marineStrong,
-    borderSubtle: pearlDarkPrimitives.hairlineFaint,
-    borderInverse: pearlLightPrimitives.hairline,
+    border: squidInk[600],
+    borderStrong: marineLayer[400],
+    borderSubtle: squidInk[700],
+    borderInverse: alabaster[500],
 
     // [spec] Mode swap inverts the CTA: dark pill on light, light pill on dark.
-    primary: pearlDarkPrimitives.chalk,
-    onPrimary: pearlDarkPrimitives.obsidian,
+    primary: alabaster[100], // chalk
+    onPrimary: squidInk[900],
 
     // Marine (#D7D5DF) is the same hex in both modes — highlight in light,
     // accent in dark — and never becomes a fill in either.
-    accent: pearlDarkPrimitives.marine,
-    accentHover: pearlDarkPrimitives.chalk,
-    accentSubtle: pearlDarkPrimitives.marineStrong,
-    onAccent: pearlDarkPrimitives.obsidian,
-    focusRing: pearlDarkPrimitives.marine,
+    accent: marineLayer[100],
+    accentHover: alabaster[100], // chalk
+    accentSubtle: marineLayer[400],
+    onAccent: squidInk[900],
+    focusRing: marineLayer[100],
 
-    positive: { surface: pearlDarkPrimitives.sage100, border: pearlDarkPrimitives.sage300, text: pearlDarkPrimitives.sage700, icon: pearlDarkPrimitives.sage500 },
-    negative: { surface: pearlDarkPrimitives.clay100, border: pearlDarkPrimitives.clay300, text: pearlDarkPrimitives.clay700, icon: pearlDarkPrimitives.clay500 },
-    warn: { surface: pearlDarkPrimitives.honey100, border: pearlDarkPrimitives.honey300, text: pearlDarkPrimitives.honey700, icon: pearlDarkPrimitives.honey500 },
-    info: { surface: pearlDarkPrimitives.harbor100, border: pearlDarkPrimitives.harbor300, text: pearlDarkPrimitives.harbor700, icon: pearlDarkPrimitives.harbor500 },
+    positive: { surface: pearlSentiment.sage[800], border: pearlSentiment.sage[600], text: pearlSentiment.sage[300], icon: pearlSentiment.sage[400] },
+    negative: { surface: pearlSentiment.clay[800], border: pearlSentiment.clay[600], text: pearlSentiment.clay[300], icon: pearlSentiment.clay[400] },
+    warn: { surface: pearlSentiment.honey[800], border: pearlSentiment.honey[600], text: pearlSentiment.honey[200], icon: pearlSentiment.honey[400] },
+    info: { surface: pearlSentiment.harbor[800], border: pearlSentiment.harbor[600], text: pearlSentiment.harbor[300], icon: pearlSentiment.harbor[400] },
   },
   radius: pearlRadius,
   space: pearlSpace,
@@ -309,3 +339,36 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     driftOpacity: '0.72',
   },
 });
+
+// `{ on: 'surface', trigger: 'hover' }` from pearl.assignment.ts's luster
+// application rules — `Card` writes `data-interactive` without knowing what
+// any theme does with it (same mechanism as the role treatments above); this
+// is Pearl's answer. `zIndex: -1` on the glow (not `zIndex: 1` on the card's
+// real content) is what keeps header/body text readable — a negative-z
+// absolutely-positioned layer paints below its static in-flow siblings by
+// spec, so nothing else needs to opt in.
+globalStyle(
+  `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`,
+  {
+    content: '',
+    position: 'absolute',
+    zIndex: -1,
+    inset: 0,
+    background: `linear-gradient(${pearlCapabilities.luster.angle}, ${pearlCapabilities.luster.seaGreen}, ${pearlCapabilities.luster.periwinkle}, ${pearlCapabilities.luster.blush})`,
+    opacity: 0,
+    pointerEvents: 'none',
+    transform: 'translate3d(-6%, 4%, 0)',
+    transition: `opacity ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}, transform ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}`,
+    '@media': {
+      '(prefers-reduced-motion: reduce)': { transition: 'none' },
+    },
+  },
+);
+
+globalStyle(
+  `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`,
+  {
+    opacity: pearlCapabilities.luster.driftOpacity,
+    transform: 'translate3d(6%, -4%, 0)',
+  },
+);

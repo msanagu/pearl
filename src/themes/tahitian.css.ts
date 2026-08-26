@@ -32,7 +32,7 @@ import { vars } from '../theme.css';
 
 // ---- Primitives (raw, named hexes) ----
 
-const tahitianLightPrimitives = {
+export const tahitianLightPrimitives = {
   pearl: '#ECEEEA', // base surface — soft warm off-white
   chalk: '#FAFAF7', // raised surface / onAccent
   ink: '#222422', // primary text
@@ -44,14 +44,9 @@ const tahitianLightPrimitives = {
   aubergineDeep: '#4E3C4A', // accent hover
   aubergineMist: '#E9E1E7', // accent tint
   scrim: 'rgba(24, 26, 25, 0.56)',
-  // Sentiment families, shade-suffixed (100 tint / 300 border / 500 icon / 700 text).
-  sage100: '#E5EEE7', sage300: '#B7C8B9', sage500: '#3D704F', sage700: '#244D35',
-  clay100: '#F3E9E6', clay300: '#DDBDB6', clay500: '#A8483D', clay700: '#7A3028',
-  honey100: '#F3EDE0', honey300: '#D8C49D', honey500: '#95742C', honey700: '#6D531F',
-  harbor100: '#E7ECEB', harbor300: '#BBC8C5', harbor500: '#52776F', harbor700: '#38534E',
 };
 
-const tahitianDarkPrimitives = {
+export const tahitianDarkPrimitives = {
   abyss: '#0E0E10', // base surface — near-black
   charcoal: '#1A1A1D', // raised surface
   moonlight: '#F5F5F7', // primary text
@@ -64,10 +59,16 @@ const tahitianDarkPrimitives = {
   aubergineDusk: '#2A2230', // accent tint
   aubergineInk: '#14111A', // text/icon on accent
   scrim: 'rgba(0, 0, 0, 0.6)',
-  sage100: '#132018', sage300: '#2E5B3E', sage500: '#4CAE68', sage700: '#8FDB9E',
-  clay100: '#2A1613', clay300: '#7A362E', clay500: '#E2604F', clay700: '#F3A79C',
-  honey100: '#241D0E', honey300: '#6B531C', honey500: '#D6A233', honey700: '#EFCB7C',
-  harbor100: '#131C22', harbor300: '#2C4E5C', harbor500: '#4F93AC', harbor700: '#9CC7DA',
+};
+
+// Sentiment families, one flattened 100 (lightest)→800 (darkest) scale per
+// hue, shared by both modes — a step number means the same lightness
+// regardless of which theme mode reads it.
+export const tahitianSentiment = {
+  sage: { 100: '#E5EEE7', 200: '#8FDB9E', 300: '#B7C8B9', 400: '#4CAE68', 500: '#3D704F', 600: '#2E5B3E', 700: '#244D35', 800: '#132018' },
+  clay: { 100: '#F3E9E6', 200: '#DDBDB6', 300: '#F3A79C', 400: '#E2604F', 500: '#A8483D', 600: '#7A362E', 700: '#7A3028', 800: '#2A1613' },
+  honey: { 100: '#F3EDE0', 200: '#EFCB7C', 300: '#D8C49D', 400: '#D6A233', 500: '#95742C', 600: '#6D531F', 700: '#6B531C', 800: '#241D0E' },
+  harbor: { 100: '#E7ECEB', 200: '#BBC8C5', 300: '#9CC7DA', 400: '#4F93AC', 500: '#52776F', 600: '#38534E', 700: '#2C4E5C', 800: '#131C22' },
 };
 
 // ---- Scales (this theme's own — not shared with Freshwater/South Sea) ----
@@ -106,6 +107,9 @@ export const tahitianLightThemeClass = createTheme(vars, {
     background: tahitianLightPrimitives.pearl,
     surface: tahitianLightPrimitives.chalk,
     overlay: tahitianLightPrimitives.scrim,
+    // Placeholder — Tahitian doesn't have its own alpha-neutral primitive yet
+    // (see pearl.css.ts's `inkAlpha` for the pattern to follow when it does).
+    overlaySubtle: 'rgba(0, 0, 0, 0.08)',
     // References the DARK mode's real primitives directly — can't drift.
     backgroundInverse: tahitianDarkPrimitives.abyss,
     surfaceInverse: tahitianDarkPrimitives.charcoal,
@@ -130,10 +134,10 @@ export const tahitianLightThemeClass = createTheme(vars, {
     onAccent: tahitianLightPrimitives.chalk,
     focusRing: tahitianLightPrimitives.aubergine,
 
-    positive: { surface: tahitianLightPrimitives.sage100, border: tahitianLightPrimitives.sage300, text: tahitianLightPrimitives.sage700, icon: tahitianLightPrimitives.sage500 },
-    negative: { surface: tahitianLightPrimitives.clay100, border: tahitianLightPrimitives.clay300, text: tahitianLightPrimitives.clay700, icon: tahitianLightPrimitives.clay500 },
-    warn: { surface: tahitianLightPrimitives.honey100, border: tahitianLightPrimitives.honey300, text: tahitianLightPrimitives.honey700, icon: tahitianLightPrimitives.honey500 },
-    info: { surface: tahitianLightPrimitives.harbor100, border: tahitianLightPrimitives.harbor300, text: tahitianLightPrimitives.harbor700, icon: tahitianLightPrimitives.harbor500 },
+    positive: { surface: tahitianSentiment.sage[100], border: tahitianSentiment.sage[300], text: tahitianSentiment.sage[700], icon: tahitianSentiment.sage[500] },
+    negative: { surface: tahitianSentiment.clay[100], border: tahitianSentiment.clay[200], text: tahitianSentiment.clay[700], icon: tahitianSentiment.clay[500] },
+    warn: { surface: tahitianSentiment.honey[100], border: tahitianSentiment.honey[300], text: tahitianSentiment.honey[600], icon: tahitianSentiment.honey[500] },
+    info: { surface: tahitianSentiment.harbor[100], border: tahitianSentiment.harbor[200], text: tahitianSentiment.harbor[600], icon: tahitianSentiment.harbor[500] },
   },
   radius: tahitianRadius,
   space: tahitianSpace,
@@ -148,6 +152,7 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     background: tahitianDarkPrimitives.abyss,
     surface: tahitianDarkPrimitives.charcoal,
     overlay: tahitianDarkPrimitives.scrim,
+    overlaySubtle: 'rgba(255, 255, 255, 0.10)', // placeholder, see light mode's comment above
     // References the LIGHT mode's real primitives directly — can't drift.
     backgroundInverse: tahitianLightPrimitives.pearl,
     surfaceInverse: tahitianLightPrimitives.chalk,
@@ -172,10 +177,10 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     onAccent: tahitianDarkPrimitives.aubergineInk,
     focusRing: tahitianDarkPrimitives.orchid,
 
-    positive: { surface: tahitianDarkPrimitives.sage100, border: tahitianDarkPrimitives.sage300, text: tahitianDarkPrimitives.sage700, icon: tahitianDarkPrimitives.sage500 },
-    negative: { surface: tahitianDarkPrimitives.clay100, border: tahitianDarkPrimitives.clay300, text: tahitianDarkPrimitives.clay700, icon: tahitianDarkPrimitives.clay500 },
-    warn: { surface: tahitianDarkPrimitives.honey100, border: tahitianDarkPrimitives.honey300, text: tahitianDarkPrimitives.honey700, icon: tahitianDarkPrimitives.honey500 },
-    info: { surface: tahitianDarkPrimitives.harbor100, border: tahitianDarkPrimitives.harbor300, text: tahitianDarkPrimitives.harbor700, icon: tahitianDarkPrimitives.harbor500 },
+    positive: { surface: tahitianSentiment.sage[800], border: tahitianSentiment.sage[600], text: tahitianSentiment.sage[200], icon: tahitianSentiment.sage[400] },
+    negative: { surface: tahitianSentiment.clay[800], border: tahitianSentiment.clay[600], text: tahitianSentiment.clay[300], icon: tahitianSentiment.clay[400] },
+    warn: { surface: tahitianSentiment.honey[800], border: tahitianSentiment.honey[700], text: tahitianSentiment.honey[200], icon: tahitianSentiment.honey[400] },
+    info: { surface: tahitianSentiment.harbor[800], border: tahitianSentiment.harbor[700], text: tahitianSentiment.harbor[300], icon: tahitianSentiment.harbor[400] },
   },
   radius: tahitianRadius,
   space: tahitianSpace,

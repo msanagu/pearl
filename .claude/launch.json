@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "resume-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../resume", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}

@@ -3,27 +3,45 @@
 ## One `Text` component, not split `Heading`/`Text`
 
 Typography properties (size, weight, line-height, letter-spacing) are a closed, stable
-set of concerns — unifying them under one component with a `variant` token is the safe
+set of concerns — unifying them under one component with a `typeScale` token is the safe
 kind of DRY (see component-philosophy.md's duplication-vs-abstraction test): a heading
 and a paragraph aren't structurally different things, they're the same thing (styled
 text) at different scale steps.
 
-## Decoupling `variant` from `as`
+## Decoupling `typeScale` from `as`
 
-The critical discipline: **visual variant and semantic element are chosen
+The critical discipline: **visual scale and semantic element are chosen
 independently.** Heading level should be driven by document structure (don't skip
 `h1` → `h4`), never by how large something needs to look.
 
 ```tsx
-<Text variant="headingLg" as="h1">Page Title</Text>
-<Text variant="headingSm" as="h2">Section</Text>
-<Text variant="bodyMd" as="h2">Quiet Section Label</Text>
+<Text typeScale="headingLg" as="h1">Page Title</Text>
+<Text typeScale="headingSm" as="h2">Section</Text>
+<Text typeScale="bodyMd" as="h2">Quiet Section Label</Text>
 {/* structurally an h2, visually restrained — both are valid and intentional */}
 ```
 
-- `variant` — selects the token bundle (size, line-height, default weight)
+- `typeScale` — selects the token bundle (size, line-height, tracking, default weight)
 - `as` — selects the actual DOM element
-- `weight` — optional override on top of the variant's default weight
+- `weight` — optional override on top of the scale step's default weight
+
+The same discipline extends to `role`: a scale step name (`headingLg`, `bodyMd`)
+describes a size band and its *default* face, not a mandate. `role` overrides face
+(and, per-theme, case/tracking) independently of scale — pairing a role with a
+larger or smaller step than its default doesn't fight the role's meaning, the same
+way rendering `headingLg` as an `h2` doesn't fight `as`. Four independent axes,
+each named for what it controls — `typeScale`, `role`, `as`, `weight` — combine
+any of them:
+
+```tsx
+<Text typeScale="headingLg" role="preheading">01</Text>
+{/* preheading's mono/tracking treatment, sized at headingLg instead of its
+    caption default — not a contradiction, same as typeScale/as above */}
+```
+
+A `role` with no `typeScale` passed alongside it inherits ambient size from its
+surrounding context rather than being forced to `bodyMd` — see Pearl's
+`inlineEmphasis`, which has no declared size for exactly this reason.
 
 ## Units — and why, per WCAG
 
@@ -68,9 +86,9 @@ numbers, since each theme's font-sizes are its own.
 
 ## Font-weight scale
 
-Four named weights, shared across all variants — a variant's *default* weight is
+Four named weights, shared across all scale steps — a step's *default* weight is
 fixed per theme; `weight` on `<Text>` overrides it. Values themselves (400/500/600/700)
-are consistent across all four themes; only which name a variant defaults to differs:
+are consistent across all four themes; only which name a step defaults to differs:
 
 | Name | Value | Pearl defaults | Tahitian / Freshwater / South Sea default |
 |---|---|---|---|
