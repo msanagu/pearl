@@ -1,14 +1,14 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
-import { runImpeccableAudit } from '../test/impeccablePlay';
-import { StoryAudit } from '../test/StoryAudit';
+import { runImpeccableAudit } from '../../src/test/impeccablePlay';
+import { StoryAudit } from '../../src/test/StoryAudit';
 import { Hero, HeroNav } from '../sections/Hero/Hero';
-import { Text } from '../components/Text/Text';
-import { Button } from '../components/Button/Button';
-import { Row } from '../components/Row/Row';
-import { Stack } from '../components/Stack/Stack';
-import { color, space, radius } from '../tokens';
+import { Text } from '../../src/components/Text/Text';
+import { Button } from '../../src/components/Button/Button';
+import { Row } from '../../src/components/Row/Row';
+import { Stack } from '../../src/components/Stack/Stack';
+import { color, space, radius } from '../../src/tokens';
 
 // One-shot POC of the real landing/docs site, consuming the extracted <Hero>.
 // Behavior we landed on (Porsche v4 reference):

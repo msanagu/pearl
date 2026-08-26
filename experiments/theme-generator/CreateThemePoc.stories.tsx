@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from '../components/Button';
-import { Card } from '../components/Card';
-import { Input } from '../components/Input';
-import { Alert } from '../components/Alert';
-import { Text } from '../components/Text';
-import { Icon } from '../components/Icon/Icon';
+import { Button } from '../../src/components/Button';
+import { Card } from '../../src/components/Card';
+import { Input } from '../../src/components/Input';
+import { Alert } from '../../src/components/Alert';
+import { Text } from '../../src/components/Text';
+import { Icon } from '../../src/components/Icon/Icon';
 import { PiLightning, PiShieldCheck, PiSparkle, PiChartLineUp } from 'react-icons/pi';
-import { color } from '../tokens';
-import { pearlLightThemeClass } from '../themes/pearl.css';
+import { color } from '../../src/tokens';
+import { pearlLightThemeClass } from '../../src/themes/pearl.css';
 import '../fonts/boska.css'; // self-hosted display face used by the generated theme
 import {
   DEFAULT_INPUT,

@@ -1,5 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css';
-import { pearlCapabilities } from './pearl.css';
+import { pearlCapabilities } from '../themes/pearl.css';
 
 // Ambient sweep — light drifting across the sphere's surface. Shares its
 // angle and hue stops with the Card hover glow (pearl.css.ts) — same "sweep

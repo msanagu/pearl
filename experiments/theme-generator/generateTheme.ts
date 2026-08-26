@@ -1,4 +1,4 @@
-import { color, controlHeight, fontFamily, fontWeight, radius, space, text } from '../tokens';
+import { color, controlHeight, fontFamily, fontWeight, radius, space, text } from '../../src/tokens';
 
 /**
  * End-user theme generator (POC/CreateTheme).

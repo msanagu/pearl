@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, controlHeight, fontFamily, radius, space, text } from '../tokens';
+import { color, controlHeight, fontFamily, radius, space, text } from '../../src/tokens';
 
 // POC/CreateTheme layout. Left: the intuitive form. Right: a live preview built
 // from real canon components, whose color/density/type are entirely the

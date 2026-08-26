@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import { PiMagnifyingGlass, PiGithubLogo, PiTerminalWindow } from 'react-icons/pi';
-import { Text } from '../../components/Text/Text';
-import { Button } from '../../components/Button/Button';
-import { Row } from '../../components/Row/Row';
-import { Stack } from '../../components/Stack/Stack';
-import { Icon } from '../../components/Icon/Icon';
-import { PearlSphere } from '../../themes/PearlSphere';
-import { color, space } from '../../tokens';
+import { Text } from '../../../src/components/Text/Text';
+import { Button } from '../../../src/components/Button/Button';
+import { Row } from '../../../src/components/Row/Row';
+import { Stack } from '../../../src/components/Stack/Stack';
+import { Icon } from '../../../src/components/Icon/Icon';
+import { PearlSphere } from '../../../src/brand/PearlSphere';
+import { color, space } from '../../../src/tokens';
 
 export interface HeroProps {
   /**
