@@ -62,6 +62,12 @@ export interface FieldProps {
  *   {(props) => <Input type="email" {...props} />}
  * </Field>
  * ```
+ *
+ * Every `Field` in one form should share one `size`. This is composition
+ * guidance, not a rule `size`'s type can enforce — nothing here checks it —
+ * so treat mismatched sizes within a single form as a bug on sight: a
+ * `sm` email field next to a `lg` password field reads as two different
+ * forms that happen to share a submit button, not one form.
  */
 export function Field({ label, required, hint, error, size = 'md', children }: FieldProps) {
   const inputId = useId();

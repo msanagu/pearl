@@ -27,6 +27,11 @@ export const Default: Story = {
  * `size` cascades control height and padding to a nested `Input` via CSS
  * custom properties — sm and md deliberately share padding (only lg steps
  * up); look closely and the difference between them is height alone.
+ *
+ * Shown side by side to compare, not as a pattern to copy: a real form picks
+ * one size and every `Field` in it uses that size. Rendering three sizes
+ * stacked, as this story does, is what NOT to ship — see the `size` prop's
+ * own doc comment on `Field`.
  */
 export const Sizes: Story = {
   render: (args) => (
