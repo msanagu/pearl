@@ -47,6 +47,19 @@ export type Trigger =
   | 'focus';
 
 /**
+ * Whether an application is the brand speaking, or the interface staying out
+ * of the way. Not a spectrum — two tiers, because a capability's applications
+ * split cleanly into "this IS the brand" (Pearl's sphere) and "this is UI
+ * doing quiet work" (a hover glow, a hairline) with nothing meaningfully
+ * between them. Named `quiet` to reuse this project's own existing word for
+ * the second tier (`accentBudget: 'quiet-work-no-fills'`, `marineLayer`'s
+ * "quiet work only... never a fill") rather than mint new vocabulary — and
+ * specifically not "chrome," which this system's own ADR-0007 already
+ * rejected as a term.
+ */
+export type Chroma = 'brand' | 'quiet';
+
+/**
  * Where and when are coupled — one capability may behave differently per
  * surface. Pearl's `luster` is ambient on the sphere and the hairline rule, but
  * hover-triggered on cards, which a single `trigger` field could not express.
@@ -54,6 +67,18 @@ export type Trigger =
 export interface Application {
   on: Surface;
   trigger: Trigger;
+  /**
+   * How saturated this application may read. `brand` applications may use the
+   * capability's own hues at full declared intensity (see `limitsByChroma`
+   * on `CapabilityAssignment`); `quiet` applications must derive their color
+   * from the system's existing neutral primitives (e.g. `marineLayer`,
+   * `alabaster`), never a capability's saturated palette directly, and are
+   * held to a lower ceiling. Omit where the distinction doesn't apply — a
+   * capability with only one application, or one that isn't alpha-based at
+   * all (a hairline rule painted in opaque, already-desaturated hex has
+   * nothing for an alpha ceiling to check).
+   */
+  chroma?: Chroma;
 }
 
 /** A numeric ceiling/floor the capability's own values must respect. */
@@ -69,8 +94,23 @@ export interface CapabilityAssignment {
   applications: Application[];
   /** Explicit prohibitions, checkable against the closed `Surface` set. */
   forbid?: Surface[];
-  /** Numeric ceilings — machine-checkable against the capability's values. */
+  /** Numeric ceilings — machine-checkable against the capability's values.
+   * For a ceiling that should differ between `chroma` tiers (a brand
+   * application read at full intensity, a quiet one held back), use
+   * `limitsByChroma` instead — a key present there overrides this one for
+   * applications of that tier; `limits` remains what applies to tier-less
+   * applications and to constraints that aren't chroma-dependent at all
+   * (e.g. `hues.max`, a count, not an intensity). */
   limits?: Record<string, Limit>;
+  /**
+   * Per-`Chroma`-tier overrides of `limits`. Exists because one capability
+   * can legitimately have two different ceilings for the same constraint —
+   * `luster`'s `alpha.max` is .42 on the brand object and lower everywhere
+   * else — and forcing both into one global number would either over-license
+   * the quiet tier or under-license the brand one. A tier with no entry here
+   * falls back to `limits`.
+   */
+  limitsByChroma?: Partial<Record<Chroma, Record<string, Limit>>>;
   /**
    * Real constraints that are NOT machine-checkable — model guidance only.
    * Kept structurally separate from `limits` so the two can never be confused
