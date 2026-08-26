@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
-import { PiXCircleFill } from 'react-icons/pi';
+import { PiWarningCircleFill } from 'react-icons/pi';
 import { Icon } from '../Icon/Icon';
 import {
   field,
@@ -96,7 +96,7 @@ export function Field({ label, required, hint, error, size = 'md', children }: F
       )}
       {error && (
         <span id={errorId} role="alert" className={errorRow}>
-          <Icon icon={PiXCircleFill} size={14} className={errorIcon} aria-hidden="true" />
+          <Icon icon={PiWarningCircleFill} size={14} className={errorIcon} aria-hidden="true" />
           <span className={errorText}>{error}</span>
         </span>
       )}

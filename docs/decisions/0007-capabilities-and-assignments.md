@@ -298,6 +298,42 @@ that you meant it.**
 - The Option D composition tier is taken up deliberately; it would likely subsume
   this boundary.
 
+## Convergent external work (2026-08-26)
+
+Sanity's Design System Doc Spec (DSDS, `designsystemdocspec.org`, a draft
+schema for machine-readable design system documentation) names a `Foundation`
+entity kind: "domain governance through principles, scales, and motion
+definitions." That is this ADR's assignment layer — `intent`, `guidance`,
+`limits`, `forbid` on an extension capability is domain governance through
+principles, under a different name.
+
+This is convergence, not inspiration, and the claim is checkable rather than
+asserted: `pearl.assignment.ts` and this ADR date to 2026-07-19/07-20 (commit
+history), a full month before DSDS was surfaced to this project. The honest
+version isn't "arrived first" — DSDS's own draft predates that date — it's
+that the two were authored with zero awareness of each other and landed on the
+same shape. Two people solving the same problem (structured, machine-readable
+context for a design system an LLM must generate against, without
+hallucinating) reaching for the same vocabulary is mild evidence the shape is
+load-bearing rather than arbitrary.
+
+**Not adopted.** DSDS is pre-1.0 (`0.15.2`), unendorsed by any standards body,
+and young enough that its shape may still change under it. Swapping this ADR's
+compiler-verified mechanism (rule 5's mapped-type completeness check) for
+compliance with a less stable spec would be a downgrade, not a maturation.
+
+One piece is worth carrying forward regardless of DSDS's own trajectory:
+`agentDocumentBlocks` — a parallel array of agent-only documentation blocks
+living alongside human-facing ones on the *same* entity, rather than embedding
+machine content inside human prose (or the reverse). That's a cleaner answer
+than this project's own working assumption in `JOURNAL.md`'s "how lean can the
+prose layer get" thread, and it's adoptable independent of whether the
+manifest this ADR anticipates (`PROJECT_BRIEF.md:16`) ever speaks DSDS itself.
+
+**Revisit if:** DSDS reaches 1.0 with real multi-implementer adoption, at which
+point emitting DSDS-shaped output from the assignment layer becomes a
+migration question rather than a dependency question.
+
 ## Related
 
 - ADR-0001 (styling engine) — vanilla-extract. `createTheme`'s totality is the
