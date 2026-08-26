@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Field } from './Field';
 import { Input } from '../Input';
@@ -31,24 +32,41 @@ export const WithHint: Story = {
   ),
 };
 
-export const WithError: Story = {
-  args: { label: 'ZIP code', error: 'Enter a 5-digit ZIP code.' },
-  render: (args) => (
+const ZIP_PATTERN = /^[0-9]{5}$/;
+
+/**
+ * Live-validated: `error` clears the moment `ZIP_PATTERN` is satisfied, which
+ * is what shows off `Field`'s contract — the error message, `aria-invalid`,
+ * and `role="alert"` are all driven by whether `error` is truthy, so there is
+ * no separate "valid" state to reconcile. Starts invalid (a letter in the
+ * value) so the error is visible without the reader having to type first.
+ */
+function ZipCodeField(args: { label: string }) {
+  const [value, setValue] = useState('9021A');
+  const error = ZIP_PATTERN.test(value) ? undefined : 'Enter a 5-digit ZIP code.';
+
+  return (
     <div style={{ maxWidth: 340 }}>
-      <Field {...args}>
+      <Field {...args} error={error}>
         {(props) => (
           <Input
             type="text"
             inputMode="numeric"
             pattern="[0-9]{5}"
             maxLength={5}
-            defaultValue="9021A"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             {...props}
           />
         )}
       </Field>
     </div>
-  ),
+  );
+}
+
+export const WithError: Story = {
+  args: { label: 'ZIP code' },
+  render: (args) => <ZipCodeField label={args.label} />,
 };
 
 // Hint stays associated in `aria-describedby` alongside the error — both

@@ -96,14 +96,14 @@ export const button = recipe({
     size: {
       sm: {
         height: controlHeight.sm,
-        paddingLeft: space.sm,
-        paddingRight: space.sm,
+        paddingLeft: space.md,
+        paddingRight: space.md,
         fontSize: text.bodySm.fontSize,
       },
       md: {
         height: controlHeight.md,
-        paddingLeft: space.md,
-        paddingRight: space.md,
+        paddingLeft: space.lg,
+        paddingRight: space.lg,
         fontSize: text.bodyMd.fontSize,
       },
       lg: {
