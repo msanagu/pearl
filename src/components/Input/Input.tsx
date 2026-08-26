@@ -14,11 +14,6 @@ export interface InputProps
 /**
  * A token-styled native `<input>`. Pairs with `Field`, which supplies the
  * `id` / `aria-describedby` / `aria-invalid` wiring via render-prop.
- *
- * @example
- * <Field label="Email" hint="We'll never share it">
- *   {(props) => <Input type="email" {...props} />}
- * </Field>
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ size, className, type = 'text', ...rest }, ref) => (

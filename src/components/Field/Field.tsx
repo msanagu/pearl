@@ -53,26 +53,11 @@ export interface FieldProps {
 /**
  * Label/hint/error coordination for an arbitrary input. Hands off a shared
  * `id` / `aria-describedby` / `aria-invalid` via children-as-function rather
- * than `cloneElement` (ADR-0002). Field never
- * imports `Input`; any element that accepts `FieldInjectedProps` works.
+ * than `cloneElement` (ADR-0002). Field never imports `Input`; any element
+ * accepting `FieldInjectedProps` works. See the `Sizes` story for sizing.
  *
- * Every `Field` in one form MUST share one `size` — see the `Sizes` story
- * (`Field.stories.tsx`) for what that means and, in its own docstring, what
- * NOT to copy from it. Not duplicated here: a hand-written anti-pattern
- * snippet in a comment is unchecked prose wearing code's syntax — it can
- * drift the moment `Field`'s props change and nothing would catch it, unlike
- * the story, which must typecheck and is actually rendered. One example,
- * not two, and it's the one the compiler can hold accountable. Nothing in
- * `size`'s type rejects a mismatch on its own; `pnpm check:field-sizes` does,
- * over real source (`scripts/check-field-sizes.ts`; excludes
- * `*.stories.tsx`, where showing sizes side by side is the point).
- *
- * @example
- * ```tsx
- * <Field label="Email" hint="We'll never share it" error={errors.email}>
- *   {(props) => <Input type="email" {...props} />}
- * </Field>
- * ```
+ * All `Field`s in one form must share one `size` — unchecked by the type,
+ * checked by `pnpm check:field-sizes`.
  */
 export function Field({ label, required, hint, error, size = 'md', children }: FieldProps) {
   const inputId = useId();

@@ -74,17 +74,6 @@ function CardBody({ children, className, ...rest }: HTMLAttributes<HTMLDivElemen
  * root is just the surface/border/radius shell (layout via CSS, no Context).
  * Pass `href` to make the whole card a link — only then does it pick up hover
  * feedback (and, on Pearl, the luster glow); a non-link card stays inert.
- *
- * @example
- * <Card>
- *   <Card.Header><Text typeScale="headingSm" as="h2">Profile</Text></Card.Header>
- *   <Card.Body>…</Card.Body>
- * </Card>
- *
- * @example
- * <Card href="/docs/theming">
- *   <Card.Body>Theming guide</Card.Body>
- * </Card>
  */
 export const Card = Object.assign(CardRoot, {
   Header: CardHeader,

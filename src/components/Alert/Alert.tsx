@@ -63,11 +63,6 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
  * For low-priority messages that are fine to miss, use `Toast` (a delivery
  * mechanism that renders this same component in a portal with auto-dismiss),
  * not a different visual component.
- *
- * @example
- * <Alert variant="negative" heading="Payment failed">
- *   Your card was declined. Try a different payment method.
- * </Alert>
  */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ variant = 'info', heading, icon, onDismiss, className, children, ...rest }, ref) => {

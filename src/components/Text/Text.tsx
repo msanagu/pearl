@@ -46,12 +46,6 @@ export interface TextProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
 /**
  * Token-driven typography. `typeScale` (size), `role` (face), `as` (element),
  * and `weight` are four independent axes — combine any of them.
- *
- * @example
- * <Text typeScale="headingLg" as="h1">Page Title</Text>
- * <Text typeScale="bodyMd" as="h2">Structurally an h2, visually restrained</Text>
- * <Text role="preheading">Plate 01 / Nacre</Text>
- * <Text typeScale="headingLg" role="metadata">01</Text>
  */
 export function Text({
   typeScale,

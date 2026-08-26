@@ -318,12 +318,8 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     seaGreen: 'rgba(158, 214, 196, 0.38)',
     periwinkle: 'rgba(214, 228, 255, 0.42)',
     blush: 'rgba(255, 214, 236, 0.30)',
-    /**
-     * The sheen as a BAND, not a wash: transparent below 32% and above 72%, so
-     * light reads as a bounded highlight travelling across the surface rather
-     * than a tint covering it. Dropping the transparent stops is what made the
-     * previous sphere invisible. [4c]
-     */
+    /** A BAND, not a wash: transparent below 32%/above 72%, so light reads
+     * as a bounded highlight, not a tint. [4c] */
     sheenBand:
       'linear-gradient(115deg, transparent 32%, rgba(158, 214, 196, 0.38) 44%, rgba(214, 228, 255, 0.42) 52%, rgba(255, 214, 236, 0.30) 60%, transparent 72%)',
     /** Sheen layer oversized so it has room to travel across the body. [4c] */
@@ -347,36 +343,12 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     /** The hairline rule's own stops: sea green → blue → sand → blush. [4c] */
     ruleGradient: 'linear-gradient(90deg, #D6E4DD, #CFE0EA, #EAE0CC, #E8D2DC 80%, transparent)',
     /**
-     * Hover drift on card surfaces — one pass, never a loop.
-     *
-     * A RADIAL ellipse fading to transparent, inset well past the card's own
-     * box (`driftInset`), so what a hover shows is a soft bloom with no
-     * visible edge — a linear gradient clipped to `inset: 0` paints a
-     * hard-edged rectangle instead. Radial is this project's own choice: the
-     * canonical reference (`Pearl Theme Contract.dc.html`'s `lusterStops`,
-     * 115deg linear, animated `background-position`) uses the sphere's sweep
-     * mechanic, not a bloom. [doc-site-poc.css.ts:292] is where the radial
-     * mechanic comes from; the STOPS below are not from that file.
-     *
-     * The color composition IS from the canonical reference, and it is a
-     * different palette from the sphere's — reusing the sphere's saturated
-     * seaGreen/periwinkle/blush trio here was the earlier mistake. Card hover
-     * is its own spec: "Silver into marine with one breath of dusty sea green
-     * — highlights, never rainbow" (`lusterStops`, light mode: silver.100,
-     * marine.150, marine.200, seagreen.150). Marine is the dominant hue,
-     * silver the undertone, seagreen a thin, late breath — not a third equal
-     * partner. `marineLayer[100]` (#D7D5DF) and `alabaster[200]` (#FBFAF7)
-     * are already this system's primitives for exactly those two roles;
-     * seagreen.150 (#EDF1EE) has no existing token, so it's inlined here at
-     * the lowest alpha and the widest stop position, which is what keeps it
-     * a breath rather than a dominant third hue.
-     *
-     * Alphas held under pearl.assignment.ts's limitsByChroma.quiet.alpha.max
-     * (0.30) — this application is chroma:'quiet', not 'brand'; only the
-     * sphere gets the .42 ceiling. An earlier version of this gradient's
-     * dominant stop was .45, over even the old single global limit — caught
-     * by eye, not by tooling, which is what motivated splitting the limit by
-     * chroma tier in the first place rather than just lowering one number.
+     * Hover drift on card surfaces — one pass, never a loop. Radial (this
+     * project's choice, not the canonical mechanic — see git log for why).
+     * `driftInset` spills the ellipse past the card's own box so no hard
+     * edge shows. Palette: marine dominant, silver undertone, seagreen a
+     * thin late breath (own spec, not the sphere's — `theme-revision-
+     * decisions.md`). Held under limitsByChroma.quiet.alpha.max (0.30).
      */
     driftGradient:
       'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.30) 0%, rgba(251, 250, 247, 0.19) 32%, rgba(237, 241, 238, 0.11) 52%, transparent 68%)',

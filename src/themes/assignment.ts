@@ -47,15 +47,9 @@ export type Trigger =
   | 'focus';
 
 /**
- * Whether an application is the brand speaking, or the interface staying out
- * of the way. Not a spectrum — two tiers, because a capability's applications
- * split cleanly into "this IS the brand" (Pearl's sphere) and "this is UI
- * doing quiet work" (a hover glow, a hairline) with nothing meaningfully
- * between them. Named `quiet` to reuse this project's own existing word for
- * the second tier (`accentBudget: 'quiet-work-no-fills'`, `marineLayer`'s
- * "quiet work only... never a fill") rather than mint new vocabulary — and
- * specifically not "chrome," which this system's own ADR-0007 already
- * rejected as a term.
+ * Brand speaking vs. UI staying quiet — two tiers, not a spectrum. `quiet`
+ * reuses this project's own word for the concept (`accentBudget:
+ * 'quiet-work-no-fills'`); not "chrome" (ADR-0007 already banned the term).
  */
 export type Chroma = 'brand' | 'quiet';
 
@@ -68,15 +62,10 @@ export interface Application {
   on: Surface;
   trigger: Trigger;
   /**
-   * How saturated this application may read. `brand` applications may use the
-   * capability's own hues at full declared intensity (see `limitsByChroma`
-   * on `CapabilityAssignment`); `quiet` applications must derive their color
-   * from the system's existing neutral primitives (e.g. `marineLayer`,
-   * `alabaster`), never a capability's saturated palette directly, and are
-   * held to a lower ceiling. Omit where the distinction doesn't apply — a
-   * capability with only one application, or one that isn't alpha-based at
-   * all (a hairline rule painted in opaque, already-desaturated hex has
-   * nothing for an alpha ceiling to check).
+   * How saturated this application may read — `brand` uses the capability's
+   * own hues at full intensity; `quiet` derives color from existing neutral
+   * primitives at a lower ceiling (`limitsByChroma`). Omit where it doesn't
+   * apply.
    */
   chroma?: Chroma;
 }
@@ -102,14 +91,9 @@ export interface CapabilityAssignment {
    * applications and to constraints that aren't chroma-dependent at all
    * (e.g. `hues.max`, a count, not an intensity). */
   limits?: Record<string, Limit>;
-  /**
-   * Per-`Chroma`-tier overrides of `limits`. Exists because one capability
-   * can legitimately have two different ceilings for the same constraint —
-   * `luster`'s `alpha.max` is .42 on the brand object and lower everywhere
-   * else — and forcing both into one global number would either over-license
-   * the quiet tier or under-license the brand one. A tier with no entry here
-   * falls back to `limits`.
-   */
+  /** Per-`Chroma` overrides of `limits` — a tier with no entry falls back
+   * to `limits`. E.g. `luster.alpha.max` is .42 for `brand`, lower for
+   * `quiet`; one global number would over- or under-license one of them. */
   limitsByChroma?: Partial<Record<Chroma, Record<string, Limit>>>;
   /**
    * Real constraints that are NOT machine-checkable — model guidance only.
