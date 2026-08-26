@@ -56,18 +56,23 @@ export interface FieldProps {
  * than `cloneElement` (ADR-0002). Field never
  * imports `Input`; any element that accepts `FieldInjectedProps` works.
  *
+ * Every `Field` in one form MUST share one `size` — see the `Sizes` story
+ * (`Field.stories.tsx`) for what that means and, in its own docstring, what
+ * NOT to copy from it. Not duplicated here: a hand-written anti-pattern
+ * snippet in a comment is unchecked prose wearing code's syntax — it can
+ * drift the moment `Field`'s props change and nothing would catch it, unlike
+ * the story, which must typecheck and is actually rendered. One example,
+ * not two, and it's the one the compiler can hold accountable. Nothing in
+ * `size`'s type rejects a mismatch on its own; `pnpm check:field-sizes` does,
+ * over real source (`scripts/check-field-sizes.ts`; excludes
+ * `*.stories.tsx`, where showing sizes side by side is the point).
+ *
  * @example
  * ```tsx
  * <Field label="Email" hint="We'll never share it" error={errors.email}>
  *   {(props) => <Input type="email" {...props} />}
  * </Field>
  * ```
- *
- * Every `Field` in one form should share one `size`. This is composition
- * guidance, not a rule `size`'s type can enforce — nothing here checks it —
- * so treat mismatched sizes within a single form as a bug on sight: a
- * `sm` email field next to a `lg` password field reads as two different
- * forms that happen to share a submit button, not one form.
  */
 export function Field({ label, required, hint, error, size = 'md', children }: FieldProps) {
   const inputId = useId();
