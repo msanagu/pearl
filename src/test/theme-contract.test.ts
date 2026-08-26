@@ -1,64 +1,59 @@
-import { describe, it, expect } from 'vitest';
-import { vars } from '../../src/theme.css';
-import * as tahitian from '../../src/themes/tahitian.css';
-import * as pearl from '../../src/themes/pearl.css';
-import * as freshwater from '../../src/themes/freshwater.css';
-import * as southSea from '../../src/themes/south-sea.css';
+import type { MapLeafNodes } from '@vanilla-extract/private';
+import { describe, expect, it } from 'vitest';
 
-function keys(obj: any): any {
-  if (obj === null || typeof obj !== 'object') return true;
-  if (Array.isArray(obj)) return obj.map(keys);
-  const out: any = {};
-  for (const k of Object.keys(obj)) out[k] = keys(obj[k]);
-  return out;
-}
+import { vars } from '../theme.css';
+import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../themes/freshwater.css';
+import { pearlLightThemeClass, pearlDarkThemeClass } from '../themes/pearl.css';
+import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../themes/south-sea.css';
+import { tahitianLightThemeClass, tahitianDarkThemeClass } from '../themes/tahitian.css';
 
-function diff(a: any, b: any, path = ''): string[] {
-  const messages: string[] = [];
-  if (a === true && b === true) return messages;
-  if (a === true && b !== true) return [`Missing at ${path || 'root'}`];
-  if (typeof a !== 'object' || a === null) return messages;
-  for (const key of Object.keys(a)) {
-    const pa = a[key];
-    const pb = b?.[key];
-    const p = path ? `${path}.${key}` : key;
-    if (pb === undefined) messages.push(`Missing key: ${p}`);
-    else messages.push(...diff(pa, pb, p));
-  }
-  return messages;
-}
+/**
+ * The shape `createTheme(vars, …)` demands: every leaf of the `vars` contract,
+ * as a string. This is the type a theme implementation must satisfy.
+ */
+type ThemeTokens = MapLeafNodes<typeof vars, string>;
 
-describe('theme contract shape', () => {
-  it('tahitian matches vars shape', () => {
-    const theme = (tahitian as any).tahitianLightThemeClass || (tahitian as any).tahitianLightThemeClass;
-    const reported = keys(vars as any);
-    const themeObj = keys((tahitian as any).tahitianLightThemeClass ? (tahitian as any).tahitianLightThemeClass : (tahitian as any));
-    const errors = diff(reported, themeObj);
-    if (errors.length) console.log('tahitian errors:', errors.slice(0, 20));
-    expect(errors.length).toBe(0);
+/**
+ * Completeness is a COMPILE-TIME guarantee, not a runtime one — `createTheme`
+ * rejects an incomplete token object before the code ever runs. The previous
+ * version of this file tried to assert it at runtime by diffing `vars` against
+ * the theme export, but `createTheme` returns a class-name *string*, not the
+ * token object, so the comparison was against a primitive and every key
+ * reported missing. It could not pass, and had been failing unnoticed —
+ * a second system drifting from the one that actually holds the contract.
+ *
+ * So the assertion moved to where the guarantee actually lives: the type
+ * checker. `pnpm typecheck` failing IS the contract test.
+ */
+describe('theme contract (compile-time)', () => {
+  it('rejects a theme missing required tokens', () => {
+    // @ts-expect-error — omits every token but one; if this line ever stops
+    // erroring, the contract has gone soft and themes can ship incomplete.
+    const incomplete: ThemeTokens = { color: { background: '#fff' } };
+    void incomplete;
+    expect(true).toBe(true);
+  });
+});
+
+describe('theme registration (runtime)', () => {
+  const themes = {
+    'pearl / light': pearlLightThemeClass,
+    'pearl / dark': pearlDarkThemeClass,
+    'tahitian / light': tahitianLightThemeClass,
+    'tahitian / dark': tahitianDarkThemeClass,
+    'freshwater / light': freshwaterLightThemeClass,
+    'freshwater / dark': freshwaterDarkThemeClass,
+    'south-sea / light': southSeaLightThemeClass,
+    'south-sea / dark': southSeaDarkThemeClass,
+  };
+
+  it.each(Object.entries(themes))('%s compiles to a class name', (_name, themeClass) => {
+    expect(typeof themeClass).toBe('string');
+    expect(themeClass.length).toBeGreaterThan(0);
   });
 
-  it('pearl matches vars shape', () => {
-    const reported = keys(vars as any);
-    const themeObj = keys((pearl as any).pearlLightThemeClass ? (pearl as any).pearlLightThemeClass : (pearl as any));
-    const errors = diff(reported, themeObj);
-    if (errors.length) console.log('pearl errors:', errors.slice(0, 20));
-    expect(errors.length).toBe(0);
-  });
-
-  it('freshwater matches vars shape', () => {
-    const reported = keys(vars as any);
-    const themeObj = keys((freshwater as any).freshwaterLightThemeClass ? (freshwater as any).freshwaterLightThemeClass : (freshwater as any));
-    const errors = diff(reported, themeObj);
-    if (errors.length) console.log('freshwater errors:', errors.slice(0, 20));
-    expect(errors.length).toBe(0);
-  });
-
-  it('south-sea matches vars shape', () => {
-    const reported = keys(vars as any);
-    const themeObj = keys((southSea as any).southSeaLightThemeClass ? (southSea as any).southSeaLightThemeClass : (southSea as any));
-    const errors = diff(reported, themeObj);
-    if (errors.length) console.log('southSea errors:', errors.slice(0, 20));
-    expect(errors.length).toBe(0);
+  it('every theme class is distinct', () => {
+    const values = Object.values(themes);
+    expect(new Set(values).size).toBe(values.length);
   });
 });

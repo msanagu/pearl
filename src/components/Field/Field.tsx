@@ -26,7 +26,7 @@ export interface FieldProps {
 /**
  * Label/hint/error coordination for an arbitrary input. Hands off a shared
  * `id` / `aria-describedby` / `aria-invalid` via children-as-function rather
- * than `cloneElement` — see composition-patterns-examples.md #2. Field never
+ * than `cloneElement` (ADR-0002). Field never
  * imports `Input`; any element that accepts `FieldInjectedProps` works.
  *
  * @example

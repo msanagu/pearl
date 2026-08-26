@@ -7,8 +7,8 @@ export type CardProps =
   | ({ href: string; children?: ReactNode } & AnchorHTMLAttributes<HTMLAnchorElement>);
 
 // `Card.Header` / `Card.Body` are static-property namespacing, NOT a Context
-// compound component — there is no shared state, so none is used (ADR-0002,
-// composition-patterns-examples.md). Each subcomponent is independently simple
+// compound component — there is no shared state, so none is used (ADR-0002).
+// Each subcomponent is independently simple
 // and renders the `data-component`/`data-part` override contract.
 //
 // `href` makes the whole card a link — `data-interactive` is the only signal

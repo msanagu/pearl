@@ -40,7 +40,7 @@ These four terms get conflated easily, so they're pinned down here:
 
 A `header` composes these — `<header><Text role="preheading">…</Text><Text as="h1"
 variant="displayLg">…</Text></header>` — but the system has no `Header`/composition
-component yet, so today that's assembled by hand (see `src/sections/Hero/Hero.stories.tsx`).
+component yet, so today that's assembled by hand.
 
 ## Where it's genuinely contested: components with no native element
 

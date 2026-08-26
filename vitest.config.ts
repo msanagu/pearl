@@ -18,31 +18,30 @@ export default defineConfig({
     include: ['@vanilla-extract/recipes/createRuntimeFn']
   },
   test: {
+    // Coverage is configured at the root, not per-project: Vitest 4's
+    // ProjectConfig type no longer accepts it.
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      reportsDirectory: 'coverage',
+    },
     projects: [{
       extends: true,
       test: {
+        name: 'unit',
         environment: 'jsdom',
         setupFiles: ['./src/test/setup.ts'],
         css: true,
         include: ['src/**/*.test.{ts,tsx}'],
-        coverage: {
-          provider: 'v8',
-          reporter: ['text', 'lcov'],
-          reportsDirectory: 'coverage'
-        }
       }
     }, {
       extends: true,
       plugins: [
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-      storybookTest({
-        configDir: path.join(dirname, '.storybook'),
-        // Disable the addon's auto coverage reporting directory which attempts
-        // to create folders under `node_modules/.cache` and can fail in some
-        // environments. Coverage is still collected by Vitest's project config.
-        coverage: false
-      })],
+      // `coverage` is no longer a valid option here (addon-vitest 10 dropped it
+      // from UserOptions); coverage is configured on the root test config above.
+      storybookTest({ configDir: path.join(dirname, '.storybook') })],
       test: {
         name: 'storybook',
         browser: {

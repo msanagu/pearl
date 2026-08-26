@@ -19,8 +19,8 @@ boolean/enum props (`hasIcon`, `iconPosition`, `showHeader`, `variant`,
 their head, and every new use case adds another prop. The alternative is to let
 consumers *compose* structure via `children`/slots. This system takes an
 explicit position rather than deciding case-by-case each time (the principle is
-stated in `component-philosophy.md`; worked examples in
-`composition-patterns-examples.md`).
+stated in `component-philosophy.md`; worked examples live in the Card and
+Field stories).
 
 ## Options considered
 
@@ -77,6 +77,6 @@ Corollaries that follow from this decision:
 ## Related
 
 - `component-philosophy.md` — the principle and the duplication-vs-abstraction test.
-- `composition-patterns-examples.md` — `Card.*` namespacing and `Field` render-prop.
+- `Card.stories.tsx`, `Field.stories.tsx` — `Card.*` namespacing and `Field` render-prop, demonstrated live.
 - ADR-0003 (override contract) — the *consumer-side* complement to composition.
 - Code: `src/components/Button/` (no icon-position prop).

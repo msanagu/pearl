@@ -17,7 +17,7 @@ This design system's central thesis is a **TypeScript-enforced, forkable token
 contract**: every component references only theme tokens (never a raw value),
 so replacing the theme layer re-skins the entire system with zero component
 changes, and a theme that omits a required token *fails to compile* (see
-`roadmap.md`, `docs/vanilla-extract-theming-example.md`). A second load-bearing
+`roadmap.md`). A second load-bearing
 requirement is the downstream **override contract** — stable `data-component` /
 `data-part` attributes that consumers target from a consolidated selectors
 block, with predictable specificity (see `override-patterns.md`).
@@ -119,7 +119,7 @@ content.
 ## Related
 
 - `roadmap.md` — the theme-only reskinning value proposition.
-- `docs/vanilla-extract-theming-example.md`, `docs/vanilla-extract-jsdoc-hover-pattern.md` — the contract + wrapper patterns this ADR commits to.
+- `docs/vanilla-extract-jsdoc-hover-pattern.md` — the accessor pattern this ADR commits to.
 - `override-patterns.md` — the override contract whose specificity guarantee depends on VE's output shape (see its engine-dependency note).
 - `docs/OPEN_QUESTIONS.md` #11 — the open question this ADR resolves.
 - Code: `src/theme.css.ts`, `src/themes/light.css.ts`, `src/tokens.ts`, `src/components/Button/Button.css.ts`.

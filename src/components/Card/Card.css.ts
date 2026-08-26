@@ -8,10 +8,9 @@ import { color, radius, space } from '../../tokens';
 //
 // The elevation shadow is a genuine CONTACT shadow (blur < 16px) rather than a
 // wide diffuse one: a hairline border paired with a wide, soft shadow is a
-// generated-UI tell (Impeccable `gpt-thin-border-wide-shadow`), and it also
-// contradicted this file's own "tight" intent. Keeping the border + inset
-// highlight + a tight shadow reads as a defined material plane, not generic
-// elevation. Verified by the Pearl audit (src/test/PearlAudit.stories.tsx).
+// generated-UI tell, and it also contradicted this file's own "tight" intent.
+// Keeping the border + inset highlight + a tight shadow reads as a defined
+// material plane, not generic elevation.
 export const card = style({
   display: 'flex',
   flexDirection: 'column',

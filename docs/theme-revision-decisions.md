@@ -166,7 +166,7 @@ Plus a *separate* contact-shadow element (`4c:1129`) — 130×16,
 `background-size: 180% 100%`. Sea-green → blue → sand → pink.
 
 **c. Card surfaces — hover drift, not a loop.** Use the mechanic already in
-[`doc-site-poc.css.ts:290`](../src/pages/doc-site-poc.css.ts): an `::after`
+the Card hover treatment: an `::after`
 radial-gradient at opacity 0 drifting `(-16%, 8%) → (14%, -8%)` over 1000ms
 `cubic-bezier(.22,1,.36,1)`, opacity ramping 700ms, plus `translateY(-2px)`.
 Already honors `prefers-reduced-motion`. Take the sphere's *color stops*, not
