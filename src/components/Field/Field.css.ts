@@ -33,6 +33,13 @@ export const label = style({
   paddingLeft: fieldPaddingX,
 });
 
+// A required mark reads as attention, not an error — reuses the same
+// sentiment color as `error` but the label carries no `role="alert"`, so
+// unlike a live error it never interrupts assistive tech on mount.
+export const requiredMark = style({
+  color: color.negative.text,
+});
+
 export const hint = style({
   fontFamily: fontFamily.body,
   fontSize: text.bodySm.fontSize,

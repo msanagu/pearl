@@ -32,6 +32,21 @@ export const WithHint: Story = {
   ),
 };
 
+/**
+ * `required` puts a `*` on the label and, separately, `required`/
+ * `aria-required` on the control itself — the mark is decorative
+ * (`aria-hidden`), so it's the control's own attributes doing the real work
+ * for both native constraint validation and assistive tech.
+ */
+export const Required: Story = {
+  args: { label: 'Full name', required: true },
+  render: (args) => (
+    <div style={{ maxWidth: 340 }}>
+      <Field {...args}>{(props) => <Input type="text" {...props} />}</Field>
+    </div>
+  ),
+};
+
 const ZIP_PATTERN = /^[0-9]{5}$/;
 
 /**
