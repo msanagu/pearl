@@ -49,11 +49,34 @@ export const hint = style({
 });
 
 // Error needs its own sentiment color — Text's `prominence` prop only covers
-// default/subtle — so it's a plain span, not `<Text>`.
-export const error = style({
+// default/subtle — so it's plain spans, not `<Text>`.
+//
+// Split in three: `errorRow` is the `role="alert"` container (icon + message,
+// so both are announced as one description — see aria-describedby wiring in
+// Field.tsx), `errorIcon` and `errorText` style the two children. `alignItems:
+// center` assumes a short, single-line message, matching every error string
+// in this system today; a message that wraps would want `flex-start` instead
+// so the icon sits at cap-height of the first line, not centered on the block.
+export const errorRow = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: space.xs,
+  paddingLeft: fieldPaddingX,
+});
+
+// Sized to bodySm's cap-height, not Icon's 20px default sized for standalone
+// use — matches Alert's negative-sentiment icon (PiXCircleFill, color.negative.icon)
+// so a field error and an Alert read as the same visual vocabulary. aria-hidden
+// in Field.tsx: the icon carries no text a screen reader could read, and the
+// row's own role="alert" is what gets announced.
+export const errorIcon = style({
+  flexShrink: 0,
+  color: color.negative.icon,
+});
+
+export const errorText = style({
   fontFamily: fontFamily.body,
   fontSize: text.bodySm.fontSize,
   lineHeight: text.bodySm.lineHeight,
   color: color.negative.text,
-  paddingLeft: fieldPaddingX,
 });
