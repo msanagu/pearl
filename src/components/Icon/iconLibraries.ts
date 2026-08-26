@@ -1,40 +1,19 @@
 /**
- * Aesthetic tagging for the `react-icons` sets.
+ * Reference notes on the `react-icons` sets this system has evaluated.
  *
- * `react-icons` normalizes ~30 icon sets to one `IconType` signature, which
- * makes them interchangeable at the code level but says nothing about whether
- * they *look* like they belong to a given theme. This registry is that missing
- * half: it describes each set along the same dimensions the theme generator
- * uses, so an icon set can be selected by aesthetic rather than by name.
+ * `react-icons` normalizes ~30 icon sets to one `IconType` signature, so they
+ * are interchangeable at the code level. What that signature does not tell you
+ * is what each set costs you in character, coverage, or association — which is
+ * what `notes` records (ADR-0004: third-party dependencies are adopted
+ * deliberately, with the reasoning written down).
  *
  * Deliberately metadata-only — it imports no icon components, so referencing
  * it costs nothing at runtime and cannot defeat tree-shaking. Consumers still
  * import icons directly from their set (`react-icons/pi`, `react-icons/lu`),
  * which is the only import shape `react-icons` can tree-shake.
  *
- * The tags are authored judgments, not measured facts. They are the icon-side
- * equivalent of the section tags, and want the same treatment: validated by
- * rendering across divergent themes, not trusted because they're written down.
+ * The notes are authored judgments, not measured facts.
  */
-
-/**
- * Mirrors `PersonalityId` in the theme generator. Declared locally rather than
- * imported so a component doesn't depend on a page module; the two unions must
- * be kept in step by hand.
- */
-export type IconPersonality = 'friendly' | 'confident' | 'refined' | 'calm';
-
-export type IconAesthetic =
-  /** Built from circles and straight lines; drafted, not drawn. */
-  | 'geometric'
-  /** Slightly irregular, hand-drawn warmth. */
-  | 'humanist'
-  /** Generous corner radii, soft terminals. */
-  | 'rounded'
-  /** Square corners, hard terminals, high angularity. */
-  | 'sharp'
-  /** Reads as tooling/developer-facing rather than consumer. */
-  | 'technical';
 
 export type IconTreatment = 'outline' | 'filled' | 'both';
 
@@ -44,9 +23,6 @@ export interface IconLibrary {
   label: string;
   /** Export prefix every icon in the set carries, e.g. `Pi` for Phosphor. */
   prefix: string;
-  aesthetic: IconAesthetic[];
-  /** Personalities this set sits comfortably under. */
-  personalities: IconPersonality[];
   treatment: IconTreatment;
   /**
    * Whether the set ships multiple weights as separately named exports
@@ -64,8 +40,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'pi',
     label: 'Phosphor',
     prefix: 'Pi',
-    aesthetic: ['geometric', 'rounded'],
-    personalities: ['friendly', 'calm', 'confident'],
     treatment: 'both',
     weights: true,
     size: 9000,
@@ -76,8 +50,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'lu',
     label: 'Lucide',
     prefix: 'Lu',
-    aesthetic: ['geometric'],
-    personalities: ['calm', 'refined', 'confident'],
     treatment: 'outline',
     weights: false,
     size: 1500,
@@ -88,8 +60,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'tb',
     label: 'Tabler',
     prefix: 'Tb',
-    aesthetic: ['geometric', 'technical'],
-    personalities: ['confident', 'calm'],
     treatment: 'outline',
     weights: false,
     size: 5800,
@@ -100,8 +70,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'rx',
     label: 'Radix',
     prefix: 'Rx',
-    aesthetic: ['geometric', 'sharp'],
-    personalities: ['refined'],
     treatment: 'outline',
     weights: false,
     size: 300,
@@ -112,8 +80,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'ri',
     label: 'Remix',
     prefix: 'Ri',
-    aesthetic: ['rounded', 'geometric'],
-    personalities: ['friendly', 'calm'],
     treatment: 'both',
     weights: false,
     size: 2800,
@@ -124,8 +90,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'fi',
     label: 'Feather',
     prefix: 'Fi',
-    aesthetic: ['geometric', 'humanist'],
-    personalities: ['calm', 'refined'],
     treatment: 'outline',
     weights: false,
     size: 290,
@@ -136,8 +100,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'hi2',
     label: 'Heroicons v2',
     prefix: 'Hi',
-    aesthetic: ['rounded', 'geometric'],
-    personalities: ['friendly', 'confident'],
     treatment: 'both',
     weights: false,
     size: 900,
@@ -148,8 +110,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'bs',
     label: 'Bootstrap',
     prefix: 'Bs',
-    aesthetic: ['rounded'],
-    personalities: ['friendly'],
     treatment: 'both',
     weights: false,
     size: 2000,
@@ -159,8 +119,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'vsc',
     label: 'VS Code (Codicons)',
     prefix: 'Vsc',
-    aesthetic: ['technical', 'sharp'],
-    personalities: ['confident'],
     treatment: 'outline',
     weights: false,
     size: 400,
@@ -171,8 +129,6 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'go',
     label: 'Octicons',
     prefix: 'Go',
-    aesthetic: ['technical', 'geometric'],
-    personalities: ['confident', 'calm'],
     treatment: 'outline',
     weights: false,
     size: 600,
@@ -182,13 +138,11 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     id: 'si',
     label: 'Simple Icons',
     prefix: 'Si',
-    aesthetic: ['geometric'],
-    personalities: ['friendly', 'confident', 'refined', 'calm'],
     treatment: 'filled',
     weights: false,
     size: 3200,
     notes:
-      'Brand logos only, not a UI set — pair it with a real UI set rather than choosing between them. Aesthetic-neutral because each mark carries its own brand, so it is tagged for every personality.',
+      'Brand logos only, not a UI set — pair it with a real UI set rather than choosing between them.',
   },
 ] as const;
 
@@ -196,30 +150,3 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
 export const ICON_LIBRARIES_BY_ID: Readonly<Record<string, IconLibrary>> = Object.fromEntries(
   ICON_LIBRARIES.map((library) => [library.id, library]),
 );
-
-export interface IconLibraryQuery {
-  personality?: IconPersonality;
-  aesthetic?: IconAesthetic;
-  treatment?: IconTreatment;
-  /** Only sets shipping multiple weights as separate exports. */
-  weights?: boolean;
-  /** Drop sets smaller than this, when coverage matters more than character. */
-  minSize?: number;
-}
-
-/**
- * Filters the registry. Every field is optional and ANDed together; an empty
- * query returns everything. A set tagged `both` satisfies a query for either
- * `outline` or `filled`, since it ships both.
- */
-export function findIconLibraries(query: IconLibraryQuery = {}): IconLibrary[] {
-  const { personality, aesthetic, treatment, weights, minSize } = query;
-  return ICON_LIBRARIES.filter((library) => {
-    if (personality && !library.personalities.includes(personality)) return false;
-    if (aesthetic && !library.aesthetic.includes(aesthetic)) return false;
-    if (treatment && library.treatment !== treatment && library.treatment !== 'both') return false;
-    if (weights !== undefined && library.weights !== weights) return false;
-    if (minSize !== undefined && library.size < minSize) return false;
-    return true;
-  });
-}

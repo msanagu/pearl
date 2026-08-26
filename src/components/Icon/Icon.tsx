@@ -25,7 +25,7 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
    * `react-icons` normalizes every set to the same `IconType` signature, so
    * swapping the icon set a theme draws from is a matter of changing the
    * import — nothing here or in the override contract changes. See
-   * `iconLibraries.ts` for which sets suit which aesthetic.
+   * `iconLibraries.ts` for notes on the sets evaluated here.
    */
   icon: IconType;
   /** Pixel size, forwarded to the underlying `<svg>`. @default 20 */

@@ -101,8 +101,7 @@ import {
   BsExclamationTriangle,
 } from 'react-icons/bs';
 import { Icon } from './Icon';
-import { ICON_LIBRARIES_BY_ID, findIconLibraries } from './iconLibraries';
-import type { IconAesthetic, IconPersonality } from './iconLibraries';
+import { ICON_LIBRARIES_BY_ID } from './iconLibraries';
 import { Row } from '../Row';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
@@ -134,10 +133,9 @@ const iconMapping = {
  *
  * `react-icons` normalizes ~30 icon sets to one `IconType` signature, so the
  * set an icon comes from is an import detail — nothing about this component or
- * the override contract changes when it swaps. `iconLibraries.ts` tags those
- * sets by aesthetic so a set can be chosen to match a theme rather than by
- * name. The "Switching sets" and "Switching styles" stories below are the
- * demonstration of both halves.
+ * the override contract changes when it swaps. `iconLibraries.ts` records what
+ * each evaluated set costs in character and coverage. The "Switching sets" and
+ * "Switching styles" stories below are the demonstration.
  *
  * There is no `weight` prop. `react-icons` encodes weight in the icon *name*,
  * so Phosphor's six weights are six exports (`PiHeartThin` … `PiHeartDuotone`)
@@ -589,96 +587,6 @@ export const OutlineVersusFilled: StoryObj = {
       ))}
     </Stack>
   ),
-};
-
-// ---- Choosing a set from the registry --------------------------------------
-
-type RegistryStory = StoryObj<{
-  personality: IconPersonality;
-  aesthetic: IconAesthetic | 'any';
-  weights: boolean;
-}>;
-
-/**
- * The intended selection path: query `iconLibraries.ts` by the same dimensions
- * the theme generator uses, then render whatever comes back. A wizard picking
- * an icon set for a generated theme runs exactly this query — the control
- * panel here stands in for the questionnaire.
- *
- * Sets that survive the filter are shown rendering the same concepts, so the
- * tags can be checked against what they actually look like. The tags are
- * authored judgments; this story is where they get argued with.
- */
-export const SelectingFromTheRegistry: RegistryStory = {
-  args: { personality: 'refined', aesthetic: 'any', weights: false },
-  argTypes: {
-    personality: { control: 'radio', options: ['friendly', 'confident', 'refined', 'calm'] },
-    aesthetic: {
-      control: 'select',
-      options: ['any', 'geometric', 'humanist', 'rounded', 'sharp', 'technical'],
-    },
-    weights: { control: 'boolean', name: 'multi-weight only' },
-  },
-  parameters: {
-    docs: {
-      source: {
-        language: 'tsx',
-        transform: (
-          _code: string,
-          ctx: { args: { personality: string; aesthetic: string; weights: boolean } },
-        ) => {
-          const parts = [`personality: '${ctx.args.personality}'`];
-          if (ctx.args.aesthetic !== 'any') parts.push(`aesthetic: '${ctx.args.aesthetic}'`);
-          if (ctx.args.weights) parts.push('weights: true');
-          return (
-            `import { Icon, findIconLibraries } from '@msanagu/design-system';\n\n` +
-            `// Same query the wizard runs once the questionnaire is answered.\n` +
-            `const matches = findIconLibraries({ ${parts.join(', ')} });\n\n` +
-            `// \`matches[0].id\` is a react-icons subpath — 'pi', 'lu', 'rx' …\n` +
-            `// Resolve it to a set of imports in your own concept map, then:\n` +
-            `<Icon icon={PiHeart} size={26} />`
-          );
-        },
-      },
-    },
-  },
-  render: ({ personality, aesthetic, weights }) => {
-    const matches = findIconLibraries({
-      personality,
-      aesthetic: aesthetic === 'any' ? undefined : aesthetic,
-      weights: weights ? true : undefined,
-    }).filter((library) => library.id in SETS);
-
-    return (
-      <Stack gap="2xl">
-        <Text typeScale="caption" prominence="subtle" as="p" style={{ margin: 0, maxWidth: '64ch' }}>
-          {matches.length} of the sets rendered here match. Sets in the registry without a demo
-          mapping above (Simple Icons, Octicons, VS Code) are excluded — they are real entries,
-          just not comparable on this concept vocabulary.
-        </Text>
-        {matches.length === 0 && (
-          <Text typeScale="bodyMd" as="p" style={{ margin: 0 }}>
-            No set carries every one of those tags. Loosen the aesthetic, or accept a set that only
-            matches on personality.
-          </Text>
-        )}
-        {matches.map((library) => (
-          <Stack key={library.id} gap="sm">
-            <Row gap="sm" align="center">
-              <Text typeScale="bodyMd" weight="semibold" as="span">
-                {library.label}
-              </Text>
-              <Text typeScale="caption" prominence="subtle" as="span">
-                {library.aesthetic.join(', ')} · {library.treatment}
-                {library.weights ? ' · multi-weight' : ''}
-              </Text>
-            </Row>
-            <ConceptRow libraryId={library.id} size={26} />
-          </Stack>
-        ))}
-      </Stack>
-    );
-  },
 };
 
 // ---- Duotone ---------------------------------------------------------------
