@@ -85,6 +85,14 @@ migration into stories — I haven't gone file-by-file yet; that's the actual
 next step, not a judgment I want to make in the abstract before Card and
 Field exist to test it against.
 
+**Graduated (2026-08-26) — the `@example` half of this, specifically:**
+ADR-0009. Seven components had a hand-written `@example` duplicating a story
+that already demonstrates the same usage, compiled and checked, where the
+JSDoc copy was neither. Resolved: stories are the usage reference, JSDoc
+states what isn't derivable from the code or a story and stops there. The
+broader file-by-file docs migration this section describes is still open —
+this is one instance of the pattern settled, not the whole thread.
+
 ## Other things I'm watching, lower priority for now
 
 - Whether Storybook-as-corpus (the future MCP/RAG phase) changes *how* I'd
