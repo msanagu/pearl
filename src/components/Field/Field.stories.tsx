@@ -32,11 +32,20 @@ export const WithHint: Story = {
 };
 
 export const WithError: Story = {
-  args: { error: 'Enter a valid email address.' },
+  args: { label: 'ZIP code', error: 'Enter a 5-digit ZIP code.' },
   render: (args) => (
     <div style={{ maxWidth: 340 }}>
       <Field {...args}>
-        {(props) => <Input type="email" defaultValue="not-an-email" {...props} />}
+        {(props) => (
+          <Input
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]{5}"
+            maxLength={5}
+            defaultValue="9021A"
+            {...props}
+          />
+        )}
       </Field>
     </div>
   ),
