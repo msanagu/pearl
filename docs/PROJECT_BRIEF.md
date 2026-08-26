@@ -8,13 +8,24 @@ wins; update this file, don't trust it blindly.
 
 ## What this is
 
-A personal, open-source-bound React component library — a portfolio piece
-built to demonstrate **design-system judgment**, not to ship a product. The
-differentiator is process, not breadth: a small, deliberately-scoped
-component set built on a philosophy that's documented *before* code, with
-every judgment call traceable to a reason. Secondary, later-phase goal: feed
-this system's Storybook docs into a GitHub-aware MCP server as a RAG corpus
-(not yet built — informs why component documentation quality matters now).
+**A dated, documented experiment testing what a design system looks like when
+built to be legible to a coding agent, not just a human — a 2026 snapshot, not
+a finished product.** Every architectural call in this repo is timestamped
+(commit history, ADR `date` fields) and, where relevant, checked against
+external prior art (see ADR-0007's and ADR-0008's "convergent work" sections)
+rather than asserted from taste alone. The differentiator from a normal
+portfolio component library is that claim being falsifiable: the decisions,
+the reasoning, and the dates they were made are all in the repo, so "this
+holds up" or "this didn't age well" is a question anyone can actually check
+against the commit log, not take on faith.
+
+The concrete hypothesis under test: that a design system whose token layer,
+component API, and governance docs are structured for machine legibility from
+day one needs *less* retrieval infrastructure to stay accurate for an AI
+coding agent than one that bolts a RAG layer onto human-only docs after the
+fact (see ADR-0008; the manifest this predicts is not yet built — that's the
+next phase of the experiment, not a settled result). A component library is
+the testbed, not the deliverable.
 
 **Repo:** `~/Code/design-system` (separate from any other project in this
 environment — don't conflate with sibling repos). Docs-first: `docs/` was
@@ -33,10 +44,11 @@ undecided — check it before assuming something is settled.
 - **pnpm** (via corepack, pinned in `packageManager`) — chosen over npm/Bun;
   Bun rejected as a *runtime* given how bleeding-edge the rest of the stack
   already is (compat risk), fine as an installer-only choice if revisited
-- **Styling engine: UNDECIDED — see Open Decisions.** Code currently uses
-  vanilla-extract + `@vanilla-extract/recipes`, but this is explicitly not
-  ratified; Panda CSS is a live alternative under comparison. Treat any
-  `.css.ts` file as provisional, not as evidence the decision is made.
+- **Styling engine: DECIDED — vanilla-extract (ADR-0001, accepted).** Panda
+  CSS was the live alternative during evaluation; VE won on the theme-contract
+  completeness guarantee (a theme missing a token fails to compile) that this
+  project's whole token architecture (ADR-0005) depends on. `.css.ts` files
+  are the real thing, not a placeholder.
 - No linter yet (deliberately deferred). CI (`.github/workflows/ci.yml`):
   typecheck → test → build, on pnpm.
 
@@ -135,33 +147,61 @@ MCP server that detects this pattern automatically across repos
 
 ## Component roadmap and build status
 
-Foundational token layer, `Button`, and the harness are the only things
-actually built and verified as of this writing. Everything else below is
-planned, not built.
+Nine components shipped, typed, tested (63 unit tests, 0 a11y violations),
+and themed across four themes (Pearl, Tahitian, Freshwater, South Sea) ×
+light/dark. `experiments/` (typechecked, excluded from the library build and
+Storybook) holds an earlier multi-tenant-SaaS direction that scope-narrowed
+back to the design system itself — kept for what it taught, not shipped.
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| — | Token contract + light theme + JSDoc wrapper | ✅ shipped | `src/theme.css.ts`, `src/themes/light.css.ts`, `src/tokens.ts` |
-| 1 | **Button** | ✅ shipped | variant (primary/secondary) × size (sm/md/lg, 8px-grid heights), native `<button>`, `data-component` contract, `className` passthrough, 6 stories incl. icon-composition proof, 0 a11y violations |
-| 2 | Card | planned | static-property namespacing (`Card.Header`/`Card.Body`), *not* a compound-component/Context case |
-| 3 | Text | planned | one component, not split Heading/Text; `variant`/`as` decoupled |
-| 4 | Alert | planned | `role="alert"`/`role="status"` |
-| 5 | Icon | planned | typed name/variant registry, explicit per-variant SVGs (no runtime shape transform) |
-| 6 | Field | planned | label/hint/error coordination, render-prop child injection |
-| 7 | Progress Bar | planned | native-vs-custom decision deferred to build time |
-| 8 | Badge | planned | token-driven, deliberately simple |
-| 9 | Stack | planned | shares internal `FlexBox` primitive with Row |
-| 10 | Row | planned | horizontal layout |
-| 11 | Grid | planned | separate model from Stack/Row |
+| — | Token contract + 4 themes × light/dark + JSDoc wrapper | ✅ shipped | `src/theme.css.ts`, `src/themes/*.css.ts`, `src/tokens.ts` |
+| — | `FlexBox` (shared layout primitive) | ✅ shipped | `src/components/layout/` — backs Row and Stack |
+| 1 | **Button** | ✅ shipped | variant × size (8px-grid heights), native `<button>`, `data-component` contract, icon-composition via `children` |
+| 2 | **Card** | ✅ shipped | static-property namespacing (`Card.Header`/`Card.Body`), link-card and static-card variants, Pearl-only hover luster |
+| 3 | **Text** | ✅ shipped | one component, not split Heading/Text; `variant`/`as` decoupled; theme-owned `role` prop (`preheading`/`inlineEmphasis`/`dataDigits`) |
+| 4 | **Alert** | ✅ shipped | `role="alert"`, 4 sentiment variants, dismissible |
+| 5 | **Icon** | ✅ shipped | wraps any `react-icons` set; `iconLibraries.ts` records evaluated-set notes |
+| 6 | **Field** | ✅ shipped | label/hint/error coordination via render-prop child injection, `required` support (native + `aria-required`, decorative `*`), error paired with an icon matching Alert's negative sentiment |
+| 7 | **Input** | ✅ shipped | native `<input>` wrapper, sized via Field's CSS custom-property cascade |
+| 8 | **Stack** / **Row** | ✅ shipped | `FlexBox`-backed, vertical/horizontal |
+| — | Brand: `PearlSphere` | ✅ shipped | `src/brand/` — bespoke artwork, not a themeable canon component (see ADR-0007 on why it doesn't force a 5th theme) |
+| — | Progress Bar, Badge, Grid | planned | native-vs-custom (Progress Bar) and build-vs-adopt calls deferred to implementation time |
 
 **Deferred, not in MVP scope:** Tabs (would be the intended justified
 Context/compound-component showcase, if revisited), Dialog, Tooltip,
-Avatar. **Phase 2+ large-scoped components** (Data Grid, Dialog,
-Combobox, Tooltip/Popover, drag-and-drop) each get a deliberate
-build-vs-adopt evaluation against named headless libraries (TanStack,
-Radix, Floating UI, Zag.js, dnd-kit) at implementation time — none
-pre-committed. **No dependencies added beyond what's already installed**
-without an explicit build-vs-adopt call.
+Avatar, Select (Field's render-prop contract supports one; none is built —
+see the removed unstyled-`<select>` story). **Phase 2+ large-scoped
+components** (Data Grid, Dialog, Combobox, Tooltip/Popover, drag-and-drop)
+each get a deliberate build-vs-adopt evaluation against named headless
+libraries (ADR-0004: TanStack, Radix, Floating UI, Zag.js, dnd-kit) at
+implementation time — none pre-committed.
+
+## AI-agent-readiness posture (ADR-0007, ADR-0008)
+
+This is the part of the experiment (see "What this is") with the most direct
+external validation, so it's summarized here rather than left to be found in
+the full ADRs:
+
+- **Capabilities/assignments split (ADR-0007).** Theme-owned effects (Pearl's
+  `luster`, Tahitian's `overtone`, …) are named data — `intent`, `guidance`,
+  `limits`, `forbid` — not free-floating values. A mapped type makes "declared
+  capability with no assignment" a compile error, not a documentation gap.
+  Independently convergent with Sanity's DSDS spec's `Foundation` entity,
+  discovered a month after this ADR was written — see its "Convergent
+  external work" section for the checkable timeline.
+- **DSDS vocabulary, no DSDS dependency (ADR-0008).** The still-unbuilt
+  manifest will borrow DSDS's shape — `kind`/`metadata`/`documentBlocks`
+  split, tokens as a pointer into a DTCG file rather than a copy, a parallel
+  `agentDocumentBlocks` array for agent-only guidance — without importing
+  the spec or tracking its version. DSDS is pre-1.0 and single-maintainer;
+  the shape is worth borrowing, the dependency isn't worth taking yet.
+- **What's still just a plan, not a result:** the manifest itself, any lint
+  rule that enforces the no-raw-value convention, and the eventual agent
+  eval (spin up an agent, give it a component brief, measure success/
+  iteration count with and without the manifest — methodology borrowed from
+  Sanity's own eval write-up, not yet run here). Don't describe any of this
+  as built; it's the next phase of the experiment.
 
 ## Open decisions (do not assume these are settled)
 

@@ -58,6 +58,7 @@ embedding pipeline can chunk and filter cleanly:
 | [0005](./0005-token-tier-architecture.md) | Two-tier token architecture — primitives and semantics | accepted |
 | [0006](./0006-token-naming-convention.md) | Token naming — one prominence ladder, application-named where roles span multiple destinations | accepted |
 | [0007](./0007-capabilities-and-assignments.md) | Two system tiers — capabilities and assignments | proposed |
+| [0008](./0008-dsds-vocabulary-alignment.md) | Align manifest vocabulary with DSDS; do not depend on it | proposed |
 
 ## Where ADRs sit in the wider knowledge base
 

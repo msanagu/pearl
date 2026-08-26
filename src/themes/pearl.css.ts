@@ -349,14 +349,30 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
     /**
      * Hover drift on card surfaces — one pass, never a loop.
      *
-     * A RADIAL ellipse fading to transparent at 62%, inset well past the card's
-     * own box (`driftInset`), so what a hover shows is a soft bloom with no
-     * visible edge. A linear gradient clipped to `inset: 0` — the previous
-     * implementation — paints a hard-edged rectangle instead, which is a
-     * different effect entirely. [doc-site-poc.css.ts:292]
+     * A RADIAL ellipse fading to transparent, inset well past the card's own
+     * box (`driftInset`), so what a hover shows is a soft bloom with no
+     * visible edge — a linear gradient clipped to `inset: 0` paints a
+     * hard-edged rectangle instead. Radial is this project's own choice: the
+     * canonical reference (`Pearl Theme Contract.dc.html`'s `lusterStops`,
+     * 115deg linear, animated `background-position`) uses the sphere's sweep
+     * mechanic, not a bloom. [doc-site-poc.css.ts:292] is where the radial
+     * mechanic comes from; the STOPS below are not from that file.
+     *
+     * The color composition IS from the canonical reference, and it is a
+     * different palette from the sphere's — reusing the sphere's saturated
+     * seaGreen/periwinkle/blush trio here was the earlier mistake. Card hover
+     * is its own spec: "Silver into marine with one breath of dusty sea green
+     * — highlights, never rainbow" (`lusterStops`, light mode: silver.100,
+     * marine.150, marine.200, seagreen.150). Marine is the dominant hue,
+     * silver the undertone, seagreen a thin, late breath — not a third equal
+     * partner. `marineLayer[100]` (#D7D5DF) and `alabaster[200]` (#FBFAF7)
+     * are already this system's primitives for exactly those two roles;
+     * seagreen.150 (#EDF1EE) has no existing token, so it's inlined here at
+     * the lowest alpha and the widest stop position, which is what keeps it
+     * a breath rather than a dominant third hue.
      */
     driftGradient:
-      'radial-gradient(ellipse at center, rgba(214, 228, 255, 0.42) 0%, rgba(158, 214, 196, 0.30) 34%, transparent 62%)',
+      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.45) 0%, rgba(251, 250, 247, 0.28) 32%, rgba(237, 241, 238, 0.16) 52%, transparent 68%)',
     /** How far the bloom spills past the card, so its edge never shows. */
     driftInset: '-45%',
     /** Resting and hovered positions — a ~30% diagonal traverse. */
