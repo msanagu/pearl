@@ -370,9 +370,16 @@ export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
      * seagreen.150 (#EDF1EE) has no existing token, so it's inlined here at
      * the lowest alpha and the widest stop position, which is what keeps it
      * a breath rather than a dominant third hue.
+     *
+     * Alphas held under pearl.assignment.ts's limitsByChroma.quiet.alpha.max
+     * (0.30) — this application is chroma:'quiet', not 'brand'; only the
+     * sphere gets the .42 ceiling. An earlier version of this gradient's
+     * dominant stop was .45, over even the old single global limit — caught
+     * by eye, not by tooling, which is what motivated splitting the limit by
+     * chroma tier in the first place rather than just lowering one number.
      */
     driftGradient:
-      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.45) 0%, rgba(251, 250, 247, 0.28) 32%, rgba(237, 241, 238, 0.16) 52%, transparent 68%)',
+      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.30) 0%, rgba(251, 250, 247, 0.19) 32%, rgba(237, 241, 238, 0.11) 52%, transparent 68%)',
     /** How far the bloom spills past the card, so its edge never shows. */
     driftInset: '-45%',
     /** Resting and hovered positions — a ~30% diagonal traverse. */
