@@ -7,7 +7,7 @@
   "packageManager": "pnpm@11.13.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/msanagu/design-system.git"
+    "url": "https://github.com/msanagu/pearl.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -69,6 +69,7 @@
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "axe-core": "^4.6.3",
+    "impeccable": "^3.3.1",
     "jest-axe": "^10.0.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.61.1",

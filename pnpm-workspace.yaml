@@ -1,5 +1,6 @@
 allowBuilds:
   esbuild: true
+  puppeteer: set this to true or false
 minimumReleaseAgeExclude:
   - '@storybook/addon-a11y@10.5.2'
   - '@storybook/builder-vite@10.5.2'
