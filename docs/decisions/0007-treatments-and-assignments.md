@@ -1,6 +1,6 @@
 ---
 id: ADR-0007
-title: Two system tiers — capabilities and assignments
+title: Two system tiers — treatments and assignments
 status: proposed
 date: 2026-07-19
 deciders: [Mary San Agustin]
@@ -9,7 +9,7 @@ supersedes: null
 superseded_by: null
 ---
 
-# ADR-0007 — Two system tiers: capabilities and assignments
+# ADR-0007 — Two system tiers: treatments and assignments
 
 ## Context
 
@@ -74,7 +74,7 @@ Add `luster`, `surfaceFx`, `usage` to the contract; every theme fills them.
   slot every other theme must answer.
 
 ### Option B — One parameterized mechanic, many configurations
-Treat luster/overtone/wash/glow as one shared "animated surface effect" capability
+Treat luster/overtone/wash/glow as one shared "animated surface effect" treatment
 that each theme configures.
 
 - **Pros:** genuinely shared implementation; one code path to maintain.
@@ -109,17 +109,19 @@ reskins under any theme.
 **Split the system into two tiers, mirroring the two-tier token architecture
 (ADR-0005) one level up.**
 
-**Capabilities — what the system provides.** Named by what they *are*.
+**Treatments — what the system provides.** Named by what they *are*.
 Theme-agnostic. Two kinds:
 
-- **Canon capabilities** — required of every theme: the token contract, components,
-  base motion. Deliberately lean; only what every design system needs.
-- **Extension capabilities** — optional, theme-owned mechanics: Pearl's `luster`,
+- **Canon** — required of every theme: the token contract, components,
+  base motion. Deliberately lean; only what every design system needs. Not
+  itself a "treatment" — that word is reserved for the theme-owned effects
+  below, where it actually fits.
+- **Extension treatments** — optional, theme-owned mechanics: Pearl's `luster`,
   Tahitian's `overtone`, Freshwater's `wash`, South Sea's `glow`. They exist only
   where declared. A theme with none is normal, not deficient. The **name belongs
-  to the capability** — naming an effect is part of owning it.
+  to the treatment** — naming an effect is part of owning it.
 
-**Assignments — what a theme does with capabilities.** Named by what they're *for*.
+**Assignments — what a theme does with treatments.** Named by what they're *for*.
 Per-theme, and every theme has a complete one:
 
 - values for canon slots
@@ -128,7 +130,7 @@ Per-theme, and every theme has a complete one:
 - idioms — behavioral patterns with house defaults, overridable
 - axes and mood — the structured, machine-readable layer
 
-The token tiers of two-tier tokens (ADR-0005) nest *inside* the capabilities tier; they do not compete
+The token tiers of two-tier tokens (ADR-0005) nest *inside* the treatments tier; they do not compete
 with this split.
 
 The deciding reason: a shared slot makes "no effect" inexpressible, and
@@ -146,27 +148,27 @@ Four rules follow:
    - `luster = none` — nothing renders. The slot is inert for three of four
      themes. Fails.
 
-2. **No privileged internal path.** First-party extension capabilities are declared
+2. **No privileged internal path.** First-party extension treatments are declared
    through the same public mechanism a downstream author has. If our own themes
    cannot express themselves through the public path, the path is inadequate and
    we find out before users do. Pearl's `luster` is the hardest case — three
    surfaces, two motion behaviors — and is therefore the acceptance test.
 
-3. **Components must render correctly with zero extension capabilities.** Effects
+3. **Components must render correctly with zero extension treatments.** Effects
    are additive, applied through composition, never a dependency. This keeps a
    no-effect theme first-class and components theme-unaware (the override contract, ADR-0003).
 
-4. **Defaults belong to assignments, never to capabilities.** Capabilities do not
+4. **Defaults belong to assignments, never to treatments.** Treatments do not
    default — they exist or they don't. Assignments may:
    - *Idioms* cascade. A theme that declares no hover idiom inherits the house
      assignment, because every interactive system needs hover feedback to do
      something. Silence means "the house answer is fine."
-   - *Extension capabilities* never cascade. South Sea inheriting Pearl's
+   - *Extension treatments* never cascade. South Sea inheriting Pearl's
      silver-marine iridescence would be the original bug wearing a new name.
 
-5. **An extension capability without an assignment is invalid.** Declaring one
+5. **An extension treatment without an assignment is invalid.** Declaring one
    requires stating, at minimum, where it may apply, where it is forbidden, and
-   what triggers it. A capability with no assignment is a mechanic with no
+   what triggers it. A treatment with no assignment is a mechanic with no
    meaning — values and no intent — which is exactly the state the handoff
    shipped: Freshwater had luster *values* and a written rule that luster
    shouldn't be decorative, with nothing connecting them.
@@ -177,20 +179,20 @@ Four rules follow:
 
    | Case | Result |
    |---|---|
-   | Every capability assigned | compiles |
-   | Capability declared, never assigned | `TS2322` |
-   | Assignment for an undeclared capability | `TS2353` |
+   | Every treatment assigned | compiles |
+   | Treatment declared, never assigned | `TS2322` |
+   | Assignment for an undeclared treatment | `TS2353` |
 
    Note the asymmetry that makes this safe: requiring an assignment cannot cause
    fabrication, because "forbidden everywhere except imagery" is always an honest
    answer. There is no equivalent of `luster: none` — you are stating scope, not
    inventing content. This points the same totality mechanism that produced the
    original problem somewhere useful: canon tokens must be filled with *values*;
-   extension capabilities must be filled with *meaning*.
+   extension treatments must be filled with *meaning*.
 
 ## Canon grows by promotion, not accretion
 
-Extension capabilities are the proving ground. A mechanic enters canon only after
+Extension treatments are the proving ground. A mechanic enters canon only after
 multiple themes independently demonstrate they need it with the same semantics —
 at which point promotion is evidence-backed rather than speculative. This makes
 "lean now, expandable later" a process instead of an intention.
@@ -213,14 +215,14 @@ house defaults and hands `createTheme` a complete object. The contract stays
 total, so the compile-time guarantee survives — it just doesn't have to be typed
 out.
 
-**Extension capabilities** use vanilla-extract's single-argument
+**Extension treatments** use vanilla-extract's single-argument
 `createTheme(tokens)` overload, which *infers* a contract from whatever object it
 is given and returns `[className, vars]` — no pre-declaration:
 
 ```ts
 export const mistTheme = defineTheme({
   tokens: { color: { accent: '#7A9E8E' }, radius: { control: '999px' } },
-  capabilities: {
+  treatments: {
     dissolve: { speed: '400ms', blur: '8px', easing: 'cubic-bezier(.22,1,.36,1)' },
     grain: { opacity: '0.04' },
   },
@@ -235,15 +237,15 @@ type-checked — it does not degrade to `any`.
 
 ### Limit: build time, not runtime
 
-`.css.ts` is evaluated at build time. Extension capabilities are available to anyone
+`.css.ts` is evaluated at build time. Extension treatments are available to anyone
 authoring themes **in source**. A theme arriving at runtime — JSON from a CMS, a
 live theme editor — cannot mint new custom properties; `assignInlineVars` can
 only re-value vars that already exist. Runtime theming is limited to canon plus
-whatever capabilities were compiled in.
+whatever treatments were compiled in.
 
 ### Extensibility for downstream authors
 
-Because extension capabilities have no shared shape, there is nothing to expand — a
+Because extension treatments have no shared shape, there is nothing to expand — a
 downstream author declaring `dissolve` needs no fork and no upstream
 coordination. Under Option A this would have been *impossible* without forking,
 since contract expansion is type-blocked. Extensibility therefore argues for the
@@ -255,14 +257,14 @@ existing theme until each fills it.** That is correct behavior (the compiler
 asking "does Freshwater honestly have a dissolve?"), but it makes canon expansion
 an all-themes edit rather than a one-file edit.
 
-The rule for extenders: **bespoke to your brand → extension capability, no fork, no
+The rule for extenders: **bespoke to your brand → extension treatment, no fork, no
 tax. Genuinely universal → propose canon, pay the tax, let the compiler enforce
 that you meant it.**
 
 ## Consequences
 
 - **Positive:**
-  - Downstream authors add bespoke capabilities without forking.
+  - Downstream authors add bespoke treatments without forking.
   - "No effect" becomes expressible, which is what stops invention.
   - Names stay honest: `luster`, `overtone`, `wash`, `glow` — not four spellings
     of one word.
@@ -271,15 +273,15 @@ that you meant it.**
     (`PROJECT_BRIEF.md:16`) something structured to read, and the planned
     no-raw-value lint rule (`PROJECT_BRIEF.md:184`) something to enforce.
 - **Negative / accepted costs:**
-  - No single type enumerates every theme's capabilities; discovering them means
+  - No single type enumerates every theme's treatments; discovering them means
     reading theme modules. Accepted — they are deliberately not interchangeable.
   - Effects reach the UI only via composition, so a showcase must opt in.
-  - Theme authors write in two places: canon assignment, and their own capabilities.
+  - Theme authors write in two places: canon assignment, and their own treatments.
   - Two tiers at the system level *and* two tiers within tokens is real
     conceptual load. Mitigated by the tiers being the same idea at two scales.
 - **Neutral:**
-  - Existing themes are unaffected — none currently declare capabilities.
-  - Whether a capability is CSS-var-backed or compiled to static rules is left to
+  - Existing themes are unaffected — none currently declare treatments.
+  - Whether a treatment is CSS-var-backed or compiled to static rules is left to
     each theme; only the boundary is fixed here, not the technique.
 
 ## Revisit if
@@ -293,7 +295,7 @@ that you meant it.**
   the sixteen sentiment tokens (a product-UI assumption an editorial system would
   not share), and the upper `text` variants. Demotion is breaking and wants its
   own ADR.
-- Composition-only application proves too limiting — e.g. a capability that must
+- Composition-only application proves too limiting — e.g. a treatment that must
   live inside a component's internals to work at all.
 - The Option D composition tier is taken up deliberately; it would likely subsume
   this boundary.
@@ -304,7 +306,7 @@ Sanity's Design System Doc Spec (DSDS, `designsystemdocspec.org`, a draft
 schema for machine-readable design system documentation) names a `Foundation`
 entity kind: "domain governance through principles, scales, and motion
 definitions." That is this ADR's assignment layer — `intent`, `guidance`,
-`limits`, `forbid` on an extension capability is domain governance through
+`limits`, `forbid` on an extension treatment is domain governance through
 principles, under a different name.
 
 This is convergence, not inspiration, and the claim is checkable rather than
@@ -338,9 +340,9 @@ migration question rather than a dependency question.
 
 - ADR-0001 (styling engine) — vanilla-extract. `createTheme`'s totality is the
   constraint that makes this decision necessary.
-- ADR-0005 (two-tier tokens) — this is the same idea one level up: capabilities are
+- ADR-0005 (two-tier tokens) — this is the same idea one level up: treatments are
   named by what they are, assignments by what they're for. The token tiers nest
-  inside capabilities rather than competing.
+  inside treatments rather than competing.
 - ADR-0003 (override contract) — rule 3 preserves component theme-unawareness.
 - ADR-0002 (composition over configuration) — governs component props, not
   tokens; Option D would test its edge.

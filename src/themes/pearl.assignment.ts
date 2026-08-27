@@ -1,16 +1,16 @@
 import type { ThemeAssignments } from './assignment';
-import { pearlFonts, pearlCapabilities } from './pearl.css';
+import { pearlFonts, pearlTreatments } from './pearl.css';
 
 /**
- * Pearl's assignment record — what its capabilities MEAN.
+ * Pearl's assignment record — what its treatments MEAN.
  *
  * Never becomes CSS. Read by the planned MCP/RAG corpus, the planned
  * no-raw-value lint rule, and generated documentation.
  *
  * The `satisfies` below is load-bearing: `ThemeAssignments<typeof pearlLuster>`
- * requires an assignment for every declared capability and rejects assignments
- * for capabilities that do not exist (rule 5 of
- * `docs/decisions/0007-capabilities-and-assignments.md`).
+ * requires an assignment for every declared treatment and rejects assignments
+ * for treatments that do not exist (rule 5 of
+ * `docs/decisions/0007-treatments-and-assignments.md`).
  */
 export const pearlAssignments = {
   mood: 'Comfortable, quietly premium. Reads like a well-set book page that happens to have buttons; an italic serif interjection is the only flourish.',
@@ -79,4 +79,4 @@ export const pearlAssignments = {
     ],
     source: '4c',
   },
-} satisfies ThemeAssignments<typeof pearlCapabilities>;
+} satisfies ThemeAssignments<typeof pearlTreatments>;

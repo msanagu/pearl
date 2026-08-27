@@ -183,10 +183,10 @@ This is the part of the experiment (see "What this is") with the most direct
 external validation, so it's summarized here rather than left to be found in
 the full ADRs:
 
-- **Capabilities/assignments split (ADR-0007).** Theme-owned effects (Pearl's
+- **Treatments/assignments split (ADR-0007).** Theme-owned effects (Pearl's
   `luster`, Tahitian's `overtone`, …) are named data — `intent`, `guidance`,
   `limits`, `forbid` — not free-floating values. A mapped type makes "declared
-  capability with no assignment" a compile error, not a documentation gap.
+  treatment with no assignment" a compile error, not a documentation gap.
   Independently convergent with Sanity's DSDS spec's `Foundation` entity,
   discovered a month after this ADR was written — see its "Convergent
   external work" section for the checkable timeline.

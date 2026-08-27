@@ -1,16 +1,7 @@
 # Why "Pearl"?
 
-Pearl is inspired by the way pearls are formed—not as manufactured objects, but as living, emergent creations unique to each organism.
+Pearl draws inspiration from the natural process of pearl formation—a living organism continually responding to friction and gradually creating something of value. In much the same way, a design system isn't simply a library of components. It's an organization's evolving response to recurring challenges within its own unique ecosystem.
 
-Just as every oyster produces a pearl unlike any other, every organization develops its own culture, values, constraints, and identity. A design system shouldn't erase that uniqueness; it should help express it consistently. Pearl provides the structure while leaving room for every organization to become more authentically itself.
+Its components, tokens, guidelines, accessibility improvements, and architectural decisions are not valuable simply as artifacts. They represent accumulated knowledge: lessons learned through solving problems and made reusable across the organization. The goal isn't to create more artifacts, but to create better outcomes.
 
-A pearl also forms through a living organism's continual response to friction. In the same way, a design system isn't simply a library of components—it's an organization's evolving response to recurring design and engineering challenges. Every component, token, guideline, accessibility improvement, architecture decision, and AI capability becomes another layer of shared organizational knowledge. Every component is designed for flexibility built to accommodate the unique needs of each team while maintaining consistency across the organization.
-
-Like a pearl, a great design system is:
-
-Living — sustained and shaped by the entire organization, not a single team.
-Emergent — it grows through continuous refinement rather than being designed all at once.
-Curated — every layer reflects the unique needs, identity, and experiences of that organization.
-Empowering — it provides a durable foundation without limiting creativity, giving teams the freedom to evolve while remaining coherent.
-
-Pearl is built on the belief that the strongest design systems don't enforce sameness—they enable organizations to continuously evolve while preserving the knowledge they've earned along the way.
+Just as no two pearls are exactly alike, every organization develops its own culture, values, constraints, and identity. A design system shouldn't flatten those differences. Pearl provides a shared foundation while remaining flexible enough to accommodate the unique needs of individual teams and allow the organization to express itself consistently.

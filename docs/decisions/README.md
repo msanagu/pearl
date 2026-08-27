@@ -57,7 +57,7 @@ embedding pipeline can chunk and filter cleanly:
 | [0004](./0004-third-party-dependency-stance.md) | Adopt only headless dependencies; build-from-scratch by default | accepted |
 | [0005](./0005-token-tier-architecture.md) | Two-tier token architecture — primitives and semantics | accepted |
 | [0006](./0006-token-naming-convention.md) | Token naming — one prominence ladder, application-named where roles span multiple destinations | accepted |
-| [0007](./0007-capabilities-and-assignments.md) | Two system tiers — capabilities and assignments | proposed |
+| [0007](./0007-treatments-and-assignments.md) | Two system tiers — treatments and assignments | proposed |
 | [0008](./0008-dsds-vocabulary-alignment.md) | Align manifest vocabulary with DSDS; do not depend on it | proposed |
 | [0009](./0009-jsdoc-minimum-viable-clarity.md) | JSDoc stays minimum-viable; stories are the usage reference, not @example | accepted |
 

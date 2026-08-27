@@ -3,7 +3,7 @@
 
 // --- Theme contract & themes ---
 export { vars } from './theme.css';
-export { pearlLightThemeClass, pearlDarkThemeClass, pearlCapabilityClass, pearlCapabilities, pearlFonts } from './themes/pearl.css';
+export { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass, pearlTreatments, pearlFonts } from './themes/pearl.css';
 export { pearlAssignments } from './themes/pearl.assignment';
 export { tahitianLightThemeClass, tahitianDarkThemeClass } from './themes/tahitian.css';
 export { freshwaterLightThemeClass, freshwaterDarkThemeClass } from './themes/freshwater.css';
@@ -12,7 +12,7 @@ export { southSeaLightThemeClass, southSeaDarkThemeClass } from './themes/south-
 // --- Assignment layer (never becomes CSS) ---
 export type {
   ThemeAssignments,
-  CapabilityAssignment,
+  TreatmentAssignment,
   Application,
   Surface,
   Trigger,
@@ -63,3 +63,5 @@ export { ICON_LIBRARIES, ICON_LIBRARIES_BY_ID } from './components/Icon';
 export type { IconLibrary, IconTreatment } from './components/Icon';
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertVariant } from './components/Alert';
+export { Tag } from './components/Tag';
+export type { TagProps, TagVariant } from './components/Tag';

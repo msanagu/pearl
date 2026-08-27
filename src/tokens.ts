@@ -102,21 +102,31 @@ export interface RadiusTokens {
   full: CSSVarFunction;
 }
 
+/**
+ * rem, not px — so spacing scales with a user's browser/OS base font-size
+ * preference, not just page zoom (WCAG SC 1.4.4), matching `TextTokens`.
+ * The px figures below assume the browser default 16px root.
+ */
 export interface SpaceTokens {
-  /** 4px. The named half-step — tight icon/chip gaps only. */
+  /** 0.25rem (4px). The named half-step — tight icon/chip gaps only. */
   xs: CSSVarFunction;
-  /** 8px. Related inline elements, compact padding. */
+  /** 0.5rem (8px). Related inline elements, compact padding. */
   sm: CSSVarFunction;
-  /** 16px. Default component padding and standard rhythm. */
+  /** 1rem (16px). Default component padding and standard rhythm. */
   md: CSSVarFunction;
-  /** 24px. Section spacing, card padding. */
+  /** 1.5rem (24px). Section spacing, card padding. */
   lg: CSSVarFunction;
-  /** 32px. Major layout gaps. */
+  /** 2rem (32px). Major layout gaps. */
   xl: CSSVarFunction;
-  /** 48px. Page-section separation. */
+  /** 3rem (48px). Page-section separation. */
   '2xl': CSSVarFunction;
 }
 
+/**
+ * rem, not px — a fixed-px control height stops growing once a user raises
+ * their base font-size, clipping text that scaled past it. Same reasoning
+ * as `SpaceTokens`.
+ */
 export interface ControlHeightTokens {
   /** Compact controls. */
   sm: CSSVarFunction;

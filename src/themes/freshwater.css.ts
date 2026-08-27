@@ -55,8 +55,10 @@ export const freshwaterSentiment = {
 };
 
 const freshwaterRadius = { control: '6px', surface: '10px', full: '9999px' };
-const freshwaterSpace = { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px', '2xl': '48px' };
-const freshwaterControlHeight = { sm: '32px', md: '40px', lg: '48px', xl: '56px' };
+// rem, not px (16px root) — spacing/control-height scale with a user's base
+// font-size preference, not just page zoom. Same reasoning as pearl.css.ts.
+const freshwaterSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
+const freshwaterControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const freshwaterFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
 // Aspirational — see tahitian.css.ts's note on @font-face. Moodboard refs:
 // Satoshi (distinctive geometric display) paired with Geist (clean, everyday

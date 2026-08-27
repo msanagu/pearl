@@ -74,8 +74,10 @@ export const tahitianSentiment = {
 // ---- Scales (this theme's own — not shared with Freshwater/South Sea) ----
 
 const tahitianRadius = { control: '6px', surface: '10px', full: '9999px' };
-const tahitianSpace = { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px', '2xl': '48px' };
-const tahitianControlHeight = { sm: '32px', md: '40px', lg: '48px', xl: '56px' };
+// rem, not px (16px root) — spacing/control-height scale with a user's base
+// font-size preference, not just page zoom. Same reasoning as pearl.css.ts.
+const tahitianSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
+const tahitianControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const tahitianFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
 
 // Aspirational — these named faces aren't embedded via @font-face yet, so the

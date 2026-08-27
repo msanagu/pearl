@@ -78,4 +78,4 @@ in-editor `@example` turns out to matter more than the drift risk costs.
 
 - `docs/JOURNAL.md` — the thread this graduates, per its own stated process.
 - ADR-0007, ADR-0008 — the same "don't duplicate what's already real
-  elsewhere" instinct, applied there to capability values and manifest shape.
+  elsewhere" instinct, applied there to treatment values and manifest shape.

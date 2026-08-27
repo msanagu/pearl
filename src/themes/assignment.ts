@@ -1,14 +1,14 @@
 /**
- * The assignment layer — what a theme's capabilities MEAN.
+ * The assignment layer — what a theme's treatments MEAN.
  *
- * Capabilities (`src/themes/*.css.ts`) hold values and become CSS custom
+ * Treatments (`src/themes/*.css.ts`) hold values and become CSS custom
  * properties. Assignments hold intent and never become CSS. The split is the
- * point: the assignment is the *spec*, the capability is the *instance*, so a
+ * point: the assignment is the *spec*, the treatment is the *instance*, so a
  * lint rule can check one against the other (e.g. `limits.alpha.max` against
- * the capability's actual stop values).
+ * the treatment's actual stop values).
  *
- * See `docs/decisions/0007-capabilities-and-assignments.md` — rule 5: an
- * extension capability without an assignment is invalid. That rule is enforced
+ * See `docs/decisions/0007-treatments-and-assignments.md` — rule 5: an
+ * extension treatment without an assignment is invalid. That rule is enforced
  * structurally by `ThemeAssignments` below, not by convention.
  *
  * Consumers: the planned MCP/RAG corpus (`PROJECT_BRIEF.md`), the planned
@@ -16,7 +16,7 @@
  */
 
 /**
- * Closed vocabulary of places a capability may appear. `forbid` is only
+ * Closed vocabulary of places a treatment may appear. `forbid` is only
  * enforceable because this set is fixed — widen it deliberately, not casually.
  */
 export type Surface =
@@ -35,7 +35,7 @@ export type Surface =
   /** Brand marks — the Pearl sphere, wordmark ornaments. */
   | 'brandObject';
 
-/** What causes the capability to be visible or in motion. */
+/** What causes the treatment to be visible or in motion. */
 export type Trigger =
   /** Always present, no motion. */
   | 'static'
@@ -54,7 +54,7 @@ export type Trigger =
 export type Chroma = 'brand' | 'quiet';
 
 /**
- * Where and when are coupled — one capability may behave differently per
+ * Where and when are coupled — one treatment may behave differently per
  * surface. Pearl's `luster` is ambient on the sphere and the hairline rule, but
  * hover-triggered on cards, which a single `trigger` field could not express.
  */
@@ -62,7 +62,7 @@ export interface Application {
   on: Surface;
   trigger: Trigger;
   /**
-   * How saturated this application may read — `brand` uses the capability's
+   * How saturated this application may read — `brand` uses the treatment's
    * own hues at full intensity; `quiet` derives color from existing neutral
    * primitives at a lower ceiling (`limitsByChroma`). Omit where it doesn't
    * apply.
@@ -70,20 +70,20 @@ export interface Application {
   chroma?: Chroma;
 }
 
-/** A numeric ceiling/floor the capability's own values must respect. */
+/** A numeric ceiling/floor the treatment's own values must respect. */
 export interface Limit {
   max?: number;
   min?: number;
 }
 
-export interface CapabilityAssignment {
-  /** One line: what this capability is for. Feeds docs and generation. */
+export interface TreatmentAssignment {
+  /** One line: what this treatment is for. Feeds docs and generation. */
   intent: string;
   /** Every place it may appear, each with its own trigger. */
   applications: Application[];
   /** Explicit prohibitions, checkable against the closed `Surface` set. */
   forbid?: Surface[];
-  /** Numeric ceilings — machine-checkable against the capability's values.
+  /** Numeric ceilings — machine-checkable against the treatment's values.
    * For a ceiling that should differ between `chroma` tiers (a brand
    * application read at full intensity, a quiet one held back), use
    * `limitsByChroma` instead — a key present there overrides this one for
@@ -159,9 +159,9 @@ export interface TypographyRoles {
 /**
  * A theme's complete assignment record.
  *
- * `C` is the theme's capability object. The mapped type over `keyof C` is what
- * enforces rule 5 in both directions: a declared capability with no assignment
- * fails to compile, and an assignment for an undeclared capability fails too.
+ * `C` is the theme's treatment object. The mapped type over `keyof C` is what
+ * enforces rule 5 in both directions: a declared treatment with no assignment
+ * fails to compile, and an assignment for an undeclared treatment fails too.
  */
 export type ThemeAssignments<C extends object = Record<never, never>> = {
   /** The theme's disposition, in one line. Not copywriting — how it feels. */
@@ -169,7 +169,7 @@ export type ThemeAssignments<C extends object = Record<never, never>> = {
   /** Closed-enum axes, comparable across themes. */
   axes?: Partial<Record<UsageAxis, string>>;
   roles?: RoleAssignments;
-} & { [K in keyof C]: CapabilityAssignment };
+} & { [K in keyof C]: TreatmentAssignment };
 
 export type UsageAxis =
   /** Spacing and line-height posture. Editorial themes run loose, data-dense themes run tight. */

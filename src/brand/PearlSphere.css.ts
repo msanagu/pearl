@@ -1,5 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css';
-import { pearlCapabilities } from '../themes/pearl.css';
+import { pearlTreatments } from '../themes/pearl.css';
 
 /**
  * The ambient sweep — light travelling across the sphere's face.
@@ -15,8 +15,8 @@ import { pearlCapabilities } from '../themes/pearl.css';
  * `9s ease-in-out infinite` matches `orbSpeed`.
  */
 const sweep = keyframes({
-  '0%, 100%': { backgroundPosition: `${pearlCapabilities.luster.sheenFrom}, center` },
-  '50%': { backgroundPosition: `${pearlCapabilities.luster.sheenTo}, center` },
+  '0%, 100%': { backgroundPosition: `${pearlTreatments.luster.sheenFrom}, center` },
+  '50%': { backgroundPosition: `${pearlTreatments.luster.sheenTo}, center` },
 });
 
 export const sphereWrap = style({
@@ -38,12 +38,12 @@ export const body = style({
   position: 'absolute',
   inset: 0,
   borderRadius: '50%',
-  backgroundImage: `${pearlCapabilities.luster.sheenBand}, ${pearlCapabilities.luster.bodyGradient}`,
+  backgroundImage: `${pearlTreatments.luster.sheenBand}, ${pearlTreatments.luster.bodyGradient}`,
   backgroundRepeat: 'no-repeat, no-repeat',
-  backgroundSize: `${pearlCapabilities.luster.sheenSize}, 100% 100%`,
-  backgroundPosition: `${pearlCapabilities.luster.sheenFrom}, center`,
-  boxShadow: pearlCapabilities.luster.bodyShadow,
-  animation: `${sweep} ${pearlCapabilities.luster.orbSpeed} ease-in-out infinite`,
+  backgroundSize: `${pearlTreatments.luster.sheenSize}, 100% 100%`,
+  backgroundPosition: `${pearlTreatments.luster.sheenFrom}, center`,
+  boxShadow: pearlTreatments.luster.bodyShadow,
+  animation: `${sweep} ${pearlTreatments.luster.orbSpeed} ease-in-out infinite`,
   '@media': {
     '(prefers-reduced-motion: reduce)': { animation: 'none' },
   },
@@ -58,6 +58,6 @@ export const contact = style({
   height: 16,
   borderRadius: '50%',
   transform: 'translateX(-50%)',
-  background: pearlCapabilities.luster.contactShadow,
+  background: pearlTreatments.luster.contactShadow,
   pointerEvents: 'none',
 });

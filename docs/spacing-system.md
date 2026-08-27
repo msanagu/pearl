@@ -1,23 +1,37 @@
 # Spacing System — 8px Soft Grid
 
+## Units: rem, not px
+
+Every value below is authored in `rem`, not `px` — spacing scales with a user's
+browser/OS **base font-size** preference, not just page zoom (WCAG SC 1.4.4). Standard
+browser zoom (Ctrl/Cmd +) scales `px` and `rem` identically, since it zooms the whole
+rendered page; the two units only diverge when someone raises their *base* font size as
+a persistent accessibility setting without zooming. `px`-pinned spacing (and control
+height) stays fixed while `rem`-based text grows around it, which is how you get
+overflowing buttons and cramped padding at larger base sizes. Same reasoning
+`typography.md` already documents for line-height.
+
+The px figures below are what each token resolves to at the browser default 16px root —
+useful for eyeballing sizes, not the authored unit.
+
 ## The scale
 
-| Token | Value | Typical use |
-|---|---|---|
-| `xs` | 4px | icon-to-label gaps, tight chip/badge padding |
-| `sm` | 8px | related inline elements, compact padding |
-| `md` | 16px | default component padding, standard rhythm |
-| `lg` | 24px | section spacing, card padding |
-| `xl` | 32px | major layout gaps |
-| `2xl` | 48px | page-section separation |
+| Token | Value | ≈px at 16px root | Typical use |
+|---|---|---|---|
+| `xs` | 0.25rem | 4px | icon-to-label gaps, tight chip/badge padding |
+| `sm` | 0.5rem | 8px | related inline elements, compact padding |
+| `md` | 1rem | 16px | default component padding, standard rhythm |
+| `lg` | 1.5rem | 24px | section spacing, card padding |
+| `xl` | 2rem | 32px | major layout gaps |
+| `2xl` | 3rem | 48px | page-section separation |
 
 ## Why "soft," not strict
 
-Everything above 4px stays a clean 8px multiple. The single 4px half-step exists as an
-intentional, named escape hatch — not a loophole. Things like icon-to-text gaps or a
-badge's internal padding often look cramped at a full 8px and genuinely need the
-half-step. The rule: **everything is 8px unless there's a specific, named reason to drop
-to 4px.**
+Everything above the `xs` half-step stays a clean multiple of `sm`. The single
+half-step exists as an intentional, named escape hatch — not a loophole. Things like
+icon-to-text gaps or a badge's internal padding often look cramped at a full `sm` and
+genuinely need the half-step. The rule: **everything is a multiple of `sm` unless
+there's a specific, named reason to drop to `xs`.**
 
 ## Enforcement
 
@@ -34,8 +48,9 @@ compile-time error, not just a lint warning.
   default) rather than a bespoke value, so nested components inherit consistent rhythm.
 - **Icon** — sizes land on the grid (16px, 20px, 24px, 32px) so icons align cleanly with
   text and other components regardless of context.
-- **Button** — height lands on 8px multiples (32/40/48 for sm/md/lg) so buttons align
-  cleanly against Field inputs and other controls in the same row.
+- **Button** — height lands on the same 8px-equivalent multiples (2/2.5/3rem ≈
+  32/40/48px for sm/md/lg) so buttons align cleanly against Field inputs and other
+  controls in the same row.
 - **Badge / Progress Bar** — small controls are where the `xs` (4px) escape hatch earns
   its keep; full 8px padding on a small pill often looks bloated.
 

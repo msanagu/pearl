@@ -3,7 +3,7 @@ import { vars } from '../src/theme.css';
 import { tahitianLightThemeClass, tahitianDarkThemeClass } from '../src/themes/tahitian.css';
 import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater.css';
 import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea.css';
-import { pearlLightThemeClass, pearlDarkThemeClass, pearlCapabilityClass } from '../src/themes/pearl.css';
+import { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass } from '../src/themes/pearl.css';
 
 // Theme × mode matrix. Each of Pearl's three named themes ships a real light
 // AND dark pair (docs/fable5-handoff-three-themes.md) — Tahitian/Freshwater/
@@ -66,9 +66,9 @@ const preview: Preview = {
       const theme = (context.globals.theme as string) ?? 'pearl';
       const mode = (context.globals.mode as 'light' | 'dark') ?? 'light';
       const themeClass = themeMatrix[theme]?.[mode] ?? pearlLightThemeClass;
-      // Pearl's extension capabilities ride alongside its canon class. Themes
-      // without capabilities simply contribute nothing here.
-      const capabilityClass = theme === 'pearl' ? pearlCapabilityClass : '';
+      // Pearl's extension treatments ride alongside its canon class. Themes
+      // without treatments simply contribute nothing here.
+      const treatmentClass = theme === 'pearl' ? pearlTreatmentClass : '';
 
       // Every component reads only `vars.*` — nothing renders correctly without
       // a theme class as an ancestor. Applying it globally means stories never
@@ -83,7 +83,7 @@ const preview: Preview = {
 
       return (
         <div
-          className={`${themeClass} ${capabilityClass}`.trim()}
+          className={`${themeClass} ${treatmentClass}`.trim()}
           style={{
             background: vars.color.background,
             color: vars.color.text,

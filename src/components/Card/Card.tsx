@@ -13,7 +13,7 @@ export type CardProps =
 //
 // `href` makes the whole card a link — `data-interactive` is the only signal
 // this file gives about it. Card stays theme-unaware (ADR-0007 rule 3: components
-// render correctly with zero extension capabilities); Pearl's own file is what
+// render correctly with zero extension treatments); Pearl's own file is what
 // turns `data-interactive` into the luster hover glow, the same way `Text`
 // writes `data-role` without knowing what any theme does with it. A card with
 // no `href` is not interactive and never lusters, on any theme — luster signals

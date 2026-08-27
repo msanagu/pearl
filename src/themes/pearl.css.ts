@@ -25,9 +25,9 @@ import { vars } from '../theme.css';
  * role yet — the type primitive tier is not built (see `theme.css.ts:107` and
  * the phase plan). They are declared below and assigned in `pearl.assignment.ts`.
  *
- * ## Capabilities
- * `pearlCapabilities.luster` is an **extension capability** (see
- * `docs/decisions/0007-capabilities-and-assignments.md`) — theme-owned, not a
+ * ## Treatments
+ * `pearlTreatments.luster` is an **extension treatment** (see
+ * `docs/decisions/0007-treatments-and-assignments.md`) — theme-owned, not a
  * canon slot, with a required assignment in `pearl.assignment.ts`.
  */
 
@@ -130,11 +130,15 @@ export const pearlSentiment = {
 /** Pills. [8a] — a deliberate deviation: 4c and 5a both use 3px. */
 const pearlRadius = { control: '999px', surface: '16px', full: '9999px' };
 
-/** [derived] `usage.density = comfortable` — the midpoint of the four themes. */
-const pearlSpace = { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px', '2xl': '48px' };
+/**
+ * [derived] `usage.density = comfortable` — the midpoint of the four themes.
+ * rem, not px (16px root — see `globalStyles.css`): 0.25/0.5/1/1.5/2/3rem, so
+ * spacing scales with a user's base font-size preference, not just page zoom.
+ */
+const pearlSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
 
-/** md = 42px [spec ctrlH]; the rest derived around it. */
-const pearlControlHeight = { sm: '34px', md: '42px', lg: '48px', xl: '56px' };
+/** md = 2.625rem (42px) [spec ctrlH]; the rest derived around it. rem for the same reason as `pearlSpace`. */
+const pearlControlHeight = { sm: '2.125rem', md: '2.625rem', lg: '3rem', xl: '3.5rem' };
 
 const pearlFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
 
@@ -294,7 +298,7 @@ globalStyle(
   },
 );
 
-// ---- Extension capability: luster ----
+// ---- Extension treatment: luster ----
 
 /**
  * `luster` — nacre made literal: light moving across a pearl surface.
@@ -310,7 +314,7 @@ globalStyle(
  *
  * Dark-mode values are [derived]; 4c only specifies light.
  */
-export const [pearlCapabilityClass, pearlCapabilities] = createTheme({
+export const [pearlTreatmentClass, pearlTreatments] = createTheme({
   luster: {
     /** Sweep angle, shared by sphere / rule / surface drift. [4c] */
     angle: '115deg',
@@ -379,12 +383,12 @@ globalStyle(
     content: '',
     position: 'absolute',
     zIndex: -1,
-    inset: pearlCapabilities.luster.driftInset,
-    background: pearlCapabilities.luster.driftGradient,
+    inset: pearlTreatments.luster.driftInset,
+    background: pearlTreatments.luster.driftGradient,
     opacity: 0,
     pointerEvents: 'none',
-    transform: pearlCapabilities.luster.driftFrom,
-    transition: `opacity ${pearlCapabilities.luster.driftOpacityDuration} ease, transform ${pearlCapabilities.luster.driftDuration} ${pearlCapabilities.luster.driftEasing}`,
+    transform: pearlTreatments.luster.driftFrom,
+    transition: `opacity ${pearlTreatments.luster.driftOpacityDuration} ease, transform ${pearlTreatments.luster.driftDuration} ${pearlTreatments.luster.driftEasing}`,
     '@media': {
       '(prefers-reduced-motion: reduce)': { transition: 'none' },
     },
@@ -394,7 +398,7 @@ globalStyle(
 globalStyle(
   `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`,
   {
-    opacity: pearlCapabilities.luster.driftOpacity,
-    transform: pearlCapabilities.luster.driftTo,
+    opacity: pearlTreatments.luster.driftOpacity,
+    transform: pearlTreatments.luster.driftTo,
   },
 );

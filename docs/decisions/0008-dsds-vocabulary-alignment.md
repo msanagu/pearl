@@ -23,7 +23,7 @@ draft JSON schema for exactly this problem, authored by someone independently
 running evals on AI-agent design-system compatibility.
 
 ADR-0007's "Convergent external work" section already found that this
-project's capabilities/assignments split independently matches DSDS's
+project's treatments/assignments split independently matches DSDS's
 `Foundation` entity. That was evidence the shape is sound. This ADR is the
 follow-on decision: given that DSDS exists and partially validates this
 project's direction, how much of it — if any — does the eventual manifest
@@ -151,7 +151,7 @@ Explicitly **not** adopted, for now:
 
 - ADR-0004 (third-party dependency stance) — the same adopt-the-useful-part
   filter, applied here to a specification instead of a package.
-- ADR-0007 (capabilities and assignments) — `Foundation` entity convergence,
+- ADR-0007 (treatments and assignments) — `Foundation` entity convergence,
   the finding that motivated this ADR.
 - `PROJECT_BRIEF.md` — states the manifest/MCP goal this ADR's decision will
   govern once built.
