@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Alert } from './Alert';
 import { Stack } from '../Stack/Stack';
@@ -13,8 +15,13 @@ const meta: Meta<typeof Alert> = {
   component: Alert,
   tags: ['autodocs'],
   args: {
-    heading: 'Payment failed',
-    children: 'Your card was declined. Try a different payment method.',
+    // Neutral, `info`-appropriate default copy — this is what any story
+    // renders if it doesn't override heading/children/variant, so it must
+    // match the default `variant` ('info'). "Payment failed" lived here
+    // previously and leaked into Dismissible/WithoutHeading, which don't set
+    // a variant: both rendered error copy inside an info-styled alert.
+    heading: 'New feature',
+    children: 'You can now export reports as CSV.',
   },
 };
 export default meta;
@@ -26,7 +33,7 @@ export const Positive: Story = {
 };
 
 export const Negative: Story = {
-  args: { variant: 'negative' },
+  args: { variant: 'negative', heading: 'Payment failed', children: 'Your card was declined. Try a different payment method.' },
 };
 
 export const Warn: Story = {
@@ -41,8 +48,26 @@ export const WithoutHeading: Story = {
   args: { heading: undefined, children: 'A shorter message with no lead-in.' },
 };
 
+/**
+ * A no-op `onDismiss` renders the button but visibly does nothing when
+ * clicked — Alert never removes itself; that's the consumer's state to own
+ * (composition over configuration, ADR-0002). Real local state here so the
+ * story demonstrates the actual contract, not just the button's presence.
+ * Defined at module scope, not inline in `render` — a component defined
+ * inside a render callback is a new identity every re-render, which remounts
+ * it and silently discards `visible` the moment Storybook's controls trigger
+ * a re-render.
+ */
+function DismissibleDemo(args: ComponentProps<typeof Alert>) {
+  const [visible, setVisible] = useState(true);
+  if (!visible) {
+    return <p>Dismissed. Reload the story to see it again.</p>;
+  }
+  return <Alert {...args} onDismiss={() => setVisible(false)} />;
+}
+
 export const Dismissible: Story = {
-  args: { onDismiss: () => {} },
+  render: (args) => <DismissibleDemo {...args} />,
 };
 
 export const AllVariants: Story = {

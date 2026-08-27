@@ -99,6 +99,7 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     borderStrong: freshwaterLightPrimitives.fog,
     borderSubtle: freshwaterLightPrimitives.haze,
     borderInverse: freshwaterDarkPrimitives.shadow,
+    shadow: freshwaterLightPrimitives.fog,
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.
     primary: freshwaterLightPrimitives.teal,
@@ -137,6 +138,7 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     borderStrong: freshwaterDarkPrimitives.graphite,
     borderSubtle: freshwaterDarkPrimitives.onyx,
     borderInverse: freshwaterLightPrimitives.mist,
+    shadow: freshwaterDarkPrimitives.graphite,
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.
     primary: freshwaterDarkPrimitives.turquoise,

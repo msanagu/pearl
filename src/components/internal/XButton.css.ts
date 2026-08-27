@@ -8,7 +8,7 @@ import { color, radius } from '../../tokens';
 // sits next to. Hover/focus background is `color.overlaySubtle` — a wash
 // that composites over whatever surface this sits on (four different
 // sentiment tints in Alert alone), not a fixed accent tint.
-export const dismissButton = style({
+export const xButton = style({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',

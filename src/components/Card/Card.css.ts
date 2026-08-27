@@ -17,7 +17,7 @@ export const card = style({
   background: color.surface,
   border: `1px solid ${color.border}`,
   borderRadius: radius.surface,
-  boxShadow: `inset 0 1px 0 ${color.surface}, 0 6px 12px -10px ${color.borderStrong}`,
+  boxShadow: `inset 0 1px 0 ${color.surface}, 0 6px 12px -10px ${color.shadow}`,
   overflow: 'hidden',
 });
 

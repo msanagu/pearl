@@ -30,22 +30,23 @@ export const button = recipe({
 
   variants: {
     variant: {
-      // Fills with `primary`, not `accent` — a theme's accent can be a quiet
+      // Fills with `primary`, not `accent` — a theme's accent can be a subtle
       // signal color (focus borders, underlines) genuinely distinct from its
       // CTA fill; see the comment on `color.primary` in theme.css.ts.
       primary: {
         background: color.primary,
         color: color.onPrimary,
         // Same technique as Card's shadow: a solid token color diluted by
-        // negative spread, not an alpha-faked tint — no shadow-tint token
-        // exists in canon yet. `accentSubtle` gives the inset top-highlight
-        // its intended cool-neutral cast (it's marine in Pearl).
-        boxShadow: `inset 0 1px 0 ${color.accentSubtle}, 0 8px 16px -8px ${color.borderStrong}`,
+        // negative spread, not an alpha-faked tint. `accentSubtle` gives the
+        // inset top-highlight its intended cool-neutral cast (it's marine in
+        // Pearl); `color.shadow` is the dedicated elevation token, not a
+        // border color repurposed for elevation.
+        boxShadow: `inset 0 1px 0 ${color.accentSubtle}, 0 8px 16px -8px ${color.shadow}`,
         transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease',
         selectors: {
           '&:not(:disabled):hover': {
             transform: 'translateY(-1px)',
-            boxShadow: `inset 0 1px 0 ${color.accentSubtle}, 0 12px 24px -8px ${color.borderStrong}`,
+            boxShadow: `inset 0 1px 0 ${color.accentSubtle}, 0 12px 24px -8px ${color.shadow}`,
           },
           '&:not(:disabled):active': { transform: 'translateY(0)' },
         },
@@ -65,7 +66,7 @@ export const button = recipe({
           },
           '&:not(:disabled):active': {
             borderColor: color.accent,
-            boxShadow: `inset 0 1px 2px ${color.borderStrong}`,
+            boxShadow: `inset 0 1px 2px ${color.shadow}`,
           },
         },
         '@media': {
@@ -74,7 +75,7 @@ export const button = recipe({
       },
       // Text-only, no fill or border — the accent underline carries the
       // affordance, but only appears on hover so the resting state stays
-      // truly quiet. Padding/height stay the same as primary/secondary
+      // truly subtle. Padding/height stay the same as primary/secondary
       // (not reduced to fit the text) so the click target doesn't shrink.
       // A transparent border (not `border: none`) keeps the box model
       // identical at rest and on hover, so nothing shifts when it animates in.

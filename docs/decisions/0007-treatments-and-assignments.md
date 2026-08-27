@@ -1,6 +1,6 @@
 ---
 id: ADR-0007
-title: Two system tiers — treatments and assignments
+title: Two system tiers — treatments and roles
 status: proposed
 date: 2026-07-19
 deciders: [Mary San Agustin]
@@ -9,7 +9,19 @@ supersedes: null
 superseded_by: null
 ---
 
-# ADR-0007 — Two system tiers: treatments and assignments
+# ADR-0007 — Two system tiers: treatments and roles
+
+**Terminology update (2026-08-27):** this ADR originally called the second
+tier "assignments." Renamed to **roles** — the word was already carrying the
+real meaning (`Text`'s `role` prop, `TypographyRoles`) in half the system
+while "assignments" carried it in the other half, two words for one concept.
+"Roles" also generalizes cleanly to what it always described: not just which
+face plays a typographic job, but which *context* a treatment plays a part
+in — Luster is one treatment given three roles (`brandSphere`, `hairlineRule`,
+`cardHover`), the same relationship as one typeface given the `inlineEmphasis`
+role. The word "assignment" is retired from this system's vocabulary
+entirely; every mention below is updated to match, except where it describes
+history (the Context section, dated examples) rather than the current model.
 
 ## Context
 
@@ -121,14 +133,18 @@ Theme-agnostic. Two kinds:
   where declared. A theme with none is normal, not deficient. The **name belongs
   to the treatment** — naming an effect is part of owning it.
 
-**Assignments — what a theme does with treatments.** Named by what they're *for*.
-Per-theme, and every theme has a complete one:
+**Roles — what a theme does with treatments.** Named by what they're *for*.
+Per-theme, keyed by role name, and every theme has a complete table:
 
 - values for canon slots
-- role assignments (which face plays `emphasis`)
-- application rules (luster on surfaces and imagery, never type)
+- which treatment fulfills each role (a face for `inlineEmphasis`, Luster for
+  `cardHover`) — one treatment may fulfill several roles; a role never
+  fulfills more than one treatment
+- placement and constraint per role (where it applies, where it's forbidden,
+  numeric ceilings)
 - idioms — behavioral patterns with house defaults, overridable
-- axes and mood — the structured, machine-readable layer
+- a one-line, human-readable description of the theme's disposition (sits
+  beside the role table, not inside it — it isn't a role)
 
 The token tiers of two-tier tokens (ADR-0005) nest *inside* the treatments tier; they do not compete
 with this split.
@@ -158,37 +174,41 @@ Four rules follow:
    are additive, applied through composition, never a dependency. This keeps a
    no-effect theme first-class and components theme-unaware (the override contract, ADR-0003).
 
-4. **Defaults belong to assignments, never to treatments.** Treatments do not
-   default — they exist or they don't. Assignments may:
+4. **Defaults belong to roles, never to treatments.** Treatments do not
+   default — they exist or they don't. A theme's role table may:
    - *Idioms* cascade. A theme that declares no hover idiom inherits the house
-     assignment, because every interactive system needs hover feedback to do
+     one, because every interactive system needs hover feedback to do
      something. Silence means "the house answer is fine."
    - *Extension treatments* never cascade. South Sea inheriting Pearl's
      silver-marine iridescence would be the original bug wearing a new name.
 
-5. **An extension treatment without an assignment is invalid.** Declaring one
-   requires stating, at minimum, where it may apply, where it is forbidden, and
-   what triggers it. A treatment with no assignment is a mechanic with no
-   meaning — values and no intent — which is exactly the state the handoff
-   shipped: Freshwater had luster *values* and a written rule that luster
-   shouldn't be decorative, with nothing connecting them.
+5. **An extension treatment without at least one role is invalid.** A role
+   pointing at it requires stating, at minimum, where it may apply, where it
+   is forbidden, and what triggers it. A treatment nothing points to is a
+   mechanic with no meaning — values and no intent — which is exactly the
+   state the handoff shipped: Freshwater had luster *values* and a written
+   rule that luster shouldn't be decorative, with nothing connecting them.
 
-   This is enforced by the type system, not convention. Verified by spike
-   (2026-07-19) — a mapped type over `keyof C` checks coverage in both
-   directions:
+   Each role's `treatment` field is typed against the theme's own real
+   treatment names (`keyof typeof pearlTreatments | keyof typeof
+   pearlTypeTreatments` for Pearl) — a role pointing at a treatment that
+   doesn't exist, or a misspelled name, fails to compile:
 
    | Case | Result |
    |---|---|
-   | Every treatment assigned | compiles |
-   | Treatment declared, never assigned | `TS2322` |
-   | Assignment for an undeclared treatment | `TS2353` |
+   | Role points at a real treatment | compiles |
+   | Role points at a nonexistent/misspelled treatment name | compile error |
 
-   Note the asymmetry that makes this safe: requiring an assignment cannot cause
-   fabrication, because "forbidden everywhere except imagery" is always an honest
-   answer. There is no equivalent of `luster: none` — you are stating scope, not
-   inventing content. This points the same totality mechanism that produced the
-   original problem somewhere useful: canon tokens must be filled with *values*;
-   extension treatments must be filled with *meaning*.
+   **Accepted regression from the original mapped-type mechanism:** the
+   original version of this rule (`{ [K in keyof C]: TreatmentAssignment }`)
+   checked *both* directions — a treatment with no assignment also failed to
+   compile. The role-keyed table only checks the direction above; a
+   treatment declared in `pearlTreatments` that no role ever points to is a
+   silent no-op, not a compile error. Traded deliberately for a flatter,
+   role-named structure where `Text`'s `role` prop and the role table's keys
+   stay in direct correspondence — see the terminology-update note at the
+   top of this ADR. Revisit if an unreferenced treatment actually ships
+   unnoticed.
 
 ## Canon grows by promotion, not accretion
 
@@ -202,14 +222,14 @@ Applied to the additions this revision proposed, canon grew by **zero**:
 | Proposed | Verdict |
 |---|---|
 | `fontFamily.mono` | Not a role — a typeface classification. Belongs to the per-theme font primitives (two-tier tokens, ADR-0005, tier 1), which the contract's own comment at `theme.css.ts:107` already anticipated and never built. |
-| `fontFamily.accent` | Passes rule 1, but role *assignment* is itself a theme distinction — it lives in the assignment layer, not canon. |
+| `fontFamily.accent` | Passes rule 1, but which face plays a role is itself a theme distinction — it lives in the role layer, not canon. |
 | `color.chrome.{bg,ink}` | Rejected. Not a new role: "the one loud cell per view" is a usage pattern of the existing inverse group, so adding it gives two ways to express one thing. (Also: do not use the word "chrome" in this system.) |
 
 ## Verified mechanism
 
 Spiked end-to-end on 2026-07-19 — typecheck, `vite build`, emitted CSS inspected.
 
-**Optional assignments** come from a `defineTheme()` factory, not from the
+**Optional roles** come from a `defineTheme()` factory, not from the
 contract. The consumer supplies a `DeepPartial`; the factory deep-merges over
 house defaults and hands `createTheme` a complete object. The contract stays
 total, so the compile-time guarantee survives — it just doesn't have to be typed
@@ -261,7 +281,7 @@ The rule for extenders: **bespoke to your brand → extension treatment, no fork
 tax. Genuinely universal → propose canon, pay the tax, let the compiler enforce
 that you meant it.**
 
-## Consequences
+## Tradeoffs
 
 - **Positive:**
   - Downstream authors add bespoke treatments without forking.
@@ -269,14 +289,19 @@ that you meant it.**
   - Names stay honest: `luster`, `overtone`, `wash`, `glow` — not four spellings
     of one word.
   - Canon stops growing every time a theme has an idea.
-  - The assignment layer gives the planned MCP/RAG corpus
+  - **DRY angle:** a treatment (`luster`) is declared once and given roles —
+    with per-role tweaks — pointing at any number of `data-*` selectors (a
+    brand sphere, a card's hover state, a secondary button), reusing
+    ADR-0003's stable attributes as the addressing scheme. One declaration,
+    many roles, instead of re-authoring the effect per component.
+  - The role layer gives the planned MCP/RAG corpus
     (`PROJECT_BRIEF.md:16`) something structured to read, and the planned
     no-raw-value lint rule (`PROJECT_BRIEF.md:184`) something to enforce.
 - **Negative / accepted costs:**
   - No single type enumerates every theme's treatments; discovering them means
     reading theme modules. Accepted — they are deliberately not interchangeable.
   - Effects reach the UI only via composition, so a showcase must opt in.
-  - Theme authors write in two places: canon assignment, and their own treatments.
+  - Theme authors write in two places: canon roles, and their own treatments.
   - Two tiers at the system level *and* two tiers within tokens is real
     conceptual load. Mitigated by the tiers being the same idea at two scales.
 - **Neutral:**
@@ -305,23 +330,26 @@ that you meant it.**
 Sanity's Design System Doc Spec (DSDS, `designsystemdocspec.org`, a draft
 schema for machine-readable design system documentation) names a `Foundation`
 entity kind: "domain governance through principles, scales, and motion
-definitions." That is this ADR's assignment layer — `intent`, `guidance`,
-`limits`, `forbid` on an extension treatment is domain governance through
+definitions." That is this ADR's role layer — `intent`, `guidance`,
+`limits`, `forbid` on a role is domain governance through
 principles, under a different name.
 
 This is convergence, not inspiration, and the claim is checkable rather than
-asserted: `pearl.assignment.ts` and this ADR date to 2026-07-19/07-20 (commit
-history), a full month before DSDS was surfaced to this project. The honest
-version isn't "arrived first" — DSDS's own draft predates that date — it's
-that the two were authored with zero awareness of each other and landed on the
-same shape. Two people solving the same problem (structured, machine-readable
-context for a design system an LLM must generate against, without
-hallucinating) reaching for the same vocabulary is mild evidence the shape is
-load-bearing rather than arbitrary.
+asserted: this project's role layer (named `pearl.assignment.ts` at the time,
+renamed `pearl.roles.ts` on 2026-08-27 — see this ADR's terminology-update
+note) and this ADR date to 2026-07-19/07-20 (commit history), a full month
+before DSDS was surfaced to this project. The honest version isn't "arrived
+first" — DSDS's own draft predates that date — it's that the two were
+authored with zero awareness of each other and landed on the same shape. Two
+people solving the same problem (structured, machine-readable context for a
+design system an LLM must generate against, without hallucinating) reaching
+for the same vocabulary is mild evidence the shape is load-bearing rather
+than arbitrary.
 
 **Not adopted.** DSDS is pre-1.0 (`0.15.2`), unendorsed by any standards body,
 and young enough that its shape may still change under it. Swapping this ADR's
-compiler-verified mechanism (rule 5's mapped-type completeness check) for
+compiler-verified mechanism (rule 5's typed-`treatment`-pointer check — see
+that rule's accepted-regression note for how this narrowed on 2026-08-27) for
 compliance with a less stable spec would be a downgrade, not a maturation.
 
 One piece is worth carrying forward regardless of DSDS's own trajectory:
@@ -333,7 +361,7 @@ prose layer get" thread, and it's adoptable independent of whether the
 manifest this ADR anticipates (`PROJECT_BRIEF.md:16`) ever speaks DSDS itself.
 
 **Revisit if:** DSDS reaches 1.0 with real multi-implementer adoption, at which
-point emitting DSDS-shaped output from the assignment layer becomes a
+point emitting DSDS-shaped output from the role layer becomes a
 migration question rather than a dependency question.
 
 ## Related
@@ -341,7 +369,7 @@ migration question rather than a dependency question.
 - ADR-0001 (styling engine) — vanilla-extract. `createTheme`'s totality is the
   constraint that makes this decision necessary.
 - ADR-0005 (two-tier tokens) — this is the same idea one level up: treatments are
-  named by what they are, assignments by what they're for. The token tiers nest
+  named by what they are, roles by what they're for. The token tiers nest
   inside treatments rather than competing.
 - ADR-0003 (override contract) — rule 3 preserves component theme-unawareness.
 - ADR-0002 (composition over configuration) — governs component props, not

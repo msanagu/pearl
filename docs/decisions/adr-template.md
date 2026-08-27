@@ -34,7 +34,7 @@ reasoning for *not* taking the easy path is often the most valuable content.)
 
 The option chosen, stated plainly, and the single most important reason it won.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:**
 - **Negative / accepted costs:**

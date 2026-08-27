@@ -29,7 +29,7 @@ These four terms get conflated easily, so they're pinned down here:
 - **heading** — the canon type-scale step (`Text`'s `variant`, e.g. `headingLg`,
   `displayLg`) paired with the correct semantic level via `as` (`h1`–`h6`),
   independently of visual size — see "Applied across the system" above.
-- **preheading** — a `Text` `role` (`themes/assignment.ts`'s `TypographyRoles`), not
+- **preheading** — a `Text` `role` (`themes/roles.ts`'s `TypographyRole`), not
   a variant. The short line *above* a heading (Pearl's "A design system for
   identities that refuse sameness" above its hero `h1`). Deliberately not called
   "eyebrow": the name should say what it relates to. Kept distinct from `label`

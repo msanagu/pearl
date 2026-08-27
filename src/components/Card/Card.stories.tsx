@@ -70,19 +70,3 @@ export const LinkCard: Story = {
     </div>
   ),
 };
-
-/** No `href` — a static info card. Hover does nothing, on any theme. */
-export const StaticCard: Story = {
-  render: () => (
-    <div style={{ maxWidth: 420 }}>
-      <Card>
-        <Card.Header>
-          <Text typeScale="headingSm" as="h2">System status</Text>
-        </Card.Header>
-        <Card.Body>
-          <Text prominence="subtle">Hover — nothing happens. This card goes nowhere.</Text>
-        </Card.Body>
-      </Card>
-    </div>
-  ),
-};

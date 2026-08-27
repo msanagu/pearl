@@ -46,7 +46,7 @@ surface the Maintainer/Consumer personas (`audience-model.md`) reason about — 
 the semantic layer. Primitives are swappable too, but a typical reskin edits
 semantic→primitive mappings and the ramps, not component-facing names.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:**
   - Whole-product restyling by *intent*: remap semantics to shift density,
@@ -54,6 +54,9 @@ semantic→primitive mappings and the ramps, not component-facing names.
   - The "serve any industry by pasting values" claim becomes structurally true,
     not aspirational.
   - Semantic names document design intent and become clean retrieval corpus.
+  - **DRY angle:** a primitive (`neutral.600`) is defined once and referenced
+    by every semantic slot that needs it — reskinning is remapping references,
+    not copy-pasting values across a flat token list.
 - **Negative / accepted costs:**
   - One more layer of indirection to author and to hold in your head.
   - The `tokens.ts` JSDoc wrapper (ADR-0001) grows to cover both tiers; the VE

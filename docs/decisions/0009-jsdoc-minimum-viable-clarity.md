@@ -58,7 +58,7 @@ Applies retroactively to the seven components that had `@example`: Alert,
 Card, Field, Input, Row, Stack, Text — each already has a story demonstrating
 the same usage.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** fewer places for a component's real API and its documented
   API to quietly disagree. Shorter files.

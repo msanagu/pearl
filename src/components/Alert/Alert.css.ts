@@ -18,7 +18,7 @@ export const alert = recipe({
     // `color` here is a fallback/cascade root, kept for any plain-text/icon
     // descendant that doesn't set its own color — the title/body `Text` sets
     // its own explicitly instead (it always sets `color`, so it can't inherit
-    // one from an ancestor), and `DismissButton` is intentionally neutral
+    // one from an ancestor), and `XButton` is intentionally neutral
     // rather than variant-colored, so it doesn't read from this either.
     variant: {
       positive: { background: color.positive.surface, border: `1px solid ${color.positive.border}`, color: color.positive.text },

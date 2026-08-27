@@ -52,10 +52,13 @@ brand-hue token. This keeps the token surface from doubling for a distinction
 express. Multiple *simultaneous* brand hues (not this case) remain the
 already-tabled multi-accent question (see `visual-language-brief.md`).
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** predictable vocabulary — learning one group's prominence words
   teaches all of them; sentiment stays disambiguated by destination.
+  - **DRY angle:** one prominence ladder (`strong`/base/`subtle`) is defined
+    once and reused verbatim across every group — no group invents or
+    maintains its own synonym set.
 - **Negative / accepted costs:** a theme that genuinely wants two independent
   brand hues (identity ≠ action) has to wait for the multi-accent extension
   rather than reach for `brand` today.

@@ -37,8 +37,8 @@ export const vars = createThemeContract({
     background: null,
     surface: null,
     overlay: null,
-    // A quiet alpha wash — hover/focus backgrounds on ghost/icon-only controls
-    // (a dismiss button, a quiet icon toggle) that must composite correctly
+    // A subtle alpha wash — hover/focus backgrounds on ghost/icon-only controls
+    // (a dismiss button, an icon-only toggle) that must composite correctly
     // over WHATEVER surface they sit on, not just `background`/`surface`. Not
     // `accentSubtle`: that's a solid, theme-branded tint (fine for selected
     // rows/active nav on a known surface), but most themes' accent is a fully
@@ -74,17 +74,19 @@ export const vars = createThemeContract({
     borderStrong: null,
     borderSubtle: null,
     borderInverse: null,
+    // Elevation — box-shadow color, distinct from border (see tokens.ts).
+    shadow: null,
     // Primary — the main call-to-action fill (Button's `primary` variant).
     // Added after authoring real theme values: all four themes turned out to
-    // need a CTA fill distinct from `accent` (an ink-primary theme's quiet
-    // accent must NOT double as its button color, or every quiet use — focus
+    // need a CTA fill distinct from `accent` (an ink-primary theme's subtle
+    // accent must NOT double as its button color, or every subtle use — focus
     // borders, underlines, hover states — goes loud too). Promoted once this
     // pattern repeated across all four, not designed in advance.
     primary: null,
     onPrimary: null,
-    // Accent — a quieter signal color: focus borders, underlines, hover
+    // Accent — a subtler signal color: focus borders, underlines, hover
     // states, sentiment-adjacent emphasis. NOT assumed to be the button fill
-    // — an ink-primary theme (e.g. Pearl) keeps `accent` genuinely quiet and
+    // — an ink-primary theme (e.g. Pearl) keeps `accent` genuinely subtle and
     // uses `primary` for its CTA fill instead.
     accent: null,
     accentHover: null,
@@ -156,7 +158,7 @@ export const vars = createThemeContract({
   // type is set tight, body is set at zero, and the correct value is a function
   // of size. Label tracking (mono caps at .12–.2em in three of the four themes)
   // is NOT here — `label` is not a shared role, so its tracking lives in each
-  // theme's own configuration (see src/themes/assignment.ts).
+  // theme's own configuration (see src/themes/roles.ts).
   text: {
     caption: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     bodySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },

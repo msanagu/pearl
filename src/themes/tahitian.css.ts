@@ -125,6 +125,7 @@ export const tahitianLightThemeClass = createTheme(vars, {
     borderStrong: tahitianLightPrimitives.fog,
     borderSubtle: tahitianLightPrimitives.cloud,
     borderInverse: tahitianDarkPrimitives.shadow,
+    shadow: tahitianLightPrimitives.fog,
 
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.
@@ -168,6 +169,7 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     borderStrong: tahitianDarkPrimitives.graphite,
     borderSubtle: tahitianDarkPrimitives.onyx,
     borderInverse: tahitianLightPrimitives.mist,
+    shadow: tahitianDarkPrimitives.graphite,
 
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.

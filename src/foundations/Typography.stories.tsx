@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { color, fontFamily, fontWeight, text } from '../tokens';
-import { pearlAssignments } from '../themes/pearl.assignment';
+import { pearlRoles, pearlTypeTreatments } from '../themes/pearl.roles';
 import { FamilySwatch, TypeSpecimen, WeightSwatch, useComputed } from './typeSpecimens';
 import * as css from './tokens.css';
 
@@ -12,17 +12,17 @@ import * as css from './tokens.css';
  * unlike the sections above it, "Role treatments" is theme-specific content,
  * not a live reflection of whichever theme the toolbar has selected.
  *
- * Starting with Pearl — the only theme with an assignment record so far. Add
+ * Starting with Pearl — the only theme with a role table so far. Add
  * a section per theme as each gets one (see docs/decisions/0007).
  */
 
-function RoleEmphasisSpecimen({ role }: { role: { fontFamily: string; style?: string } }) {
+function RoleEmphasisSpecimen({ role }: { role: { fontFamily: string; fontStyle?: string } }) {
   const [ref, resolved] = useComputed<HTMLSpanElement>(['font-family', 'font-style']);
   return (
     <div className={css.cell}>
       <span style={{ fontFamily: fontFamily.body, fontSize: '22px', color: color.text }}>
         The world is your{' '}
-        <span ref={ref} style={{ fontFamily: role.fontFamily, fontStyle: role.style }}>
+        <span ref={ref} style={{ fontFamily: role.fontFamily, fontStyle: role.fontStyle }}>
           oyster.
         </span>
       </span>
@@ -69,8 +69,17 @@ function RoleLabelSpecimen({
   );
 }
 
+// `pearlRoles`'s `treatment` field is typed against Pearl's full treatment
+// name space (type treatments + `luster`), since any role could in principle
+// point at either. `inlineEmphasis`/`preheading`/`dataDigits` only ever
+// point into `pearlTypeTreatments` in practice — narrowed here once rather
+// than cast at every call site below.
+function typeTreatment(name: string) {
+  return pearlTypeTreatments[name as keyof typeof pearlTypeTreatments];
+}
+
 function TypographyPreview() {
-  const roles = pearlAssignments.roles?.typography;
+  const roles = pearlRoles;
   return (
     <div className={css.page}>
       <section className={css.section}>
@@ -109,22 +118,22 @@ function TypographyPreview() {
           display/heading/body; the serif is a rare accent, not a default.
         </p>
 
-        {roles?.inlineEmphasis && (
+        {roles.inlineEmphasis && (
           <>
             <h3 className={css.subsectionTitle}>
               Inline emphasis — {roles.inlineEmphasis.scope?.join(', ')}
             </h3>
-            <RoleEmphasisSpecimen role={roles.inlineEmphasis} />
+            <RoleEmphasisSpecimen role={typeTreatment(roles.inlineEmphasis.treatment)} />
           </>
         )}
 
-        {roles?.preheading && (
+        {roles.preheading && (
           <>
             <h3 className={css.subsectionTitle}>Preheading</h3>
             <div className={css.row}>
-              <RoleLabelSpecimen label="nav / index" sample="Index" role={roles.preheading} />
-              <RoleLabelSpecimen label="plate caption" sample="Plate 01 / Nacre" role={roles.preheading} />
-              <RoleLabelSpecimen label="index row" sample="Selected — 2024/26" role={roles.preheading} />
+              <RoleLabelSpecimen label="nav / index" sample="Index" role={typeTreatment(roles.preheading.treatment)} />
+              <RoleLabelSpecimen label="plate caption" sample="Plate 01 / Nacre" role={typeTreatment(roles.preheading.treatment)} />
+              <RoleLabelSpecimen label="index row" sample="Selected — 2024/26" role={typeTreatment(roles.preheading.treatment)} />
             </div>
           </>
         )}

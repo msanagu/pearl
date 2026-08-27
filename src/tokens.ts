@@ -66,8 +66,12 @@ export interface ColorTokens {
   borderSubtle: CSSVarFunction;
   /** Border/divider on an inverse surface. */
   borderInverse: CSSVarFunction;
+  /** Elevation `box-shadow` color — not a border. Currently one rung; a
+   * `shadowSubtle`/`shadowStrong` ladder (ADR-0006) is a candidate once a
+   * second elevation level is needed. */
+  shadow: CSSVarFunction;
   /** Main call-to-action fill — Button's `primary` variant. Not assumed to
-   * equal `accent`: an ink-primary theme's quiet accent color would go loud
+   * equal `accent`: an ink-primary theme's subtle accent color would go loud
    * everywhere it's used (focus borders, underlines) if it also filled CTAs. */
   primary: CSSVarFunction;
   /** Text/icon on a `primary` fill. */

@@ -102,6 +102,11 @@ function TokensPreview() {
           <BorderSwatch name="borderSubtle" cssVar={color.borderSubtle} />
         </div>
 
+        <h3 className={css.subsectionTitle}>Shadow</h3>
+        <div className={css.row}>
+          <ColorSwatch name="shadow" cssVar={color.shadow} />
+        </div>
+
         <h3 className={css.subsectionTitle}>Accent &amp; focus</h3>
         <div className={css.row} style={{ alignItems: 'center' }}>
           <ColorSwatch name="accent" cssVar={color.accent} />

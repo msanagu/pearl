@@ -6,8 +6,14 @@ Favor `children` and slot-based props over prop-explosion. If a component needs 
 boolean or enum props whose only job is to toggle rendered structure or content, that's
 a signal it should be composed instead of configured.
 
-**Heuristic:** if a prop is a boolean/enum that only toggles what gets rendered (not how
-something looks), it's probably a compositional slot, not a config prop.
+**The test: does the root need to make a decision that depends on this content's
+presence, or its relationship to another part?** If not, default to compound
+sub-components or plain `children` — the root shouldn't need to know a part exists
+(Card's `Header`/`Body`). A prop is legitimate exactly when the root does need to
+broker that — Alert's `heading` shifts where its icon sits, Field's `required`
+suppresses its own visual mark because the control's own `aria-required` already
+announces it. A bare boolean/enum with no such coupling is always compositional —
+that's the common case, not the whole test. See ADR-0002 for the worked examples.
 
 ## Smart defaults, always escapable
 

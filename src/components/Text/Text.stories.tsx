@@ -71,7 +71,7 @@ export const VariantVsElement: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <Text typeScale="headingSm" as="h2">headingSm as h2 (prominent section)</Text>
-      <Text typeScale="bodyMd" as="h2">bodyMd as h2 (quiet section label)</Text>
+      <Text typeScale="bodyMd" as="h2">bodyMd as h2 (subtle section label)</Text>
     </div>
   ),
 };

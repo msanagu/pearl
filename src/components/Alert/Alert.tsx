@@ -13,7 +13,7 @@ import {
 } from 'react-icons/pi';
 import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
-import { DismissButton } from '../internal/DismissButton';
+import { XButton } from '../internal/XButton';
 import { color } from '../../tokens';
 import { alert, iconSlot, content } from './Alert.css';
 
@@ -96,7 +96,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
           )}
         </div>
 
-        {onDismiss && <DismissButton onClick={onDismiss} />}
+        {onDismiss && <XButton aria-label="Dismiss notification" onClick={onDismiss} />}
       </div>
     );
   },

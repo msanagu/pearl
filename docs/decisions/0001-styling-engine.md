@@ -13,6 +13,10 @@ superseded_by: null
 
 ## Context
 
+### Why vanilla-extract over Emotion / JSS:
+
+Runtime CSS-in-JS introduces client-side performance overhead, fails with React Server Components, and creates unpredictable specificity based on component mount order. Vanilla-extract delivers the developer experience of CSS-in-JS with full TypeScript safety, but emits static, zero-runtime CSS with guaranteed, stable class specificity.
+
 This design system's central thesis is a **TypeScript-enforced, forkable token
 contract**: every component references only theme tokens (never a raw value),
 so replacing the theme layer re-skins the entire system with zero component
@@ -90,7 +94,7 @@ accepted deliberately in exchange for hover-doc DX and compiler-checked
 token documentation — and that wrapper doubles as future retrieval-corpus
 content.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:**
   - The reskin thesis is demonstrable end-to-end (proven: `dist/index.css`
@@ -98,6 +102,8 @@ content.
     `lightThemeClass`).
   - Components stay decoupled from theming — they reference `vars.*` only and
     never branch on brand/mode.
+  - **DRY angle:** one token contract, defined once, is the single source every
+    theme and component reads from — no per-theme copy of component styles.
   - The override contract's specificity behavior is stable and layer-free.
 - **Negative / accepted costs:**
   - `src/tokens.ts` must be updated whenever the contract changes (structurally

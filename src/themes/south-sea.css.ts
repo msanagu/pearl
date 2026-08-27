@@ -104,6 +104,7 @@ export const southSeaLightThemeClass = createTheme(vars, {
     borderStrong: southSeaLightPrimitives.fog,
     borderSubtle: southSeaLightPrimitives.haze,
     borderInverse: southSeaDarkPrimitives.shadow,
+    shadow: southSeaLightPrimitives.fog,
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.
     primary: southSeaLightPrimitives.gold,
@@ -142,6 +143,7 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     borderStrong: southSeaDarkPrimitives.graphite,
     borderSubtle: southSeaDarkPrimitives.onyx,
     borderInverse: southSeaLightPrimitives.mist,
+    shadow: southSeaDarkPrimitives.graphite,
     // Still a placeholder theme (see file header) — primary passes through
     // to the existing accent fill; no dedicated CTA color authored yet.
     primary: southSeaDarkPrimitives.amber,

@@ -1,22 +1,22 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DismissButton } from './DismissButton';
+import { XButton } from './XButton';
 
-describe('DismissButton', () => {
-  it('defaults to an accessible name of "Dismiss"', () => {
-    render(<DismissButton />);
-    expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument();
+describe('XButton', () => {
+  it('defaults to an accessible name of "Close"', () => {
+    render(<XButton />);
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
   });
 
   it('accepts an aria-label override', () => {
-    render(<DismissButton aria-label="Dismiss notification" />);
+    render(<XButton aria-label="Dismiss notification" />);
     expect(screen.getByRole('button', { name: 'Dismiss notification' })).toBeInTheDocument();
   });
 
   it('fires onClick', async () => {
     const onClick = vi.fn();
-    render(<DismissButton onClick={onClick} />);
+    render(<XButton onClick={onClick} />);
     await userEvent.click(screen.getByRole('button'));
     expect(onClick).toHaveBeenCalledOnce();
   });

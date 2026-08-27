@@ -1,11 +1,11 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import type { TextTokens } from '../../tokens';
-import type { TypographyRoles } from '../../themes/assignment';
+import type { TypographyRole } from '../../themes/roles';
 import { textRecipe } from './Text.css';
 
 type TypeScale = keyof TextTokens;
-type TextRole = keyof TypographyRoles;
+type TextRole = TypographyRole;
 type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
 export interface TextProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
@@ -28,8 +28,8 @@ export interface TextProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   /**
    * A theme-owned face treatment (font family, and per-theme case/tracking) —
    * independent of `typeScale`. Resolved per-theme via CSS (`[data-role]`),
-   * never read from the assignment record at runtime — assignments are
-   * intent, not style (see `themes/assignment.ts`). A role with no size of
+   * never read from the role record at runtime — roles hold intent, not
+   * style (see `themes/roles.ts`). A role with no size of
    * its own opinion — i.e. no `typeScale` passed alongside it — inherits the
    * ambient font-size from its surrounding context rather than being forced
    * to `bodyMd`.

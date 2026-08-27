@@ -4,21 +4,20 @@
 // --- Theme contract & themes ---
 export { vars } from './theme.css';
 export { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass, pearlTreatments, pearlFonts } from './themes/pearl.css';
-export { pearlAssignments } from './themes/pearl.assignment';
+export { pearlDescription, pearlRoles } from './themes/pearl.roles';
 export { tahitianLightThemeClass, tahitianDarkThemeClass } from './themes/tahitian.css';
 export { freshwaterLightThemeClass, freshwaterDarkThemeClass } from './themes/freshwater.css';
 export { southSeaLightThemeClass, southSeaDarkThemeClass } from './themes/south-sea.css';
 
-// --- Assignment layer (never becomes CSS) ---
+// --- Role layer (never becomes CSS) ---
 export type {
-  ThemeAssignments,
-  TreatmentAssignment,
-  Application,
+  ThemeRoles,
+  RoleSpec,
   Surface,
   Trigger,
-  UsageAxis,
-  RoleAssignments,
-} from './themes/assignment';
+  Chroma,
+  TypographyRole,
+} from './themes/roles';
 
 // --- Documented token layer (JSDoc wrapper) ---
 export {

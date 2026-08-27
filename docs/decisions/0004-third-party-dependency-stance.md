@@ -67,7 +67,7 @@ categories of libraries up front.
 5. **Human-readable code is an explicit selection criterion** for any dependency,
    weighed alongside correctness, a11y, bundle cost, and maintenance health.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** the system's visual identity, markup semantics
   (`markup-philosophy.md`), and override contract are never hostage to a

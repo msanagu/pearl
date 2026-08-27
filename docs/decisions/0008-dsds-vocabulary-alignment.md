@@ -121,7 +121,7 @@ Explicitly **not** adopted, for now:
   `tsc`-driven generation step from the real types, not a hand-authored
   parallel schema.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** the manifest, when built, starts from a shape one external
   party has already stress-tested against real agent evals, without this

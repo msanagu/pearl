@@ -99,10 +99,51 @@ via `clsx`, as this narrow-purpose escape hatch — not as the primary override 
 
 ## Explicitly not used
 
-- **Importing internal class name exports** (e.g. `import { cardHeader } from
-  '@yourlib/card/Card.css'`) — exposes implementation details as if they were
-  public API, and can break silently on internal restructuring even when the
-  class name itself is unchanged. Never do this.
-- **Local CSS custom properties (`createVar`) as a general override mechanism** —
-  reserved only for specific properties deliberately designed as tunable knobs
-  (see prior draft of this doc), not a default targeting strategy.
+### Banned — importing internal class tokens
+
+Reaching into the library's source or compiled output to import and reuse its
+internal, hashed style tokens:
+
+```tsx
+// ❌ BANNED — importing internal implementation details
+import { baseButton, labelStyle } from '@my-ds/core/button.css.ts';
+
+const MyCustomButton = () => (
+  <button className={`${baseButton} my-override-hack`}>
+    <span className={labelStyle}>Click me</span>
+  </button>
+);
+```
+
+**Why it fails:** this tightly couples consumer code to internal refactors. If
+the design system renames or splits `baseButton`, the consumer's app breaks
+silently — no type error, no compile error, just wrong CSS in production.
+
+### Banned — `createVar` as a general override mechanism
+
+Turning every sub-element style into a bespoke custom-property injection prop:
+
+```tsx
+// ❌ BANNED — prop-explosion via custom CSS variables
+<Card
+  headerBgVar={myCustomBg}
+  headerPaddingVar={myCustomPadding}
+  footerBorderVar={myCustomBorder}
+/>
+```
+
+**Why it fails:** it turns every design token into an endless stream of
+bespoke props, defeating the simplicity of the component API and duplicating
+what a CSS selector already does natively.
+
+### The correct way — `data-part` contract
+
+Consumers target stable attribute selectors from their own stylesheet instead:
+
+```css
+/* ✅ ALLOWED — clean, versioned attribute targeting */
+[data-component="card"] [data-part="header"] {
+  background-color: var(--my-brand-bg);
+  padding: 1.5rem;
+}
+```

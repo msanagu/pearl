@@ -52,7 +52,7 @@ rationale in `override-patterns.md`.
 - **Banned:** importing internal class tokens (Option C); `createVar` as a
   general override mechanism (Option D).
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** the override surface is a small, documented, versioned contract;
   category targeting matches the common case; the same attributes serve QA and
@@ -69,6 +69,11 @@ rationale in `override-patterns.md`.
     `data-*` contract itself.
 - **Neutral:** overrides are meant to be a costed, visible exception —
   composition is the Consumer happy path, not overrides.
+  - **DRY angle:** this ADR is not itself a DRY mechanism — it's the stable
+    addressing scheme (`data-component`/`data-part`) that a *different* DRY
+    mechanism builds on. ADR-0007's treatments are declared once and reused
+    across many `data-*` targets only because this contract makes those
+    targets stable enough to reuse against.
 
 ## Revisit if
 
@@ -84,3 +89,6 @@ rationale in `override-patterns.md`.
 - `design-in-code-canonization-loop.md` — how convergent overrides feed promotion.
 - ADR-0001 — the engine whose output shape this contract depends on.
 - ADR-0002 — composition, the happy path this is the escape hatch from.
+- ADR-0007 — treatments and assignments: how a themed effect is declared once
+  and assigned (with per-target tweaks) across `data-*` selectors, reusing this
+  contract's attributes as its DRY mechanism.

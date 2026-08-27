@@ -23,12 +23,12 @@ import { vars } from '../theme.css';
  * accent (the wordmark, and inline interjections like "the world is your
  * *oyster*"). Gambetta and IBM Plex Mono are therefore primitives with no canon
  * role yet — the type primitive tier is not built (see `theme.css.ts:107` and
- * the phase plan). They are declared below and assigned in `pearl.assignment.ts`.
+ * the phase plan). They are declared below and given roles in `pearl.roles.ts`.
  *
  * ## Treatments
  * `pearlTreatments.luster` is an **extension treatment** (see
  * `docs/decisions/0007-treatments-and-assignments.md`) — theme-owned, not a
- * canon slot, with a required assignment in `pearl.assignment.ts`.
+ * canon slot, with required roles in `pearl.roles.ts`.
  */
 
 // ---- Type primitives (named by what they ARE — no roles assigned here) ----
@@ -81,7 +81,7 @@ export const squidInk = {
   900: '#17161A', // [4c/spec] ink / obsidian — primary text (light) / page background (dark)
 };
 
-/** Marine Layer — quiet work only: focus ring, selected tint, muted text, sheen. Never a fill. */
+/** Marine Layer — desaturated work only: focus ring, selected tint, subtle text, sheen. Never a fill. */
 export const marineLayer = {
   100: '#D7D5DF', // [spec] marine — accent/focusRing/tint, identical hex both modes
   200: '#C9C5D2', // [spec] lavenderPale — body copy, dark mode
@@ -190,15 +190,16 @@ export const pearlLightThemeClass = createTheme(vars, {
     borderStrong: marineLayer[300],
     borderSubtle: alabaster[400],
     borderInverse: squidInk[600],
+    shadow: marineLayer[300],
 
     // [4c] Primary CTA fill — the dark gradient's flat approximation (no
     // gradient token in canon yet; see decisions doc §8, "under evaluation").
     primary: squidInk[900],
     onPrimary: alabaster[300],
 
-    // Pearl is an ink-primary identity, but `accent` stays genuinely quiet —
+    // Pearl is an ink-primary identity, but `accent` stays genuinely subtle —
     // it is NOT the button fill (that's `primary`, above). Reusing accent for
-    // both would make every quiet use (focus borders, underlines, hover
+    // both would make every subtle use (focus borders, underlines, hover
     // states) go loud too.
     accent: marineLayer[600],
     accentHover: squidInk[900],
@@ -239,6 +240,7 @@ export const pearlDarkThemeClass = createTheme(vars, {
     borderStrong: marineLayer[400],
     borderSubtle: squidInk[700],
     borderInverse: alabaster[500],
+    shadow: marineLayer[400],
 
     // [spec] Mode swap inverts the CTA: dark pill on light, light pill on dark.
     primary: alabaster[100], // chalk
@@ -265,7 +267,7 @@ export const pearlDarkThemeClass = createTheme(vars, {
   text: pearlText,
 });
 
-// ---- Role treatments (roles.typography in pearl.assignment.ts) ----
+// ---- Role treatments (pearlRoles in pearl.roles.ts) ----
 //
 // The assignment record never becomes CSS itself — it's the spec these
 // selectors are checked against. `Text` only ever writes `data-role`; each
@@ -310,7 +312,7 @@ globalStyle(
  * Stops are [4c]'s sphere: three hues at low alpha. This retires the handoff's
  * "highlights, never rainbow" rule and its near-monochrome silver stops. The
  * replacement constraint — three hues max, none above .42 alpha — is recorded
- * as a machine-checkable `limit` in `pearl.assignment.ts`.
+ * as a machine-checkable `limit` in `pearl.roles.ts`.
  *
  * Dark-mode values are [derived]; 4c only specifies light.
  */
@@ -352,7 +354,7 @@ export const [pearlTreatmentClass, pearlTreatments] = createTheme({
      * `driftInset` spills the ellipse past the card's own box so no hard
      * edge shows. Palette: marine dominant, silver undertone, seagreen a
      * thin late breath (own spec, not the sphere's — `theme-revision-
-     * decisions.md`). Held under limitsByChroma.quiet.alpha.max (0.30).
+     * decisions.md`). Held under limitsByChroma.desaturated.alpha.max (0.30).
      */
     driftGradient:
       'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.30) 0%, rgba(251, 250, 247, 0.19) 32%, rgba(237, 241, 238, 0.11) 52%, transparent 68%)',
@@ -370,8 +372,8 @@ export const [pearlTreatmentClass, pearlTreatments] = createTheme({
   },
 });
 
-// `{ on: 'surface', trigger: 'hover' }` from pearl.assignment.ts's luster
-// application rules — `Card` writes `data-interactive` without knowing what
+// `{ on: 'surface', trigger: 'hover' }` from pearl.roles.ts's `cardHover`
+// role — `Card` writes `data-interactive` without knowing what
 // any theme does with it (same mechanism as the role treatments above); this
 // is Pearl's answer. `zIndex: -1` on the glow (not `zIndex: 1` on the card's
 // real content) is what keeps header/body text readable — a negative-z

@@ -30,7 +30,7 @@ describe('Alert', () => {
   it('renders a dismiss button and calls onDismiss when clicked', async () => {
     const onDismiss = vi.fn();
     render(<Alert onDismiss={onDismiss}>Dismissible</Alert>);
-    await userEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Dismiss notification' }));
     expect(onDismiss).toHaveBeenCalledOnce();
   });
 

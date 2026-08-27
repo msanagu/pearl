@@ -39,11 +39,60 @@ Field stories).
 
 ## Decision
 
-**Composition-first, governed by an explicit heuristic:** *if a prop is a
-boolean/enum whose only job is to toggle what gets rendered (not how something
-looks), it is a compositional slot, not a config prop.*
+**Composition-first, governed by a coupling test:** *default to compound
+sub-components or plain `children` — the root should not need to know a part
+exists. A prop is legitimate only when the root must make a layout or
+behavioral decision that depends on that content's presence, or on its
+relationship to another part.*
 
-Corollaries that follow from this decision:
+A bare boolean/enum that only gates *what renders*, with no such coupling, is
+always a compositional slot, not a config prop — that's the common case the
+test collapses to, and the one most prop-explosion actually looks like in
+practice. But it's a corollary of the coupling test, not the test itself: the
+boolean/enum framing alone gives no answer for a prop like `heading?:
+ReactNode` (Alert) — not a boolean, not an enum — which is exactly the gap
+that made the original wording of this decision confusing on inspection
+(2026-08-27). The coupling test covers that case cleanly; the narrower framing
+didn't.
+
+### The coupling test, worked
+
+Every deviation from plain `children` in this system's own components has a
+documented coupling behind it — none are unexplained, and the pattern holds
+with zero exceptions across every component built so far:
+
+- **Alert's `heading?: ReactNode` stays a prop, not `Alert.Heading`.**
+  `Alert.css.ts`'s `iconSlot` shifts `marginTop` depending on whether a
+  heading exists (`:has([data-part="heading"])`) — the icon's vertical
+  position is a decision only Alert's root can make, because it depends on
+  content Alert doesn't own. A compound `Alert.Heading` would either lose that
+  decision or require scanning `children` for a typed part, which this ADR
+  already rejects as a technique (render-prop, not `cloneElement`, below).
+- **Card's `href` stays a discriminated-union prop, not a variant.** Its
+  presence toggles `data-interactive`, which is what lets a theme's hover
+  treatment (Pearl's luster glow) apply at all — "a card with no `href` is not
+  interactive and never lusters, on any theme." That's a structural identity
+  decision (is this a link) with a real behavioral consequence, not a style
+  toggle.
+- **Card's `Header`/`Body` stay compound, plain `children`, no Context.**
+  Nothing about Card's root needs to know either exists — no shared state, no
+  cross-part layout decision. The code says so directly: "static-property
+  namespacing, NOT a Context compound component — there is no shared state,
+  so none is used."
+- **Field's `required` mark is `aria-hidden`,** because the *control's own*
+  `required`/`aria-required` already announces it — rendering the mark
+  without suppressing it would announce the same fact twice. `size` cascades
+  to a nested `Input` via CSS custom properties. Both are real cross-part
+  coordination Field's root has to broker, which is why `required`/`size` are
+  props and not left to the consumer to wire up between Field and Input by
+  hand.
+
+Contrast: Button's icon has no such coupling — `children` lays out via
+internal flex + a token gap regardless of order — so it stays pure
+composition, no `icon`/`iconPosition` prop at all.
+
+### Corollaries
+
 - **No `icon` / `iconPosition` prop on Button** — icons compose as `children`
   alongside text; internal flex + a token gap handles layout regardless of
   order (see ADR-forthcoming Button notes / `OPEN_QUESTIONS.md` #12).
@@ -55,13 +104,24 @@ Corollaries that follow from this decision:
   visually adjacent (`Card.Header`/`Card.Body`) use plain `children` with no
   Context. "Dumb outside its four walls."
 - **`variant` stays a config prop** — it toggles *how something looks*, which is
-  exactly the case the heuristic keeps as configuration.
+  exactly the case the coupling test keeps as configuration (the root always
+  needs to know its own variant to render at all).
+- **A future `Modal` follows Card's precedent, not a `footer`/`header` prop
+  API** — `Modal.Header`/`Modal.Body`/`Modal.Footer`, compound, no Context.
+  There's no cross-part layout decision between a modal's header, body, and
+  footer the way there is between Alert's icon and heading; a `footer:
+  ReactNode` prop would recreate the exact coupling this ADR argues against,
+  just wearing a ReactNode instead of a boolean.
 
-## Consequences
+## Tradeoffs
 
 - **Positive:** small, stable prop surfaces; components compose into
   arrangements never explicitly designed; the styling/structure boundary is a
   stated rule, not a per-component judgment call.
+  - **DRY angle:** structural containers (`Card.Header`, `Card.Body`) are
+    written once; a config-first API would instead repeat prop-parsing,
+    conditional renders, and slot toggles per layout variant across every
+    component that needed one.
 - **Negative / accepted costs:** marginally more verbose call sites; contributors
   must internalize the heuristic to apply it consistently.
 - **Neutral:** pushes some decisions (layout of composed children) to CSS on the
