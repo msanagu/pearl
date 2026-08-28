@@ -27,6 +27,12 @@ const preview: Preview = {
     },
     // Accessibility is a first-class concern (docs/foundations/accessibility-standards.md).
     a11y: { test: 'todo' },
+    options: {
+      storySort: {
+        method: 'alphabetical', // Optional: sorts remaining items alphabetically
+        order: ['Foundations', 'Brand', 'Components', '*'],
+      },
+    },
   },
 
   globalTypes: {
