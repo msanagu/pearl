@@ -92,14 +92,29 @@ export const tahitianTypeTreatments = {
   monoCapsTracked: { fontFamily: tahitianFonts.mono, case: 'upper' as const, tracking: '0.08em' },
 } satisfies Record<string, unknown>;
 
-// The `overtone` gradient's stops, light mode — mid-saturation tones that
-// read against the pale `platinum` surface (per-contrast reasoning below).
+// The `overtone` gradient's stops, light mode.
+//
+// `background-clip: text` paints these AS the glyphs, so every stop is body
+// text and owes 4.5:1 — measured against `background` (platinum[200], the
+// darker of the two light surfaces), not just `surface`. The original set was
+// authored by eye and missed: peacock 3.57:1, blue 3.51:1, and silver
+// (`#B8C4C2`) a mere 1.62:1, which left the tail of every emphasized phrase
+// effectively unreadable. Impeccable can't catch this — it SKIPS the contrast
+// check on gradient-clipped text (issue #409 Case A), since painted contrast
+// isn't derivable from `color`. These values are hue- and saturation-preserved
+// darkenings of the originals, each verified >= 4.5:1 on platinum[200].
 export const tahitianPearlColors = {
-  peacock: '#2F8F78',
-  green: '#5FAD78', // pistachio through bottle-glass green
-  blue: '#4F88A8', // steel/denim blue
-  aubergine: '#8C5A7D',
-  silver: '#B8C4C2',
+  peacock: '#297C68', // 4.55:1
+  green: '#5FAD78', // pistachio through bottle-glass green — not in either gradient
+  blue: '#447591', // steel/denim blue — 4.53:1
+  aubergine: '#8C5A7D', // 4.91:1 — already passed, unchanged
+  /**
+   * The gradient's terminal stop is the theme's own subtle-text color rather
+   * than a bespoke pale hex: it's the value this ramp already reserves for
+   * de-emphasized body text (`textSubtle`), so the iridescence resolves INTO
+   * the type system instead of fading out of it. 4.68:1.
+   */
+  silver: tahitianPlatinum[600],
 };
 
 // The same gradient's stops, dark mode — lighter/brighter versions of each
@@ -353,16 +368,28 @@ globalStyle(`${tahitianDarkThemeClass} [data-component="brand-wordmark"]`, {
   color: tahitianPlatinum[100],
 });
 
+// The face — unconditional. A role owns its treatment wherever it is set.
 globalStyle(
   `${tahitianLightThemeClass} [data-role="preheading"], ${tahitianDarkThemeClass} [data-role="preheading"]`,
   {
     fontFamily: tahitianFonts.mono,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    // Size, not just face. Without these the role inherits the ambient scale,
-    // so a preheading renders at body size and stops out-ranking the heading it
-    // sits above — the hierarchy inverts. Pearl has always set these; Tahitian
-    // did not, which is what surfaced the gap.
+  },
+);
+
+// Size, not just face. Without these the role inherits the ambient scale,
+// so a preheading renders at body size and stops out-ranking the heading it
+// sits above — the hierarchy inverts. Pearl has always set these; Tahitian
+// did not, which is what surfaced the gap.
+//
+// Gated on `:not([data-type-scale])` because this is the role's *default*
+// size, not a mandate — see the matching note in `pearl.css.ts`. An explicit
+// `typeScale` has to win, or the rule's class+attribute specificity pins every
+// preheading to caption no matter what the caller asked for.
+globalStyle(
+  `${tahitianLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${tahitianDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,
   },

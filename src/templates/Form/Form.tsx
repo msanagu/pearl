@@ -95,7 +95,7 @@ export function Form() {
         <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>
           Shipping details
         </Text>
-        <Text typeScale="bodyMd" prominence="subtle" as="p">
+        <Text typeScale="bodyMd" prominence="subtle" as="p" measure="md">
           Required fields are marked. Submitting with missing or invalid values surfaces
           both an inline error on the field and a summary banner above the form.
         </Text>

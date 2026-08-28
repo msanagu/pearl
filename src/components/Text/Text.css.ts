@@ -10,6 +10,39 @@ import { color, fontFamily, fontWeight, text } from '../../tokens';
 // no size of its own (Pearl's `inlineEmphasis`) must inherit the surrounding
 // text's size rather than be silently reset to bodyMd — that inheritance is
 // the whole point of "role rides whatever scale it's set in."
+
+/**
+ * Prose measure — the `max-width` that caps line length for readability.
+ *
+ * Values are `ch`, which is the advance of the `0` glyph, NOT a character.
+ * Measured against Pearl's stacks in Chromium, `1ch` is ~0.607em (sans),
+ * ~0.614em (serif), ~0.602em (mono), while the average lowercase advance in
+ * the sans is ~0.433em — so a `Nch` box holds roughly `1.4 × N` real
+ * characters in body copy. The scale is calibrated from that ratio against
+ * the classic 45–75 character band:
+ *
+ *   sm 35ch ≈ 49 chars — cards, sidebars, form hints, captions
+ *   md 45ch ≈ 63 chars — default prose (Bringhurst's ~66 ideal)
+ *   lg 55ch ≈ 77 chars — wide/dense layouts, docs body
+ *
+ * Every step also clears the Impeccable `line-length` gate by construction.
+ * That rule scores `width / (fontSize × 0.5)` and fires above 85, i.e. a hard
+ * ceiling of 42.5em ≈ 70ch; `lg` sits at 33.4em, so no value on this scale can
+ * trip it.
+ *
+ * Caveat: `ch` is font-relative, which is the point — the cap tracks whatever
+ * face is set. But these labels are calibrated for the body sans. A `role` that
+ * swaps to mono makes `1ch` equal one real character, so `md` would read as 45
+ * characters rather than 63. Pearl's mono roles are labels and figures, not
+ * prose, so that does not bite today. If a theme ever needs its own numbers,
+ * this map is the single place to lift into the theme contract.
+ */
+export const measure = {
+  sm: '35ch',
+  md: '45ch',
+  lg: '55ch',
+} as const;
+
 export const textRecipe = recipe({
   base: { margin: 0 },
   variants: {
@@ -27,6 +60,14 @@ export const textRecipe = recipe({
     prominence: {
       default: { color: color.text },
       subtle: { color: color.textSubtle },
+    },
+    // Opt-in only — no `defaultVariants` entry. An unset `measure` leaves the
+    // element to fill its container, so capping is always a deliberate call at
+    // the call site rather than something every `<p>` silently inherits.
+    measure: {
+      sm: { maxWidth: measure.sm },
+      md: { maxWidth: measure.md },
+      lg: { maxWidth: measure.lg },
     },
     // Declared after `typeScale` so its `fontWeight` wins on equal selector
     // specificity. No `defaultVariants` entry — only applies when a caller

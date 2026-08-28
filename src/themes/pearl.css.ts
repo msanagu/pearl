@@ -262,7 +262,18 @@ export const pearlDarkThemeClass = createTheme(vars, {
     borderStrong: marineLayer[400],
     borderSubtle: squidInk[700],
     borderInverse: alabaster[500],
-    shadow: marineLayer[400],
+    // [derived] Black, not a marineLayer step. A shadow is occlusion: it must
+    // always DARKEN. Every neutral this theme has in dark mode — marine,
+    // squidInk's own steps — is LIGHTER than `background`, so used as a shadow
+    // it renders as a halo glowing out from under the element instead of light
+    // being blocked behind it. That glow is the dark-mode tell this theme is
+    // trying not to have; the industry-standard dark elevation cue is already
+    // present here without it (surface reads above background, plus a
+    // hairline). Same argument, and the same pure-black answer, as `overlay`
+    // above. Alpha rather than a solid so it composites over sentiment
+    // surfaces; the recipes dilute it by geometry (negative spread), not by
+    // fading the color, so the token itself carries the strength.
+    shadow: 'rgba(0, 0, 0, 0.55)',
 
     // [spec] Mode swap inverts the CTA: dark fill on light, light fill on dark.
     // ("pill" in the original spec note — the shape is a rounded rect since
@@ -306,12 +317,29 @@ globalStyle(
   },
 );
 
+// The face — unconditional. A role owns its treatment wherever it is set.
 globalStyle(
   `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
   {
     fontFamily: pearlFonts.mono,
     textTransform: 'uppercase',
     letterSpacing: '0.12em',
+  },
+);
+
+// The size — the role's *default* only, which is why it is gated on
+// `:not([data-type-scale])`. Without a size the role would inherit the ambient
+// scale and a preheading would render at body size, stopping it out-ranking the
+// heading it sits above. But this is a default, not a mandate: `typeScale` and
+// `role` are independent axes, so `role="preheading" typeScale="headingLg"`
+// (the Hero's oversized `01`/`02` ordinals) has to keep the mono/tracked face
+// at the larger size. `Text` writes `data-type-scale` exactly when the caller
+// named a scale, so this rule stands down whenever they did — otherwise its
+// class+attribute specificity would silently outrank the recipe and pin every
+// preheading to caption.
+globalStyle(
+  `${pearlLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${pearlDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,
   },

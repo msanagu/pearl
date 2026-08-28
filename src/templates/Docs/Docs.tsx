@@ -83,7 +83,7 @@ function ButtonDocs(): ReactNode {
       <Stack gap="sm">
         <Text role="preheading" as="p" prominence="subtle">Components / Button</Text>
         <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>Button</Text>
-        <Text typeScale="bodyLg" as="p" prominence="subtle" style={{ maxWidth: '60ch' }}>
+        <Text typeScale="bodyLg" as="p" prominence="subtle" measure="lg">
           One component, two emphases. The primary carries a 1px inner
           highlight and a paired shadow for{' '}
           <Text as="span" role="inlineEmphasis">quiet depth</Text>.
