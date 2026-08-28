@@ -317,6 +317,28 @@ globalStyle(
   },
 );
 
+// Pearl only. Its 12px control radius means an Input's left border curves away
+// from the text baseline, so a label sitting flush at 0 reads a hair left of the
+// value beneath it. A 2px nudge re-seats them.
+//
+// Deliberately a raw `2px` and not a scale token: this is an OPTICAL correction,
+// and optical corrections are sub-grid by nature — the smallest step on the
+// scale (`xs`, 4px) is already twice the error being fixed. Rounding it up to a
+// token would overshoot and introduce the misalignment it exists to remove.
+// See docs/foundations/spacing-system.md on the xs half-step for the general
+// shape of this argument.
+globalStyle(
+  [
+    `${pearlLightThemeClass} [data-component="field"][data-part="label"]`,
+    `${pearlDarkThemeClass} [data-component="field"][data-part="label"]`,
+    `${pearlLightThemeClass} [data-component="field"][data-part="hint"]`,
+    `${pearlDarkThemeClass} [data-component="field"][data-part="hint"]`,
+    `${pearlLightThemeClass} [data-component="field"][data-part="error"]`,
+    `${pearlDarkThemeClass} [data-component="field"][data-part="error"]`,
+  ].join(', '),
+  { paddingLeft: '2px' },
+);
+
 globalStyle(
   `${pearlLightThemeClass} [data-role="dataDigits"], ${pearlDarkThemeClass} [data-role="dataDigits"]`,
   {

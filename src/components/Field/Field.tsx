@@ -57,7 +57,7 @@ export function Field({ label, required, hint, error, children }: FieldProps) {
 
   return (
     <div data-component="field" className={`${field} ${fieldMeta}`}>
-      <label htmlFor={inputId} className={labelClass}>
+      <label htmlFor={inputId} data-component="field" data-part="label" className={labelClass}>
         {label}
         {required && (
           <span className={requiredMark} aria-hidden="true">
@@ -75,12 +75,12 @@ export function Field({ label, required, hint, error, children }: FieldProps) {
       })}
 
       {hint && (
-        <span id={hintId} className={hintClass}>
+        <span id={hintId} data-component="field" data-part="hint" className={hintClass}>
           {hint}
         </span>
       )}
       {error && (
-        <span id={errorId} role="alert" className={errorRow}>
+        <span id={errorId} role="alert" data-component="field" data-part="error" className={errorRow}>
           <Icon icon={PiWarningCircleFill} size={14} className={errorIcon} aria-hidden="true" />
           <span className={errorText}>{error}</span>
         </span>
