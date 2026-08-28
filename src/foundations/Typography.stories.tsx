@@ -3,10 +3,10 @@ import type { ReactNode } from 'react';
 import { color, fontFamily, fontWeight, text } from '../tokens';
 import { Text } from '../components/Text/Text';
 import type { ThemeRoles } from '../themes/roles';
-import { pearlDescription, pearlRoles } from '../themes/pearl.roles';
+import { pearlBrandWordmark, pearlDescription, pearlRoles } from '../themes/pearl.roles';
 import { tahitianDescription, tahitianRoles } from '../themes/tahitian.roles';
 import { southSeaDescription, southSeaRoles } from '../themes/south-sea.roles';
-import { FamilySwatch, TypeSpecimen, WeightSwatch, useComputed } from './typeSpecimens';
+import { FamilySwatch, TypeSpecimen, WeightSwatch, Wordmark, brandWordmarkByTheme, useComputed } from './typeSpecimens';
 import * as css from './tokens.css';
 
 /**
@@ -97,6 +97,11 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
     <div className={css.page}>
       <section className={css.section}>
+        <Wordmark
+          wordmark={brandWordmarkByTheme[theme] ?? pearlBrandWordmark}
+          className={css.wordmarkTitle}
+        />
+
         <h2 className={css.sectionTitle}>Type scale</h2>
 
         <h3 className={css.subsectionTitle}>Family</h3>
@@ -148,7 +153,7 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
             <h3 className={css.subsectionTitle}>Preheading</h3>
             <div className={css.row}>
               <PreheadingSpecimen label="nav / index" sample="Index" theme={theme} />
-              <PreheadingSpecimen label="plate caption" sample="Plate 01 / Nacre" theme={theme} />
+              <PreheadingSpecimen label="caption" sample="01 / Nacre" theme={theme} />
               <PreheadingSpecimen label="index row" sample="Selected — 2024/26" theme={theme} />
             </div>
           </>

@@ -120,6 +120,14 @@ export function WeightSwatch({ name, cssVar, theme }: { name: string; cssVar: st
   );
 }
 
+/** Rounds a computed `"15.9995px"` value to `"16px"` — sub-pixel drift from CSS calc() isn't meaningful to show. */
+function roundPx(value?: string): string {
+  if (!value) return '';
+  const match = value.match(/^(-?[\d.]+)px$/);
+  if (!match) return value;
+  return `${Math.round(Number(match[1]))}px`;
+}
+
 export function TypeSpecimen({
   name,
   variant,
@@ -150,8 +158,8 @@ export function TypeSpecimen({
         The quick brown fox jumps over the lazy dog
       </span>
       <span className={css.resolvedValue}>
-        {resolved['font-size']} / {resolved['line-height']} · weight {resolved['font-weight']} ·
-        tracking {resolved['letter-spacing']}
+        {roundPx(resolved['font-size'])} / {roundPx(resolved['line-height'])} · weight{' '}
+        {resolved['font-weight']} · tracking {resolved['letter-spacing']}
       </span>
     </div>
   );
