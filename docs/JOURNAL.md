@@ -64,7 +64,7 @@ What I now think should be actively cut, not just migrated:
   compiling. The prose version isn't adding information — it's a snapshot
   of the code that goes stale the moment the component changes and nobody
   remembers to update the doc.
-- **`override-patterns.md`'s worked examples.** The `data-component`/
+- **`foundations/override-patterns.md`'s worked examples.** The `data-component`/
   `data-part` *contract* is a decision (why it exists, why not `className`
   alone) — that's ADR-shaped and stays. The hand-written selector examples
   demonstrating how to use it are not decisions, they're usage, and usage
@@ -79,7 +79,7 @@ What I now think should be actively cut, not just migrated:
 What survives by this test, from a first pass over `docs/`: the ADRs
 (rejected-alternative reasoning, non-derivable), `visual-language-brief.md`
 and `why-pearl-name.md` (intent/identity, not code-shaped at all),
-`OPEN_QUESTIONS.md` and this file (explicitly *not* claiming to state
+`open-questions.md` and this file (explicitly *not* claiming to state
 settled fact). Everything else is a candidate for either deletion or a
 migration into stories — I haven't gone file-by-file yet; that's the actual
 next step, not a judgment I want to make in the abstract before Card and
@@ -106,7 +106,7 @@ this is one instance of the pattern settled, not the whole thread.
 ## Notes to self
 
 - If a thread here gets resolved, it graduates — to an ADR if it's a real
-  decision, to `OPEN_QUESTIONS.md` if it's a tracked default. It doesn't
+  decision, to `open-questions.md` if it's a tracked default. It doesn't
   just sit here marked done.
 - The point of this project isn't to arrive at "collapsing docs into code is
   the right call for every design system." It's to actually push on it with

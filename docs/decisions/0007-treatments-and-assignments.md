@@ -25,7 +25,7 @@ history (the Context section, dated examples) rather than the current model.
 
 ## Context
 
-The theme-revision handoff (`docs/theme-revision-decisions.md`) proposed adding a
+The theme-revision handoff (`docs/theme/theme-revision-decisions.md`) proposed adding a
 `luster` group to the shared theme contract — an animated iridescent gradient,
 with every theme supplying its own angle, speed, size, blend, and stops.
 
@@ -295,8 +295,8 @@ that you meant it.**
     ADR-0003's stable attributes as the addressing scheme. One declaration,
     many roles, instead of re-authoring the effect per component.
   - The role layer gives the planned MCP/RAG corpus
-    (`PROJECT_BRIEF.md:16`) something structured to read, and the planned
-    no-raw-value lint rule (`PROJECT_BRIEF.md:184`) something to enforce.
+    (`project-brief.md:16`) something structured to read, and the planned
+    no-raw-value lint rule (`project-brief.md:184`) something to enforce.
 - **Negative / accepted costs:**
   - No single type enumerates every theme's treatments; discovering them means
     reading theme modules. Accepted — they are deliberately not interchangeable.
@@ -356,9 +356,9 @@ One piece is worth carrying forward regardless of DSDS's own trajectory:
 `agentDocumentBlocks` — a parallel array of agent-only documentation blocks
 living alongside human-facing ones on the *same* entity, rather than embedding
 machine content inside human prose (or the reverse). That's a cleaner answer
-than this project's own working assumption in `JOURNAL.md`'s "how lean can the
+than this project's own working assumption in `journal.md`'s "how lean can the
 prose layer get" thread, and it's adoptable independent of whether the
-manifest this ADR anticipates (`PROJECT_BRIEF.md:16`) ever speaks DSDS itself.
+manifest this ADR anticipates (`project-brief.md:16`) ever speaks DSDS itself.
 
 **Revisit if:** DSDS reaches 1.0 with real multi-implementer adoption, at which
 point emitting DSDS-shaped output from the role layer becomes a
@@ -374,5 +374,5 @@ migration question rather than a dependency question.
 - ADR-0003 (override contract) — rule 3 preserves component theme-unawareness.
 - ADR-0002 (composition over configuration) — governs component props, not
   tokens; Option D would test its edge.
-- `docs/theme-revision-decisions.md` — evidence base, the four themes' canonical
+- `docs/theme/theme-revision-decisions.md` — evidence base, the four themes' canonical
   sources, and the fabrication analysis.

@@ -19,3 +19,11 @@ it becomes an arbitrary exception to remember rather than one consistent rule.
 **Rule of thumb:** if it's a JS/TS identifier or string literal consumed by JS/TS code,
 it's camelCase. Kebab-case only appears where CSS itself requires it (custom property
 names in generated output) — never in component APIs.
+
+## Named exception: `'2xl'`
+
+The spacing scale's top step (`spacing-system.md`) is `'2xl'`, not `twoXl` or `xxl` —
+a leading digit can't start a valid JS identifier, so it's the one token key that
+must be a quoted string literal rather than a bare camelCase key. This is an
+accepted, deliberate exception (matches the near-universal `2xl` convention from
+Tailwind and similar scales), not an oversight.

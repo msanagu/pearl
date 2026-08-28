@@ -42,7 +42,7 @@ held with a loose fist.
    `color.accent`, `space.inset.md`, `radius.control`, etc.
 
 **Components consume the semantic tier only.** The reskinnable contract — the
-surface the Maintainer/Consumer personas (`audience-model.md`) reason about — is
+surface the Maintainer/Consumer personas (`../governance/audience-model.md`) reason about — is
 the semantic layer. Primitives are swappable too, but a typical reskin edits
 semantic→primitive mappings and the ramps, not component-facing names.
 
@@ -108,7 +108,7 @@ owns its own `radius`/`space`/`controlHeight`/`fontWeight`/`fontFamily`/`text`.
 - ADR-0001 — vanilla-extract; the semantic tier is its `createThemeContract` +
   `createTheme`, per the implementation note above.
 - `roadmap.md` — the theme-only reskinning proposition this makes robust.
-- `spacing-system.md`, `typography.md` — existing scales that become primitives
+- `../foundations/spacing-system.md`, `../foundations/typography.md` — existing scales that become primitives
   with semantic roles layered on.
-- `docs/theme-revision-decisions.md`, `docs/handoffs/theme-revision/` — the vehicle
+- `../theme/theme-revision-decisions.md`, `../../design/` — the vehicle
   developing the concrete primitive + semantic values for Tahitian/Freshwater/South Sea.

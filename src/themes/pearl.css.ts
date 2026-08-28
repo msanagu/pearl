@@ -7,7 +7,7 @@ import { vars } from '../theme.css';
  * Canonical source is the exploration log, not the handoff's schema doc:
  * turn **4c** ("Canon — 1a layout × 1b vibe"), refined by **5a** ("canon,
  * refined"), with **8a**'s pill controls. See
- * `docs/theme-revision-decisions.md` §3.
+ * `docs/theme/theme-revision-decisions.md` §3.
  *
  * ## Provenance of values
  * Values are marked `[4c]`, `[8a]`, or `[spec]` (the handoff's token tables)

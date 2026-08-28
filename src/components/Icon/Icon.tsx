@@ -33,7 +33,7 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
 
 /**
  * Renders `data-component="icon"` for the override contract (see
- * docs/override-patterns.md) and merges an optional `className`.
+ * docs/foundations/override-patterns.md) and merges an optional `className`.
  *
  * There is no `weight` prop: `react-icons` encodes weight in the icon *name*
  * rather than as a prop, so a Phosphor weight that used to be

@@ -13,12 +13,12 @@ superseded_by: null
 
 ## Context
 
-The **Consumer** persona (see `audience-model.md`) installs this system as a
+The **Consumer** persona (see `../governance/audience-model.md`) installs this system as a
 versioned dependency and cannot fork or edit its source. They still need a
 sanctioned, stable way to customize a component from the outside without waiting
 on the maintainer. The mechanism chosen becomes a *public API surface* — so it
 must be deliberate, versioned, and decoupled from internal implementation. Full
-rationale in `override-patterns.md`.
+rationale in `../foundations/override-patterns.md`.
 
 ## Options considered
 
@@ -56,7 +56,7 @@ rationale in `override-patterns.md`.
 
 - **Positive:** the override surface is a small, documented, versioned contract;
   category targeting matches the common case; the same attributes serve QA and
-  the future MCP "convergent override detection" (`design-in-code-canonization-loop.md`).
+  the future MCP "convergent override detection" (`../governance/design-in-code-canonization-loop.md`).
 - **Negative / accepted costs:**
   - **Component authors must keep base styles single-selector** so consumer
     descendant selectors outrank them without `@layer`. This guarantee is
@@ -84,9 +84,9 @@ rationale in `override-patterns.md`.
 
 ## Related
 
-- `override-patterns.md` — the mechanism in full, incl. the single-selector constraint.
-- `audience-model.md` — the Consumer persona and who owns override cost.
-- `design-in-code-canonization-loop.md` — how convergent overrides feed promotion.
+- `../foundations/override-patterns.md` — the mechanism in full, incl. the single-selector constraint.
+- `../governance/audience-model.md` — the Consumer persona and who owns override cost.
+- `../governance/design-in-code-canonization-loop.md` — how convergent overrides feed promotion.
 - ADR-0001 — the engine whose output shape this contract depends on.
 - ADR-0002 — composition, the happy path this is the escape hatch from.
 - ADR-0007 — treatments and assignments: how a themed effect is declared once

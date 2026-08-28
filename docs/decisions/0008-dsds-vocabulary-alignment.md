@@ -13,7 +13,7 @@ superseded_by: null
 
 ## Context
 
-This project's stated secondary goal (`PROJECT_BRIEF.md`) is a machine-readable
+This project's stated secondary goal (`project-brief.md`) is a machine-readable
 manifest — generated from the same source that already drives components and
 themes — that lets a coding agent generate on-system code without a retrieval
 layer standing between it and the truth. That manifest doesn't exist yet.
@@ -81,7 +81,7 @@ design:
 
 1. **A `kind` discriminator per entity**, with a `metadata` (short, structured
    facts) / `documentBlocks` (long-form content) split. Matches this project's
-   own instinct in `JOURNAL.md` — collapse anything derivable from code, keep
+   own instinct in `journal.md` — collapse anything derivable from code, keep
    what isn't as prose — but gives that instinct a concrete schema shape
    instead of an ad hoc one.
 2. **Tokens as a pointer, not a copy.** DSDS's token entities hold `tokenType`
@@ -94,7 +94,7 @@ design:
    human-facing content. Agent-only material — corrective notes, common
    mistakes, verification criteria — lives in its own array on the entity,
    never interleaved with prose meant for a human reader. Directly closes the
-   open question in `JOURNAL.md`'s "how lean can the prose layer get" thread:
+   open question in `journal.md`'s "how lean can the prose layer get" thread:
    the answer isn't leaner human docs, it's a second, smaller channel for what
    was never meant for a human in the first place.
 4. **`Foundation` as the name for the assignment layer**, per ADR-0007 — not
@@ -153,7 +153,7 @@ Explicitly **not** adopted, for now:
   filter, applied here to a specification instead of a package.
 - ADR-0007 (treatments and assignments) — `Foundation` entity convergence,
   the finding that motivated this ADR.
-- `PROJECT_BRIEF.md` — states the manifest/MCP goal this ADR's decision will
+- `project-brief.md` — states the manifest/MCP goal this ADR's decision will
   govern once built.
 - `docs/JOURNAL.md` — the "how lean can the prose layer get" thread that
   `agentDocumentBlocks` answers.

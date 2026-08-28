@@ -30,4 +30,4 @@ accessibility as a first-class concern.
 ## Documentation
 
 The philosophy and convention docs in [`docs/`](./docs) are the source of
-truth for everything built here. Start with `docs/roadmap.md`.
+truth for everything built here. Start with `docs/ROADMAP.md`.

@@ -52,7 +52,7 @@ undecided — check it before assuming something is settled.
 - No linter yet (deliberately deferred). CI (`.github/workflows/ci.yml`):
   typecheck → test → build, on pnpm.
 
-## Core philosophy (from `docs/component-philosophy.md` + related)
+## Core philosophy (from `docs/foundations/component-philosophy.md` + related)
 
 1. **Composition over configuration.** A boolean/enum prop that only toggles
    *what renders* (not *how it looks*) is a smell — it should be a
@@ -77,7 +77,7 @@ undecided — check it before assuming something is settled.
    toggle). Leave *open-ended, divergent* concerns (icon variants) duplicated
    rather than force a shared abstraction whose assumptions might not hold.
 
-## Governance / audience model (`docs/audience-model.md`)
+## Governance / audience model (`docs/governance/audience-model.md`)
 
 Three personas, deliberately modeled separately even though one person holds
 all three roles on a solo project — this simulates real enterprise DS
@@ -94,7 +94,7 @@ Composition is the Consumer's happy path; overrides are a costed, visible
 exception, not routine styling. Convergent overrides across teams are a
 signal to promote something to a real variant/token — future work: an
 MCP server that detects this pattern automatically across repos
-(`docs/design-in-code-canonization-loop.md`, concept-stage only).
+(`docs/governance/design-in-code-canonization-loop.md`, concept-stage only).
 
 ## Token / theme architecture
 
@@ -147,9 +147,8 @@ MCP server that detects this pattern automatically across repos
 
 ## Component roadmap and build status
 
-Nine components shipped, typed, tested (63 unit tests, 0 a11y violations),
-and themed across four themes (Pearl, Tahitian, Freshwater, South Sea) ×
-light/dark. `experiments/` (typechecked, excluded from the library build and
+Ten components shipped, typed, tested, and themed across four themes (Pearl,
+Tahitian, Freshwater, South Sea) × light/dark. `experiments/` (typechecked, excluded from the library build and
 Storybook) holds an earlier multi-tenant-SaaS direction that scope-narrowed
 back to the design system itself — kept for what it taught, not shipped.
 
@@ -183,10 +182,10 @@ This is the part of the experiment (see "What this is") with the most direct
 external validation, so it's summarized here rather than left to be found in
 the full ADRs:
 
-- **Treatments/assignments split (ADR-0007).** Theme-owned effects (Pearl's
+- **Treatments/roles split (ADR-0007).** Theme-owned effects (Pearl's
   `luster`, Tahitian's `overtone`, …) are named data — `intent`, `guidance`,
   `limits`, `forbid` — not free-floating values. A mapped type makes "declared
-  treatment with no assignment" a compile error, not a documentation gap.
+  treatment with no role" a compile error, not a documentation gap.
   Independently convergent with Sanity's DSDS spec's `Foundation` entity,
   discovered a month after this ADR was written — see its "Convergent
   external work" section for the checkable timeline.
@@ -207,14 +206,6 @@ the full ADRs:
 
 Full detail in `docs/OPEN_QUESTIONS.md` — condensed here:
 
-- **Styling engine: vanilla-extract vs. Panda CSS.** The single largest open
-  call, actively blocking further component work beyond Button. VE more
-  natively models the "theme fails to compile if incomplete" contract
-  thesis; Panda gives free token autocomplete (no hand-maintained wrapper)
-  and terser variant recipes via `cva`, but weakens that completeness
-  guarantee and makes the override contract's no-`@layer` claim
-  engine-specific. Tailwind v4 was considered and rejected — utility-class
-  markup fights the markup-philosophy and override-contract model directly.
 - **Storybook docs format** — CSF autodocs + rich `argTypes` JSDoc (leaning
   this way: structured, chunkable, doubles as the future RAG corpus) vs.
   hand-authored MDX (better narrative/presentation). Likely resolution:

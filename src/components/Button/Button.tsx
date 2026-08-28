@@ -32,7 +32,7 @@ export interface ButtonProps
 
 /**
  * A native `<button>` with token-driven variants. Renders `data-component="button"`
- * for the downstream override contract (see docs/override-patterns.md) and merges
+ * for the downstream override contract (see docs/foundations/override-patterns.md) and merges
  * an optional `className` for single-instance overrides.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

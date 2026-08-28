@@ -13,7 +13,7 @@ superseded_by: null
 
 ## Context
 
-`JOURNAL.md`'s open thread asks how lean the prose layer can get, with a test
+`journal.md`'s open thread asks how lean the prose layer can get, with a test
 already stated there: if a document's content is derivable from the code, the
 prose copy isn't documentation, it's a second system to keep from drifting.
 Two things this session made that test concrete rather than abstract:
@@ -44,7 +44,7 @@ Two things this session made that test concrete rather than abstract:
   Nothing to keep in sync by hand.
 - **Cons:** one extra navigation for a reader working from the editor alone,
   not Storybook. Accepted — this system already treats Storybook as
-  first-class, not supplementary (`README.md`, `PROJECT_BRIEF.md`).
+  first-class, not supplementary (`README.md`, `project-brief.md`).
 
 ## Decision
 

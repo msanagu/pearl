@@ -70,7 +70,7 @@ categories of libraries up front.
 ## Tradeoffs
 
 - **Positive:** the system's visual identity, markup semantics
-  (`markup-philosophy.md`), and override contract are never hostage to a
+  (`../foundations/markup-philosophy.md`), and override contract are never hostage to a
   third party; adopted deps are confined to the one thing they're best at.
 - **Negative / accepted costs:** more upfront work for behavior-heavy components
   than grabbing a batteries-included kit; a smaller pool of eligible libraries
@@ -92,5 +92,5 @@ categories of libraries up front.
 - `roadmap.md` — the Phase 2+ build-vs-adopt table and headless candidate list
   (TanStack, Radix, Zag.js, Floating UI, dnd-kit) this stance governs.
 - ADR-0001 — the styling engine this dependency stance must stay coherent with.
-- `component-philosophy.md`, `markup-philosophy.md` — the readability and
+- `../foundations/component-philosophy.md`, `../foundations/markup-philosophy.md` — the readability and
   use-the-platform values this reinforces.

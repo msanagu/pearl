@@ -8,7 +8,7 @@ import * as css from './tokens.css';
  * Foundations → Typography: canon type (theme-agnostic, driven by the active
  * Storybook theme) plus each theme's ROLE TREATMENTS — how it assigns type
  * primitives to jobs (emphasis, label). Role assignment is a per-theme
- * distinction, not a canon slot (docs/theme-revision-decisions.md §8) — so
+ * distinction, not a canon slot (docs/theme/theme-revision-decisions.md §8) — so
  * unlike the sections above it, "Role treatments" is theme-specific content,
  * not a live reflection of whichever theme the toolbar has selected.
  *

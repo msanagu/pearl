@@ -19,7 +19,7 @@ boolean/enum props (`hasIcon`, `iconPosition`, `showHeader`, `variant`,
 their head, and every new use case adds another prop. The alternative is to let
 consumers *compose* structure via `children`/slots. This system takes an
 explicit position rather than deciding case-by-case each time (the principle is
-stated in `component-philosophy.md`; worked examples live in the Card and
+stated in `../foundations/component-philosophy.md`; worked examples live in the Card and
 Field stories).
 
 ## Options considered
@@ -95,7 +95,7 @@ composition, no `icon`/`iconPosition` prop at all.
 
 - **No `icon` / `iconPosition` prop on Button** — icons compose as `children`
   alongside text; internal flex + a token gap handles layout regardless of
-  order (see ADR-forthcoming Button notes / `OPEN_QUESTIONS.md` #12).
+  order (see ADR-forthcoming Button notes / `open-questions.md` #12).
 - **Render-prop, not `cloneElement`,** where a component must hand data to an
   arbitrary child (e.g. `Field` injecting `id`/`aria-*`) — explicit at the call
   site, no hidden prop injection.
@@ -136,7 +136,7 @@ composition, no `icon`/`iconPosition` prop at all.
 
 ## Related
 
-- `component-philosophy.md` — the principle and the duplication-vs-abstraction test.
+- `../foundations/component-philosophy.md` — the principle and the duplication-vs-abstraction test.
 - `Card.stories.tsx`, `Field.stories.tsx` — `Card.*` namespacing and `Field` render-prop, demonstrated live.
 - ADR-0003 (override contract) — the *consumer-side* complement to composition.
 - Code: `src/components/Button/` (no icon-position prop).

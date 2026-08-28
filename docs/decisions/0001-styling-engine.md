@@ -24,7 +24,7 @@ changes, and a theme that omits a required token *fails to compile* (see
 `roadmap.md`). A second load-bearing
 requirement is the downstream **override contract** — stable `data-component` /
 `data-part` attributes that consumers target from a consolidated selectors
-block, with predictable specificity (see `override-patterns.md`).
+block, with predictable specificity (see `../foundations/override-patterns.md`).
 
 The styling engine has to serve both. It was briefly treated as settled, then
 deliberately reopened (tracked as OPEN_QUESTIONS #11) to confirm the choice
@@ -68,7 +68,7 @@ possible moment to change course.
 
 ### Option C — Tailwind v4
 - **Pros:** Most mainstream/résumé-legible; CSS-first `@theme` config; fast.
-- **Cons:** Utility-class-in-markup fights `markup-philosophy.md` (clean markup)
+- **Cons:** Utility-class-in-markup fights `../foundations/markup-philosophy.md` (clean markup)
   and the `data-part` override model (consumers would override with utility
   soup). The token-contract-completeness thesis doesn't map to it at all.
   Actively the *worst* fit for this project's stated philosophy despite being
@@ -125,7 +125,7 @@ content.
 ## Related
 
 - `roadmap.md` — the theme-only reskinning value proposition.
-- `docs/vanilla-extract-jsdoc-hover-pattern.md` — the accessor pattern this ADR commits to.
-- `override-patterns.md` — the override contract whose specificity guarantee depends on VE's output shape (see its engine-dependency note).
+- `docs/foundations/token-jsdoc-wrapper.md` — the accessor pattern this ADR commits to.
+- `../foundations/override-patterns.md` — the override contract whose specificity guarantee depends on VE's output shape (see its engine-dependency note).
 - `docs/OPEN_QUESTIONS.md` #11 — the open question this ADR resolves.
 - Code: `src/theme.css.ts`, `src/themes/light.css.ts`, `src/tokens.ts`, `src/components/Button/Button.css.ts`.

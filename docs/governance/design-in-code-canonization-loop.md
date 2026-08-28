@@ -22,8 +22,9 @@ signal depends on a human noticing the pattern — someone has to happen to see
 that three different teams independently overrode the same `data-part` for the
 same reason.
 
-**The MCP server (see original architecture notes: GitHub-aware, branch-aware,
-polls/ingests source across repos) is positioned to detect this automatically,**
+**The MCP server (GitHub-aware, branch-aware, polls/ingests source across
+repos — concept stage, not yet built) is positioned to detect this
+automatically,**
 not rely on a human noticing:
 
 - Scan consuming repos/branches for `data-component`/`data-part` targeting

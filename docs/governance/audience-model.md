@@ -14,14 +14,28 @@ real-world design-system org structures, where "the person who iterates on a
 component" and "the person with authority to approve what ships" are often
 genuinely different people or committees.
 
+**These lines blur, deliberately, in smaller organizations.** A designer
+building feature work in code is routinely doing Consumer and Designer work in
+the same sitting — composing already-shipped components for the feature at
+hand (Consumer), and, where the feature's requirements outrun what exists,
+sketching a new component or variant in their own feature-local code as they
+work out what's actually needed (Designer). That local sketch isn't a
+violation of the persona split; it's the Designer role happening in-place
+rather than as a separate, dedicated exercise. The distinction that still
+matters even here is *authority*, not *who*: a feature-local prototype stays a
+proposal — informal, uncanonized — until whoever holds Maintainer authority
+(even if it's the same person, later, in a more deliberate pass) reviews and
+promotes it into the shared system.
+
 ## DS Designer
 
 **Who:** works in design-in-code — prototypes new components, variants, or token
 changes directly in the codebase (not a separate design tool), often in direct
-response to real signal: convergent override patterns detected via the MCP
-canonization loop (see design-in-code-canonization-loop.md), user research, or
-direct feature-team feedback. This is the "tip of the spear" role — closest to
-where real product friction is first felt and translated into a concrete proposal.
+response to real signal: a pattern of overrides converging on the same
+`data-part`, user research, or direct feature-team feedback (see
+design-in-code-canonization-loop.md for one way that convergence could get
+surfaced). This is the "tip of the spear" role — closest to where real product
+friction is first felt and translated into a concrete proposal.
 
 **Relationship to the code:** works in a branch/proposal state — has the
 technical fluency to write real component code, but does not have unilateral
@@ -69,7 +83,7 @@ installed as a package. Any customization has to happen from outside, without
 modifying the installed source.
 
 **How they customize:** via the override system —
-see `override-patterns.md`:
+see `foundations/override-patterns.md`:
 - `data-component` / `data-part` attributes + consolidated `selectors` blocks —
   primary mechanism, for category-wide targeting (any card header, any alert icon)
 - `className` passthrough — secondary mechanism, for single-instance overrides
@@ -78,7 +92,7 @@ see `override-patterns.md`:
 
 **What they're responsible for:** targeting the documented `data-*` contract
 rather than importing internal class name exports (explicitly disallowed in
-override-patterns.md) — internal exports aren't a stable API and can break
+foundations/override-patterns.md) — internal exports aren't a stable API and can break
 silently on refactor.
 
 ## The happy path vs. the exception — and who owns the weight
@@ -108,12 +122,15 @@ usage beyond the stability of the `data-*` contract itself.
 **Consequence for how this gets used in practice:** overrides should be treated as
 an explicit, reviewed exception — something a team can point to and justify
 ("we needed X, composition/theming couldn't provide it, here's the override and
-here's who owns maintaining it") — not a routine styling tool. If a particular
-override becomes common across multiple teams, that's a signal to escalate it to
-the Maintainer as a candidate for becoming a real, first-class variant or token —
-not a reason to keep overriding it independently in parallel. This is the same
-"promotion" mechanism referenced for the primitives/patterns/product tiers
-elsewhere in this system's governance model.
+here's who owns maintaining it") — not a routine styling tool. A one-off override
+isn't forbidden; it's a normal, expected release valve for a real use case the DS
+doesn't cover yet. The thing worth watching for is *convergence*: because every
+override targets a stable, greppable `data-component`/`data-part` selector, a
+lint rule or simple repo-scan could flag when the same selector/property gets
+overridden across multiple independent teams — not to block it, but to surface
+it as a candidate the Maintainer should evaluate for promotion into a real,
+first-class variant or token. Treat that signal as a DS-evolution opportunity a
+human still decides on, not a queue that gets auto-resolved.
 
 ## Why all three personas matter for this project's positioning
 
@@ -127,10 +144,11 @@ partly built to demonstrate judgment about: many downstream feature teams, no
 shared repo access, needing a sanctioned way to customize without forking or
 waiting on the DS team.
 
-The **Designer** persona, and the MCP canonization loop it feeds into (see
-design-in-code-canonization-loop.md), is what makes this system's evolution a
-demonstrated *process* rather than a static artifact — showing not just what the
-design system is, but how it's meant to keep changing, and who is responsible for
+The **Designer** persona, and the override-convergence signal it can act on (see
+design-in-code-canonization-loop.md for one concept-stage idea of how that
+signal gets surfaced), is what makes this system's evolution a demonstrated
+*process* rather than a static artifact — showing not just what the design
+system is, but how it's meant to keep changing, and who is responsible for
 proposing vs. approving that change.
 
 All three are real, all three are documented, and they are not in tension —

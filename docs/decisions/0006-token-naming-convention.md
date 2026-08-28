@@ -50,7 +50,7 @@ surface through `focusRing`/sentiment/selective use — not by adding a second
 brand-hue token. This keeps the token surface from doubling for a distinction
 (action vs. identity) that a single well-chosen `accent` value can already
 express. Multiple *simultaneous* brand hues (not this case) remain the
-already-tabled multi-accent question (see `visual-language-brief.md`).
+already-tabled multi-accent question (see `../theme/visual-language-brief.md`).
 
 ## Tradeoffs
 
@@ -80,7 +80,7 @@ already-tabled multi-accent question (see `visual-language-brief.md`).
 
 ## Related
 
-- `naming-conventions.md` — casing rules this ADR extends with a vocabulary rule.
+- `../foundations/naming-conventions.md` — casing rules this ADR extends with a vocabulary rule.
 - ADR-0005 — the tier architecture; this ADR governs naming *within* the semantic tier.
-- `docs/visual-language-brief.md` — the tabled multi-accent/multi-brand-color question.
+- `docs/theme/visual-language-brief.md` — the tabled multi-accent/multi-brand-color question.
 - Code: `src/theme.css.ts`, `src/tokens.ts`, `src/themes/*.css.ts`.

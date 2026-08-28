@@ -25,7 +25,7 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    // Accessibility is a first-class concern (docs/accessibility-standards.md).
+    // Accessibility is a first-class concern (docs/foundations/accessibility-standards.md).
     a11y: { test: 'todo' },
   },
 

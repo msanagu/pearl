@@ -6,7 +6,7 @@ values* that translate directly into the design system's config. It doubles as
 process/corpus content — a record of how the token schema was pressure-tested.
 
 The schema slots below are being QA'd one group at a time (see
-[OPEN_QUESTIONS.md](./OPEN_QUESTIONS.md) and the ADRs). Sections marked
+[open-questions.md](../OPEN_QUESTIONS.md) and the ADRs). Sections marked
 **🔧 OPEN** are still being decided — don't treat them as final.
 
 ---

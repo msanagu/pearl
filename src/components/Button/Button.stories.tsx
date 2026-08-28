@@ -6,12 +6,12 @@ import { Button } from './Button';
 /**
  * A native `<button>` with token-driven `variant`/`size`. Renders
  * `data-component="button"` so downstream teams can target it via the
- * documented override contract (see docs/override-patterns.md) instead of
+ * documented override contract (see docs/foundations/override-patterns.md) instead of
  * reaching for internal class names.
  *
  * Compose icons directly as children — Button lays out `children` via
  * internal flex + a token gap, so there's no `icon`/`iconPosition` prop
- * (composition over configuration, per docs/component-philosophy.md).
+ * (composition over configuration, per docs/foundations/component-philosophy.md).
  */
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',

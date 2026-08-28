@@ -16,7 +16,7 @@
  *   `luster` and friends are never role keys, only values roles point at —
  *   that's what keeps `Roles.ts`'s membership honest against the real prop.
  *
- * Consumers: the planned MCP/RAG corpus (`PROJECT_BRIEF.md`), the planned
+ * Consumers: the planned MCP/RAG corpus (`project-brief.md`), the planned
  * no-raw-value lint rule, and generated documentation.
  */
 
@@ -118,7 +118,7 @@ export interface RoleSpec<TTreatment extends string = string> {
    * confused for one another by a linter or a generator.
    */
   guidance?: string[];
-  /** Which exploration turn canonized this (see docs/theme-revision-decisions.md). */
+  /** Which exploration turn canonized this (see docs/theme/theme-revision-decisions.md). */
   source?: string;
 }
 

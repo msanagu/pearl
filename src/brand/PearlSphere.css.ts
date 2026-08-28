@@ -6,7 +6,7 @@ import { pearlTreatments } from '../themes/pearl.css';
  *
  * Drives `background-position` on the sheen LAYER, not `transform` on a
  * separate element. That is the mechanic in the canonized reference
- * (`docs/handoffs/theme-revision/project/Pearl Directions.dc.html`, `dvOrb`),
+ * (`design/Pearl Directions.dc.html`, `dvOrb`),
  * and the distinction is load-bearing: a translated overlay moves the whole
  * highlight rigidly, while shifting an oversized background slides the band
  * across a body that stays put — which is what reads as light on a surface.

@@ -65,11 +65,11 @@ embedding pipeline can chunk and filter cleanly:
 
 ADRs are one document *type* in a planned retrieval corpus that spans more than
 component docs — the point being an AI that understands the engineering
-*philosophy*, not just the component API. Planned types (see `PROJECT_BRIEF.md`
+*philosophy*, not just the component API. Planned types (see `project-brief.md`
 and the portfolio strategy):
 
 - **ADRs** (this dir) — decisions and their trade-offs. ✅ started
-- **Philosophy** (`component-philosophy.md`, `audience-model.md`, …) — the
+- **Philosophy** (`../foundations/component-philosophy.md`, `../audience-model.md`, …) — the
   principles ADRs apply. ✅ exists
 - **RFCs** — *proposed* changes not yet decided (e.g. a new variant promoted
   from a convergent override). ⏳ planned

@@ -164,7 +164,7 @@ export interface FontWeightTokens {
 
 /**
  * One type-scale step: size, line-height, a default weight, and tracking.
- * See docs/typography.md for the accessibility rationale behind the units.
+ * See docs/foundations/typography.md for the accessibility rationale behind the units.
  */
 export interface TextVariantTokens {
   /** rem — scales with the user's browser/OS text size (WCAG SC 1.4.4). */

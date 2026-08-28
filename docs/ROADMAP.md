@@ -38,32 +38,39 @@ needed before this is a reliable guarantee, not just an intention.**
 
 ## Component List
 
-### Foundational (Step 1 — complete/in progress)
-1. Button
-2. Card
+### Foundational — shipped
+1. **Button** — variant × size, native `<button>`, icon-composition via `children`
+2. **Card** — static-property namespacing (`Card.Header`/`Card.Body`)
 
-### Content
+### Content — shipped
 3. **Text** — token-driven typography, `as` prop for semantic element swapping,
    `weight`/`size` props, variant/element decoupling
+4. **Tag** — status/label indicator, token-driven
 
-### Feedback & data
-4. **Alert** — info/success/warning/error states, `role="alert"`/`role="status"`
-5. **Icon** — typed name/variant registry, explicit per-variant SVGs (no runtime
-   shape transform — see component-philosophy.md's duplication-vs-abstraction test)
-6. **Field** — label/hint/error coordination wrapper, children-as-function pattern
-7. **Progress Bar** — native `<progress>` vs. custom `role="progressbar"` decision
-   deferred to implementation time (see markup-philosophy.md)
-8. **Badge** — status/tag indicator, token-driven, deliberately simple
+### Feedback & data — shipped
+5. **Alert** — info/success/warning/error states, `role="alert"`/`role="status"`
+6. **Icon** — typed name/variant registry, explicit per-variant SVGs (no runtime
+   shape transform — see foundations/component-philosophy.md's duplication-vs-abstraction test)
+7. **Field** — label/hint/error coordination wrapper, children-as-function pattern
+8. **Input** — native `<input>` wrapper, sized via Field's CSS custom-property cascade
 
-### Layout
-9. **Stack** — vertical layout (shares internal `FlexBox` primitive with Row)
-10. **Row** — horizontal layout
-11. **Grid** — 2D layout, separate model from Stack/Row
+### Feedback & data — planned
+9. **Progress Bar** — native `<progress>` vs. custom `role="progressbar"` decision
+   deferred to implementation time (see foundations/markup-philosophy.md)
+10. **Badge** — status indicator, token-driven, deliberately simple; distinct
+    from the already-shipped Tag (split rationale not yet written up as an ADR)
+
+### Layout — shipped
+11. **Stack** — vertical layout (shares internal `FlexBox` primitive with Row)
+12. **Row** — horizontal layout
+
+### Layout — planned
+13. **Grid** — 2D layout, separate model from Stack/Row
 
 ### Deferred — not in current MVP scope
 - **Tabs** — tabled for now. If revisited, remains the intended justified
   compound-component (Context) showcase.
-- **Dialog, Tooltip, Avatar** — not yet confirmed back into scope.
+- **Dialog, Tooltip, Avatar, Select** — not yet confirmed back into scope.
 
 ---
 

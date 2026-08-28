@@ -129,7 +129,7 @@ const iconMapping = {
 
 /**
  * Wraps any `react-icons` icon component. Renders `data-component="icon"` for
- * the override contract (see docs/override-patterns.md).
+ * the override contract (see docs/foundations/override-patterns.md).
  *
  * Every set shares one `IconType` signature, so which set an icon comes from is
  * an import detail — swapping sets changes nothing here. The stories below

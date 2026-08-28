@@ -10,7 +10,7 @@ import { PearlSphere } from './PearlSphere';
  * never loops — "the sphere loops; cards do not."
  */
 const meta: Meta<typeof PearlSphere> = {
-  title: 'Foundations/Luster',
+  title: 'Brand/Pearl Sphere',
   component: PearlSphere,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

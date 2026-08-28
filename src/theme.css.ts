@@ -150,7 +150,7 @@ export const vars = createThemeContract({
   // stylesheet forcing 1.5x line spacing scales with the text instead of
   // colliding with an author-fixed px value. Each theme still authors it to
   // land on the 8px soft grid (spacing-system.md) at the theme's own
-  // font-size — see docs/typography.md for the accessibility rationale and
+  // font-size — see docs/foundations/typography.md for the accessibility rationale and
   // per-theme worked numbers.
   //
   // `letterSpacing` is per-variant rather than a standalone scale because
