@@ -5,7 +5,16 @@
 export { vars } from './theme.css';
 export { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass, pearlTreatments, pearlFonts } from './themes/pearl.css';
 export { pearlDescription, pearlRoles } from './themes/pearl.roles';
-export { tahitianLightThemeClass, tahitianDarkThemeClass } from './themes/tahitian.css';
+export {
+  tahitianLightThemeClass,
+  tahitianDarkThemeClass,
+  tahitianTreatmentClass,
+  tahitianTreatments,
+  tahitianFonts,
+  tahitianPearlColors,
+  overtonePlate,
+} from './themes/tahitian.css';
+export { tahitianDescription, tahitianRoles } from './themes/tahitian.roles';
 export { freshwaterLightThemeClass, freshwaterDarkThemeClass } from './themes/freshwater.css';
 export { southSeaLightThemeClass, southSeaDarkThemeClass } from './themes/south-sea.css';
 
@@ -51,7 +60,7 @@ export type { StackProps } from './components/Stack';
 export { Row } from './components/Row';
 export type { RowProps } from './components/Row';
 export { Card } from './components/Card';
-export type { CardProps } from './components/Card';
+export type { CardProps, CardPadding } from './components/Card';
 export { Input } from './components/Input';
 export type { InputProps } from './components/Input';
 export { Field } from './components/Field';

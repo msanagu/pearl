@@ -68,3 +68,18 @@ unified structurally guaranteed to stay simple, or just simple today?**
 When in doubt, prefer duplicated data (multiple files, explicit registrations) over a
 shared abstraction whose assumptions might not hold — duplication is cheap to undo; a
 wrong abstraction is expensive to unwind once code has grown around it.
+
+## The invariant themes may not override: controls look like controls at rest
+
+"Smart defaults, always escapable" is about *composition* — it does not license a
+theme to remove a control's affordance. Every interactive control that occupies a
+box renders a visible boundary in its resting state, in every theme and every
+mode. A theme chooses how quiet that boundary is; it does not choose whether
+there is one.
+
+A control that is bare text until `:hover` breaks two things at once: its padding
+is invisible, so nothing on the page can be reliably aligned to it, and it reads
+as a link, which degrades the meaning of the page's actual links.
+
+Full reasoning, the hover-state corollary, and the worked fix:
+[`control-affordances.md`](./control-affordances.md).

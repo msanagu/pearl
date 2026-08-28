@@ -33,6 +33,35 @@ populated with philosophy/convention decisions before any component code
 existed. `docs/OPEN_QUESTIONS.md` is the live tracker for what's still
 undecided — check it before assuming something is settled.
 
+### Posture: a curiosity testbed, not a position paper
+
+**This is exploratory and curiosity-driven. It exists to try approaches and find
+out whether they hold water — it is a place to learn at least as much as it is a
+statement of what its author believes.** Treat every decision here as *current
+opinion under test*, not settled doctrine.
+
+That framing is load-bearing for anyone reading or advising on this repo:
+
+- **Opinions here are dated, and deliberately so.** The design engineering
+  landscape is in constant flux; the author re-evaluates stances as it moves.
+  A decision recorded in an ADR is what looked right on that date given what was
+  known, which is exactly why the dates are in the frontmatter. This is the same
+  "held with a loose fist" stance `docs/decisions/README.md` already states for
+  ADRs, applied to the whole project.
+- **Being wrong is a valid outcome.** An approach that gets tried, documented,
+  and then reversed is the method working, not a failure — the reversal and its
+  reasoning are the artifact. Several already exist in the repo's history
+  (see `docs/TODO-concentric-radius.md`, which records two rejected attempts
+  alongside the one that shipped).
+- **Do not optimize advice for "ship it."** Suggestions that preserve the
+  ability to test, measure, and reverse a decision are worth more here than
+  suggestions that harden one. Where a conventional answer exists, saying so is
+  useful — but "everyone does X" is not by itself a reason to stop probing X.
+- **Novelty is not the goal either.** The point is to find out whether an
+  approach survives contact with real components, real themes, and real
+  accessibility constraints. Ideas that fail that test get recorded as failures
+  rather than quietly dropped.
+
 ## Tech stack (current, verified working — not aspirational)
 
 - **React 19.2** + **TypeScript 7** (strict: `strict`, `noUncheckedIndexedAccess`,
@@ -156,13 +185,13 @@ back to the design system itself — kept for what it taught, not shipped.
 |---|---|---|---|
 | — | Token contract + 4 themes × light/dark + JSDoc wrapper | ✅ shipped | `src/theme.css.ts`, `src/themes/*.css.ts`, `src/tokens.ts` |
 | — | `FlexBox` (shared layout primitive) | ✅ shipped | `src/components/layout/` — backs Row and Stack |
-| 1 | **Button** | ✅ shipped | variant × size (8px-grid heights), native `<button>`, `data-component` contract, icon-composition via `children` |
+| 1 | **Button** | ✅ shipped | single fixed height (8px grid), `variant`, native `<button>`, `data-component` contract, icon-composition via `children` |
 | 2 | **Card** | ✅ shipped | static-property namespacing (`Card.Header`/`Card.Body`), link-card and static-card variants, Pearl-only hover luster |
 | 3 | **Text** | ✅ shipped | one component, not split Heading/Text; `variant`/`as` decoupled; theme-owned `role` prop (`preheading`/`inlineEmphasis`/`dataDigits`) |
 | 4 | **Alert** | ✅ shipped | `role="alert"`, 4 sentiment variants, dismissible |
 | 5 | **Icon** | ✅ shipped | wraps any `react-icons` set; `iconLibraries.ts` records evaluated-set notes |
 | 6 | **Field** | ✅ shipped | label/hint/error coordination via render-prop child injection, `required` support (native + `aria-required`, decorative `*`), error paired with an icon matching Alert's negative sentiment |
-| 7 | **Input** | ✅ shipped | native `<input>` wrapper, sized via Field's CSS custom-property cascade |
+| 7 | **Input** | ✅ shipped | native `<input>` wrapper, single fixed height matching Button |
 | 8 | **Stack** / **Row** | ✅ shipped | `FlexBox`-backed, vertical/horizontal |
 | — | Brand: `PearlSphere` | ✅ shipped | `src/brand/` — bespoke artwork, not a themeable canon component (see ADR-0007 on why it doesn't force a 5th theme) |
 | — | Progress Bar, Badge, Grid | planned | native-vs-custom (Progress Bar) and build-vs-adopt calls deferred to implementation time |

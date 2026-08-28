@@ -11,17 +11,10 @@ export interface ButtonProps
     ButtonVariants {
   /**
    * Visual style. `primary` for the main call-to-action per surface,
-   * `secondary` for supporting actions, `tertiary` for a text-only,
-   * low-emphasis action (no fill or border — an accent underline carries
-   * the affordance).
+  * `secondary` for supporting actions.
    * @default 'primary'
    */
   variant?: ButtonVariants['variant'];
-  /**
-   * Height, lands on the 8px grid (32/40/48) to align with Field inputs.
-   * @default 'md'
-   */
-  size?: ButtonVariants['size'];
   /**
    * Button content. Compose an `Icon` alongside text directly as children —
    * Button lays both out via internal flex + a token gap, so icon-before-text
@@ -32,17 +25,19 @@ export interface ButtonProps
 
 /**
  * A native `<button>` with token-driven variants. Renders `data-component="button"`
- * for the downstream override contract (see docs/foundations/override-patterns.md) and merges
- * an optional `className` for single-instance overrides.
+ * and `data-variant` for the downstream override contract (see
+ * docs/foundations/override-patterns.md) and merges an optional `className`
+ * for single-instance overrides.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant, size, className, children, type = 'button', ...rest }, ref) => {
+  ({ variant, className, children, type = 'button', ...rest }, ref) => {
     return (
       <button
         ref={ref}
         type={type}
         data-component="button"
-        className={clsx(button({ variant, size }), className)}
+        data-variant={variant ?? 'primary'}
+        className={clsx(button({ variant }), className)}
         {...rest}
       >
         {children}

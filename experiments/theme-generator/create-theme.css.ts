@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { color, controlHeight, fontFamily, radius, space, text } from '../../src/tokens';
+import { concentricRadius } from '../../src/foundations/concentricRadius';
 
 // POC/CreateTheme layout. Left: the intuitive form. Right: a live preview built
 // from real canon components, whose color/density/type are entirely the
@@ -115,7 +116,7 @@ const sliderBase = style({
   appearance: 'none',
   WebkitAppearance: 'none',
   height: 14,
-  borderRadius: radius.full,
+  borderRadius: radius.control,
   outline: 'none',
   cursor: 'pointer',
   selectors: {
@@ -300,7 +301,7 @@ export const auditPanel = style({
   flexDirection: 'column',
   gap: space.sm,
   padding: space.md,
-  borderRadius: radius.surface,
+  borderRadius: concentricRadius(space.md),
   border: `1px solid ${color.border}`,
   background: color.surface,
 });
@@ -338,7 +339,7 @@ export const auditBadge = style({
   alignItems: 'center',
   gap: space.xs,
   padding: `2px ${space.sm}`,
-  borderRadius: radius.full,
+  borderRadius: radius.control,
   fontSize: text.caption.fontSize,
   fontWeight: 600,
   border: `1px solid ${color.border}`,
@@ -396,7 +397,7 @@ export const previewHero = style({
   flexDirection: 'column',
   gap: space.md,
   padding: space.xl,
-  borderRadius: radius.surface,
+  borderRadius: concentricRadius(space.md),
   background: color.surface,
   border: `1px solid ${color.border}`,
 });
@@ -530,7 +531,7 @@ export const appliedDemo = style({
 export const appliedCard = style({
   flex: '1 1 200px',
   padding: space.md,
-  borderRadius: radius.surface,
+  borderRadius: concentricRadius(space.md),
   background: color.surface,
   border: `1px solid ${color.border}`,
   display: 'flex',

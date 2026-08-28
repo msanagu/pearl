@@ -23,32 +23,6 @@ export const Default: Story = {
   ),
 };
 
-/**
- * `size` cascades control height and padding to a nested `Input` via CSS
- * custom properties — sm and md deliberately share padding (only lg steps
- * up); look closely and the difference between them is height alone.
- *
- * Shown side by side to compare, not as a pattern to copy: a real form picks
- * one size and every `Field` in it uses that size. Rendering three sizes
- * stacked, as this story does, is what NOT to ship — see the `size` prop's
- * own doc comment on `Field`.
- */
-export const Sizes: Story = {
-  render: (args) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 340 }}>
-      <Field {...args} label="Small" size="sm">
-        {(props) => <Input type="email" {...props} />}
-      </Field>
-      <Field {...args} label="Medium" size="md">
-        {(props) => <Input type="email" {...props} />}
-      </Field>
-      <Field {...args} label="Large" size="lg">
-        {(props) => <Input type="email" {...props} />}
-      </Field>
-    </div>
-  ),
-};
-
 export const WithHint: Story = {
   args: { hint: "We'll never share your email." },
   render: (args) => (

@@ -514,10 +514,15 @@ export function generateTheme(input: ThemeInput) {
     info: sentiment.info,
   };
 
+  // No `surface` — a padded surface derives its radius from `control` plus its
+  // own padding (see foundations/concentricRadius.ts), so there is nothing to
+  // generate. `nesting` follows the generated corner: a theme that came out
+  // hard-edged opts out of concentric derivation entirely.
   const radiusTree = {
     control: `${p.radius.control}px`,
-    surface: `${p.radius.surface}px`,
     full: `${p.radius.full}px`,
+    nesting: p.radius.control > 0 ? '1' : '0',
+    cornerShape: 'round',
   };
 
   const spaceTree = Object.fromEntries(

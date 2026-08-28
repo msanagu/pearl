@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Form } from './Form';
+import formSource from './Form.tsx?raw';
+import { templateSource } from '../templateSource';
 
 /**
  * A shipping-details form built entirely from existing primitives (`Field`,
@@ -22,4 +24,7 @@ export default meta;
 
 type Story = StoryObj<typeof Form>;
 
-export const Overview: Story = {};
+export const Overview: Story = {
+  // Story level, not meta — see `templateSource`.
+  parameters: templateSource(formSource),
+};

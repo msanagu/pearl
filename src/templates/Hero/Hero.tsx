@@ -10,20 +10,18 @@ import { color, space } from '../../tokens';
 import * as css from './Hero.css';
 
 export interface HeroProps {
-  /**
-   * Render the minimal utility nav (wordmark + search/sandbox/GitHub).
-   * Set `false` when a parent (e.g. the docs shell) owns one persistent
-   * sticky bar spanning both landing and docs — the landing nav is utility
-   * chrome, not docs navigation, so it must not be duplicated.
-   * @default true
-   */
-  showNav?: boolean;
   /** Where the primary "Read the docs" CTA points. @default '#' */
   readDocsHref?: string;
   /** Where the secondary "Open playground" CTA points. @default '#' */
   playgroundHref?: string;
   githubHref?: string;
   sandboxHref?: string;
+  /** Nav wordmark text. @default 'pearl' */
+  brandName?: string;
+  /** Typography role decorating the wordmark, or `undefined` for plain text
+   * (Tahitian's brand mark stays undecorated — overtone is reserved for
+   * `imageOverlay` and one emphasized word). @default 'inlineEmphasis' */
+  brandRole?: 'inlineEmphasis';
 }
 
 const stats = [
@@ -60,11 +58,21 @@ const heroContentStyle = {
 } as const;
 
 /** The minimal landing utility nav — no section links, only search/sandbox/GitHub. */
-export function HeroNav({ githubHref = '#', sandboxHref = '#' }: Pick<HeroProps, 'githubHref' | 'sandboxHref'>): ReactNode {
+export function HeroNav({
+  githubHref = '#',
+  sandboxHref = '#',
+  brandName = 'pearl',
+  // No default: `undefined` here means "no role" (Text's own semantics for
+  // an unset `role`). Defaulting to `'inlineEmphasis'` would silently win
+  // over a caller explicitly passing `brandRole={undefined}` — exactly what
+  // Tahitian's plain-white wordmark needs, since JS default params trigger
+  // on `undefined` regardless of whether the caller meant "unset".
+  brandRole,
+}: Pick<HeroProps, 'githubHref' | 'sandboxHref' | 'brandName' | 'brandRole'>): ReactNode {
   return (
     <Row justify="between" align="center" style={{ width: '100%' }}>
-      <Text as="span" role="inlineEmphasis" typeScale="headingMd">
-        pearl
+      <Text as="span" role={brandRole} typeScale="headingMd" data-component="brand-wordmark">
+        {brandName}
       </Text>
       <Row gap="lg" align="center">
         <button
@@ -91,27 +99,26 @@ export function HeroNav({ githubHref = '#', sandboxHref = '#' }: Pick<HeroProps,
  * no home yet (a full-bleed layout primitive, a `measure` prop on `Text`)
  * are flagged inline rather than smoothed over.
  *
- * The top bar is deliberately
- * minimal utility chrome, NOT the docs sidebar pulled up early. Pass
- * `showNav={false}` when a docs shell owns one persistent bar for both.
+ * The top bar is deliberately minimal utility chrome, NOT the docs sidebar
+ * pulled up early.
  */
 export function Hero({
-  showNav = true,
   readDocsHref = '#',
   playgroundHref = '#',
   githubHref = '#',
   sandboxHref = '#',
+  brandName = 'pearl',
+  // No default — see the matching comment on `HeroNav`.
+  brandRole,
 }: HeroProps) {
   return (
     <Stack>
-      {showNav && (
-        // GAP — no Nav/Header layout primitive. Utility chrome only.
-        <div>
-          <Row style={{ ...heroContentStyle, borderBottom: `1px solid ${color.border}`, padding: `${space.md} 0` }}>
-            <HeroNav githubHref={githubHref} sandboxHref={sandboxHref} />
-          </Row>
-        </div>
-      )}
+      {/* GAP — no Nav/Header layout primitive. Utility chrome only. */}
+      <div>
+        <Row style={{ ...heroContentStyle, borderBottom: `1px solid ${color.border}`, padding: `${space.md} 0` }}>
+          <HeroNav githubHref={githubHref} sandboxHref={sandboxHref} brandName={brandName} brandRole={brandRole} />
+        </Row>
+      </div>
 
       <Row
         className={css.main}

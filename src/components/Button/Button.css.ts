@@ -10,8 +10,25 @@ export const button = recipe({
     alignItems: 'center',
     justifyContent: 'center',
     gap: space.sm,
+    height: controlHeight.md,
+    paddingLeft: space.lg,
+    paddingRight: space.lg,
+    fontSize: text.bodyMd.fontSize,
+    // Without this, `secondary`'s 1px border adds to its content-box height
+    // on top of the shared `height` variant value while `primary` (no
+    // border) doesn't — the two variants render at different heights and
+    // misalign when placed side by side.
+    boxSizing: 'border-box',
+    // Native `<button>` UA styling (Safari especially) can paint its own
+    // default border/padding chrome outside the CSS box model even after
+    // `border: none` — `appearance: none` is needed to fully hand sizing
+    // back to this recipe.
+    appearance: 'none',
     border: 'none',
     borderRadius: radius.control,
+    // Theme-owned, never a literal — a squircle button inside a round-cornered
+    // card stops being concentric with it. See `radius.cornerShape`.
+    cornerShape: radius.cornerShape,
     fontFamily: fontFamily.body,
     fontWeight: fontWeight.medium,
     cursor: 'pointer',
@@ -36,6 +53,11 @@ export const button = recipe({
       primary: {
         background: color.primary,
         color: color.onPrimary,
+        // Matches `secondary`'s `1px solid` border width, just transparent —
+        // so both variants have identical border geometry and render at
+        // identical heights regardless of `box-sizing`, rather than relying
+        // on `border-box` alone to reconcile a bordered vs. borderless box.
+        border: '1px solid transparent',
         // Same technique as Card's shadow: a solid token color diluted by
         // negative spread, not an alpha-faked tint. `accentSubtle` gives the
         // inset top-highlight its intended cool-neutral cast (it's marine in
@@ -74,30 +96,9 @@ export const button = recipe({
         },
       },
     },
-    size: {
-      sm: {
-        height: controlHeight.sm,
-        paddingLeft: space.md,
-        paddingRight: space.md,
-        fontSize: text.bodySm.fontSize,
-      },
-      md: {
-        height: controlHeight.md,
-        paddingLeft: space.lg,
-        paddingRight: space.lg,
-        fontSize: text.bodyMd.fontSize,
-      },
-      lg: {
-        height: controlHeight.lg,
-        paddingLeft: space.lg,
-        paddingRight: space.lg,
-        fontSize: text.bodyLg.fontSize,
-      },
-    },
   },
 
   defaultVariants: {
     variant: 'primary',
-    size: 'md',
   },
 });

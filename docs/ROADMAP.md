@@ -39,7 +39,7 @@ needed before this is a reliable guarantee, not just an intention.**
 ## Component List
 
 ### Foundational — shipped
-1. **Button** — variant × size, native `<button>`, icon-composition via `children`
+1. **Button** — `variant`, single fixed height, native `<button>`, icon-composition via `children`
 2. **Card** — static-property namespacing (`Card.Header`/`Card.Body`)
 
 ### Content — shipped
@@ -52,7 +52,7 @@ needed before this is a reliable guarantee, not just an intention.**
 6. **Icon** — typed name/variant registry, explicit per-variant SVGs (no runtime
    shape transform — see foundations/component-philosophy.md's duplication-vs-abstraction test)
 7. **Field** — label/hint/error coordination wrapper, children-as-function pattern
-8. **Input** — native `<input>` wrapper, sized via Field's CSS custom-property cascade
+8. **Input** — native `<input>` wrapper, single fixed height matching Button
 
 ### Feedback & data — planned
 9. **Progress Bar** — native `<progress>` vs. custom `role="progressbar"` decision

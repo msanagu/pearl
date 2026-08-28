@@ -35,6 +35,20 @@ These four terms get conflated easily, so they're pinned down here:
   "eyebrow": the name should say what it relates to. Kept distinct from `label`
   even where a theme's treatment happens to match, because it always pairs with a
   heading rather than standing alone next to data/IDs.
+
+  **It is never an `h*` element.** A preheading reads as part of the title
+  visually, but giving it a heading level puts a bogus entry in the document
+  outline immediately above the real heading it introduces. `as="p"` inside a
+  `header`, or `as="span"` when it sits inline.
+
+  **Pass `typeScale` unless every theme you target sizes the role.** A role is a
+  *face*, and whether it also carries a size is each theme's choice: Pearl sets
+  `text.caption` on `[data-role="preheading"]`, Tahitian now does too, and South
+  Sea and Freshwater have no treatment at all. A role with no size opinion
+  inherits the ambient scale — which for a preheading means rendering at body
+  size directly above the heading it introduces, inverting the hierarchy. Being
+  explicit costs nothing where the theme already agrees, and is the difference
+  between right and broken where it does not.
 - **subheading** — not yet a role; reserved for a short line *below* a heading,
   same pattern as `preheading` when a theme needs one.
 

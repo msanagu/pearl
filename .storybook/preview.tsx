@@ -1,6 +1,11 @@
 import type { Preview } from '@storybook/react-vite';
+import '@fontsource/anton/400.css';
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import '@fontsource/space-grotesk/700.css';
 import { vars } from '../src/theme.css';
-import { tahitianLightThemeClass, tahitianDarkThemeClass } from '../src/themes/tahitian.css';
+import { tahitianLightThemeClass, tahitianDarkThemeClass, tahitianTreatmentClass } from '../src/themes/tahitian.css';
 import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater.css';
 import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea.css';
 import { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass } from '../src/themes/pearl.css';
@@ -72,9 +77,11 @@ const preview: Preview = {
       const theme = (context.globals.theme as string) ?? 'pearl';
       const mode = (context.globals.mode as 'light' | 'dark') ?? 'light';
       const themeClass = themeMatrix[theme]?.[mode] ?? pearlLightThemeClass;
-      // Pearl's extension treatments ride alongside its canon class. Themes
-      // without treatments simply contribute nothing here.
-      const treatmentClass = theme === 'pearl' ? pearlTreatmentClass : '';
+      // Each theme's extension treatments (the CSS vars its `overtone`/
+      // `luster` gradients read) ride alongside its canon class. Themes
+      // without treatments simply contribute nothing here. Field's own
+      // `fieldMeta` marker is applied locally by Field.tsx, not here.
+      const treatmentClass = theme === 'pearl' ? pearlTreatmentClass : theme === 'tahitian' ? tahitianTreatmentClass : '';
 
       // Every component reads only `vars.*` — nothing renders correctly without
       // a theme class as an ancestor. Applying it globally means stories never

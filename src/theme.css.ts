@@ -104,12 +104,41 @@ export const vars = createThemeContract({
     warn: { surface: null, border: null, text: null, icon: null },
     info: { surface: null, border: null, text: null, icon: null },
   },
-  // Radius roles (ADR discussion): control/surface are element-role defaults;
-  // `full` is the orthogonal maximal-rounding treatment (pill/circle/avatar).
+  // Radius. `control` is the theme's ONE authored corner; `full` is the
+  // orthogonal maximal-rounding treatment for square-aspect elements (circles).
+  // There is deliberately no `surface`: a padded surface derives its radius from
+  // `control` plus its own padding (see foundations/concentricRadius.ts), so an
+  // authored value could only ever be right for one padding.
   radius: {
     control: null,
-    surface: null,
     full: null,
+    // Concentric-nesting opt-out. A unitless `'1'` or `'0'`, multiplied into
+    // the padding term of a derived radius (`calc(control + nesting * pad)`).
+    //
+    // A boolean, deliberately smuggled in as a multiplier: it keeps ONE formula
+    // in the component with no per-theme branching. A hard-edged theme sets
+    // `'0'` and every derived radius collapses to its `control` (`0px`) —
+    // without it, `calc(0px + 24px)` would hand a square theme a 24px-rounded
+    // card, which is precisely backwards. See docs/TODO-concentric-radius.md.
+    nesting: null,
+    // CSS Backgrounds & Borders 4 `corner-shape` — how the corner that
+    // `border-radius` carves is actually drawn (`round`, `squircle`, `bevel`,
+    // `notch`, `scoop`, `superellipse()`).
+    //
+    // In the contract rather than hardcoded per component because it MUST be
+    // uniform: a squircle button inside a round-cornered card no longer has
+    // arcs parallel to it, which defeats the concentric-radius rule above. One
+    // token means a theme states its corner language once and every surface
+    // and control obeys.
+    //
+    // Progressive enhancement, no fallback needed: browsers without support
+    // ignore the declaration and paint the plain `border-radius`. `round` is
+    // the initial value, so a theme opting out costs nothing.
+    //
+    // Inert at `border-radius: 0` — there is no corner box to reshape, so the
+    // hard-edged themes are unaffected whatever they set. Unlike `nesting`,
+    // which they genuinely depend on, this one only bites on rounded themes.
+    cornerShape: null,
   },
   // Spacing scale — t-shirt (kept deliberately; see naming/scale decision).
   space: {
@@ -136,6 +165,7 @@ export const vars = createThemeContract({
     display: null,
     heading: null,
     body: null,
+    mono: null,
   },
   fontWeight: {
     regular: null,

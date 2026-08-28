@@ -13,14 +13,8 @@ const meta: Meta<typeof Input> = {
   tags: ['autodocs'],
   args: {
     placeholder: 'you@studio.co',
-    size: 'md',
   },
   argTypes: {
-    size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg'],
-      description: 'Height on the 8px grid — aligns with Button.',
-    },
     disabled: { control: 'boolean' },
   },
 };
@@ -67,16 +61,6 @@ export const Disabled: Story = {
   render: (args) => (
     <div style={{ maxWidth: 340 }}>
       <Input {...args} id="email-disabled" type="email" />
-    </div>
-  ),
-};
-
-export const Sizes: Story = {
-  render: (args) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 340 }}>
-      <Input {...args} size="sm" id="email-sm" type="email" />
-      <Input {...args} size="md" id="email-md" type="email" />
-      <Input {...args} size="lg" id="email-lg" type="email" />
     </div>
   ),
 };

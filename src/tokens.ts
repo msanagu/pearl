@@ -102,10 +102,42 @@ export interface ColorTokens {
 export interface RadiusTokens {
   /** Default for interactive controls — buttons, inputs. */
   control: CSSVarFunction;
-  /** Default for panels/containers — cards, sheets. */
-  surface: CSSVarFunction;
-  /** Maximal rounding — pill buttons, avatars, dots (shape follows aspect ratio). */
+  /**
+   * Maximal rounding, for **square-aspect elements only** — avatars, dots,
+   * status marks, icon buttons: cases where maximal rounding produces a true
+   * circle.
+   *
+   * Deliberately NOT for rectangles. `full` on a rectangle is a pill, and this
+   * system does not use pill shapes — a rectangular element takes
+   * `radius.control`, or a radius derived from it, so it shares a corner with
+   * everything around it. `Tag` used to read this token and no longer does.
+   */
   full: CSSVarFunction;
+  /**
+   * Whether this theme follows the concentric-nesting rule (`outer = inner +
+   * gap`). `'1'` to opt in, `'0'` to opt out — a unitless multiplier applied to
+   * the padding term, so one formula serves rounded and hard-edged themes with
+   * no branching. Not a length: never set a `border-radius` from it directly.
+   */
+  nesting: CSSVarFunction;
+  /**
+   * How the corner carved by `border-radius` is drawn — `round` (the initial
+   * value), `squircle`, `bevel`, `notch`, `scoop`, or a `superellipse()`.
+   *
+   * Applied to everything using `radius.control` or a radius derived from it,
+   * and deliberately NOT to `radius.full` elements: a pill or circle reads as a
+   * true capsule, not a superellipse. Uniformity is the point — mixing corner
+   * shapes across nested elements breaks the concentric-radius relationship.
+   *
+   * **Inert at `border-radius: 0`.** The property reshapes the corner that the
+   * radius carves; with no radius there is no corner box to draw into, so every
+   * value renders identically. A hard-edged theme (South Sea, Tahitian) can set
+   * anything here and see no change — `round` is simply the honest "no opinion"
+   * answer, and it is already in place if that theme ever takes on a radius.
+   * This is the axis's one real difference from `nesting`, which square themes
+   * genuinely depend on.
+   */
+  cornerShape: CSSVarFunction;
 }
 
 /**
@@ -151,6 +183,8 @@ export interface FontFamilyTokens {
   heading: CSSVarFunction;
   /** Font for body/UI text (body* variants, controls). */
   body: CSSVarFunction;
+  /** Monospace font for labels, metadata, and data-oriented UI. */
+  mono: CSSVarFunction;
 }
 
 export interface FontWeightTokens {

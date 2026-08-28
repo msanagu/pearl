@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { color, controlHeight, radius, space } from '../tokens';
+import { Wordmark, brandWordmarkByTheme } from './typeSpecimens';
+import { pearlBrandWordmark } from '../themes/pearl.roles';
 import * as css from './tokens.css';
 
 /**
@@ -64,7 +66,7 @@ function ControlHeightSwatch({ name, cssVar }: { name: string; cssVar: string })
 function RadiusSwatch({ name, cssVar }: { name: string; cssVar: string }) {
   return (
     <div className={css.cell}>
-      <div className={css.radiusBox} style={{ borderRadius: cssVar }} />
+      <div className={css.radiusBox} style={{ borderRadius: cssVar, cornerShape: radius.cornerShape }} />
       <span>{name}</span>
     </div>
   );
@@ -73,14 +75,16 @@ function RadiusSwatch({ name, cssVar }: { name: string; cssVar: string }) {
 const sentimentGroups = ['positive', 'negative', 'warn', 'info'] as const;
 const sentimentFields = ['surface', 'border', 'text', 'icon'] as const;
 
-function TokensPreview() {
+function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
   // No theme wrapper here — the global preview decorator supplies the active
-  // theme (Pearl by default). Alternate values are demonstrated by switching
-  // the Storybook toolbar, not by re-wrapping here.
+  // theme's CSS vars (Pearl by default). `theme` is only used to pick which
+  // brand wordmark to render below — the rest of this page reacts to the
+  // toolbar purely through `color.*`/`space.*` CSS custom properties.
+  const wordmark = brandWordmarkByTheme[theme] ?? pearlBrandWordmark;
   return (
     <div className={css.page}>
       <section className={css.section}>
-        <h2 className={css.sectionTitle}>Color</h2>
+        <Wordmark wordmark={wordmark} className={css.wordmarkTitle} />
 
         <h3 className={css.subsectionTitle}>Surface</h3>
         <div className={css.row}>
@@ -212,8 +216,8 @@ function TokensPreview() {
       <section className={css.section}>
         <h2 className={css.sectionTitle}>Radius</h2>
         <div className={css.row}>
-          {Object.entries(radius).map(([name, cssVar]) => (
-            <RadiusSwatch key={name} name={name} cssVar={cssVar} />
+          {(['control', 'full'] as const).map((name) => (
+            <RadiusSwatch key={name} name={name} cssVar={radius[name]} />
           ))}
         </div>
       </section>
@@ -225,6 +229,9 @@ const meta: Meta<typeof TokensPreview> = {
   title: 'Foundations/Tokens/Semantic',
   component: TokensPreview,
   parameters: { layout: 'fullscreen' },
+  decorators: [
+    (Story, context) => <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />,
+  ],
 };
 export default meta;
 

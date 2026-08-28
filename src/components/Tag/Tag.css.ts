@@ -8,20 +8,31 @@ export const tag = recipe({
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    borderRadius: radius.full,
-    // `sm` + `xs` (8 + 4 = 12px), not a new scale step — a pill's horizontal
-    // padding needs to sit between `sm` and `md` for the end-caps to read as
-    // round rather than boxy against a full radius, but that's this shape's
-    // proportion, not a general layout-rhythm value other components need.
-    // Composed from two real tokens rather than a literal so it still
-    // rescales if a theme tightens or loosens the space scale.
+    // `control`, not `full`. A Tag is a small rectangle, and `full` on a
+    // rectangle is a pill — a shape this system does not want. `full` is now
+    // reserved for genuinely square-aspect elements where maximal rounding
+    // produces a real circle (avatars, dots, status marks). Matching `control`
+    // also means a Tag sitting beside a Button or Input shares its corner
+    // rather than introducing a second one.
+    borderRadius: radius.control,
+    cornerShape: radius.cornerShape,
+    // `sm` + `xs` (8 + 4 = 12px), not a new scale step — the horizontal padding
+    // has to clear the corner arc or the label sits inside the curve, the same
+    // rule Input's text inset follows. Composed from two real tokens rather
+    // than a literal so it still rescales if a theme retunes its space scale.
     paddingLeft: `calc(${space.sm} + ${space.xs})`,
     paddingRight: `calc(${space.sm} + ${space.xs})`,
     paddingTop: space.xs,
     paddingBottom: space.xs,
+    // Gap, so a leading icon (a delta arrow, a status dot) does not butt
+    // against the label.
+    gap: space.xs,
     fontFamily: fontFamily.body,
-    fontSize: text.bodySm.fontSize,
-    lineHeight: text.bodySm.lineHeight,
+    // `caption`, not `bodySm` — a Tag is a mark ON content, not a line OF it.
+    // At body size it competes with the text it annotates; caption is the step
+    // the scale already reserves for "below the reading floor" (see tokens.ts).
+    fontSize: text.caption.fontSize,
+    lineHeight: text.caption.lineHeight,
     whiteSpace: 'nowrap',
   },
   variants: {

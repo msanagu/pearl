@@ -20,6 +20,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm run typecheck
-      - run: pnpm run check:field-sizes
       - run: pnpm test
       - run: pnpm run build

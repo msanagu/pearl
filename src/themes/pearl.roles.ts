@@ -8,6 +8,12 @@ import { pearlFonts, pearlTreatments } from './pearl.css';
 export const pearlDescription =
   'Comfortable, restrained premium. Reads like a well-set book page that happens to have buttons; an italic serif interjection is the only flourish.';
 
+/** The nav wordmark — text plus which typography role (if any) decorates it. */
+export const pearlBrandWordmark = {
+  text: 'pearl',
+  role: 'inlineEmphasis' as const,
+};
+
 /**
  * Pearl's own catalog of typography treatments — named recipes, same status
  * as `luster` in `pearlTreatments`, just simple enough to live as plain data

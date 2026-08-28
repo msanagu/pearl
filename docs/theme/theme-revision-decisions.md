@@ -126,6 +126,17 @@ and only `oyster.` is Gambetta italic. Same in 8a: "Nacre surface" sans,
 `border-radius: 3px`. Pills come from 8a and match the contract's
 `radiusControl: 999px`.
 
+> **Revised 2026-08-28 — pills retired; `control` is now `12px`.** The 8a
+> deviation was reversed. A pill's *painted* radius is `height / 2` (21px at
+> Pearl's 42px control), which makes concentric nesting — `outer = inner + gap`
+> — unsatisfiable against any card radius worth having, and it forced a
+> Pearl-specific left inset on every Field label (since removed). 12px sits
+> between canon's 3px and the pill: it keeps ~43% of the control's vertical
+> edge straight, so it reads as a rectangle, and it restores `control` <
+> `surface` (12 < 16), which the pill had inverted. Tag and XButton keep
+> `radius.full` and stay pills by identity. See
+> [TODO-concentric-radius.md](../TODO-concentric-radius.md).
+
 **Palette (light, from 4c):** background `#F5F3EF` · hairline `#DEDAD2` · ink
 `#17161A` · text `#6E6A78` · muted `#77737E` · primary
 `linear-gradient(180deg,#26252C,#17161A)` on `#F5F3EF`.

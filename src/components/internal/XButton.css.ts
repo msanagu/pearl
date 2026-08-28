@@ -15,7 +15,15 @@ export const xButton = style({
   flexShrink: 0,
   width: '24px',
   height: '24px',
-  borderRadius: radius.full,
+  // `control`, not `full`. This sits INSIDE an Alert, so it is a nested control
+  // and takes the inner radius like every other one — `full` is reserved for
+  // elements that are circles by nature (dots, radios, avatars), not for
+  // anything that merely happens to be square. At 24x24 a 12px `control` is
+  // already 50%, so on Pearl it stays a circle regardless; on a hard-edged theme
+  // it now squares off with the rest of the controls instead of being the one
+  // round thing in the corner.
+  borderRadius: radius.control,
+  cornerShape: radius.cornerShape,
   background: 'transparent',
   border: 'none',
   padding: 0,

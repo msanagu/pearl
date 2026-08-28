@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { color, fontFamily, radius, space } from '../tokens';
+import { concentricRadius } from './concentricRadius';
 
 // Layout for the token preview — itself built from the tokens, so this file is
 // also the first proof that a `.css.ts` compiles through the vanilla-extract
@@ -8,7 +9,7 @@ import { color, fontFamily, radius, space } from '../tokens';
 export const page = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: space.xl,
+  gap: space['2xl'],
   padding: space.xl,
   background: color.background,
   color: color.text,
@@ -18,13 +19,23 @@ export const page = style({
 export const section = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: space.md,
+  gap: space.lg,
 });
 
 export const sectionTitle = style({
   margin: 0,
   fontSize: '18px',
   fontWeight: 600,
+});
+
+// The wordmark's own class — deliberately no fontSize/fontWeight, unlike
+// `sectionTitle` (shared by every OTHER heading on this page, which still
+// wants its fixed 18px). The wordmark is rendered through `Text` with
+// `typeScale="displayLg"`; reusing `sectionTitle` here would fight that
+// scale's own font-size for specificity, capping it back down to 18px.
+export const wordmarkTitle = style({
+  margin: 0,
+  marginBottom: space.sm,
 });
 
 export const row = style({
@@ -81,7 +92,9 @@ export const sentimentCard = style({
   gap: space.xs,
   width: '96px',
   height: '64px',
-  borderRadius: radius.surface,
+  // No interior padding, so nothing to be concentric with — the theme's own
+  // corner is the honest answer.
+  borderRadius: radius.control,
 });
 
 // The resolved-value caption under every swatch — what the token ACTUALLY
@@ -119,7 +132,7 @@ export const inversePanel = style({
   flexDirection: 'column',
   gap: space.md,
   padding: space.lg,
-  borderRadius: radius.surface,
+  borderRadius: concentricRadius(space.lg),
   background: color.backgroundInverse,
 });
 

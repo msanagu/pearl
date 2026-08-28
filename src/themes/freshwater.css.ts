@@ -48,13 +48,13 @@ export const freshwaterDarkPrimitives = {
 // scale per hue, shared by both modes — a step number means the same
 // lightness regardless of which theme mode reads it.
 export const freshwaterSentiment = {
-  sage: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
-  clay: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
-  honey: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
-  harbor: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
+  lagoon: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
+  coral: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  sunlight: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
+  tide: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
-const freshwaterRadius = { control: '6px', surface: '10px', full: '9999px' };
+const freshwaterRadius = { control: '6px', full: '9999px', nesting: '1', cornerShape: 'round' };
 // rem, not px (16px root) — spacing/control-height scale with a user's base
 // font-size preference, not just page zoom. Same reasoning as pearl.css.ts.
 const freshwaterSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
@@ -68,6 +68,7 @@ const freshwaterFontFamily = {
   display: "'Satoshi', 'Geist', system-ui, -apple-system, sans-serif",
   heading: "'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif",
   body: "'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif",
+  mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
 const freshwaterText = {
   caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 16px 8-grid
@@ -110,10 +111,15 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     onAccent: freshwaterLightPrimitives.linen,
     onAccentSubtle: freshwaterLightPrimitives.ink,
     focusRing: freshwaterLightPrimitives.teal,
-    positive: { surface: freshwaterSentiment.sage[100], border: freshwaterSentiment.sage[200], text: freshwaterSentiment.sage[700], icon: freshwaterSentiment.sage[500] },
-    negative: { surface: freshwaterSentiment.clay[100], border: freshwaterSentiment.clay[200], text: freshwaterSentiment.clay[600], icon: freshwaterSentiment.clay[500] },
-    warn: { surface: freshwaterSentiment.honey[100], border: freshwaterSentiment.honey[200], text: freshwaterSentiment.honey[700], icon: freshwaterSentiment.honey[500] },
-    info: { surface: freshwaterSentiment.harbor[100], border: freshwaterSentiment.harbor[200], text: freshwaterSentiment.harbor[700], icon: freshwaterSentiment.harbor[500] },
+    // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
+    // sentiment hue at full strength reads as more visually prominent than
+    // body text despite having a lower luminance-contrast ratio (saturation,
+    // not just lightness, drives perceived prominence); 65% keeps the hue
+    // identifiable while quieting it below both `text` and plain body copy.
+    positive: { surface: freshwaterSentiment.lagoon[100], border: freshwaterSentiment.lagoon[200], text: freshwaterSentiment.lagoon[700], icon: `color-mix(in srgb, ${freshwaterSentiment.lagoon[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: freshwaterSentiment.coral[100], border: freshwaterSentiment.coral[200], text: freshwaterSentiment.coral[600], icon: `color-mix(in srgb, ${freshwaterSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: freshwaterSentiment.sunlight[100], border: freshwaterSentiment.sunlight[200], text: freshwaterSentiment.sunlight[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: freshwaterSentiment.tide[100], border: freshwaterSentiment.tide[200], text: freshwaterSentiment.tide[700], icon: `color-mix(in srgb, ${freshwaterSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -150,10 +156,10 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     onAccent: freshwaterDarkPrimitives.tealInk,
     onAccentSubtle: freshwaterDarkPrimitives.moonlight,
     focusRing: freshwaterDarkPrimitives.turquoise,
-    positive: { surface: freshwaterSentiment.sage[800], border: freshwaterSentiment.sage[600], text: freshwaterSentiment.sage[300], icon: freshwaterSentiment.sage[400] },
-    negative: { surface: freshwaterSentiment.clay[800], border: freshwaterSentiment.clay[700], text: freshwaterSentiment.clay[300], icon: freshwaterSentiment.clay[400] },
-    warn: { surface: freshwaterSentiment.honey[800], border: freshwaterSentiment.honey[600], text: freshwaterSentiment.honey[300], icon: freshwaterSentiment.honey[400] },
-    info: { surface: freshwaterSentiment.harbor[800], border: freshwaterSentiment.harbor[600], text: freshwaterSentiment.harbor[300], icon: freshwaterSentiment.harbor[400] },
+    positive: { surface: freshwaterSentiment.lagoon[800], border: freshwaterSentiment.lagoon[600], text: freshwaterSentiment.lagoon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.lagoon[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: freshwaterSentiment.coral[800], border: freshwaterSentiment.coral[700], text: freshwaterSentiment.coral[300], icon: `color-mix(in srgb, ${freshwaterSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: freshwaterSentiment.sunlight[800], border: freshwaterSentiment.sunlight[600], text: freshwaterSentiment.sunlight[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: freshwaterSentiment.tide[800], border: freshwaterSentiment.tide[600], text: freshwaterSentiment.tide[300], icon: `color-mix(in srgb, ${freshwaterSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,

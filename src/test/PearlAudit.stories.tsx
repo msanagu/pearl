@@ -29,9 +29,7 @@ function PearlSampler() {
   return (
     <Stack gap="2xl" style={{ padding: 32, maxWidth: 960 }}>
       <Row gap="md" wrap align="center">
-        <Button size="sm">Primary sm</Button>
-        <Button>Primary md</Button>
-        <Button size="lg">Primary lg</Button>
+        <Button>Primary</Button>
         <Button variant="secondary">Secondary</Button>
       </Row>
 

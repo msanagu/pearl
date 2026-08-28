@@ -67,6 +67,7 @@ export function Text({
     <Component
       className={clsx(textRecipe({ typeScale: resolvedTypeScale, prominence, weight }), className)}
       data-role={role}
+      data-type-scale={resolvedTypeScale}
       style={style}
       {...rest}
     >

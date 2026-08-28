@@ -7,6 +7,12 @@ import { southSeaFonts } from './south-sea.css';
 export const southSeaDescription =
   'Golden-hour maison restraint: a roman/italic serif mix and a hairline rule do the talking; conch does exactly one loud thing per view.';
 
+/** The nav wordmark — text plus which typography role (if any) decorates it. */
+export const southSeaBrandWordmark = {
+  text: 'south sea',
+  role: 'inlineEmphasis' as const,
+};
+
 /**
  * South Sea's own catalog of typography treatments. No effect treatments —
  * per docs/theme/theme-revision-decisions.md §5, the Theme Contract's

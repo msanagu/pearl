@@ -6,8 +6,8 @@ import { vars } from '../theme.css';
  *
  * Canonical source is the exploration log, not the handoff's schema doc:
  * turn **4c** ("Canon — 1a layout × 1b vibe"), refined by **5a** ("canon,
- * refined"), with **8a**'s pill controls. See
- * `docs/theme/theme-revision-decisions.md` §3.
+ * refined"). 8a's pill controls were adopted and then retired (2026-08-28) —
+ * see `pearlRadius` below. See `docs/theme/theme-revision-decisions.md` §3.
  *
  * ## Provenance of values
  * Values are marked `[4c]`, `[8a]`, or `[spec]` (the handoff's token tables)
@@ -118,16 +118,32 @@ export const alabasterAlpha = {
 // contrast, 3:1+ icon contrast in both modes. Not re-audited for
 // Tahitian/Freshwater/South Sea.
 export const pearlSentiment = {
-  sage: { 100: '#E8EDE6', 200: '#BCCBB8', 300: '#9BD3A6', 400: '#5FA36E', 500: '#4A7350', 600: '#33553B', 700: '#2C4A32', 800: '#16201A' },
-  clay: { 100: '#F3E8E5', 200: '#DCBCB5', 300: '#EFA89C', 400: '#D46B5B', 500: '#A34C40', 600: '#733A31', 700: '#71322A', 800: '#281815' },
-  honey: { 100: '#F3EDE1', 200: '#E4CA92', 300: '#D9C6A0', 400: '#C6A055', 500: '#8F7434', 600: '#6B5622', 700: '#634F22', 800: '#241E10' },
-  harbor: { 100: '#E7EAEF', 200: '#BCC4D3', 300: '#B9C3D6', 400: '#7E8CA8', 500: '#546480', 600: '#3A455C', 700: '#364156', 800: '#171A21' },
+  algae: { 100: '#E8EDE6', 200: '#BCCBB8', 300: '#9BD3A6', 400: '#5FA36E', 500: '#4A7350', 600: '#33553B', 700: '#2C4A32', 800: '#16201A' },
+  coral: { 100: '#F3E8E5', 200: '#DCBCB5', 300: '#EFA89C', 400: '#D46B5B', 500: '#A34C40', 600: '#733A31', 700: '#71322A', 800: '#281815' },
+  sunlight: { 100: '#F3EDE1', 200: '#E4CA92', 300: '#D9C6A0', 400: '#C6A055', 500: '#8F7434', 600: '#6B5622', 700: '#634F22', 800: '#241E10' },
+  tide: { 100: '#E7EAEF', 200: '#BCC4D3', 300: '#B9C3D6', 400: '#7E8CA8', 500: '#546480', 600: '#3A455C', 700: '#364156', 800: '#171A21' },
 };
 
 // ---- Scales (Pearl's own — themes do not share a scale file) ----
 
-/** Pills. [8a] — a deliberate deviation: 4c and 5a both use 3px. */
-const pearlRadius = { control: '999px', surface: '16px', full: '9999px' };
+/**
+ * Controls are a rounded rect, not a pill.
+ *
+ * 8a's `999px` was itself the deviation — canon (4c and 5a) uses `3px`. It was
+ * retired 2026-08-28: a pill's *painted* radius is `height / 2` (21px at
+ * Pearl's 42px control), which leaves no room for concentric nesting
+ * (`outer = inner + gap`) against any card radius worth having. 12px sits
+ * between canon's 3px and the pill, and keeps ~43% of the control's vertical
+ * edge straight, so it reads as a rectangle rather than a lozenge.
+ *
+ * `control` (12px) deliberately sits BELOW `surface` (16px) — inner smaller
+ * than outer. The gap is not yet the concentric one (that needs Card's padding
+ * to drive `surface`); this only fixes the ordering, which the pill inverted.
+ * See docs/TODO-concentric-radius.md.
+ *
+ * `full` is untouched: Tag and XButton stay pills by identity.
+ */
+const pearlRadius = { control: '12px', full: '9999px', nesting: '1', cornerShape: 'squircle' };
 
 /**
  * [derived] `usage.density = comfortable` — the midpoint of the four themes.
@@ -146,6 +162,7 @@ const pearlFontFamily = {
   display: pearlFonts.sans,
   heading: pearlFonts.sans,
   body: pearlFonts.sans,
+  mono: pearlFonts.mono,
 };
 
 /**
@@ -207,10 +224,15 @@ export const pearlLightThemeClass = createTheme(vars, {
     onAccentSubtle: squidInk[900],
     focusRing: marineLayer[100],
 
-    positive: { surface: pearlSentiment.sage[100], border: pearlSentiment.sage[200], text: pearlSentiment.sage[700], icon: pearlSentiment.sage[500] },
-    negative: { surface: pearlSentiment.clay[100], border: pearlSentiment.clay[200], text: pearlSentiment.clay[700], icon: pearlSentiment.clay[500] },
-    warn: { surface: pearlSentiment.honey[100], border: pearlSentiment.honey[300], text: pearlSentiment.honey[700], icon: pearlSentiment.honey[500] },
-    info: { surface: pearlSentiment.harbor[100], border: pearlSentiment.harbor[200], text: pearlSentiment.harbor[700], icon: pearlSentiment.harbor[500] },
+    // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
+    // sentiment hue at full strength reads as more visually prominent than
+    // body text despite having a lower luminance-contrast ratio (saturation,
+    // not just lightness, drives perceived prominence); 65% keeps the hue
+    // identifiable while quieting it below both `text` and plain body copy.
+    positive: { surface: pearlSentiment.algae[100], border: pearlSentiment.algae[200], text: pearlSentiment.algae[700], icon: `color-mix(in srgb, ${pearlSentiment.algae[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: pearlSentiment.coral[100], border: pearlSentiment.coral[200], text: pearlSentiment.coral[700], icon: `color-mix(in srgb, ${pearlSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: pearlSentiment.sunlight[100], border: pearlSentiment.sunlight[300], text: pearlSentiment.sunlight[700], icon: `color-mix(in srgb, ${pearlSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: pearlSentiment.tide[100], border: pearlSentiment.tide[200], text: pearlSentiment.tide[700], icon: `color-mix(in srgb, ${pearlSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
   },
   radius: pearlRadius,
   space: pearlSpace,
@@ -242,7 +264,9 @@ export const pearlDarkThemeClass = createTheme(vars, {
     borderInverse: alabaster[500],
     shadow: marineLayer[400],
 
-    // [spec] Mode swap inverts the CTA: dark pill on light, light pill on dark.
+    // [spec] Mode swap inverts the CTA: dark fill on light, light fill on dark.
+    // ("pill" in the original spec note — the shape is a rounded rect since
+    // 2026-08-28; the mode-inversion point is unaffected.)
     primary: alabaster[100], // chalk
     onPrimary: squidInk[900],
 
@@ -255,10 +279,10 @@ export const pearlDarkThemeClass = createTheme(vars, {
     onAccentSubtle: squidInk[900],
     focusRing: marineLayer[100],
 
-    positive: { surface: pearlSentiment.sage[800], border: pearlSentiment.sage[600], text: pearlSentiment.sage[300], icon: pearlSentiment.sage[400] },
-    negative: { surface: pearlSentiment.clay[800], border: pearlSentiment.clay[600], text: pearlSentiment.clay[300], icon: pearlSentiment.clay[400] },
-    warn: { surface: pearlSentiment.honey[800], border: pearlSentiment.honey[600], text: pearlSentiment.honey[200], icon: pearlSentiment.honey[400] },
-    info: { surface: pearlSentiment.harbor[800], border: pearlSentiment.harbor[600], text: pearlSentiment.harbor[300], icon: pearlSentiment.harbor[400] },
+    positive: { surface: pearlSentiment.algae[800], border: pearlSentiment.algae[600], text: pearlSentiment.algae[300], icon: `color-mix(in srgb, ${pearlSentiment.algae[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: pearlSentiment.coral[800], border: pearlSentiment.coral[600], text: pearlSentiment.coral[300], icon: `color-mix(in srgb, ${pearlSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: pearlSentiment.sunlight[800], border: pearlSentiment.sunlight[600], text: pearlSentiment.sunlight[200], icon: `color-mix(in srgb, ${pearlSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: pearlSentiment.tide[800], border: pearlSentiment.tide[600], text: pearlSentiment.tide[300], icon: `color-mix(in srgb, ${pearlSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
   },
   radius: pearlRadius,
   space: pearlSpace,
@@ -299,6 +323,16 @@ globalStyle(
     fontFamily: pearlFonts.mono,
     fontVariantNumeric: 'tabular-nums',
   },
+);
+
+globalStyle(
+  `${pearlLightThemeClass} [data-component="button"][data-variant="primary"], ${pearlDarkThemeClass} [data-component="button"][data-variant="primary"]`,
+  { boxShadow: 'none' },
+);
+
+globalStyle(
+  `${pearlLightThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover, ${pearlDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
+  { boxShadow: 'none', transform: 'none' },
 );
 
 // ---- Extension treatment: luster ----

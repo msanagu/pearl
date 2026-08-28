@@ -48,11 +48,11 @@ describe('Button', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it('applies variant and size classes distinctly', () => {
-    const big = render(<Button variant="secondary" size="lg">Big</Button>);
-    const bigClass = big.getByRole('button').className;
-    big.unmount();
-    const small = render(<Button variant="primary" size="sm">Small</Button>);
-    expect(small.getByRole('button').className).not.toBe(bigClass);
+  it('applies variant classes distinctly', () => {
+    const secondary = render(<Button variant="secondary">Secondary</Button>);
+    const secondaryClass = secondary.getByRole('button').className;
+    secondary.unmount();
+    const primary = render(<Button variant="primary">Primary</Button>);
+    expect(primary.getByRole('button').className).not.toBe(secondaryClass);
   });
 });

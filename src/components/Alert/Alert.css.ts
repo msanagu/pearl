@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { color, radius, space } from '../../tokens';
+import { concentricRadius } from '../../foundations/concentricRadius';
 
 // One `border` declaration per variant (not a shared `border: 1px solid` in
 // `base` + a `borderColor` override) — vanilla-extract variants win on equal
@@ -12,7 +13,11 @@ export const alert = recipe({
     alignItems: 'flex-start',
     gap: space.sm,
     padding: space.md,
-    borderRadius: radius.surface,
+    // Derived from Alert's OWN padding, not shared with Card — Card pads `lg`
+    // by default and Alert pads `md`, so a single authored radius could only
+    // ever be right for one of them.
+    borderRadius: concentricRadius(space.md),
+    cornerShape: radius.cornerShape,
   },
   variants: {
     // `color` here is a fallback/cascade root, kept for any plain-text/icon

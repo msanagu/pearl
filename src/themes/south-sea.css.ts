@@ -57,14 +57,15 @@ export const southSeaDarkPrimitives = {
 // scale per hue, shared by both modes — a step number means the same
 // lightness regardless of which theme mode reads it.
 export const southSeaSentiment = {
-  sage: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
-  clay: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
-  honey: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
-  harbor: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
+  lagoon: { 100: '#e8f5ec', 200: '#b7dfc4', 300: '#7ee2a0', 400: '#3fbf6a', 500: '#2e9e4f', 600: '#2f6b41', 700: '#1b5e2b', 800: '#12251a' },
+  coral: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  sunlight: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
+  tide: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
 // Radius 0 throughout — flat maison geometry, not a rounded-corner register.
-const southSeaRadius = { control: '0px', surface: '0px', full: '9999px' };
+/** `nesting: '0'` — hard-edged by identity; derived radii stay square. */
+const southSeaRadius = { control: '0px', full: '9999px', nesting: '0', cornerShape: 'round' };
 // rem, not px (16px root) — spacing/control-height scale with a user's base
 // font-size preference, not just page zoom. Same reasoning as pearl.css.ts.
 const southSeaSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
@@ -83,6 +84,7 @@ const southSeaFontFamily = {
   display: southSeaFonts.serif,
   heading: southSeaFonts.serif,
   body: southSeaFonts.sans,
+  mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
 const southSeaText = {
   caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 16px 8-grid
@@ -124,10 +126,15 @@ export const southSeaLightThemeClass = createTheme(vars, {
     onAccent: southSeaLightPrimitives.chocolate,
     onAccentSubtle: southSeaLightPrimitives.chocolate,
     focusRing: southSeaLightPrimitives.conchDeep,
-    positive: { surface: southSeaSentiment.sage[100], border: southSeaSentiment.sage[200], text: southSeaSentiment.sage[700], icon: southSeaSentiment.sage[500] },
-    negative: { surface: southSeaSentiment.clay[100], border: southSeaSentiment.clay[200], text: southSeaSentiment.clay[600], icon: southSeaSentiment.clay[500] },
-    warn: { surface: southSeaSentiment.honey[100], border: southSeaSentiment.honey[200], text: southSeaSentiment.honey[700], icon: southSeaSentiment.honey[500] },
-    info: { surface: southSeaSentiment.harbor[100], border: southSeaSentiment.harbor[200], text: southSeaSentiment.harbor[700], icon: southSeaSentiment.harbor[500] },
+    // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
+    // sentiment hue at full strength reads as more visually prominent than
+    // body text despite having a lower luminance-contrast ratio (saturation,
+    // not just lightness, drives perceived prominence); 65% keeps the hue
+    // identifiable while quieting it below both `text` and plain body copy.
+    positive: { surface: southSeaSentiment.lagoon[100], border: southSeaSentiment.lagoon[200], text: southSeaSentiment.lagoon[700], icon: `color-mix(in srgb, ${southSeaSentiment.lagoon[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.coral[100], border: southSeaSentiment.coral[200], text: southSeaSentiment.coral[600], icon: `color-mix(in srgb, ${southSeaSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: southSeaSentiment.sunlight[100], border: southSeaSentiment.sunlight[200], text: southSeaSentiment.sunlight[700], icon: `color-mix(in srgb, ${southSeaSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: southSeaSentiment.tide[100], border: southSeaSentiment.tide[200], text: southSeaSentiment.tide[700], icon: `color-mix(in srgb, ${southSeaSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
   },
   radius: southSeaRadius,
   space: southSeaSpace,
@@ -166,10 +173,10 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     onAccent: southSeaDarkPrimitives.conchInk,
     onAccentSubtle: southSeaDarkPrimitives.cream,
     focusRing: southSeaDarkPrimitives.conchBright,
-    positive: { surface: southSeaSentiment.sage[800], border: southSeaSentiment.sage[600], text: southSeaSentiment.sage[300], icon: southSeaSentiment.sage[400] },
-    negative: { surface: southSeaSentiment.clay[800], border: southSeaSentiment.clay[700], text: southSeaSentiment.clay[300], icon: southSeaSentiment.clay[400] },
-    warn: { surface: southSeaSentiment.honey[800], border: southSeaSentiment.honey[600], text: southSeaSentiment.honey[300], icon: southSeaSentiment.honey[400] },
-    info: { surface: southSeaSentiment.harbor[800], border: southSeaSentiment.harbor[600], text: southSeaSentiment.harbor[300], icon: southSeaSentiment.harbor[400] },
+    positive: { surface: southSeaSentiment.lagoon[800], border: southSeaSentiment.lagoon[600], text: southSeaSentiment.lagoon[300], icon: `color-mix(in srgb, ${southSeaSentiment.lagoon[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.coral[800], border: southSeaSentiment.coral[700], text: southSeaSentiment.coral[300], icon: `color-mix(in srgb, ${southSeaSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: southSeaSentiment.sunlight[800], border: southSeaSentiment.sunlight[600], text: southSeaSentiment.sunlight[300], icon: `color-mix(in srgb, ${southSeaSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: southSeaSentiment.tide[800], border: southSeaSentiment.tide[600], text: southSeaSentiment.tide[300], icon: `color-mix(in srgb, ${southSeaSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
   },
   radius: southSeaRadius,
   space: southSeaSpace,

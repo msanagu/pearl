@@ -1,27 +1,20 @@
-import { recipe } from '@vanilla-extract/recipes';
 import { style } from '@vanilla-extract/css';
-import { color, controlHeight, fontFamily, fontWeight, space, text } from '../../tokens';
-import { fieldControlHeight, fieldPaddingX } from './fieldSize.css';
+import { color, fontFamily, fontWeight, space, text } from '../../tokens';
 
-// `size` is exposed as CSS custom properties on the container, not injected
-// as a React prop — that's how a nested `Input` picks it up without Field
-// forcing a `size` prop onto arbitrary children (on a native `<select>`,
-// `size` sets the visible row count, not a scale). sm and md share padding
-// on purpose — only lg steps up.
-export const field = recipe({
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: space.xs,
-  },
-  variants: {
-    size: {
-      sm: { vars: { [fieldControlHeight]: controlHeight.sm, [fieldPaddingX]: space.md } },
-      md: { vars: { [fieldControlHeight]: controlHeight.md, [fieldPaddingX]: space.md } },
-      lg: { vars: { [fieldControlHeight]: controlHeight.lg, [fieldPaddingX]: space.lg } },
-    },
-  },
-  defaultVariants: { size: 'md' },
+// Label, hint, and error carry NO left inset — they sit flush with the
+// control's border box, which is also where a `Card.Header` heading and every
+// other block in a card sits. One vertical rule for the whole form.
+//
+// Two insets were tried and both were wrong. Matching the control's *text*
+// padding (16px) aligns the label to the value but breaks it away from the
+// card's content edge. Matching the control's corner radius (12px) lands
+// between the two, agreeing with neither — a 4px offset from the value reads as
+// a bug rather than a decision. The control's own text is unavoidably indented
+// because it is inside a box; nothing outside the box should imitate that.
+export const field = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.xs,
 });
 
 export const label = style({
@@ -30,8 +23,12 @@ export const label = style({
   lineHeight: text.bodySm.lineHeight,
   fontWeight: fontWeight.medium,
   color: color.text,
-  paddingLeft: fieldPaddingX,
 });
+
+// Neutral marker — carries no styling of its own. A theme's stylesheet
+// (e.g. tahitian.css.ts) can target `${fieldMeta} ${label}` etc. to apply
+// theme-specific label/hint/error treatment without other themes inheriting it.
+export const fieldMeta = style({});
 
 // A required mark reads as attention, not an error — reuses the same
 // sentiment color as `error` but the label carries no `role="alert"`, so
@@ -45,7 +42,6 @@ export const hint = style({
   fontSize: text.bodySm.fontSize,
   lineHeight: text.bodySm.lineHeight,
   color: color.textSubtle,
-  paddingLeft: fieldPaddingX,
 });
 
 // Error needs its own sentiment color — Text's `prominence` prop only covers
@@ -61,7 +57,6 @@ export const errorRow = style({
   display: 'flex',
   alignItems: 'center',
   gap: space.xs,
-  paddingLeft: fieldPaddingX,
 });
 
 // Sized to bodySm's cap-height, not Icon's 20px default sized for standalone

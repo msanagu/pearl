@@ -4,7 +4,7 @@ import { Icon } from '../Icon';
 import { Button } from './Button';
 
 /**
- * A native `<button>` with token-driven `variant`/`size`. Renders
+ * A native `<button>` with a token-driven `variant`. Renders
  * `data-component="button"` so downstream teams can target it via the
  * documented override contract (see docs/foundations/override-patterns.md) instead of
  * reaching for internal class names.
@@ -20,19 +20,13 @@ const meta: Meta<typeof Button> = {
   args: {
     children: 'Button',
     variant: 'primary',
-    size: 'md',
   },
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['primary', 'secondary', 'tertiary'],
+      options: ['primary', 'secondary'],
       description:
-        'Visual style. `primary` for the main call-to-action per surface, `secondary` for supporting actions, `tertiary` for a text-only, low-emphasis action.',
-    },
-    size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg'],
-      description: 'Height on the 8px grid (32/40/48) — aligns with Field inputs.',
+        'Visual style. `primary` for the main call-to-action per surface, `secondary` for supporting actions.',
     },
     disabled: {
       control: 'boolean',
@@ -47,24 +41,27 @@ export const Primary: Story = {
   args: { variant: 'primary' },
 };
 
+/**
+ * `secondary` carries a visible border in its **resting** state — in every
+ * theme and every mode — not only on hover.
+ *
+ * Two reasons, both documented in
+ * docs/foundations/control-affordances.md:
+ *
+ * 1. **It makes the button alignable.** The box is wider than the label by
+ *    its horizontal padding. With no resting edge that padding is invisible,
+ *    so the only thing to align against is the glyphs — and a button aligned
+ *    by its glyphs sits `space.lg` proud of the column once its real edge
+ *    appears.
+ * 2. **It keeps buttons distinct from links.** A control that is bare text
+ *    until you touch it reads as a link; once bare text is sometimes a
+ *    button, neither affordance is trustworthy anywhere on the page.
+ *
+ * For a genuinely text-only action, ask for link affordances (underline or
+ * accent color at rest) — not a button variant with its edges removed.
+ */
 export const Secondary: Story = {
   args: { variant: 'secondary' },
-};
-
-export const Sizes: Story = {
-  render: (args) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      <Button {...args} size="sm">
-        Small
-      </Button>
-      <Button {...args} size="md">
-        Medium
-      </Button>
-      <Button {...args} size="lg">
-        Large
-      </Button>
-    </div>
-  ),
 };
 
 export const Disabled: Story = {
@@ -85,7 +82,7 @@ export const WithIcon: Story = {
       </Button>
       <Button {...args} variant="secondary">
         Open Menu
-         <Icon icon={PiCaretDown} size={12} />
+        <Icon icon={PiCaretDown} size={16} />
       </Button>
     </div>
   ),
