@@ -317,14 +317,17 @@ const OBJECTIVES: Record<ObjectiveId, Objective> = {
 };
 
 // Body is a neutral sans; display/heading always resolve to a DIFFERENT family
-// (Impeccable `single-font`: pair display + body). `display` is Boska, a
-// self-hosted display serif — even if the file 404s it falls back to another
-// serif, still distinct from the sans body. None of the named faces are in
-// Impeccable's OVERUSED_FONTS list (verified in generateTheme.impeccable.test).
+// (Impeccable `single-font`: pair display + body). `display` is Boska, a real
+// self-hosted display serif (see boska.css.ts) — even if the file 404s it
+// falls back to another serif, still distinct from the sans body. `sans` and
+// `serif` are plain system-font stacks, zero-cost for MVP — no named webfont
+// is self-hosted for them, so no paid/aspirational face is named here either.
+// None of the named faces are in Impeccable's OVERUSED_FONTS list (verified
+// in generateTheme.impeccable.test).
 const FONT_STACKS = {
-  sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
-  serif: "'Gambetta', Georgia, 'Times New Roman', serif",
-  display: "'Boska', 'Gambetta', Georgia, serif",
+  sans: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+  serif: "Georgia, 'Times New Roman', serif",
+  display: "'Boska', Georgia, serif",
 } as const;
 
 /** The body face family (first non-generic token) — everything else must differ. */

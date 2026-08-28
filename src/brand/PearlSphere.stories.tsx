@@ -13,10 +13,26 @@ const meta: Meta<typeof PearlSphere> = {
   title: 'Brand/Pearl Sphere',
   component: PearlSphere,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
 };
 export default meta;
 
 type Story = StoryObj<typeof PearlSphere>;
 
-export const Sphere: Story = {};
+function PearlSphereCentered() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
+      <PearlSphere />
+    </div>
+  );
+}
+
+export const Sphere: Story = {
+  render: () => <PearlSphereCentered />,
+};

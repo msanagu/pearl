@@ -8,7 +8,8 @@ import { Input } from '../components/Input';
 import { Field } from '../components/Field';
 import { Alert } from '../components/Alert';
 import { Text } from '../components/Text';
-import { pearlLightThemeClass } from '../themes/pearl.css';
+import { Stack } from '../components/Stack';
+import { Row } from '../components/Row';
 
 /**
  * Pearl component audit — runs Impeccable's deterministic detectors against the
@@ -26,19 +27,16 @@ import { pearlLightThemeClass } from '../themes/pearl.css';
 // A representative sampler of Pearl's component surface at realistic width.
 function PearlSampler() {
   return (
-    <div
-      className={pearlLightThemeClass}
-      style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 960 }}
-    >
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+    <Stack gap="2xl" style={{ padding: 32, maxWidth: 960 }}>
+      <Row gap="md" wrap align="center">
         <Button size="sm">Primary sm</Button>
         <Button>Primary md</Button>
         <Button size="lg">Primary lg</Button>
         <Button variant="secondary">Secondary</Button>
-      </div>
+      </Row>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
-        <Card>
+      <Row gap="lg" wrap>
+        <Card style={{ flex: '1 1 300px' }}>
           <Card.Header>
             <Text typeScale="headingSm" as="h3">
               Profile
@@ -48,7 +46,7 @@ function PearlSampler() {
             <Text typeScale="bodyMd">Manage how your account appears to your team.</Text>
           </Card.Body>
         </Card>
-        <Card>
+        <Card style={{ flex: '1 1 300px' }}>
           <Card.Header>
             <Text typeScale="headingSm" as="h3">
               Billing
@@ -60,9 +58,9 @@ function PearlSampler() {
             </Field>
           </Card.Body>
         </Card>
-      </div>
+      </Row>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <Stack gap="sm">
         <Alert variant="positive" heading="Saved">
           Your changes have been published.
         </Alert>
@@ -75,9 +73,9 @@ function PearlSampler() {
         <Alert variant="info" heading="New feature">
           Team workspaces are now available.
         </Alert>
-      </div>
+      </Stack>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Stack gap="xs">
         <Text typeScale="displaySm" as="h2">
           Built to change
         </Text>
@@ -91,8 +89,8 @@ function PearlSampler() {
         <Text typeScale="bodySm" role="preheading">
           Foundations / 01
         </Text>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 }
 

@@ -73,26 +73,6 @@ export const button = recipe({
           '(prefers-reduced-motion: reduce)': { transition: 'none' },
         },
       },
-      // Text-only, no fill or border — the accent underline carries the
-      // affordance, but only appears on hover so the resting state stays
-      // truly subtle. Padding/height stay the same as primary/secondary
-      // (not reduced to fit the text) so the click target doesn't shrink.
-      // A transparent border (not `border: none`) keeps the box model
-      // identical at rest and on hover, so nothing shifts when it animates in.
-      tertiary: {
-        background: 'transparent',
-        color: color.text,
-        borderBottom: '1px solid transparent',
-        borderRadius: 0,
-        transition: 'color 200ms ease, border-color 200ms ease',
-        selectors: {
-          '&:not(:disabled):hover': { color: color.accent, borderColor: color.accent },
-          '&:not(:disabled):active': { color: color.text, borderColor: color.text },
-        },
-        '@media': {
-          '(prefers-reduced-motion: reduce)': { transition: 'none' },
-        },
-      },
     },
     size: {
       sm: {

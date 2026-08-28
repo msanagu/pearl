@@ -51,10 +51,6 @@ export const Secondary: Story = {
   args: { variant: 'secondary' },
 };
 
-export const Tertiary: Story = {
-  args: { variant: 'tertiary' },
-};
-
 export const Sizes: Story = {
   render: (args) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

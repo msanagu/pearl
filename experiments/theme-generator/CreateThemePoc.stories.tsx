@@ -10,7 +10,7 @@ import { Icon } from '../../src/components/Icon/Icon';
 import { PiLightning, PiShieldCheck, PiSparkle, PiChartLineUp } from 'react-icons/pi';
 import { color } from '../../src/tokens';
 import { pearlLightThemeClass } from '../../src/themes/pearl.css';
-import '../fonts/boska.css'; // self-hosted display face used by the generated theme
+import '../../src/fonts/boska.css'; // self-hosted display face used by the generated theme
 import {
   DEFAULT_INPUT,
   OBJECTIVE_OPTIONS,
@@ -557,6 +557,9 @@ function RefineChip({
 const meta: Meta<typeof CreateThemePoc> = {
   title: 'POC/CreateTheme',
   component: CreateThemePoc,
+  // Hidden from the sidebar — algorithmic-taste exploration, not a showcased
+  // template. Still built/reachable by direct URL, just not nav-visible.
+  tags: ['!dev'],
   parameters: { layout: 'fullscreen', removePreviewPadding: true },
 };
 

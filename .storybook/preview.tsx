@@ -30,7 +30,7 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical', // Optional: sorts remaining items alphabetically
-        order: ['Foundations', 'Brand', 'Components', '*'],
+        order: ['Foundations', 'Brand', 'Components', 'Templates', 'POC', '*'],
       },
     },
   },
