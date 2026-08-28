@@ -92,6 +92,7 @@ export const vars = createThemeContract({
     accentHover: null,
     accentSubtle: null,
     onAccent: null,
+    onAccentSubtle: null,
     // Focus
     focusRing: null,
     // Sentiment — each { surface, border, text, icon }. Application-named (not

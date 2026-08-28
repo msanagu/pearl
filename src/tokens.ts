@@ -85,6 +85,8 @@ export interface ColorTokens {
   accentSubtle: CSSVarFunction;
   /** Text/icon on an accent fill. */
   onAccent: CSSVarFunction;
+  /** Text/icon on a subtle accent surface. */
+  onAccentSubtle: CSSVarFunction;
   /** Focus ring color. */
   focusRing: CSSVarFunction;
   /** Success / upward / gain. */

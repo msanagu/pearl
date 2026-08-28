@@ -8,6 +8,7 @@ type FlexVariants = NonNullable<RecipeVariants<typeof flex>>;
 export interface FlexBoxProps extends HTMLAttributes<HTMLElement>, FlexVariants {
   /** The rendered element. Defaults to `div`. */
   as?: ElementType;
+  noValidate?: boolean;
   className?: string;
   children?: ReactNode;
 }

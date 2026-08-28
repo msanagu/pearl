@@ -32,15 +32,14 @@ import { vars } from '../theme.css';
  */
 
 // ---- Type primitives (named by what they ARE — no roles assigned here) ----
-// Aspirational stacks: only Boska is self-hosted so far (see boska.css.ts).
-// `ideal` names the paid faces the exploration specified (4c font note).
+// Zero-cost for MVP: no webfont files are self-hosted or loaded for Pearl
+// yet (unlike South Sea's Boska — see boska.css.ts), so these are plain
+// system-font stacks, not named faces standing in for a paid font. Revisit
+// once/if a free face (e.g. a Fontshare OFL family) is actually self-hosted.
 export const pearlFonts = {
-  /** shown: General Sans · ideal: Neue Haas Grotesk */
-  sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
-  /** shown: Gambetta italic · ideal: Signifier italic */
-  serif: "'Gambetta', Georgia, 'Times New Roman', serif",
-  /** shown: IBM Plex Mono · ideal: Söhne Mono */
-  mono: "'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace",
+  sans: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+  serif: "Georgia, 'Times New Roman', serif",
+  mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
 
 // ---- Color primitives ----
@@ -205,6 +204,7 @@ export const pearlLightThemeClass = createTheme(vars, {
     accentHover: squidInk[900],
     accentSubtle: marineLayer[100],
     onAccent: alabaster[300],
+    onAccentSubtle: squidInk[900],
     focusRing: marineLayer[100],
 
     positive: { surface: pearlSentiment.sage[100], border: pearlSentiment.sage[200], text: pearlSentiment.sage[700], icon: pearlSentiment.sage[500] },
@@ -252,6 +252,7 @@ export const pearlDarkThemeClass = createTheme(vars, {
     accentHover: alabaster[100], // chalk
     accentSubtle: marineLayer[400],
     onAccent: squidInk[900],
+    onAccentSubtle: squidInk[900],
     focusRing: marineLayer[100],
 
     positive: { surface: pearlSentiment.sage[800], border: pearlSentiment.sage[600], text: pearlSentiment.sage[300], icon: pearlSentiment.sage[400] },

@@ -135,6 +135,7 @@ export const tahitianLightThemeClass = createTheme(vars, {
     accentHover: tahitianLightPrimitives.aubergineDeep,
     accentSubtle: tahitianLightPrimitives.aubergineMist,
     onAccent: tahitianLightPrimitives.chalk,
+    onAccentSubtle: tahitianLightPrimitives.ink,
     focusRing: tahitianLightPrimitives.aubergine,
 
     positive: { surface: tahitianSentiment.sage[100], border: tahitianSentiment.sage[300], text: tahitianSentiment.sage[700], icon: tahitianSentiment.sage[500] },
@@ -179,6 +180,7 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     accentHover: tahitianDarkPrimitives.orchidBright,
     accentSubtle: tahitianDarkPrimitives.aubergineDusk,
     onAccent: tahitianDarkPrimitives.aubergineInk,
+    onAccentSubtle: tahitianDarkPrimitives.moonlight,
     focusRing: tahitianDarkPrimitives.orchid,
 
     positive: { surface: tahitianSentiment.sage[800], border: tahitianSentiment.sage[600], text: tahitianSentiment.sage[200], icon: tahitianSentiment.sage[400] },

@@ -1,52 +1,55 @@
 import { createTheme } from '@vanilla-extract/css';
 import { vars } from '../theme.css';
-// Side-effect import — registers the real Boska @font-face rules.
-import '../fonts/boska.css';
 
 /**
- * South Sea — one of Pearl's three named themes
- * (docs/fable5-handoff-three-themes.md). **Rough sketch, not a final
- * identity** — warm gold/amber accent (South Sea pearls are famously golden;
- * deliberately NOT purple, to stay clear of Tahitian's aubergine) for the
- * luxury register; neutrals are still the generic placeholder scale. Replace
- * with real authored values once the Fable 5 visual exploration comes back —
- * file/export names stay stable.
+ * South Sea — "Golden Hour Maison" (docs/theme/theme-revision-decisions.md
+ * §5). Sources: turn **1g** (flagship) → **3c** ("Atelier Detail") →
+ * **11a/11b** (conch/chocolate light + dark) → **13a** (footer).
  *
- * Display/heading font is Boska (real files — see boska.css.ts), not an
- * aspirational stack like Tahitian/Freshwater's fonts currently are.
+ * Flat warm ecru surface, chocolate ink, conch (`#E8A184`) doing exactly one
+ * small loud thing per view, radius 0 throughout. Identity is type/space/
+ * restraint — **no named effect**; the Theme Contract's "champagne luster"
+ * is fabricated and deliberately not implemented here.
+ *
+ * Type is roman + italic serif mixing with a hairline rule in the gap
+ * (`southSea.roles.ts`'s `inlineEmphasis`). The spec's ideal faces (a
+ * "roman + italic" editorial serif pairing) aren't self-hosted — this uses
+ * Georgia, a free system serif with a genuine (not synthesized) italic, so
+ * the roman/italic mix stays real rather than an oblique fake.
  *
  * Two color tiers (ADR-0005): `*Primitives` are raw named hexes; the
  * `*ThemeClass` calls map them onto semantic roles. Scales are this theme's
- * own — not shared with Tahitian/Freshwater (see `theme.css.ts`'s contract
- * comment on the corrected inverse-token model for the `*Inverse` fields).
+ * own — not shared with Pearl/Tahitian/Freshwater.
  */
 
 export const southSeaLightPrimitives = {
-  linen: '#ffffff',
-  cloud: '#f4f4f5',
-  ink: '#111113',
-  slate: '#5b5b60',
-  mist: '#e4e4e7',
-  fog: '#c8c8cd',
-  haze: '#f0f0f2',
-  gold: '#B8863F',
-  goldDeep: '#8F6529',
-  goldMist: '#FBF1DE',
-  scrim: 'rgba(17, 17, 19, 0.5)',
+  ecru: '#F5EFE4',
+  ecruDeep: '#EFE6D6',
+  chocolate: '#3B2A1F',
+  // Darkened from the initial #8A7361 sample — that swatch only hit 3.9:1 on
+  // `ecru`, failing WCAG AA normal-text (4.5:1); this hits 4.95:1.
+  taupe: '#786353',
+  hairline: '#DDD0BC',
+  hairlineStrong: '#CBBA9E',
+  hairlineSubtle: '#E9E1D0',
+  conch: '#E8A184',
+  conchDeep: '#D9895F',
+  conchMist: '#FBE9DF',
+  scrim: 'rgba(59, 42, 31, 0.5)',
 };
 
 export const southSeaDarkPrimitives = {
-  abyss: '#0e0e10',
-  charcoal: '#1a1a1d',
-  moonlight: '#f5f5f7',
-  ash: '#a0a0a7',
-  shadow: '#2c2c30',
-  graphite: '#45454b',
-  onyx: '#202024',
-  amber: '#D9A752',
-  amberBright: '#E6BC72',
-  goldDusk: '#3A2C14',
-  goldInk: '#1A1206',
+  chocolateDeep: '#241811',
+  chocolate: '#2E2016',
+  cream: '#F3E9DA',
+  fawn: '#B8A48E',
+  umber: '#4A3626',
+  umberStrong: '#5E4732',
+  umberSubtle: '#382919',
+  conch: '#E8A184',
+  conchBright: '#F0B79C',
+  conchDusk: '#3A2419',
+  conchInk: '#241108',
   scrim: 'rgba(0, 0, 0, 0.6)',
 };
 
@@ -60,19 +63,26 @@ export const southSeaSentiment = {
   harbor: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
-const southSeaRadius = { control: '6px', surface: '10px', full: '9999px' };
+// Radius 0 throughout — flat maison geometry, not a rounded-corner register.
+const southSeaRadius = { control: '0px', surface: '0px', full: '9999px' };
 // rem, not px (16px root) — spacing/control-height scale with a user's base
 // font-size preference, not just page zoom. Same reasoning as pearl.css.ts.
 const southSeaSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
 const southSeaControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const southSeaFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
-// Boska is a real, embedded font (boska.css.ts) — display/heading use it
-// directly, no fallback-only aspiration. Body stays a clean neutral sans for
-// reading text.
+// Zero-cost for MVP: Georgia is the roman+italic editorial serif carrying
+// display/heading; body stays a clean neutral sans. No paid face named —
+// see the file header for why Boska (South Sea's old placeholder face) was
+// dropped: it has no italic style registered, and the maison identity's
+// roman/italic mix needs a real one.
+export const southSeaFonts = {
+  serif: "Georgia, 'Times New Roman', serif",
+  sans: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+};
 const southSeaFontFamily = {
-  display: "'Boska', 'Georgia', 'Times New Roman', serif",
-  heading: "'Boska', 'Georgia', 'Times New Roman', serif",
-  body: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+  display: southSeaFonts.serif,
+  heading: southSeaFonts.serif,
+  body: southSeaFonts.sans,
 };
 const southSeaText = {
   caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 16px 8-grid
@@ -88,32 +98,32 @@ const southSeaText = {
 
 export const southSeaLightThemeClass = createTheme(vars, {
   color: {
-    background: southSeaLightPrimitives.linen,
-    surface: southSeaLightPrimitives.cloud,
+    background: southSeaLightPrimitives.ecru,
+    surface: southSeaLightPrimitives.ecruDeep,
     overlay: southSeaLightPrimitives.scrim,
-    // Placeholder — South Sea doesn't have its own alpha-neutral primitive yet
-    // (see pearl.css.ts's `inkAlpha` for the pattern to follow when it does).
-    overlaySubtle: 'rgba(0, 0, 0, 0.08)',
-    backgroundInverse: southSeaDarkPrimitives.abyss,
-    surfaceInverse: southSeaDarkPrimitives.charcoal,
-    text: southSeaLightPrimitives.ink,
-    textSubtle: southSeaLightPrimitives.slate,
-    textInverse: southSeaDarkPrimitives.moonlight,
-    textInverseSubtle: southSeaDarkPrimitives.ash,
-    border: southSeaLightPrimitives.mist,
-    borderStrong: southSeaLightPrimitives.fog,
-    borderSubtle: southSeaLightPrimitives.haze,
-    borderInverse: southSeaDarkPrimitives.shadow,
-    shadow: southSeaLightPrimitives.fog,
-    // Still a placeholder theme (see file header) — primary passes through
-    // to the existing accent fill; no dedicated CTA color authored yet.
-    primary: southSeaLightPrimitives.gold,
-    onPrimary: southSeaLightPrimitives.goldMist,
-    accent: southSeaLightPrimitives.gold,
-    accentHover: southSeaLightPrimitives.goldDeep,
-    accentSubtle: southSeaLightPrimitives.goldMist,
-    onAccent: southSeaLightPrimitives.linen,
-    focusRing: southSeaLightPrimitives.gold,
+    overlaySubtle: 'rgba(59, 42, 31, 0.08)',
+    backgroundInverse: southSeaDarkPrimitives.chocolateDeep,
+    surfaceInverse: southSeaDarkPrimitives.chocolate,
+    text: southSeaLightPrimitives.chocolate,
+    textSubtle: southSeaLightPrimitives.taupe,
+    textInverse: southSeaDarkPrimitives.cream,
+    textInverseSubtle: southSeaDarkPrimitives.fawn,
+    border: southSeaLightPrimitives.hairline,
+    borderStrong: southSeaLightPrimitives.hairlineStrong,
+    borderSubtle: southSeaLightPrimitives.hairlineSubtle,
+    borderInverse: southSeaDarkPrimitives.umber,
+    shadow: southSeaLightPrimitives.hairlineStrong,
+    // Conch is the one loud accent — reused for `primary` and `accent` rather
+    // than authoring a second CTA hue: the maison identity is "one small
+    // loud thing per view," not two.
+    primary: southSeaLightPrimitives.conch,
+    onPrimary: southSeaLightPrimitives.chocolate,
+    accent: southSeaLightPrimitives.conch,
+    accentHover: southSeaLightPrimitives.conchDeep,
+    accentSubtle: southSeaLightPrimitives.conchMist,
+    onAccent: southSeaLightPrimitives.chocolate,
+    onAccentSubtle: southSeaLightPrimitives.chocolate,
+    focusRing: southSeaLightPrimitives.conchDeep,
     positive: { surface: southSeaSentiment.sage[100], border: southSeaSentiment.sage[200], text: southSeaSentiment.sage[700], icon: southSeaSentiment.sage[500] },
     negative: { surface: southSeaSentiment.clay[100], border: southSeaSentiment.clay[200], text: southSeaSentiment.clay[600], icon: southSeaSentiment.clay[500] },
     warn: { surface: southSeaSentiment.honey[100], border: southSeaSentiment.honey[200], text: southSeaSentiment.honey[700], icon: southSeaSentiment.honey[500] },
@@ -129,30 +139,33 @@ export const southSeaLightThemeClass = createTheme(vars, {
 
 export const southSeaDarkThemeClass = createTheme(vars, {
   color: {
-    background: southSeaDarkPrimitives.abyss,
-    surface: southSeaDarkPrimitives.charcoal,
+    background: southSeaDarkPrimitives.chocolateDeep,
+    surface: southSeaDarkPrimitives.chocolate,
     overlay: southSeaDarkPrimitives.scrim,
-    overlaySubtle: 'rgba(255, 255, 255, 0.10)', // placeholder, see light mode's comment above
-    backgroundInverse: southSeaLightPrimitives.linen,
-    surfaceInverse: southSeaLightPrimitives.cloud,
-    text: southSeaDarkPrimitives.moonlight,
-    textSubtle: southSeaDarkPrimitives.ash,
-    textInverse: southSeaLightPrimitives.ink,
-    textInverseSubtle: southSeaLightPrimitives.slate,
-    border: southSeaDarkPrimitives.shadow,
-    borderStrong: southSeaDarkPrimitives.graphite,
-    borderSubtle: southSeaDarkPrimitives.onyx,
-    borderInverse: southSeaLightPrimitives.mist,
-    shadow: southSeaDarkPrimitives.graphite,
-    // Still a placeholder theme (see file header) — primary passes through
-    // to the existing accent fill; no dedicated CTA color authored yet.
-    primary: southSeaDarkPrimitives.amber,
-    onPrimary: southSeaDarkPrimitives.goldDusk,
-    accent: southSeaDarkPrimitives.amber,
-    accentHover: southSeaDarkPrimitives.amberBright,
-    accentSubtle: southSeaDarkPrimitives.goldDusk,
-    onAccent: southSeaDarkPrimitives.goldInk,
-    focusRing: southSeaDarkPrimitives.amber,
+    overlaySubtle: 'rgba(255, 255, 255, 0.10)',
+    backgroundInverse: southSeaLightPrimitives.ecru,
+    surfaceInverse: southSeaLightPrimitives.ecruDeep,
+    text: southSeaDarkPrimitives.cream,
+    textSubtle: southSeaDarkPrimitives.fawn,
+    textInverse: southSeaLightPrimitives.chocolate,
+    textInverseSubtle: southSeaLightPrimitives.taupe,
+    border: southSeaDarkPrimitives.umber,
+    borderStrong: southSeaDarkPrimitives.umberStrong,
+    borderSubtle: southSeaDarkPrimitives.umberSubtle,
+    borderInverse: southSeaLightPrimitives.hairline,
+    shadow: southSeaDarkPrimitives.umberStrong,
+    // Conch stays the same hue across modes (11a/11b) — a mode-invariant
+    // swatch, same model as Pearl's sentiment steps — brightened one notch
+    // (`conchBright`) only where it sits as hover feedback against the dark
+    // ground, not as a second accent.
+    primary: southSeaDarkPrimitives.conch,
+    onPrimary: southSeaDarkPrimitives.conchInk,
+    accent: southSeaDarkPrimitives.conch,
+    accentHover: southSeaDarkPrimitives.conchBright,
+    accentSubtle: southSeaDarkPrimitives.conchDusk,
+    onAccent: southSeaDarkPrimitives.conchInk,
+    onAccentSubtle: southSeaDarkPrimitives.cream,
+    focusRing: southSeaDarkPrimitives.conchBright,
     positive: { surface: southSeaSentiment.sage[800], border: southSeaSentiment.sage[600], text: southSeaSentiment.sage[300], icon: southSeaSentiment.sage[400] },
     negative: { surface: southSeaSentiment.clay[800], border: southSeaSentiment.clay[700], text: southSeaSentiment.clay[300], icon: southSeaSentiment.clay[400] },
     warn: { surface: southSeaSentiment.honey[800], border: southSeaSentiment.honey[600], text: southSeaSentiment.honey[300], icon: southSeaSentiment.honey[400] },
