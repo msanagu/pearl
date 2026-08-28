@@ -3,8 +3,8 @@ import { Text } from '../../components/Text/Text';
 import { Button } from '../../components/Button/Button';
 import { Row } from '../../components/Row/Row';
 import { Stack } from '../../components/Stack/Stack';
-import { color, space } from '../../tokens';
-import { concentricRadius } from '../../foundations/concentricRadius';
+import { color, radius, space, text } from '../../tokens';
+import { Card } from '../../components/Card/Card';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const HEADER_H = 61;
@@ -90,19 +90,48 @@ function ButtonDocs(): ReactNode {
         </Text>
       </Stack>
 
-      <div id="emphases" style={{ background: color.surface, border: `1px solid ${color.border}`, borderRadius: concentricRadius(space.xl), padding: space.xl }}>
-        <Row justify="between" align="center" wrap style={{ gap: space.lg }}>
-          <Row gap="md" align="center" wrap>
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-          </Row>
-        </Row>
+      {/* A real Card, not a div reimplementing one inline — it was duplicating
+          Card's surface/border/radius by hand and drifting from it. `lg` rather
+          than `xl`: the derived radius is correct at any padding, but a specimen
+          this short has little straight edge left to show for it. */}
+      <div id="emphases">
+        <Card padding="lg">
+          <Stack gap="md">
+            <Text role="preheading" typeScale="caption" prominence="subtle" as="p">Variants</Text>
+            <Row gap="md" align="center" wrap>
+              <Button variant="primary">Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+            </Row>
+          </Stack>
+        </Card>
       </div>
 
-      <div style={{ background: color.backgroundInverse, borderRadius: concentricRadius(space.lg), padding: space.lg }}>
-        <code style={{ fontFamily: MONO, fontSize: 14, color: color.textInverse }}>
-          {'<Button variant="secondary">Inspect tokens</Button>'}
-        </code>
+      {/* `radius.control`, NOT a concentric derivation: nothing is nested here.
+          The rule applies to a control inside a surface, and this holds text —
+          deriving `control + padding` on a single-line block just makes a
+          lozenge. `pre` (not a bare `code`) is what stops the snippet wrapping
+          mid-attribute; long lines scroll rather than reflow. */}
+      <div
+        style={{
+          background: color.backgroundInverse,
+          borderRadius: radius.control,
+          cornerShape: radius.cornerShape,
+          padding: space.lg,
+          overflowX: 'auto',
+        }}
+      >
+        <pre style={{ margin: 0 }}>
+          <code
+            style={{
+              fontFamily: MONO,
+              fontSize: text.bodySm.fontSize,
+              lineHeight: text.bodySm.lineHeight,
+              color: color.textInverse,
+            }}
+          >
+            {'<Button variant="secondary">Inspect tokens</Button>'}
+          </code>
+        </pre>
       </div>
 
       <div id="props"><PropsTable /></div>
