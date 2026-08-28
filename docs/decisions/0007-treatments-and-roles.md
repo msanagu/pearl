@@ -31,10 +31,15 @@ with every theme supplying its own angle, speed, size, blend, and stops.
 
 `luster` is Pearl's, for a specific brand object (a nacre sphere) and a specific
 material metaphor. Tahitian has `overtone` — alpha teal/violet stops over
-grayscale photography at `blend: screen`, imagery only. Freshwater has `wash` —
-a stationary near-white tint marking semantic regions. South Sea has `glow` (placeholder).
-These are not four values of one slot; they differ structurally, not just in
-value.
+grayscale photography at `blend: screen`, imagery only. Freshwater's proposed
+`wash` — a stationary near-white tint marking semantic regions — and South
+Sea's proposed `glow` were the handoff's placeholders for the same slot; as of
+2026-08-28 neither has shipped as an extension treatment (South Sea's role
+table states "No effect treatments" outright, and Freshwater has no roles
+file yet). This is itself evidence for the decision below: two of four themes
+having nothing to fill the slot with is the "no effect" case rule 1 exists to
+make expressible, not a gap in this ADR's model. These are not four values of
+one slot; they differ structurally, not just in value.
 
 The handoff's own code shows what forcing them into one slot costs.
 `Pearl Theme Contract.dc.html:508` hardcodes a theme name to escape the contract
@@ -221,7 +226,7 @@ Applied to the additions this revision proposed, canon grew by **zero**:
 
 | Proposed | Verdict |
 |---|---|
-| `fontFamily.mono` | Not a role — a typeface classification. Belongs to the per-theme font primitives (two-tier tokens, ADR-0005, tier 1), which the contract's own comment at `theme.css.ts:107` already anticipated and never built. |
+| `fontFamily.mono` | Not a role — a typeface classification. Belongs to the per-theme font primitives (two-tier tokens, ADR-0005, tier 1), which the contract's own comment at `theme.css.ts:161-163` already anticipated and never built. |
 | `fontFamily.accent` | Passes rule 1, but which face plays a role is itself a theme distinction — it lives in the role layer, not canon. |
 | `color.chrome.{bg,ink}` | Rejected. Not a new role: "the one loud cell per view" is a usage pattern of the existing inverse group, so adding it gives two ways to express one thing. (Also: do not use the word "chrome" in this system.) |
 
@@ -229,15 +234,20 @@ Applied to the additions this revision proposed, canon grew by **zero**:
 
 Spiked end-to-end on 2026-07-19 — typecheck, `vite build`, emitted CSS inspected.
 
-**Optional roles** come from a `defineTheme()` factory, not from the
-contract. The consumer supplies a `DeepPartial`; the factory deep-merges over
-house defaults and hands `createTheme` a complete object. The contract stays
-total, so the compile-time guarantee survives — it just doesn't have to be typed
-out.
+**Optional roles** were spiked against a hypothetical `defineTheme()` factory
+that would deep-merge a `DeepPartial` over house defaults and hand
+`createTheme` a complete object, keeping the contract total without typing it
+out by hand. **Status (2026-08-28): not built.** No such factory exists in
+source — each theme currently calls vanilla-extract's `createTheme` directly
+in its own `*.css.ts` (e.g. `pearl.css.ts`, `tahitian.css.ts`). The spike below
+still describes the verified underlying mechanism (`createTheme`'s inferred,
+type-checked contract); `defineTheme()` itself is a proposed convenience
+wrapper around it, not a shipped one.
 
 **Extension treatments** use vanilla-extract's single-argument
 `createTheme(tokens)` overload, which *infers* a contract from whatever object it
-is given and returns `[className, vars]` — no pre-declaration:
+is given and returns `[className, vars]` — no pre-declaration. The spike used a
+`defineTheme()` wrapper for illustration:
 
 ```ts
 export const mistTheme = defineTheme({
@@ -250,6 +260,9 @@ export const mistTheme = defineTheme({
 
 mistTheme.ext.dissolve.speed; // typed; a misspelling is a compile error
 ```
+
+but the underlying mechanism it wraps is just `createTheme(tokens)` itself —
+this is what Pearl's actual `pearlTreatments` export does today (`pearl.css.ts`).
 
 Confirmed in build output: four real custom properties emitted in their own
 class, composed with the base theme class. The inferred contract is genuinely

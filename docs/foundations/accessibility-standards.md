@@ -40,8 +40,12 @@ compliance with something unfinished.
 
 ## Applied per-component (examples so far)
 
-- **Alert** — `role="alert"` or `role="status"` with proper `aria-live` semantics so
-  screen readers actually announce state changes.
+- **Alert** — `role="alert"` on `negative`/`warn` variants only, an assertive live
+  region for the two variants urgent enough to interrupt on mount. `positive`/`info`
+  carry no role. `role="status"` (polite live region) is deliberately unused today —
+  Alert is rendered statically, not mutated in place, so there's nothing for a live
+  region to announce a change to; it's reserved for `Toast`, which will render Alert
+  inside a portal with auto-dismiss.
 - **Field** — coordinated `id` / `aria-describedby` / `aria-invalid` wiring between
   label, hint, error, and the wrapped input.
 - **Icon** — inline SVG, accessible naming (or explicitly hidden from assistive tech when

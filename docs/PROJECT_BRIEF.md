@@ -27,7 +27,7 @@ fact (see ADR-0008; the manifest this predicts is not yet built — that's the
 next phase of the experiment, not a settled result). A component library is
 the testbed, not the deliverable.
 
-**Repo:** `~/Code/design-system` (separate from any other project in this
+**Repo:** `~/Code/pearl` (separate from any other project in this
 environment — don't conflate with sibling repos). Docs-first: `docs/` was
 populated with philosophy/convention decisions before any component code
 existed. `docs/OPEN_QUESTIONS.md` is the live tracker for what's still
@@ -50,9 +50,9 @@ That framing is load-bearing for anyone reading or advising on this repo:
   ADRs, applied to the whole project.
 - **Being wrong is a valid outcome.** An approach that gets tried, documented,
   and then reversed is the method working, not a failure — the reversal and its
-  reasoning are the artifact. Several already exist in the repo's history
-  (see `docs/TODO-concentric-radius.md`, which records two rejected attempts
-  alongside the one that shipped).
+  reasoning are the artifact. Several already exist in the repo's history (see
+  `docs/foundations/radius-system.md` and `docs/theme/theme-revision-decisions.md`,
+  which record rejected radius attempts alongside the one that shipped).
 - **Do not optimize advice for "ship it."** Suggestions that preserve the
   ability to test, measure, and reverse a decision are worth more here than
   suggestions that harden one. Where a conventional answer exists, saying so is
@@ -176,7 +176,7 @@ MCP server that detects this pattern automatically across repos
 
 ## Component roadmap and build status
 
-Ten components shipped, typed, tested, and themed across four themes (Pearl,
+Eleven components shipped, typed, tested, and themed across four themes (Pearl,
 Tahitian, Freshwater, South Sea) × light/dark. `experiments/` (typechecked, excluded from the library build and
 Storybook) holds an earlier multi-tenant-SaaS direction that scope-narrowed
 back to the design system itself — kept for what it taught, not shipped.
@@ -193,6 +193,7 @@ back to the design system itself — kept for what it taught, not shipped.
 | 6 | **Field** | ✅ shipped | label/hint/error coordination via render-prop child injection, `required` support (native + `aria-required`, decorative `*`), error paired with an icon matching Alert's negative sentiment |
 | 7 | **Input** | ✅ shipped | native `<input>` wrapper, single fixed height matching Button |
 | 8 | **Stack** / **Row** | ✅ shipped | `FlexBox`-backed, vertical/horizontal |
+| 9 | **Tag** | ✅ shipped | static, non-interactive label — `neutral` + Alert-matching sentiment variants; interactive/removable is a future `Chip`, not this |
 | — | Brand: `PearlSphere` | ✅ shipped | `src/brand/` — bespoke artwork, not a themeable canon component (see ADR-0007 on why it doesn't force a 5th theme) |
 | — | Progress Bar, Badge, Grid | planned | native-vs-custom (Progress Bar) and build-vs-adopt calls deferred to implementation time |
 

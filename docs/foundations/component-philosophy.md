@@ -10,9 +10,10 @@ a signal it should be composed instead of configured.
 presence, or its relationship to another part?** If not, default to compound
 sub-components or plain `children` — the root shouldn't need to know a part exists
 (Card's `Header`/`Body`). A prop is legitimate exactly when the root does need to
-broker that — Alert's `heading` shifts where its icon sits, Field's `required`
-suppresses its own visual mark because the control's own `aria-required` already
-announces it. A bare boolean/enum with no such coupling is always compositional —
+broker that — Alert's `heading` shifts where its icon sits, Field's `required` renders
+a static, visible `*` but marks it `aria-hidden` because the control's own
+`aria-required` already announces it — the mark stays purely visual, never suppressed.
+A bare boolean/enum with no such coupling is always compositional —
 that's the common case, not the whole test. See ADR-0002 for the worked examples.
 
 ## Smart defaults, always escapable
@@ -43,10 +44,14 @@ contract.
 
 ## The compound-component exception (stated explicitly, not accidental)
 
-Compound components (e.g. `Tabs`, `Tabs.List`, `Tabs.Trigger`) use React Context to let
-sibling sub-components coordinate — this is a deliberate, bounded exception to "dumb
-outside its four walls," not a violation of it. The rule: **siblings within a component
-family may coordinate; a component must never reach outside its own family.**
+A compound component (root + sub-components sharing React Context so siblings can
+coordinate — e.g. a future `Tabs`/`Tabs.List`/`Tabs.Trigger` needing to agree on which
+tab is active) is a deliberate, bounded exception to "dumb outside its four walls," not
+a violation of it. The rule: **siblings within a component family may coordinate; a
+component must never reach outside its own family.** No component in this system uses
+Context today — `Card.Header`/`Card.Body` are static-property namespacing with no shared
+state (see ADR-0002) — so this exception is documented ahead of its first real use, not
+retrofitted to one.
 
 **When to use compound components:** only when sub-parts need to genuinely coordinate
 state or behavior (which tab is active, matching `id`s for ARIA relationships). If
@@ -60,8 +65,9 @@ DRY (avoiding repeated *data*) is not free — it often trades data duplication 
 complexity. Before unifying two things into one abstraction, ask: **is the thing being
 unified structurally guaranteed to stay simple, or just simple today?**
 
-- Safe to unify: closed, stable properties (e.g. `Stack`'s `direction: 'row' | 'column'`
-  is exactly one CSS property toggle, not going to grow surprise cases).
+- Safe to unify: closed, stable properties (e.g. the shared `FlexBox` primitive's
+  `direction: 'row' | 'column'` is exactly one CSS property toggle, not going to grow
+  surprise cases — `Stack` and `Row` each fix it to one value rather than exposing it).
 - Risky to unify: open-ended, divergent concerns (e.g. icon "variants" like outline vs.
   filled vs. duotone aren't guaranteed to be a clean transform of one shape into another).
 

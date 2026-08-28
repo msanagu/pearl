@@ -96,8 +96,8 @@ export function HeroNav({
 /**
  * The Pearl marketing hero — composed from existing primitives (`Text`,
  * `Button`, `Row`, `Stack`, `Icon`, `PearlSphere`). Gaps where the system has
- * no home yet (a full-bleed layout primitive, a `measure` prop on `Text`)
- * are flagged inline rather than smoothed over.
+ * no home yet (a full-bleed layout primitive) are flagged inline rather than
+ * smoothed over.
  *
  * The top bar is deliberately minimal utility chrome, NOT the docs sidebar
  * pulled up early.
@@ -152,9 +152,7 @@ export function Hero({
             The world is your{' '}
             <Text as="span" role="inlineEmphasis">oyster.</Text>
           </Text>
-          {/* GAP — no `measure` prop on `Text` yet to cap prose line length;
-              `maxWidth` via the style escape hatch stands in for now. */}
-          <Text typeScale="bodyLg" prominence="subtle" as="p" style={{ maxWidth: '52ch' }}>
+          <Text typeScale="bodyLg" prominence="subtle" as="p" measure="lg">
             Not a doc that goes stale. A type the compiler checks. Every
             theme's rules are data — structured, queryable, and impossible to
             drift from what actually ships.
@@ -175,31 +173,37 @@ export function Hero({
       </Row>
 
       <div>
-        <Row className={css.features} style={{ ...heroContentStyle, borderTop: `1px solid ${color.border}`, borderBottom: `1px solid ${color.border}` }}>
-          {/* The index numbers act as preheadings here — decorative, supporting
-              the label below rather than data — so they get `role="preheading"`
-              rather than `dataDigits` (reserved for real tabular/data digits). */}
-          {stats.map((s, i) => (
-            <Stack
-              className={css.feature}
-              key={s.n}
-              gap="xs"
-              style={{
-                flex: '1 1 200px',
-                padding: space.xl,
-                borderLeft: i > 0 ? `1px solid ${color.border}` : undefined,
-              }}
-            >
-              <Text role="preheading" as="span" typeScale="headingMd">{s.n}</Text>
-              <Text typeScale="bodyMd" weight="semibold" as="span">
+        {/* GAP — no Grid composition primitive; `Row` is flex-only, and this
+            strip needs an intrinsic `auto-fit` grid (see Hero.css.ts), so the
+            container is vanilla. */}
+        <div className={css.features} style={{ ...heroContentStyle, borderTop: `1px solid ${color.border}`, borderBottom: `1px solid ${color.border}` }}>
+          {stats.map((s) => (
+            <Stack className={css.feature} key={s.n} gap="sm">
+              {/* Hierarchy: the LABEL is the anchor, not the index. The number
+                  was `headingMd` — larger than the label it introduces, so the
+                  eye landed on "01" and had to travel back for the point. It
+                  keeps its mono `preheading` face (the motif is the strip's
+                  character) but drops to caption size and subtle prominence,
+                  which is what an ordinal actually is: a position marker, not
+                  a value. `dataDigits` stays reserved for real tabular data. */}
+              <Text role="preheading" as="span" typeScale="caption" prominence="subtle">
+                {s.n}
+              </Text>
+              {/* Promoted from `bodyMd` + `weight="semibold"` to a real heading
+                  step. Same intent — the loudest thing in the cell — but stated
+                  through the scale rather than by bolding body text. */}
+              <Text typeScale="headingSm" as="h3" style={{ margin: 0 }}>
                 {s.label}
               </Text>
-              <Text typeScale="caption" prominence="subtle" as="span">
+              {/* `measure="sm"` caps the line at ~49 characters. At the grid's
+                  widest column the description would otherwise run to a single
+                  slab of text wider than it is comfortable to read. */}
+              <Text typeScale="bodySm" prominence="subtle" as="p" measure="sm" style={{ margin: 0 }}>
                 {s.description}
               </Text>
             </Stack>
           ))}
-        </Row>
+        </div>
       </div>
     </Stack>
   );

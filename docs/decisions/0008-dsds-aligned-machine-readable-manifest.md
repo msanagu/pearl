@@ -1,6 +1,6 @@
 ---
 id: ADR-0008
-title: Align manifest vocabulary with DSDS; do not depend on it
+title: DSDS-aligned machine-readable manifest
 status: proposed
 date: 2026-08-26
 deciders: [Mary San Agustin]
@@ -9,7 +9,7 @@ supersedes: null
 superseded_by: null
 ---
 
-# ADR-0008 — Align manifest vocabulary with DSDS; do not depend on it
+# ADR-0008 — DSDS-aligned machine-readable manifest
 
 ## Context
 
@@ -23,7 +23,7 @@ draft JSON schema for exactly this problem, authored by someone independently
 running evals on AI-agent design-system compatibility.
 
 ADR-0007's "Convergent external work" section already found that this
-project's treatments/assignments split independently matches DSDS's
+project's treatments/roles split independently matches DSDS's
 `Foundation` entity. That was evidence the shape is sound. This ADR is the
 follow-on decision: given that DSDS exists and partially validates this
 project's direction, how much of it — if any — does the eventual manifest
@@ -121,6 +121,25 @@ Explicitly **not** adopted, for now:
   `tsc`-driven generation step from the real types, not a hand-authored
   parallel schema.
 
+## Where `llms.txt` fits
+
+`llms.txt` (`llmstxt.org`) solves a different layer of the same problem and
+isn't a competing option for this decision. It's a flat, human-authored
+Markdown index — a sitemap for an LLM's context window, meant to be read at
+retrieval/inference time by an agent that doesn't have the repo checked out.
+The DSDS-shaped manifest here is the opposite: structured JSON, generated from
+the same source as the components and themes, meant to be read by a coding
+agent that *does* have the repo, so it can generate on-system code without
+guessing.
+
+They compose rather than overlap: a project root `llms.txt` would point out
+at this manifest (and at the handful of other documents — `project-brief.md`,
+the ADRs — worth an agent's attention) the same way it would point at any
+other doc. It's the discoverability layer *on top of* the manifest, not a
+substitute for it. Worth adding once the manifest itself exists and there's
+something for `llms.txt` to link to; adding it first would just be a list of
+links to documents that don't exist yet.
+
 ## Tradeoffs
 
 - **Positive:** the manifest, when built, starts from a shape one external
@@ -146,14 +165,22 @@ Explicitly **not** adopted, for now:
   reference doesn't guarantee correctness as a fit.
 - Cross-component composition rules grow numerous enough that the
   `relationships` graph's cost is worth paying.
+- The manifest ships and it's time to add a root `llms.txt` pointing at it —
+  see "Where `llms.txt` fits" above.
 
 ## Related
 
 - ADR-0004 (third-party dependency stance) — the same adopt-the-useful-part
   filter, applied here to a specification instead of a package.
-- ADR-0007 (treatments and assignments) — `Foundation` entity convergence,
+- ADR-0007 (treatments and roles) — `Foundation` entity convergence,
   the finding that motivated this ADR.
 - `project-brief.md` — states the manifest/MCP goal this ADR's decision will
   govern once built.
 - `docs/JOURNAL.md` — the "how lean can the prose layer get" thread that
   `agentDocumentBlocks` answers.
+- [designsystemdocspec.org/stability](https://designsystemdocspec.org/stability) —
+  DSDS's own stability statement, confirming the pre-1.0 read this ADR bases
+  Option A's rejection on. Credit where the vocabulary in items 1-4 above
+  actually comes from.
+- [llmstxt.org](https://llmstxt.org) — the discoverability convention this
+  manifest would sit behind once built; see "Where `llms.txt` fits" above.

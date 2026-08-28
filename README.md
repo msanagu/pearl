@@ -1,12 +1,15 @@
-# Design System
+# Pearl Design System
 
 A small, intentional, composition-first React component library — built as a
 portfolio project to demonstrate enterprise-grade design-system judgment:
 composition over configuration, a token/theme contract that makes the whole
 system reskinnable, a sanctioned downstream override contract, and
-accessibility as a first-class concern.
+accessibility, and AI-assisted development as a first-class concern.
 
-> **Status: Phase 0 — scaffold.** Toolchain only; no tokens or components yet.
+> **Status: eleven components shipped** (Button, Card, Text, Alert, Icon,
+> Field, Input, Stack, Row, Tag, plus the `PearlSphere` brand mark) across
+> four themes (Pearl, Tahitian, Freshwater, South Sea) × light/dark. See
+> `docs/PROJECT_BRIEF.md` for full build status.
 > The binding design decisions live in [`docs/`](./docs). Read those first.
 
 ## Stack

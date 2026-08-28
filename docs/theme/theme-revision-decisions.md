@@ -57,7 +57,7 @@ either. The shared-markup demo *manufactured* both.
 
 **Rule going forward:** these are theme-specific effects, not shared tokens
 (see the theme-effects decision record:
-[`docs/decisions/0007-treatments-and-assignments.md`](../decisions/0007-treatments-and-assignments.md)).
+[`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md)).
 They are theme-owned, optional, and carry their own names; a theme with none is
 normal. Our own four are declared through the same public mechanism a downstream
 author has — no privileged internal path.
@@ -135,7 +135,8 @@ and only `oyster.` is Gambetta italic. Same in 8a: "Nacre surface" sans,
 > edge straight, so it reads as a rectangle, and it restores `control` <
 > `surface` (12 < 16), which the pill had inverted. Tag and XButton keep
 > `radius.full` and stay pills by identity. See
-> [TODO-concentric-radius.md](../TODO-concentric-radius.md).
+> [foundations/radius-system.md](../foundations/radius-system.md) for the
+> shipped derivation.
 
 **Palette (light, from 4c):** background `#F5F3EF` · hairline `#DEDAD2` · ink
 `#17161A` · text `#6E6A78` · muted `#77737E` · primary
@@ -287,7 +288,7 @@ break, and precisely the failing text.
 ## 8. Contract changes required
 
 Filtered through the theme-effects decision record's
-([`docs/decisions/0007-treatments-and-assignments.md`](../decisions/0007-treatments-and-assignments.md))
+([`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md))
 leanness test — a slot enters `vars` only if every theme answers it honestly
 *and* a design system that isn't one of ours would need it too.
 
@@ -335,7 +336,7 @@ padding ramp.
 ## 9. Open questions
 
 - ~~**Effect namespacing mechanism.**~~ Resolved by the theme-effects decision
-  record ([`docs/decisions/0007-treatments-and-assignments.md`](../decisions/0007-treatments-and-assignments.md),
+  record ([`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md),
   `proposed`) — theme-owned, theme-named effects, each requiring a written
   description of where/how it applies. Pending acceptance.
 - **South Sea's `glow`** ⚠️ — recorded in §1.1 but reverses an earlier "South Sea
@@ -357,7 +358,7 @@ padding ramp.
 | Phase | Work | Status |
 |---|---|---|
 | 0 | Read exploration log, identify the accepted turns per theme | ✅ done — this doc |
-| 1 | Theme-effects decision record | ✅ drafted — [`docs/decisions/0007-treatments-and-assignments.md`](../decisions/0007-treatments-and-assignments.md), status `proposed` |
+| 1 | Theme-effects decision record | ✅ drafted — [`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md), status `proposed` |
 | 2 | **Write Pearl as a real theme file** | ✅ done — `pearl.css.ts`, `pearl.assignment.ts`, `assignment.ts`. Builds; the required-configuration rule verified enforced. **Review gate** |
 | 3 | Per-theme configuration decision record, written from what phase 2 reveals | |
 | 4 | Type primitive tier (two-tier tokens tier 1 for fonts — never built; see `theme.css.ts:107`) | |

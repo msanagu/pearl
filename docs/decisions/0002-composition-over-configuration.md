@@ -81,11 +81,11 @@ with zero exceptions across every component built so far:
   so none is used."
 - **Field's `required` mark is `aria-hidden`,** because the *control's own*
   `required`/`aria-required` already announces it — rendering the mark
-  without suppressing it would announce the same fact twice. `size` cascades
-  to a nested `Input` via CSS custom properties. Both are real cross-part
-  coordination Field's root has to broker, which is why `required`/`size` are
-  props and not left to the consumer to wire up between Field and Input by
-  hand.
+  without suppressing it would announce the same fact twice. Field also
+  broke `id`/`aria-describedby`/`aria-invalid` out as real cross-part
+  coordination: it hands them to its child via a children-as-function prop
+  rather than `cloneElement`, so `required` stays a Field prop instead of
+  something the consumer wires up between Field and its control by hand.
 
 Contrast: Button's icon has no such coupling — `children` lays out via
 internal flex + a token gap regardless of order — so it stays pure

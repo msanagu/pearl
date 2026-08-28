@@ -7,25 +7,29 @@ import { Card } from '../components/Card';
 import { Input } from '../components/Input';
 import { Field } from '../components/Field';
 import { Alert } from '../components/Alert';
+import { Tag } from '../components/Tag';
 import { Text } from '../components/Text';
 import { Stack } from '../components/Stack';
 import { Row } from '../components/Row';
 
 /**
- * Pearl component audit — runs Impeccable's deterministic detectors against the
- * REAL rendered Pearl components (in headless chromium, via the Storybook vitest
- * addon), so layout/contrast/shadow rules actually fire. This is the "promote
- * Mode B to a CI gate" step: the same engine that grades the theme-builder
- * preview now grades the design system itself, attributing each finding to the
+ * Component audit — runs Impeccable's deterministic detectors against the REAL
+ * rendered components (in headless chromium, via the Storybook vitest addon),
+ * so layout/contrast/shadow rules actually fire. This is the "promote Mode B to
+ * a CI gate" step: the same engine that grades the theme-builder preview now
+ * grades the design system itself, attributing each finding to the
  * `data-component` it lands on.
+ *
+ * Theme-agnostic by design — the story renders under whatever the Theme/Mode
+ * toolbar globals select, so the same gate covers every theme × mode pair.
  *
  * The `play` function fails with a grouped report if any non-advisory
  * anti-pattern is found, so `vitest --project=storybook` surfaces exactly what
- * Pearl needs to fix.
+ * needs to be fixed.
  */
 
-// A representative sampler of Pearl's component surface at realistic width.
-function PearlSampler() {
+// A representative sampler of the component surface at realistic width.
+function ComponentSampler() {
   return (
     <Stack gap="2xl" style={{ padding: 32, maxWidth: 960 }}>
       <Row gap="md" wrap align="center">
@@ -58,6 +62,14 @@ function PearlSampler() {
         </Card>
       </Row>
 
+      <Row gap="sm" wrap align="center">
+        <Tag variant="neutral">Neutral</Tag>
+        <Tag variant="positive">Active</Tag>
+        <Tag variant="negative">Deprecated</Tag>
+        <Tag variant="warn">Beta</Tag>
+        <Tag variant="info">New</Tag>
+      </Row>
+
       <Stack gap="sm">
         <Alert variant="positive" heading="Saved">
           Your changes have been published.
@@ -81,8 +93,8 @@ function PearlSampler() {
           A durable structure
         </Text>
         <Text typeScale="bodyLg">
-          Pearl keeps its defaults quiet enough for information, then lets a distinctive undertone
-          surface in the seams.
+          Defaults stay quiet enough for information, then let the active theme surface in the
+          seams.
         </Text>
         <Text typeScale="bodySm" role="preheading">
           Foundations / 01
@@ -92,24 +104,24 @@ function PearlSampler() {
   );
 }
 
-const meta: Meta<typeof PearlSampler> = {
-  title: 'Audit/Pearl',
-  component: PearlSampler,
+const meta: Meta<typeof ComponentSampler> = {
+  title: 'Audit/Components',
+  component: ComponentSampler,
   parameters: { layout: 'fullscreen' },
 };
 export default meta;
 
-type Story = StoryObj<typeof PearlSampler>;
+type Story = StoryObj<typeof ComponentSampler>;
 
 export const Components: Story = {
   render: () => (
     <StoryAudit>
-      <PearlSampler />
+      <ComponentSampler />
     </StoryAudit>
   ),
   play: async ({ canvasElement }) => {
     const { count, text } = await runImpeccableAudit(canvasElement);
-    // Locked gate: Pearl components must stay clean of Impeccable anti-patterns.
+    // Locked gate: components must stay clean of Impeccable anti-patterns in every theme.
     expect(count, text).toBe(0);
   },
 };

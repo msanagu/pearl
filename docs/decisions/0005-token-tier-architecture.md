@@ -77,7 +77,8 @@ semantic→primitive mappings and the ramps, not component-facing names.
 The tier split is what lets one palette serve unrelated intents. Primitives are
 named by hue (`green`, `red`, `amber`, `blue`), never by use. The feedback/status
 semantics are therefore keyed by **sentiment**, not feature — `positive`,
-`negative`, `warn`, `info` (each `{ surface, border, text, solid }`) — so the
+`negative`, `warn`, `info` (each `{ surface, border, text, icon }` — `icon` per
+ADR-0006, superseding the `solid` name this section originally used) — so the
 same tokens serve an Alert's error state, a metric's downward delta, and a diff's
 removed line, with a name that stays honest in every context (`negative`, not
 `danger`).
@@ -92,10 +93,10 @@ token names describe palette-meaning, component props describe component-meaning
 ## Implementation note (post-acceptance)
 
 The primitive tier landed as plain, module-scoped JS objects per theme file —
-`const tahitianLightPrimitives = { aubergine: '#624C5D', ... }` — not a second
+`const tahitianPearlColors = { aubergine: '#8C5A7D', ... }` — not a second
 vanilla-extract contract/`createGlobalTheme`. The semantic `createTheme(vars,
 {...})` call then references those primitives by name (`accent:
-tahitianLightPrimitives.aubergine`). Primitives are scoped per theme *and* per
+tahitianPearlColors.aubergine`). Primitives are scoped per theme *and* per
 mode (Tahitian's light and dark are two separate primitive objects) — a mode's
 `*Inverse` semantic fields reference the *other* mode's primitive object
 directly (see `theme.css.ts`'s contract comment), so they can't silently drift

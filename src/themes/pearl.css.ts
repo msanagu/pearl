@@ -27,7 +27,7 @@ import { vars } from '../theme.css';
  *
  * ## Treatments
  * `pearlTreatments.luster` is an **extension treatment** (see
- * `docs/decisions/0007-treatments-and-assignments.md`) — theme-owned, not a
+ * `docs/decisions/0007-treatments-and-roles.md`) — theme-owned, not a
  * canon slot, with required roles in `pearl.roles.ts`.
  */
 
@@ -222,7 +222,20 @@ export const pearlLightThemeClass = createTheme(vars, {
     accentSubtle: marineLayer[100],
     onAccent: alabaster[300],
     onAccentSubtle: squidInk[900],
-    focusRing: marineLayer[100],
+    /**
+     * Marine 600, not marine 100 — the one place the "same hex in both modes"
+     * symmetry below had to break.
+     *
+     * A focus ring is painted OUTSIDE the control, on the page, so the only
+     * contrast that matters is ring-vs-background. Marine 100 (#D7D5DF) against
+     * linen is 1.2:1 — in light mode the ring was, in practice, invisible on
+     * every control that draws one (Button, Card, Input, XButton). Marine 600 is
+     * 5.0:1, clearing the 3:1 non-text minimum. Dark mode keeps marine 100
+     * (12.4:1 on obsidian) — the step differs per mode precisely so the
+     * *relationship* to the background stays the same, which is the rule the
+     * palettes already follow everywhere else.
+     */
+    focusRing: marineLayer[600],
 
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
@@ -375,15 +388,145 @@ globalStyle(
   },
 );
 
-globalStyle(
-  `${pearlLightThemeClass} [data-component="button"][data-variant="primary"], ${pearlDarkThemeClass} [data-component="button"][data-variant="primary"]`,
-  { boxShadow: 'none' },
-);
+// ---- Primary button: "lacquered ink" ----
 
-globalStyle(
-  `${pearlLightThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover, ${pearlDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
-  { boxShadow: 'none', transform: 'none' },
-);
+/**
+ * Pearl's primary CTA. The canon recipe gives every theme a lifted, floating
+ * button (translateY + a spreading drop shadow); Pearl used to answer that by
+ * deleting it (`boxShadow: none`, `transform: none`), which left the flagship
+ * control with a flat ink slab and NO hover or press feedback at all — only the
+ * focus ring said the thing was interactive.
+ *
+ * This replaces the deletion with a real treatment — one that keeps the flat
+ * fill (the identity) and puts every affordance somewhere other than the fill's
+ * own surface. The model is a seated control, not a floating card: it never
+ * lifts, and it is grounded by a single contact shadow built from `color.shadow`
+ * diluted by negative spread, the same way Card does it, rather than by fading
+ * the token.
+ *
+ * Two earlier layers were tried and cut. A specular hairline along the top edge
+ * and a 1px inner edge ring both read as *borders* rather than as light: the
+ * inner ring drew a full stroke inside the fill, and the specular only made
+ * physical sense in light mode (in dark it painted a dark line along the top of
+ * a white button). The fill is now edge-to-edge in both modes.
+ *
+ * `accent` earns its place in the *states*, not the rest fill (the reasoning in
+ * `color.accent` still holds: accent is the quiet signal color, and Pearl's CTA
+ * is ink). Hover and press mix a little marine INTO the fill and bloom an
+ * `accentSubtle` halo — the same halo language `secondary` already uses on
+ * hover, so the two variants read as one system rather than two ideas.
+ */
+
+/** Both mode classes — for rules that are genuinely mode-agnostic. */
+const pearlButton = (variant: 'primary' | 'secondary' | null, state = '') =>
+  [pearlLightThemeClass, pearlDarkThemeClass].map((c) => sel(c, variant, state)).join(', ');
+
+/** One mode only. Nothing needs it today; kept because `pearlButton` is built on it. */
+const sel = (themeClass: string, variant: 'primary' | 'secondary' | null, state = '') =>
+  `${themeClass} [data-component="button"]${variant ? `[data-variant="${variant}"]` : ''}${state}`;
+
+const primaryCta = (state = '') => pearlButton('primary', state);
+
+/**
+ * Press occlusion. Black, not `color.shadow`, for the reason recorded on the
+ * dark theme's `shadow` token — an inset must DARKEN. Here that argument binds
+ * in *both* modes: light mode's `shadow` (#B8B5C6) is far lighter than the ink
+ * fill it would be painted inside, so it lightens the press instead of
+ * deepening it. This is occlusion inside the control, unrelated to elevation
+ * under it, so it is deliberately not a theme color slot.
+ */
+const ctaPress = 'rgba(0, 0, 0, 0.30)';
+
+/**
+ * Contact shadow. `color.shadow` is a SOLID token (marine 300 in light), so the
+ * blur-to-spread ratio is the only thing diluting it — and the previous
+ * `0 1px 2px -1px` barely diluted at all: the first pixel below the button
+ * measured #CFCDD7, a crisp hairline hugging the fill that read as yet another
+ * border. Widening the blur well past the spread turns the same token into an
+ * actual gradient of occlusion.
+ */
+const ctaGround = `0 2px 6px -3px ${vars.color.shadow}, 0 10px 20px -12px ${vars.color.shadow}`;
+const ctaGroundHover = `0 4px 10px -4px ${vars.color.shadow}, 0 14px 26px -14px ${vars.color.shadow}`;
+
+/**
+ * The focus ring, as a box-shadow pair rather than an `outline`.
+ *
+ * Two bugs forced this. First, `outline` is drawn as a plain rounded rect — it
+ * does NOT follow `corner-shape: squircle`, so on Pearl the ring's corners bowed
+ * away from the button's own and the `outline-offset` gap read as an uneven
+ * white band pinching at each corner. `box-shadow` follows the border box
+ * exactly, squircle included. Second, a ring needs 3:1 against what sits on BOTH
+ * of its sides; a single flush ring against an ink fill cannot clear that
+ * against the fill and the page at once. The 2px spacer in `background`
+ * reproduces what `outline-offset` gave us, so the ring is only ever judged
+ * against the page.
+ *
+ * (The spacer paints `background` even when the button sits on `surface` — in
+ * Pearl those are linen and porcelain, ~1.5 L* apart, so the seam is invisible.
+ * A theme with a high-contrast raised surface would need a different answer.)
+ */
+const ctaFocusRing = `0 0 0 2px ${vars.color.background}, 0 0 0 4px ${vars.color.focusRing}`;
+
+globalStyle(primaryCta(), {
+  boxShadow: ctaGround,
+  transition: 'background-color 180ms ease, box-shadow 200ms ease',
+  '@media': {
+    '(prefers-reduced-motion: reduce)': { transition: 'none' },
+  },
+});
+
+globalStyle(primaryCta(':not(:disabled):hover'), {
+  // Nacre, not a brightness step: mixing toward `accent` cools the ink in light
+  // mode and cools the chalk in dark, so hover is a *hue* event in both. A
+  // luminance step can't work symmetrically here — the dark-mode fill is
+  // already near-white, with nowhere brighter to go.
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 88%, ${vars.color.accent})`,
+  // Canon's lift is intentionally NOT restored — Pearl's controls stay seated.
+  transform: 'none',
+  boxShadow: `0 0 0 3px ${vars.color.accentSubtle}, ${ctaGroundHover}`,
+});
+
+globalStyle(primaryCta(':not(:disabled):active'), {
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 78%, ${vars.color.accent})`,
+  transform: 'none',
+  // Contact shadow gone, occlusion in: the surface is being pushed into the
+  // page, so the light it was sitting above goes away.
+  boxShadow: `inset 0 2px 5px ${ctaPress}, 0 0 0 2px ${vars.color.accentSubtle}`,
+});
+
+/**
+ * Focus, for BOTH variants — one ring, one color. An earlier revision recolored
+ * only `primary`'s outline to `accent`, which fixed its contrast and broke
+ * something worse: primary and secondary were then ringed in two different
+ * colors. Contrast is now fixed where it was actually wrong (the light theme's
+ * `focusRing` token, above), and both variants read the same token here.
+ *
+ * The `outline` stays declared but transparent. Forced-colors mode throws away
+ * box-shadows and would otherwise leave a focused button with no ring at all; a
+ * transparent outline is re-colored by the OS palette and takes over there.
+ */
+globalStyle(pearlButton(null, ':focus-visible'), {
+  outline: '2px solid transparent',
+  outlineOffset: '2px',
+});
+
+// Specificity: the hover/active rules above carry two pseudo-classes, so a
+// plain `:focus-visible` would lose to them and the ring would disappear the
+// moment the pointer entered a keyboard-focused button. Matching their weight
+// and sitting later in the file makes focus win, which is the right precedence —
+// a focus ring is an accessibility affordance, a hover halo is decoration.
+globalStyle(primaryCta(':not(:disabled):focus-visible'), {
+  boxShadow: `${ctaGround}, ${ctaFocusRing}`,
+});
+
+globalStyle(pearlButton('secondary', ':not(:disabled):focus-visible'), {
+  boxShadow: ctaFocusRing,
+});
+
+/** Nothing disabled should look lit or lifted; opacity alone left it floating. */
+globalStyle(primaryCta(':disabled'), {
+  boxShadow: 'none',
+});
 
 // ---- Extension treatment: luster ----
 

@@ -8,7 +8,30 @@ describe('Alert', () => {
     render(<Alert data-testid="alert">A message</Alert>);
     const el = screen.getByTestId('alert');
     expect(el).toHaveAttribute('data-component', 'alert');
-    expect(el).toHaveAttribute('role', 'alert');
+    expect(el).not.toHaveAttribute('role');
+  });
+
+  it('sets role="alert" only on the urgent variants', () => {
+    const { rerender } = render(
+      <Alert data-testid="alert" variant="negative">
+        Error
+      </Alert>,
+    );
+    expect(screen.getByTestId('alert')).toHaveAttribute('role', 'alert');
+
+    rerender(
+      <Alert data-testid="alert" variant="warn">
+        Warning
+      </Alert>,
+    );
+    expect(screen.getByTestId('alert')).toHaveAttribute('role', 'alert');
+
+    rerender(
+      <Alert data-testid="alert" variant="positive">
+        Success
+      </Alert>,
+    );
+    expect(screen.getByTestId('alert')).not.toHaveAttribute('role');
   });
 
   it('renders heading and children', () => {

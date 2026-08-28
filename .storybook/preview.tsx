@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react-vite';
+import { useGlobals, useEffect, useRef } from 'storybook/preview-api';
 import '@fontsource/anton/400.css';
 import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
@@ -21,6 +22,17 @@ const themeMatrix: Record<string, Record<'light' | 'dark', string>> = {
   southSea: { light: southSeaLightThemeClass, dark: southSeaDarkThemeClass },
 };
 
+// The mode each theme wants to be met in. Tahitian's palette is built around
+// black-lip nacre — its dark pair is the canonical read, and light is the
+// variant. Pearl is the inverse. Picking a theme in the toolbar snaps the mode
+// to this default; picking a mode afterwards still overrides it freely.
+const themeDefaultMode: Record<string, 'light' | 'dark'> = {
+  pearl: 'light',
+  tahitian: 'dark',
+  freshwater: 'light',
+  southSea: 'dark',
+};
+
 const preview: Preview = {
   parameters: {
       layout: 'fullscreen',
@@ -35,7 +47,7 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical', // Optional: sorts remaining items alphabetically
-        order: ['Foundations', 'Brand', 'Components', 'Templates', 'POC', '*'],
+        order: ['Foundations', 'Brand', 'Components', 'Templates', 'Audit', "*"],
       },
     },
   },
@@ -49,8 +61,8 @@ const preview: Preview = {
         items: [
           { value: 'pearl', title: 'Pearl' },
           { value: 'tahitian', title: 'Tahitian' },
-          { value: 'freshwater', title: 'Freshwater' },
-          { value: 'southSea', title: 'South Sea' },
+          // { value: 'freshwater', title: 'Freshwater' },
+          // { value: 'southSea', title: 'South Sea' },
         ],
         dynamicTitle: true,
       },
@@ -68,14 +80,27 @@ const preview: Preview = {
       },
     },
   },
-  // Tahitian dark is the flagship first-render (per product direction).
   // Pearl is the flagship and the theme the docs site is pinned to.
   initialGlobals: { theme: 'pearl', mode: 'light' },
 
   decorators: [
     (Story, context) => {
+      const [, updateGlobals] = useGlobals();
       const theme = (context.globals.theme as string) ?? 'pearl';
       const mode = (context.globals.mode as 'light' | 'dark') ?? 'light';
+
+      // Snap the mode to the incoming theme's default *on a theme switch only*.
+      // The ref seeds on first render so `initialGlobals` and a `?globals=`
+      // deep link still win — this reacts to the toolbar, it doesn't preempt it.
+      const previousTheme = useRef<string | null>(null);
+      useEffect(() => {
+        const changed = previousTheme.current !== null && previousTheme.current !== theme;
+        previousTheme.current = theme;
+        const preferred = themeDefaultMode[theme];
+        if (changed && preferred && preferred !== mode) {
+          updateGlobals({ mode: preferred });
+        }
+      }, [theme]);
       const themeClass = themeMatrix[theme]?.[mode] ?? pearlLightThemeClass;
       // Each theme's extension treatments (the CSS vars its `overtone`/
       // `luster` gradients read) ride alongside its canon class. Themes

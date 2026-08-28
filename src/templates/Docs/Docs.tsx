@@ -5,6 +5,7 @@ import { Row } from '../../components/Row/Row';
 import { Stack } from '../../components/Stack/Stack';
 import { color, radius, space, text } from '../../tokens';
 import { Card } from '../../components/Card/Card';
+import { navLink, scrollRegion } from './Docs.css';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const HEADER_H = 61;
@@ -26,8 +27,8 @@ function NavGroup({ heading, items, current }: { heading: string; items: string[
           <a
             key={item}
             href="#"
+            className={navLink}
             style={{
-              textDecoration: 'none',
               padding: `${space.xs} ${space.sm}`,
               borderLeft: `2px solid ${isCurrent ? color.accent : 'transparent'}`,
               background: isCurrent ? color.accentSubtle : 'transparent',
@@ -112,6 +113,7 @@ function ButtonDocs(): ReactNode {
           lozenge. `pre` (not a bare `code`) is what stops the snippet wrapping
           mid-attribute; long lines scroll rather than reflow. */}
       <div
+        className={scrollRegion}
         style={{
           background: color.backgroundInverse,
           borderRadius: radius.control,
@@ -174,7 +176,7 @@ export function Docs() {
           <Stack gap="sm">
             <Text role="preheading" as="p" prominence="subtle">On this page</Text>
             {onThisPage.map((item, index) => (
-              <a key={item} href="#" style={{ textDecoration: 'none' }}>
+              <a key={item} href="#" className={navLink}>
                 <Text typeScale="bodySm" as="span" prominence={index === 0 ? 'default' : 'subtle'}>{item}</Text>
               </a>
             ))}

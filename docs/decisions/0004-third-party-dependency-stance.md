@@ -50,8 +50,8 @@ categories of libraries up front.
 ## Decision
 
 1. **Build-from-scratch is the default.** Anything without hidden algorithmic or
-   invisible-until-broken complexity (Button, Card, Alert, Badge, Field,
-   Progress Bar, layout primitives) is built in-house — adopting a dep there is
+   invisible-until-broken complexity (Button, Card, Alert, Tag, Field,
+   layout primitives) is built in-house — adopting a dep there is
    over-engineering.
 2. **When adopting, adopt _headless only._** Only unstyled behavior/logic/a11y
    primitives are eligible. **Styled component kits that must be wrestled and

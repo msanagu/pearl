@@ -11,8 +11,18 @@ export const button = recipe({
     justifyContent: 'center',
     gap: space.sm,
     height: controlHeight.md,
-    paddingLeft: space.lg,
-    paddingRight: space.lg,
+    // `height` (with `box-sizing: border-box`) is what actually sizes the
+    // button, so this padding never changes the rendered box — but declaring
+    // it is not cosmetic. Left unset, the computed value is the UA's `1px`
+    // (which `appearance: none` does not clear), and any audit or theme that
+    // reads padding to reason about breathing room sees a cramped control.
+    // This states the real inset the flex centering already produces.
+    // Invariant: every theme's `controlHeight.md` must stay above
+    // `bodyMd`'s line box + 2 × space.sm + 2px border.
+    paddingTop: space.sm,
+    paddingBottom: space.sm,
+    paddingLeft: space.md,
+    paddingRight: space.md,
     fontSize: text.bodyMd.fontSize,
     // Without this, `secondary`'s 1px border adds to its content-box height
     // on top of the shared `height` variant value while `primary` (no

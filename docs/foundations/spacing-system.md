@@ -123,8 +123,8 @@ calc(radius.control + radius.nesting * <this card's padding>)
 
 `radius.nesting` is `'1'` or `'0'`, so a hard-edged theme zeroes the padding
 term and the whole expression collapses to its `control` (`0px`). One formula,
-no per-theme branching. See
-[TODO-concentric-radius.md](../TODO-concentric-radius.md).
+no per-theme branching. See [radius-system.md](radius-system.md) for the
+shipped derivation and its rejected alternatives.
 
 ### When a composed value is the wrong answer entirely
 
@@ -140,8 +140,8 @@ all?" A derived value that tracks the wrong thing is worse than a literal,
 because it looks principled.
 
 A second cross-scale form (`calc(radius.controlEffective + radius.nesting *
-space.md)`) is **proposed, not shipped** — see
-[TODO-concentric-radius.md](../TODO-concentric-radius.md).
+space.md)`) is **proposed, not shipped** — see [radius-system.md](radius-system.md)
+for what shipped instead.
 
 ## Enforcement
 
@@ -165,10 +165,14 @@ values — legitimacy is checkable from the operands alone.
   default) rather than a bespoke value, so nested components inherit consistent rhythm.
 - **Icon** — sizes land on the grid (16px, 20px, 24px, 32px) so icons align cleanly with
   text and other components regardless of context.
-- **Button** — a single fixed height (2.5rem ≈ 40px) landing on the same 8px-equivalent
-  grid, so buttons align cleanly against Field inputs and other controls in the same row.
-- **Badge / Progress Bar** — small controls are where the `xs` (4px) escape hatch earns
-  its keep; full 8px padding on a small pill often looks bloated.
+- **Button** — height is the shared `controlHeight.md` token (ADR-0005's density lever),
+  not a value Button picks itself — the same token Input consumes, so the two land at an
+  identical height and align cleanly in the same row regardless of theme. Padding is
+  still declared on Button (`paddingTop`/`paddingBottom: space.sm`), but with an explicit
+  `height` and `box-sizing: border-box` it doesn't change the rendered box; it states the
+  real inset so anything reasoning about breathing room doesn't see a cramped control.
+- **Progress Bar** — not yet built; small controls are where the `xs` (4px) escape hatch
+  will earn its keep once it exists.
 
 ## Grouping: gap ratios, not gap values
 

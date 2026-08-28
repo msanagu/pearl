@@ -2,9 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Hero } from './Hero';
 import heroSource from './Hero.tsx?raw';
 import { templateSource } from '../templateSource';
-import { pearlBrandWordmark } from '../../themes/pearl.roles';
-import { tahitianBrandWordmark } from '../../themes/tahitian.roles';
-import { southSeaBrandWordmark } from '../../themes/south-sea.roles';
+import { brandWordmarkForTheme } from '../../themes/brandWordmark';
 
 /**
  * The marketing hero, composed from existing primitives (`Text`, `Button`,
@@ -18,12 +16,6 @@ import { southSeaBrandWordmark } from '../../themes/south-sea.roles';
  * hero currently reuses it under its own palette rather than a poster-plate
  * visual per 14a/14b.
  */
-const brandWordmarkByTheme: Record<string, { text: string; role?: 'inlineEmphasis' }> = {
-  pearl: pearlBrandWordmark,
-  tahitian: tahitianBrandWordmark,
-  southSea: southSeaBrandWordmark,
-};
-
 const meta: Meta<typeof Hero> = {
   title: 'Templates/Hero',
   component: Hero,
@@ -31,8 +23,7 @@ const meta: Meta<typeof Hero> = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story, context) => {
-      const theme = (context.globals.theme as string) ?? 'pearl';
-      const wordmark = brandWordmarkByTheme[theme] ?? pearlBrandWordmark;
+      const wordmark = brandWordmarkForTheme(context.globals.theme as string | undefined);
       return (
         <Story
           args={{

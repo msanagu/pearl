@@ -98,8 +98,8 @@ content.
 
 - **Positive:**
   - The reskin thesis is demonstrable end-to-end (proven: `dist/index.css`
-    is pure CSS custom properties; a light theme resolves under
-    `lightThemeClass`).
+    is pure CSS custom properties; each theme resolves under its own
+    generated theme class, e.g. `pearlThemeClass`).
   - Components stay decoupled from theming — they reference `vars.*` only and
     never branch on brand/mode.
   - **DRY angle:** one token contract, defined once, is the single source every
@@ -128,4 +128,4 @@ content.
 - `docs/foundations/token-jsdoc-wrapper.md` — the accessor pattern this ADR commits to.
 - `../foundations/override-patterns.md` — the override contract whose specificity guarantee depends on VE's output shape (see its engine-dependency note).
 - `docs/OPEN_QUESTIONS.md` #11 — the open question this ADR resolves.
-- Code: `src/theme.css.ts`, `src/themes/light.css.ts`, `src/tokens.ts`, `src/components/Button/Button.css.ts`.
+- Code: `src/theme.css.ts`, `src/themes/pearl.css.ts`, `src/tokens.ts`, `src/components/Button/Button.css.ts`.

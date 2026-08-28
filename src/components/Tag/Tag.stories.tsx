@@ -42,7 +42,7 @@ export const Info: Story = {
 };
 
 export const CategoricalGroup: Story = {
-  name: 'Categorical group (e.g. skills)',
+  name: 'Categorical Group',
   render: () => (
     <Row gap="xs" wrap style={{ maxWidth: 360 }}>
       <Tag>Token architecture</Tag>

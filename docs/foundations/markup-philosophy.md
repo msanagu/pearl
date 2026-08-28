@@ -59,9 +59,10 @@ component yet, so today that's assembled by hand.
 ## Where it's genuinely contested: components with no native element
 
 Some components (Alert, Badge) have no native HTML5 equivalent — there's no `<alert>` or
-`<badge>` element. For these, a `<div>` with the appropriate ARIA role (`role="alert"` /
-`role="status"` for Alert) is not a compromise of this philosophy — it's simply where
-native HTML doesn't offer anything to defer to in the first place.
+`<badge>` element. For these, a `<div>` with the appropriate ARIA role is not a
+compromise of this philosophy — it's simply where native HTML doesn't offer anything to
+defer to in the first place. Alert's role varies by variant rather than being one fixed
+value — see accessibility-standards.md.
 
 ## Where it's a real trade-off: Progress Bar
 

@@ -56,7 +56,9 @@ current by hand when a real, compiled one already exists.
 
 Applies retroactively to the seven components that had `@example`: Alert,
 Card, Field, Input, Row, Stack, Text — each already has a story demonstrating
-the same usage.
+the same usage, except Row, which has no `.stories.tsx` yet (2026-08-28) —
+removing its `@example` outran the story that was meant to replace it; a
+Row story is owed.
 
 ## Tradeoffs
 

@@ -1,5 +1,12 @@
 # Radius System
 
+**This is an experiment, not a settled design-system stance.** It shipped
+2026-08-28 as a live trial of concentric derivation — Pearl's default card
+radius grew from an authored 16px to a derived 36px as a direct consequence,
+which is a real, debatable identity change, not a neutral refactor. Treat
+every number and rule below as provisional until it has been judged in
+Storybook and lived with for a while, not as prior art to defend.
+
 One authored corner per theme. Everything else is geometry.
 
 ## The contract

@@ -64,6 +64,19 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
  * mechanism that renders this same component in a portal with auto-dismiss),
  * not a different visual component.
  */
+// `negative`/`warn` are urgent enough to interrupt assistive tech on mount —
+// `role="alert"` is an assertive live region. `positive`/`info` are static
+// confirmations, not urgent, so they carry no role at all. `role="status"`
+// (polite live region) is deliberately not used here: it exists for content
+// that changes in place after mount — which is exactly what `Toast` (see
+// this component's own doc comment) will need once it renders Alert inside
+// a portal with auto-dismiss. A statically-rendered Alert never mutates, so
+// there's nothing for a live region to announce a change to.
+const roleByVariant: Partial<Record<AlertVariant, 'alert'>> = {
+  negative: 'alert',
+  warn: 'alert',
+};
+
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ variant = 'info', heading, icon, onDismiss, className, children, ...rest }, ref) => {
     const IconComponent = icon ?? defaultIconByVariant[variant];
@@ -72,7 +85,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     return (
       <div
         ref={ref}
-        role="alert"
+        role={roleByVariant[variant]}
         data-component="alert"
         className={clsx(alert({ variant }), className)}
         {...rest}

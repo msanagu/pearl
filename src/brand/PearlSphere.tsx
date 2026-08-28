@@ -11,7 +11,12 @@ import * as css from './PearlSphere.css';
  */
 export function PearlSphere() {
   return (
-    <div className={css.sphereWrap}>
+    // `ai-color-palette` is allowlisted here, and only here. The detector reads
+    // gradient stops without their alpha, so luster's `seaGreen`
+    // (`rgba(158, 214, 196, 0.38)`, hue 160.7deg) scores as a cyan gradient
+    // despite never rendering as one over the pale nacre body. Scoped to this
+    // subtree and this one rule — every other finding still gates.
+    <div className={css.sphereWrap} data-impeccable-allow="ai-color-palette">
       <div className={css.contact} aria-hidden="true" />
       <div className={css.body} />
     </div>
