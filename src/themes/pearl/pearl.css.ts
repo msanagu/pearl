@@ -641,3 +641,30 @@ globalStyle(
     transform: pearlTreatments.luster.driftTo,
   },
 );
+
+// ---- 9a: "Nacre, after dark — same token, deeper stops" ----
+//
+// Same `cardHover` mechanism above, re-stopped for dark mode: the header
+// comment on `pearlTreatments` already flagged "Dark-mode values are
+// [derived]; 4c only specifies light" — 9a is the source turn that actually
+// supplies them (`silver.850 · marine.850 · seagreen.900 · 3.5s`, vs light's
+// `driftDuration`/`driftOpacityDuration` pair of 1000ms/700ms). Same relative
+// dominance as light's own comment ("marine dominant, silver undertone,
+// seagreen a thin late breath") — just deeper steps, hence "same token."
+//
+// No named `silver`/`marine`/`seagreen` scale reaches an 850/900 step
+// anywhere else in this file (`marineLayer` tops out at 600) — these are
+// approximated to match 9a's labeled swatches (not legible to exact hex in
+// the reference capture), not read off an existing scale.
+globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {
+  background: [
+    // marine.850 (#332F3D) — dominant, matching light mode's own ordering.
+    `radial-gradient(ellipse at center, rgba(51, 47, 61, 0.30) 0%`,
+    // silver.850 (#4A4850) — undertone.
+    `rgba(74, 72, 80, 0.19) 32%`,
+    // seagreen.900 (#16211C) — the thin late breath.
+    `rgba(22, 33, 28, 0.11) 52%`,
+    `transparent 68%)`,
+  ].join(', '),
+  transition: 'opacity 3.5s ease, transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)',
+});

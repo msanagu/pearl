@@ -10,11 +10,11 @@ import * as css from './tokens.css';
  */
 
 /**
- * Re-exported from `themes/brandWordmark.ts` — this file used to keep its
+ * Re-exported from `brand/brandWordmark.ts` — this file used to keep its
  * own literal copy of the same map, which is how Freshwater's wordmark
  * ended up defined in one and missing from the other. One source now.
  */
-export { brandWordmarkByTheme } from '../themes/brandWordmark';
+export { brandWordmarkByTheme } from '../brand/brandWordmark';
 
 /** The theme's own nav wordmark (same markup as `HeroNav`) rather than a plain heading, so a docs page shows the real branded mark, not a label standing in for it. */
 export function Wordmark({

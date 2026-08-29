@@ -1,6 +1,7 @@
-import { createTheme, globalStyle } from '@vanilla-extract/css';
+import { createTheme, globalStyle, keyframes } from '@vanilla-extract/css';
 import { vars } from '../../theme.css';
 import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '../../components/Field/Field.css';
+import { sphereWrap, body as sphereBody, contact as sphereContact } from '../../brand/PearlSphere.css';
 
 /**
  * South Sea — "Golden Hour Maison" (docs/theme/theme-revision-decisions.md
@@ -9,8 +10,17 @@ import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldEr
  *
  * Flat warm ecru surface, chocolate ink, conch (`#E8A184`) doing exactly one
  * small loud thing per view, radius 0 throughout. Identity is type/space/
- * restraint — **no named effect**; the Theme Contract's "champagne luster"
- * is fabricated and deliberately not implemented here.
+ * restraint — no AMBIENT effect (unlike Pearl's always-sweeping sphere).
+ *
+ * One hover-only exception, from exploration turn **9c** ("South Sea — dark,
+ * golden hour"): a static gilt sphere that sweeps once you engage it —
+ * "golden hour, held still" until then. This is NOT the Theme Contract's
+ * generic `luster: 115deg · ecru.100 · sand.200 · champagne.300` fabrication
+ * §5 discards (that one was invented boilerplate with no source turn); 9c is
+ * a real, distinctly-valued exploration frame (`champagne.800 · gold.700 ·
+ * dusk.850 · 4.5s`) and resolves the doc's own open flag on this (§9,
+ * "South Sea's `glow`"). See the override below, keyed to dark mode only —
+ * light mode has no golden-hour equivalent and keeps Pearl's default sphere.
  *
  * Type is roman + italic serif mixing with a hairline rule in the gap
  * (`southSea.roles.ts`'s `inlineEmphasis`). Uses Zodiak — the design
@@ -62,11 +72,20 @@ export const southSeaSentiment = {
   // `positive` on brand: a warm sage/moss family instead of the generic
   // cool mint every other theme's scale uses — the maison palette is warm
   // throughout (ecru/chocolate/conch), and a cool green here read as an
-  // import from a different theme entirely.
-  lagoon: { 100: '#f1eedd', 200: '#dcd8b0', 300: '#c3be85', 400: '#a6a15e', 500: '#847e43', 600: '#645f32', 700: '#4c4826', 800: '#232014' },
-  coral: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
-  sunlight: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
-  tide: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
+  // import from a different theme entirely. Hue shifted from an olive/khaki
+  // ~57° to a mossier, yellow-leaning ~85° at a softer ~28% sat — enough to
+  // read as unambiguously green (the ~57° khaki read as tan/brown) without
+  // going neon.
+  seaMoss: { 100: '#e7edde', 200: '#c5d3b1', 300: '#a5bb86', 400: '#8aa762', 500: '#657c46', 600: '#506237', 700: '#3d4b2a', 800: '#202716' },
+  urchin: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  shell: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
+  // `info`: the old scale was a saturated, undiluted blue (~221°, ~80% sat)
+  // — the one hue in this family with no relationship to the warm ecru/
+  // chocolate/conch palette, so it read as an import rather than a member of
+  // the set. Re-hued to a muted steel-teal (~195°, ~35–40% sat): still
+  // unambiguously "blue" against the other three warm hues, but grayed and
+  // warmed enough to sit in the same register as `urchin`/`shell`.
+  pacific: { 100: '#e7efee', 200: '#c3d6d4', 300: '#a1bfbd', 400: '#6e9694', 500: '#4c7573', 600: '#395857', 700: '#2c4442', 800: '#16211f' },
 };
 
 // Radius 0 throughout — flat maison geometry, not a rounded-corner register.
@@ -174,10 +193,10 @@ export const southSeaLightThemeClass = createTheme(vars, {
     // body text despite having a lower luminance-contrast ratio (saturation,
     // not just lightness, drives perceived prominence); 65% keeps the hue
     // identifiable while quieting it below both `text` and plain body copy.
-    positive: { surface: southSeaSentiment.lagoon[100], border: southSeaSentiment.lagoon[200], text: southSeaSentiment.lagoon[700], icon: `color-mix(in srgb, ${southSeaSentiment.lagoon[500]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: southSeaSentiment.coral[100], border: southSeaSentiment.coral[200], text: southSeaSentiment.coral[600], icon: `color-mix(in srgb, ${southSeaSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: southSeaSentiment.sunlight[100], border: southSeaSentiment.sunlight[200], text: southSeaSentiment.sunlight[700], icon: `color-mix(in srgb, ${southSeaSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: southSeaSentiment.tide[100], border: southSeaSentiment.tide[200], text: southSeaSentiment.tide[700], icon: `color-mix(in srgb, ${southSeaSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: southSeaSentiment.seaMoss[100], border: southSeaSentiment.seaMoss[200], text: southSeaSentiment.seaMoss[700], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.urchin[100], border: southSeaSentiment.urchin[200], text: southSeaSentiment.urchin[600], icon: `color-mix(in srgb, ${southSeaSentiment.urchin[500]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: southSeaSentiment.shell[100], border: southSeaSentiment.shell[200], text: southSeaSentiment.shell[700], icon: `color-mix(in srgb, ${southSeaSentiment.shell[500]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: southSeaSentiment.pacific[100], border: southSeaSentiment.pacific[200], text: southSeaSentiment.pacific[700], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[500]} 65%, ${vars.color.textSubtle})` },
   },
   radius: southSeaRadius,
   space: southSeaSpace,
@@ -216,10 +235,10 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     onAccent: southSeaDarkPrimitives.conchInk,
     onAccentSubtle: southSeaDarkPrimitives.cream,
     focusRing: southSeaDarkPrimitives.conchBright,
-    positive: { surface: southSeaSentiment.lagoon[800], border: southSeaSentiment.lagoon[600], text: southSeaSentiment.lagoon[300], icon: `color-mix(in srgb, ${southSeaSentiment.lagoon[400]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: southSeaSentiment.coral[800], border: southSeaSentiment.coral[700], text: southSeaSentiment.coral[300], icon: `color-mix(in srgb, ${southSeaSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: southSeaSentiment.sunlight[800], border: southSeaSentiment.sunlight[600], text: southSeaSentiment.sunlight[300], icon: `color-mix(in srgb, ${southSeaSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: southSeaSentiment.tide[800], border: southSeaSentiment.tide[600], text: southSeaSentiment.tide[300], icon: `color-mix(in srgb, ${southSeaSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: southSeaSentiment.seaMoss[800], border: southSeaSentiment.seaMoss[600], text: southSeaSentiment.seaMoss[300], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.urchin[800], border: southSeaSentiment.urchin[700], text: southSeaSentiment.urchin[300], icon: `color-mix(in srgb, ${southSeaSentiment.urchin[400]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: southSeaSentiment.shell[800], border: southSeaSentiment.shell[600], text: southSeaSentiment.shell[300], icon: `color-mix(in srgb, ${southSeaSentiment.shell[400]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: southSeaSentiment.pacific[800], border: southSeaSentiment.pacific[600], text: southSeaSentiment.pacific[300], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[400]} 65%, ${vars.color.textSubtle})` },
   },
   radius: southSeaRadius,
   space: southSeaSpace,
@@ -295,6 +314,31 @@ globalStyle(
     fontStyle: 'normal',
     fontWeight: '400',
     letterSpacing: 'normal',
+  },
+);
+
+// The wordmark (`WordMark`/`HeroNav`) carries BOTH `data-type-scale="headingMd"`
+// and `data-role="inlineEmphasis"` on the SAME element — unlike the display
+// case below, there's no nested descendant to give one selector higher
+// specificity, so the two single-attribute selectors above tie and source
+// order alone decided the winner (the heading rule, being later, was
+// silently clobbering the wordmark's Times italic with Boska). This compound
+// selector — both attributes on one element — outranks either rule alone and
+// restores the roman/italic mix wherever a heading step is also marked
+// `inlineEmphasis`.
+globalStyle(
+  [
+    `${southSeaLightThemeClass} [data-type-scale="headingSm"][data-role="inlineEmphasis"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="headingSm"][data-role="inlineEmphasis"]`,
+    `${southSeaLightThemeClass} [data-type-scale="headingMd"][data-role="inlineEmphasis"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="headingMd"][data-role="inlineEmphasis"]`,
+    `${southSeaLightThemeClass} [data-type-scale="headingLg"][data-role="inlineEmphasis"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="headingLg"][data-role="inlineEmphasis"]`,
+  ].join(', '),
+  {
+    fontFamily: southSeaFonts.serifItalic,
+    fontStyle: 'italic',
+    letterSpacing: '-0.02em',
   },
 );
 
@@ -456,6 +500,56 @@ globalStyle(
     transform: 'none',
   },
 );
+
+// ---- 9c: the golden-hour sphere (dark mode only, hover-triggered) ----
+//
+// `PearlSphere` reads `pearlTreatments.luster` directly (it's bespoke brand
+// artwork, not a themeable canon component — see its own file comment), so
+// giving South Sea's dark mode a different sphere means overriding its two
+// styled elements (`sphereBody`/`sphereContact`) here, the same mechanism
+// Tahitian uses for its own sphere override in `tahitian.css.ts`.
+//
+// Approximated from 9c's visible swatches (`champagne.800 · gold.700 ·
+// dusk.850`) — the frame's exact hex stops weren't legible in the reference
+// capture, so these are a best-effort match to the labeled hues, not a
+// pixel-exact port. Revisit against the source render if precision matters.
+const southSeaGoldenHour = {
+  champagne800: '#8C6A34',
+  gold700: '#A67C2E',
+  dusk850: '#1C120A',
+};
+
+// 115deg matches 9c's own labeled angle — coincidentally the same angle
+// Pearl's `sheenBand` sweeps at, but this is a separate gradient with South
+// Sea's own warm stops, not a shared treatment.
+const southSeaSheenBand = `linear-gradient(115deg, transparent 32%, ${southSeaGoldenHour.champagne800}66 44%, ${southSeaGoldenHour.gold700}80 52%, transparent 72%)`;
+const southSeaSheenFrom = '118% 0';
+const southSeaSheenTo = '34% 0';
+
+const southSeaSweep = keyframes({
+  '0%, 100%': { backgroundPosition: `${southSeaSheenFrom}, center` },
+  '50%': { backgroundPosition: `${southSeaSheenTo}, center` },
+});
+
+// Static by default — "golden hour, held still": the sheen band sits fully
+// off to one side (`sheenFrom`) and only the hover rule below sets it
+// sweeping. This is why the override doesn't just add `animation` on top of
+// `PearlSphere.css.ts`'s own always-on `sweep` — that keyframe is baked to
+// Pearl's own sheen positions, not South Sea's.
+globalStyle(`${southSeaDarkThemeClass} .${sphereBody}`, {
+  backgroundImage: `${southSeaSheenBand}, radial-gradient(circle at 35% 28%, #FCF4E6 0%, ${southSeaGoldenHour.champagne800} 46%, ${southSeaGoldenHour.gold700} 72%, ${southSeaGoldenHour.dusk850} 100%)`,
+  backgroundPosition: `${southSeaSheenFrom}, center`,
+  boxShadow: `0 18px 40px rgba(28, 18, 10, 0.45), inset 0 -8px 22px rgba(28, 18, 10, 0.35), inset 6px 4px 18px rgba(252, 244, 230, 0.25)`,
+  animation: 'none',
+});
+
+globalStyle(`${southSeaDarkThemeClass} .${sphereWrap}:hover .${sphereBody}`, {
+  animation: `${southSeaSweep} 4.5s ease-in-out infinite`,
+});
+
+globalStyle(`${southSeaDarkThemeClass} .${sphereContact}`, {
+  background: `radial-gradient(ellipse at center, rgba(28, 18, 10, 0.5), transparent 68%)`,
+});
 
 // TEMP-DISABLED — candidate B for review, remove or keep.
 /*

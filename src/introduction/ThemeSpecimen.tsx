@@ -8,6 +8,7 @@ import { Stack } from '../components/Stack/Stack';
 import { Tag } from '../components/Tag/Tag';
 import { color, space } from '../tokens';
 import { brandWordmarkByTheme } from '../foundations/typeSpecimens';
+import { WordMark } from '../brand/WordMark';
 
 /**
  * One theme's specimen — deliberately carries NO theme class of its own. It
@@ -24,7 +25,7 @@ import { brandWordmarkByTheme } from '../foundations/typeSpecimens';
  * correctly; `globalStyle` rules do not, so real isolation is the only
  * honest way to render two themes on one page.
  */
-type SpecimenWordmark = { text: string; role?: 'inlineEmphasis'; accentUnderscore?: boolean };
+type SpecimenWordmark = { text: string; role?: 'inlineEmphasis' };
 
 export const themeSpecimens = {
   // `brandWordmarkByTheme` is keyed by `string` (it's shared with call sites
@@ -33,17 +34,7 @@ export const themeSpecimens = {
   // entries, not runtime input.
   pearl: { name: 'Pearl', authored: true, mode: 'light', wordmark: brandWordmarkByTheme.pearl! },
   tahitian: { name: 'Tahitian', authored: true, mode: 'dark', wordmark: brandWordmarkByTheme.tahitian! },
-  // `accentUnderscore` is added on top of the shared `freshwaterBrandWordmark`
-  // text (not a separate copy of it) — the underscore's accent color is a
-  // rendering choice specific to this chrome-bar-style specimen, not part of
-  // the wordmark data every OTHER call site (Hero, Typography/Tokens
-  // stories) reads.
-  freshwater: {
-    name: 'Freshwater',
-    authored: true,
-    mode: 'light',
-    wordmark: { ...brandWordmarkByTheme.freshwater!, accentUnderscore: true },
-  },
+  freshwater: { name: 'Freshwater', authored: true, mode: 'light', wordmark: brandWordmarkByTheme.freshwater! },
   southSea: { name: 'South Sea', authored: true, mode: 'dark', wordmark: brandWordmarkByTheme.southSea! },
 } as const satisfies Record<
   string,
@@ -62,36 +53,6 @@ export interface ThemeSpecimenProps {
   /** `false` marks a palette that is still a rough draft, not a finished theme. */
   authored?: boolean;
   wordmark: SpecimenWordmark;
-}
-
-/**
- * Freshwater's `FRESHWTR_OPS` styling (from 7a/7b): all-caps, bold, the
- * underscore alone recolored to the theme's accent. The other three themes
- * render through their own established `role` (inlineEmphasis's italic
- * serif for Pearl/South Sea; plain for Tahitian) instead — this branch only
- * fires for the one wordmark that actually uses the idiom.
- */
-function WordmarkLabel({ wordmark }: { wordmark: SpecimenWordmark }) {
-  if (wordmark.accentUnderscore) {
-    return (
-      <Text as="span" typeScale="bodySm" style={{ fontWeight: 700, letterSpacing: '0.02em' }}>
-        {wordmark.text.split(/(_)/).map((part, i) =>
-          part === '_' ? (
-            <span key={i} style={{ color: color.accent }}>
-              _
-            </span>
-          ) : (
-            part
-          ),
-        )}
-      </Text>
-    );
-  }
-  return (
-    <Text as="span" role={wordmark.role} typeScale="bodySm" style={{ fontWeight: 700, letterSpacing: '0.02em' }}>
-      {wordmark.text}
-    </Text>
-  );
 }
 
 export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimenProps) {
@@ -124,7 +85,7 @@ export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimen
               documented "heavy 2px rule under the header" geometry
               (docs/theme/theme-revision-decisions.md §4). */}
           <div style={{ paddingBottom: space.sm, borderBottom: `2px solid ${color.borderStrong}` }}>
-            <WordmarkLabel wordmark={wordmark} />
+            <WordMark text={wordmark.text} role={wordmark.role} scale={0.4} />
           </div>
           <Row justify="between" align="center" gap="sm">
             <Stack gap="sm">

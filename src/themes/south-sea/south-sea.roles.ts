@@ -17,10 +17,13 @@ export const southSeaBrandWordmark = {
 };
 
 /**
- * South Sea's own catalog of typography treatments. No effect treatments —
- * per docs/theme/theme-revision-decisions.md §5, the Theme Contract's
- * "champagne luster" is fabricated and deliberately not carried forward.
- * South Sea's identity is type, space, and restraint, not a lit surface.
+ * South Sea's own catalog of typography treatments. No AMBIENT effect
+ * treatments — per docs/theme/theme-revision-decisions.md §5, the Theme
+ * Contract's generic "champagne luster" is fabricated and deliberately not
+ * carried forward. South Sea's identity is type, space, and restraint, not a
+ * lit surface at rest. The one exception — a hover-only golden-hour sphere
+ * from exploration turn 9c, dark mode only — lives in `south-sea.css.ts`
+ * as a `PearlSphere` override, not a typography role.
  */
 export const southSeaTypeTreatments = {
   // `serifItalic` — the ITALIC half of the roman/italic mix, so it reads

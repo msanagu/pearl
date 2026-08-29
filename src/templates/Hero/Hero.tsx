@@ -6,6 +6,7 @@ import { Row } from '../../components/Row/Row';
 import { Stack } from '../../components/Stack/Stack';
 import { Icon } from '../../components/Icon/Icon';
 import { PearlSphere } from '../../brand/PearlSphere';
+import { WordMark } from '../../brand/WordMark';
 import { color, space } from '../../tokens';
 import * as css from './Hero.css';
 
@@ -71,9 +72,7 @@ export function HeroNav({
 }: Pick<HeroProps, 'githubHref' | 'sandboxHref' | 'brandName' | 'brandRole'>): ReactNode {
   return (
     <Row justify="between" align="center" style={{ width: '100%' }}>
-      <Text as="span" role={brandRole} typeScale="headingMd" data-component="brand-wordmark">
-        {brandName}
-      </Text>
+      <WordMark text={brandName} role={brandRole} />
       <Row gap="lg" align="center">
         <button
           type="button"
