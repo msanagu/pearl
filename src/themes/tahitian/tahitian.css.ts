@@ -82,9 +82,14 @@ export const tahitianScrim = {
   dark: 'rgba(0, 0, 0, 0.6)',
 };
 
+// `sans` was Space Grotesk, duplicating Freshwater's display/heading face —
+// Switzer (Fontshare, free) replaces it: a Swiss neo-grotesque body voice
+// distinct from Freshwater's, and editorial enough to pair with Anton's
+// condensed poster weight. Loaded via CDN link in `.storybook/preview-head.html`
+// alongside South Sea's Zodiak/General Sans/Boska.
 export const tahitianFonts = {
   display: "'Anton', Impact, sans-serif",
-  sans: "'Space Grotesk', sans-serif",
+  sans: "'Switzer', system-ui, -apple-system, 'Segoe UI', sans-serif",
   mono: "'IBM Plex Mono', 'SF Mono', Menlo, monospace",
 };
 
@@ -176,12 +181,15 @@ const tahitianText = {
   bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px grid
   bodyMd: { fontSize: '1rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 24px 4px grid
   bodyLg: { fontSize: '1.5rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 36px 4px grid
-  headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '600', letterSpacing: '0' }, // 40px 4px grid
-  headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '0' }, // 48px 4px grid
-  headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '600', letterSpacing: '0.004em' }, // 64px 4px grid
-  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '600', letterSpacing: '0.004em' }, // 76px 4px grid
-  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '600', letterSpacing: '0.004em' }, // 120px 4px grid
-  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '600', letterSpacing: '0.004em' }, // 160px 4px grid
+  // Anton ships one cut, Regular/400 (@fontsource/anton/400.css) — it's
+  // already an ultra-bold display face by design, so heading/display rows
+  // stay 400 rather than faux-bolding a 600 weight Anton doesn't have.
+  headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '400', letterSpacing: '0' }, // 40px 4px grid
+  headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '400', letterSpacing: '0' }, // 48px 4px grid
+  headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '400', letterSpacing: '0.004em' }, // 64px 4px grid
+  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '400', letterSpacing: '0.004em' }, // 76px 4px grid
+  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '400', letterSpacing: '0.004em' }, // 120px 4px grid
+  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '400', letterSpacing: '0.004em' }, // 160px 4px grid
 };
 
 // ---- Extension treatment: overtone ----
@@ -422,7 +430,7 @@ globalStyle(`${tahitianDarkThemeClass} [data-role="inlineEmphasis"]`, {
 
 globalStyle(
   `${tahitianLightThemeClass} .${fieldMeta} .${fieldLabel}, ${tahitianDarkThemeClass} .${fieldMeta} .${fieldLabel}`,
-  { fontFamily: tahitianFonts.mono, textTransform: 'uppercase', letterSpacing: '0.08em' },
+  { fontFamily: tahitianFonts.mono, textTransform: 'uppercase', letterSpacing: '0.10em' },
 );
 
 globalStyle(

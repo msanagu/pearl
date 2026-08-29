@@ -84,9 +84,10 @@ const freshwaterSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem',
 const freshwaterControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const freshwaterFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
 // Doc §4: "Space Grotesk (ideal: Söhne Breit) + Azeret Mono (ideal: Söhne
-// Mono). Mono for data only — ids, values, labels, timestamps. UI copy and
-// buttons stay sentence-case Space Grotesk." Both loaded via @fontsource in
-// .storybook/preview.tsx.
+// Mono)." Deviates from the doc's "mono for data only" split: body copy now
+// reads in Azeret Mono too, leaning further into the ops-console register —
+// Space Grotesk stays reserved for display/heading. Both loaded via
+// @fontsource in .storybook/preview.tsx.
 export const freshwaterFonts = {
   grotesk: "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif",
   mono: "'Azeret Mono', ui-monospace, 'SF Mono', Menlo, monospace",
@@ -94,7 +95,7 @@ export const freshwaterFonts = {
 const freshwaterFontFamily = {
   display: freshwaterFonts.grotesk,
   heading: freshwaterFonts.grotesk,
-  body: freshwaterFonts.grotesk,
+  body: freshwaterFonts.mono,
   mono: freshwaterFonts.mono,
 };
 // Sizes follow the shared 4px-grid ramp (see pearl.css.ts's pearlText comment

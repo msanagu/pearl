@@ -32,12 +32,12 @@ import { vars } from '../../theme.css';
  */
 
 // ---- Type primitives (named by what they ARE — no roles assigned here) ----
-// Zero-cost for MVP: no webfont files are self-hosted or loaded for Pearl
-// yet (unlike South Sea's Boska — see boska.css.ts), so these are plain
-// system-font stacks, not named faces standing in for a paid font. Revisit
-// once/if a free face (e.g. a Fontshare OFL family) is actually self-hosted.
+// General Sans (Fontshare, free) carries display/heading/body, per the file
+// header. It's loaded via the same CDN link South Sea already pulls it from
+// (`.storybook/preview-head.html`) — no separate load, just named here so
+// Pearl's stack resolves to it instead of falling through to system-ui.
 export const pearlFonts = {
-  sans: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+  sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
   serif: "Georgia, 'Times New Roman', serif",
   mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
