@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Docs } from './Docs';
 import docsSource from './Docs.tsx?raw';
-import { templateSource } from '../templateSource';
+import { templateSource } from '@/templates/templateSource';
 
 /**
  * The documentation page template, composed from existing primitives

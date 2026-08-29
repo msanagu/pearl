@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Row } from './Row';
-import { Stack } from '../Stack/Stack';
+import { Stack } from '@components/Stack/Stack';
 
 describe('Row', () => {
   it('renders a div by default with children', () => {

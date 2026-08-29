@@ -1,5 +1,5 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { color, controlHeight, radius, space, fontFamily, fontWeight, text } from '../../tokens';
+import { color, controlHeight, radius, space, fontFamily, fontWeight, text } from '@tokens';
 
 // Height maps to the shared `controlHeight` density lever (ADR-0005) so an
 // enterprise theme can tighten every control at once and an agency theme can

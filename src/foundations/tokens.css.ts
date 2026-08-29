@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, fontFamily, radius, space } from '../tokens';
+import { color, fontFamily, radius, space } from '@tokens';
 import { concentricRadius } from './concentricRadius';
 
 // Layout for the token preview — itself built from the tokens, so this file is

@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { alabaster, squidInk, marineLayer, squidInkAlpha, alabasterAlpha, pearlSentiment } from '../themes/pearl/pearl.css';
-import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '../themes/tahitian/tahitian.css';
+import { alabaster, squidInk, marineLayer, squidInkAlpha, alabasterAlpha, pearlSentiment } from '@themes/pearl/pearl.css';
+import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '@themes/tahitian/tahitian.css';
 import {
   freshwaterIce,
   freshwaterGraphite,
   freshwaterGlacier,
   freshwaterSentiment,
-} from '../themes/freshwater/freshwater.css';
-import { southSeaSand, southSeaDriftwood, southSeaConch, southSeaSentiment } from '../themes/south-sea/south-sea.css';
-import { pearlBrandWordmark } from '../themes/pearl/pearl.roles';
-import { tahitianBrandWordmark } from '../themes/tahitian/tahitian.roles';
-import { freshwaterBrandWordmark } from '../themes/freshwater/freshwater.roles';
-import { southSeaBrandWordmark } from '../themes/south-sea/south-sea.roles';
-import { WordMark } from '../components/brand/WordMark';
+} from '@themes/freshwater/freshwater.css';
+import { southSeaSand, southSeaDriftwood, southSeaConch, southSeaSentiment } from '@themes/south-sea/south-sea.css';
+import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
+import { tahitianBrandWordmark } from '@themes/tahitian/tahitian.roles';
+import { freshwaterBrandWordmark } from '@themes/freshwater/freshwater.roles';
+import { southSeaBrandWordmark } from '@themes/south-sea/south-sea.roles';
+import { WordMark } from '@components/_brand/WordMark';
 import * as css from './primitives.css';
 
 /**

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Field } from './Field';
-import { Input } from '../Input';
+import { Input } from '@components/Input';
 
 const meta: Meta<typeof Field> = {
   title: 'Components/Field',

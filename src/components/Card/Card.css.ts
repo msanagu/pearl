@@ -1,7 +1,7 @@
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { color, radius, space } from '../../tokens';
-import { concentricRadius } from '../../foundations/concentricRadius';
+import { color, radius, space } from '@tokens';
+import { concentricRadius } from '@/foundations/concentricRadius';
 
 /**
  * The root's padding, published as a custom property so `Card.Header` and

@@ -1,11 +1,11 @@
 import type { MapLeafNodes } from '@vanilla-extract/private';
 import { describe, expect, it } from 'vitest';
 
-import { vars } from '../theme.css';
-import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../themes/freshwater/freshwater.css';
-import { pearlLightThemeClass, pearlDarkThemeClass } from '../themes/pearl/pearl.css';
-import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../themes/south-sea/south-sea.css';
-import { tahitianLightThemeClass, tahitianDarkThemeClass } from '../themes/tahitian/tahitian.css';
+import { vars } from '@/theme.css';
+import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '@themes/freshwater/freshwater.css';
+import { pearlLightThemeClass, pearlDarkThemeClass } from '@themes/pearl/pearl.css';
+import { southSeaLightThemeClass, southSeaDarkThemeClass } from '@themes/south-sea/south-sea.css';
+import { tahitianLightThemeClass, tahitianDarkThemeClass } from '@themes/tahitian/tahitian.css';
 
 /**
  * The shape `createTheme(vars, …)` demands: every leaf of the `vars` contract,

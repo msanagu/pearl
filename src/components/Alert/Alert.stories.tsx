@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Alert } from './Alert';
-import { Stack } from '../Stack/Stack';
+import { Stack } from '@components/Stack/Stack';
 
 /**
  * Inline, persistent feedback keyed by valence (`positive`/`negative`/`warn`/

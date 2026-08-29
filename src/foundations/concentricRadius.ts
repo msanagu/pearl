@@ -1,4 +1,4 @@
-import { radius } from '../tokens';
+import { radius } from '@tokens';
 
 /**
  * The radius a padded surface should carry to stay concentric with whatever

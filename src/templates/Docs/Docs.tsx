@@ -1,10 +1,10 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Text } from '../../components/Text/Text';
-import { Button } from '../../components/Button/Button';
-import { Row } from '../../components/Row/Row';
-import { Stack } from '../../components/Stack/Stack';
-import { color, radius, space, text } from '../../tokens';
-import { Card } from '../../components/Card/Card';
+import { Text } from '@components/Text/Text';
+import { Button } from '@components/Button/Button';
+import { Row } from '@components/Row/Row';
+import { Stack } from '@components/Stack/Stack';
+import { color, radius, space, text } from '@tokens';
+import { Card } from '@components/Card/Card';
 import { navLink, scrollRegion } from './Docs.css';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';

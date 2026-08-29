@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from './Card';
-import { Text } from '../Text/Text';
-import { Stack } from '../Stack/Stack';
-import { Button } from '../Button/Button';
-import { Tag } from '../Tag/Tag';
-import { Icon } from '../Icon/Icon';
-import { Row } from '../Row/Row';
+import { Text } from '@components/Text/Text';
+import { Stack } from '@components/Stack/Stack';
+import { Button } from '@components/Button/Button';
+import { Tag } from '@components/Tag/Tag';
+import { Icon } from '@components/Icon/Icon';
+import { Row } from '@components/Row/Row';
 import { PiCheckBold, PiArrowUpBold, PiArrowDownBold } from 'react-icons/pi';
 
 /**

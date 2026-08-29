@@ -1,7 +1,7 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
-import type { TextTokens } from '../../tokens';
-import type { TypographyRole } from '../../themes/roles';
+import type { TextTokens } from '@tokens';
+import type { TypographyRole } from '@themes/roles';
 import { textRecipe } from './Text.css';
 
 type TypeScale = keyof TextTokens;

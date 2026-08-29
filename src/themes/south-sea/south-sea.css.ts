@@ -1,7 +1,7 @@
 import { createTheme, globalStyle, keyframes } from '@vanilla-extract/css';
-import { vars } from '../../theme.css';
-import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '../../components/Field/Field.css';
-import { sphereWrap, body as sphereBody, contact as sphereContact } from '../../components/brand/PearlSphere.css';
+import { vars } from '@/theme.css';
+import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '@components/Field/Field.css';
+import { sphereWrap, body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere.css';
 
 /**
  * South Sea — "Golden Hour Maison" (docs/theme/theme-revision-decisions.md

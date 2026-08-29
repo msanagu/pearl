@@ -1,5 +1,5 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { color, radius, space, fontFamily, text } from '../../tokens';
+import { color, radius, space, fontFamily, text } from '@tokens';
 
 // One `background`/`border`/`color` declaration per variant, same reasoning
 // as Alert's recipe: keeps each variant's full look together rather than

@@ -1,14 +1,14 @@
-import { Text } from '../components/Text/Text';
-import { Button } from '../components/Button/Button';
-import { Card } from '../components/Card/Card';
-import { Field } from '../components/Field/Field';
-import { Input } from '../components/Input/Input';
-import { Row } from '../components/Row/Row';
-import { Stack } from '../components/Stack/Stack';
-import { Tag } from '../components/Tag/Tag';
-import { color, space } from '../tokens';
-import { brandWordmarkByTheme } from '../foundations/typeSpecimens';
-import { WordMark } from '../components/brand/WordMark';
+import { Text } from '@components/Text/Text';
+import { Button } from '@components/Button/Button';
+import { Card } from '@components/Card/Card';
+import { Field } from '@components/Field/Field';
+import { Input } from '@components/Input/Input';
+import { Row } from '@components/Row/Row';
+import { Stack } from '@components/Stack/Stack';
+import { Tag } from '@components/Tag/Tag';
+import { color, space } from '@tokens';
+import { brandWordmarkByTheme } from '@/foundations/typeSpecimens';
+import { WordMark } from '@components/_brand/WordMark';
 
 /**
  * One theme's specimen — deliberately carries NO theme class of its own. It

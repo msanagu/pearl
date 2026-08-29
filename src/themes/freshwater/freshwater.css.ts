@@ -1,7 +1,7 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
-import { vars } from '../../theme.css';
-import { fieldMeta, label as fieldLabel } from '../../components/Field/Field.css';
-import { body as sphereBody, contact as sphereContact } from '../../components/brand/PearlSphere.css';
+import { vars } from '@/theme.css';
+import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
+import { body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere.css';
 
 /**
  * Freshwater — one of Pearl's three named themes

@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, controlHeight, fontFamily, radius, space, text } from '../../tokens';
+import { color, controlHeight, fontFamily, radius, space, text } from '@tokens';
 
 /**
  * Horizontal padding for the control's own text.

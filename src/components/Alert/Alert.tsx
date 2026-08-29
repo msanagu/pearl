@@ -11,10 +11,10 @@ import {
   PiWarningCircleFill,
   PiXCircleFill,
 } from 'react-icons/pi';
-import { Icon } from '../Icon/Icon';
-import { Text } from '../Text/Text';
-import { XButton } from '../internal/XButton';
-import { color } from '../../tokens';
+import { Icon } from '@components/Icon/Icon';
+import { Text } from '@components/Text/Text';
+import { XButton } from '@components/_internal/XButton';
+import { color } from '@tokens';
 import { alert, iconSlot, content } from './Alert.css';
 
 type AlertVariants = NonNullable<RecipeVariants<typeof alert>>;

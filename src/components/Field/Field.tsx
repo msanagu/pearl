@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
 import { PiWarningCircleFill } from 'react-icons/pi';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '@components/Icon/Icon';
 import {
   field,
   fieldMeta,

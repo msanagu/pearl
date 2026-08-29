@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Introduction } from './Introduction';
 import introductionSource from './Introduction.tsx?raw';
-import { templateSource } from '../templates/templateSource';
-import { overtonePlate } from '../themes/tahitian/tahitian.css';
+import { templateSource } from '@/templates/templateSource';
+import { overtonePlate } from '@themes/tahitian/tahitian.css';
 
 /**
  * The system's front door — what Pearl is, the decisions that shape it, and

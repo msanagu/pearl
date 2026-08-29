@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color } from '../../tokens';
+import { color } from '@tokens';
 
 export const navLink = style({
   textDecoration: 'none',

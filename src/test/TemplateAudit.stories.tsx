@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 import { runImpeccableAudit } from './impeccablePlay';
 import { StoryAudit } from './StoryAudit';
-import { Hero } from '../templates/Hero/Hero';
-import { Docs } from '../templates/Docs/Docs';
-import { Form } from '../templates/Form/Form';
-import { brandWordmarkForTheme } from '../components/brand/brandWordmark';
+import { Hero } from '@/templates/Hero/Hero';
+import { Docs } from '@/templates/Docs/Docs';
+import { Form } from '@/templates/Form/Form';
+import { brandWordmarkForTheme } from '@components/_brand/brandWordmark';
 
 /**
  * Template audit — the composition-level counterpart to the component audit

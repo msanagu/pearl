@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Hero } from './Hero';
 import heroSource from './Hero.tsx?raw';
-import { templateSource } from '../templateSource';
-import { brandWordmarkForTheme } from '../../components/brand/brandWordmark';
+import { templateSource } from '@/templates/templateSource';
+import { brandWordmarkForTheme } from '@components/_brand/brandWordmark';
 
 /**
  * The marketing hero, composed from existing primitives (`Text`, `Button`,

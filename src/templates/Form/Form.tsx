@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Text } from '../../components/Text/Text';
-import { Button } from '../../components/Button/Button';
-import { Card } from '../../components/Card/Card';
-import { Field } from '../../components/Field/Field';
-import { Input } from '../../components/Input/Input';
-import { Alert } from '../../components/Alert/Alert';
-import { Row } from '../../components/Row/Row';
-import { Stack } from '../../components/Stack/Stack';
-import { color, space } from '../../tokens';
+import { Text } from '@components/Text/Text';
+import { Button } from '@components/Button/Button';
+import { Card } from '@components/Card/Card';
+import { Field } from '@components/Field/Field';
+import { Input } from '@components/Input/Input';
+import { Alert } from '@components/Alert/Alert';
+import { Row } from '@components/Row/Row';
+import { Stack } from '@components/Stack/Stack';
+import { color, space } from '@tokens';
 
 interface FormValues {
   fullName: string;

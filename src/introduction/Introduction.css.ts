@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, radius, space } from '../tokens';
+import { color, radius, space } from '@tokens';
 
 // Layout-only module. Every color/space/type value comes from a token — the
 // page is subject to the same reskinning promise as the components it

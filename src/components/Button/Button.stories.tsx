@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PiCaretDown, PiFloppyDisk } from 'react-icons/pi';
-import { Icon } from '../Icon';
+import { Icon } from '@components/Icon';
 import { Button } from './Button';
 
 /**

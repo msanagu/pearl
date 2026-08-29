@@ -1,4 +1,4 @@
-import type { ThemeRoles } from '../roles';
+import type { ThemeRoles } from '@themes/roles';
 import { southSeaFonts } from './south-sea.css';
 
 /**

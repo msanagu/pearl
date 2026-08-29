@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, space } from '../../tokens';
+import { color, space } from '@tokens';
 
 export const main = style({
   minHeight: 520,

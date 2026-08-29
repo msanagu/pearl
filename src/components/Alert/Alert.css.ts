@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { color, radius, space } from '../../tokens';
-import { concentricRadius } from '../../foundations/concentricRadius';
+import { color, radius, space } from '@tokens';
+import { concentricRadius } from '@/foundations/concentricRadius';
 
 // One `border` declaration per variant (not a shared `border: 1px solid` in
 // `base` + a `borderColor` override) — vanilla-extract variants win on equal

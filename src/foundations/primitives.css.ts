@@ -1,5 +1,5 @@
 import { globalStyle, style } from '@vanilla-extract/css';
-import { color, fontFamily, space } from '../tokens';
+import { color, fontFamily, space } from '@tokens';
 
 // Layout for the primitive-palette specimen (Tokens/Primitives). These values
 // are raw theme-scoped hex constants, not CSS custom properties, so the

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { color, fontFamily, fontWeight, text } from '../tokens';
-import { Text } from '../components/Text/Text';
-import type { ThemeRoles } from '../themes/roles';
-import { pearlBrandWordmark, pearlDescription, pearlRoles } from '../themes/pearl/pearl.roles';
-import { tahitianDescription, tahitianRoles } from '../themes/tahitian/tahitian.roles';
-import { southSeaDescription, southSeaRoles } from '../themes/south-sea/south-sea.roles';
+import { color, fontFamily, fontWeight, text } from '@tokens';
+import { Text } from '@components/Text/Text';
+import type { ThemeRoles } from '@themes/roles';
+import { pearlBrandWordmark, pearlDescription, pearlRoles } from '@themes/pearl/pearl.roles';
+import { tahitianDescription, tahitianRoles } from '@themes/tahitian/tahitian.roles';
+import { southSeaDescription, southSeaRoles } from '@themes/south-sea/south-sea.roles';
 import { FamilySwatch, TypeSpecimen, WeightSwatch, Wordmark, brandWordmarkByTheme, useComputed } from './typeSpecimens';
 import * as css from './tokens.css';
 

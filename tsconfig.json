@@ -24,7 +24,18 @@
 
     /* This is a checked-only config; Vite emits JS, tsc only type-checks. */
     "noEmit": true,
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client"],
+
+    /* Path aliases — authoring convenience only. Mirrored in vite.config.ts
+       and vitest.config.ts (Storybook inherits the former). `tsc` does NOT
+       rewrite these in emitted .d.ts, so the post-build step in
+       scripts/rewrite-dts-aliases.mjs resolves them back to relative paths. */
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@themes/*": ["./src/themes/*"],
+      "@tokens": ["./src/tokens.ts"],
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src", "experiments", ".storybook", "vite.config.ts", "vitest.config.ts"]
+  "include": ["src", "experiments", ".storybook", "aliases.ts", "vite.config.ts", "vitest.config.ts"]
 }

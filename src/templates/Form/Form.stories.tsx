@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Form } from './Form';
 import formSource from './Form.tsx?raw';
-import { templateSource } from '../templateSource';
+import { templateSource } from '@/templates/templateSource';
 
 /**
  * A shipping-details form built entirely from existing primitives (`Field`,

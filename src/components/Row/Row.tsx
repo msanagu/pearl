@@ -1,4 +1,4 @@
-import { FlexBox, type FlexBoxProps } from '../layout/FlexBox';
+import { FlexBox, type FlexBoxProps } from '@components/_internal/FlexBox';
 
 export interface RowProps extends Omit<FlexBoxProps, 'direction'> {}
 

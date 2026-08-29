@@ -187,7 +187,7 @@ back to the design system itself — kept for what it taught, not shipped.
 | # | Component | Status | Notes |
 |---|---|---|---|
 | — | Token contract + 4 themes × light/dark + JSDoc wrapper | ✅ shipped | `src/theme.css.ts`, `src/themes/*.css.ts`, `src/tokens.ts` |
-| — | `FlexBox` (shared layout primitive) | ✅ shipped | `src/components/layout/` — backs Row and Stack |
+| — | `FlexBox` (shared layout primitive) | ✅ shipped | `src/components/_internal/` — backs Row and Stack |
 | 1 | **Button** | ✅ shipped | single fixed height (8px grid), `variant`, native `<button>`, `data-component` contract, icon-composition via `children` |
 | 2 | **Card** | ✅ shipped | static-property namespacing (`Card.Header`/`Card.Body`), link-card and static-card variants, Pearl-only hover luster |
 | 3 | **Text** | ✅ shipped | one component, not split Heading/Text; `variant`/`as` decoupled; theme-owned `role` prop (`preheading`/`inlineEmphasis`/`dataDigits`) |

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag } from './Tag';
-import { Row } from '../Row/Row';
+import { Row } from '@components/Row/Row';
 
 /**
  * A static, non-interactive label. `neutral` for categorical tags (skills,

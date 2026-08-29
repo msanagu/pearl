@@ -1,5 +1,5 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
-import { vars } from '../../theme.css';
+import { vars } from '@/theme.css';
 
 /**
  * Pearl — the flagship theme, and the one the docs site is pinned to.

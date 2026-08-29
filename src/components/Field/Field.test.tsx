@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Field } from './Field';
-import { Input } from '../Input/Input';
+import { Input } from '@components/Input/Input';
 
 describe('Field', () => {
   it('associates the label with the injected input via id', () => {

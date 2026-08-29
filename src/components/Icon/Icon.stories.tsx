@@ -102,9 +102,9 @@ import {
 } from 'react-icons/bs';
 import { Icon } from './Icon';
 import { ICON_LIBRARIES_BY_ID } from './iconLibraries';
-import { Row } from '../Row';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Row } from '@components/Row';
+import { Stack } from '@components/Stack';
+import { Text } from '@components/Text';
 
 /**
  * An icon paired with the name it is exported under. The name is not

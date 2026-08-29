@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { color, fontFamily } from '../tokens';
-import { Text } from '../components/Text/Text';
+import { color, fontFamily } from '@tokens';
+import { Text } from '@components/Text/Text';
 import * as css from './tokens.css';
 
 /**
@@ -14,7 +14,7 @@ import * as css from './tokens.css';
  * own literal copy of the same map, which is how Freshwater's wordmark
  * ended up defined in one and missing from the other. One source now.
  */
-export { brandWordmarkByTheme } from '../components/brand/brandWordmark';
+export { brandWordmarkByTheme } from '@components/_brand/brandWordmark';
 
 /** The theme's own nav wordmark (same markup as `HeroNav`) rather than a plain heading, so a docs page shows the real branded mark, not a label standing in for it. */
 export function Wordmark({

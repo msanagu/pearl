@@ -7,15 +7,15 @@ import {
   PiSwatches,
   PiTextAa,
 } from 'react-icons/pi';
-import { Text } from '../components/Text/Text';
-import { Button } from '../components/Button/Button';
-import { Card } from '../components/Card/Card';
-import { Row } from '../components/Row/Row';
-import { Stack } from '../components/Stack/Stack';
-import { Alert } from '../components/Alert/Alert';
-import { Icon } from '../components/Icon/Icon';
-import { PearlSphere } from '../components/brand/PearlSphere';
-import { color } from '../tokens';
+import { Text } from '@components/Text/Text';
+import { Button } from '@components/Button/Button';
+import { Card } from '@components/Card/Card';
+import { Row } from '@components/Row/Row';
+import { Stack } from '@components/Stack/Stack';
+import { Alert } from '@components/Alert/Alert';
+import { Icon } from '@components/Icon/Icon';
+import { PearlSphere } from '@components/_brand/PearlSphere';
+import { color } from '@tokens';
 import { themeSpecimens, type ThemeKey } from './ThemeSpecimen';
 import * as css from './Introduction.css';
 

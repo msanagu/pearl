@@ -1,5 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css';
-import { pearlTreatments } from '../../themes/pearl/pearl.css';
+import { pearlTreatments } from '@themes/pearl/pearl.css';
 
 /**
  * The ambient sweep — light travelling across the sphere's face.

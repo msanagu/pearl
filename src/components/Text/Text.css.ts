@@ -1,5 +1,5 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { color, fontFamily, fontWeight, text } from '../../tokens';
+import { color, fontFamily, fontWeight, text } from '@tokens';
 
 // One Text component, not split Heading/Text (typography.md): the type scale is
 // a closed, stable set, so unifying under a `typeScale` token is safe DRY.

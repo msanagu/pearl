@@ -2,15 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 import { runImpeccableAudit } from './impeccablePlay';
 import { StoryAudit } from './StoryAudit';
-import { Button } from '../components/Button';
-import { Card } from '../components/Card';
-import { Input } from '../components/Input';
-import { Field } from '../components/Field';
-import { Alert } from '../components/Alert';
-import { Tag } from '../components/Tag';
-import { Text } from '../components/Text';
-import { Stack } from '../components/Stack';
-import { Row } from '../components/Row';
+import { Button } from '@components/Button';
+import { Card } from '@components/Card';
+import { Input } from '@components/Input';
+import { Field } from '@components/Field';
+import { Alert } from '@components/Alert';
+import { Tag } from '@components/Tag';
+import { Text } from '@components/Text';
+import { Stack } from '@components/Stack';
+import { Row } from '@components/Row';
 
 /**
  * Component audit — runs Impeccable's deterministic detectors against the REAL

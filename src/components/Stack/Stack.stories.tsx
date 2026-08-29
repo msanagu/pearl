@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack } from './Stack';
-import { Row } from '../Row/Row';
-import { color } from '../../tokens';
+import { Row } from '@components/Row/Row';
+import { color } from '@tokens';
 
 /**
  * `Stack` (vertical) and `Row` (horizontal) are thin presets over one shared

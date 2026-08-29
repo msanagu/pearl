@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, fontFamily, fontWeight, space, text } from '../../tokens';
+import { color, fontFamily, fontWeight, space, text } from '@tokens';
 
 // Label, hint, and error carry NO left inset — they sit flush with the
 // control's border box, which is also where a `Card.Header` heading and every

@@ -1,5 +1,5 @@
-import { Text } from '../Text/Text';
-import { color } from '../../tokens';
+import { Text } from '@components/Text/Text';
+import { color } from '@tokens';
 import type { BrandWordmark } from './brandWordmark';
 
 /** `headingMd`'s own font size — identical `2.5rem` across all four themes

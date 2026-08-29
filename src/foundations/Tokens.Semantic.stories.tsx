@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { color, controlHeight, radius, space } from '../tokens';
+import { color, controlHeight, radius, space } from '@tokens';
 import { Wordmark, brandWordmarkByTheme } from './typeSpecimens';
-import { pearlBrandWordmark } from '../themes/pearl/pearl.roles';
+import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import * as css from './tokens.css';
 
 /**

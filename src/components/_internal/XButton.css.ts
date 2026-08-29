@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, radius } from '../../tokens';
+import { color, radius } from '@tokens';
 
 // 24×24 hit target (WCAG 2.5.8) around a 16px glyph — visual size and touch
 // target are deliberately different numbers, not the same one. Neutral

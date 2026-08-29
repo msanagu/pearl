@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type { ButtonHTMLAttributes } from 'react';
 import { clsx } from 'clsx';
 import { PiXBold } from 'react-icons/pi';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '@components/Icon/Icon';
 import { xButton } from './XButton.css';
 
 export interface XButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
@@ -14,7 +14,7 @@ export interface XButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
 /**
  * Internal X-icon affordance shared by `Alert` and (later) `Toast`/`Modal`/
  * `Chip` — not exported from the package root, same pattern as
- * `layout/FlexBox`. Named for the glyph it renders, not for any one
+ * `_internal/FlexBox`. Named for the glyph it renders, not for any one
  * consumer's meaning: this button doesn't know whether clicking it dismisses,
  * closes, or removes something — that's entirely the caller's `aria-label`
  * and `onClick` handler (dismiss/close/remove are real, different actions,

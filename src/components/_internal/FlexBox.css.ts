@@ -1,5 +1,5 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { space } from '../../tokens';
+import { space } from '@tokens';
 
 // Shared flex primitive behind Stack and Row (safe DRY, per ADR-0002 /
 // component-philosophy.md: direction is one closed CSS toggle, not an
