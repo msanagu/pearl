@@ -1,76 +1,122 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '../../theme.css';
 import { fieldMeta, label as fieldLabel } from '../../components/Field/Field.css';
+import { body as sphereBody, contact as sphereContact } from '../../brand/PearlSphere.css';
 
 /**
  * Freshwater — one of Pearl's three named themes
  * (docs/theme/theme-revision-decisions.md §4, source turn **2a, "Ice
- * Console"**). Stark black/white ops-console register: neon ice-blue spent
- * only where the system speaks — statuses, deltas, selection — never as
- * decoration. Radius 0 throughout; a heavy 2px ink rule marks structural
+ * Console"**). Stark black/white ops-console register: neon electric-blue
+ * spent only where the system speaks — statuses, deltas, selection — never
+ * as decoration. Radius 0 throughout; a heavy 2px ink rule marks structural
  * divisions (e.g. under a header), a 1px hairline everywhere else.
  *
- * `wash` (see `accentSubtle` below) is deliberately near-white and
+ * `accentSubtle` (see `glacier[100]` below) is deliberately near-white and
  * stationary — it marks a semantic region, not a decorative luster. This
  * replaces an earlier teal/turquoise, 6px-radius placeholder that predated
  * the theme-revision pass.
  *
- * Two color tiers (ADR-0005): `*Primitives` are raw named hexes; the
+ * ## Neutral consolidation (2026-08-29)
+ * Previously three loosely-related buckets (`freshwaterLightPrimitives`'s
+ * non-accent members, `freshwaterSlate`, `freshwaterDarkPrimitives`'s
+ * non-accent members) named colors by where they were used
+ * (`paper`/`hairline`/`abyss`) rather than what they are. Collapsed into two
+ * hue families, same rule Pearl's `alabaster`/`squidInk` already follow
+ * (ADR-0005 primitive tier, one hue per lightness register, not one name per
+ * usage): `ice` covers the light register (steps 100–500), `graphite` covers
+ * the dark register (steps 500–900). A step number means the same lightness
+ * in both scales' own register; cross-mode reuse (e.g. dark mode's text
+ * borrowing `ice[100]` directly) works the same way Pearl's `squidInk[900]`
+ * / `alabaster[300]` "moonlight" borrow does — see the theme classes below.
+ *
+ * The accent hue (formerly five separately-named `ice*` primitives) is now
+ * one scale, `glacier`, for the same reason.
+ *
+ * Two color tiers (ADR-0005): `*Primitives`/scales are raw named hexes; the
  * `*ThemeClass` calls map them onto semantic roles. Scales are this theme's
  * own — not shared with Pearl/Tahitian/South Sea.
  */
 
-export const freshwaterLightPrimitives = {
-  // Crisp near-white, not literal `#fff` — the console reads as bright, not
-  // clinical. `cloud` (surface) sits one step off `paper` (background) so a
-  // Card is still legible as its own plane, without the visible gray cast
-  // the previous `#f7f7f8` had.
-  paper: '#fdfdfd',
-  cloud: '#fafafa',
-  ink: '#0e0f10',
-  slate: '#5b5b60',
-  hairline: '#e3e5e7',
-  hairlineSubtle: '#eef0f1',
-  ice: '#00b8e6',
-  // Doc's "ideal" pairing (§4) for hover/pressed feedback — a deeper, less
-  // neon step of the same hue rather than a tint.
-  iceDeep: '#0089b3',
-  // A brighter step of `ice`, for text set on the solid-ink primary fill —
-  // `ice` itself is tuned for contrast on `paper`/`cloud`, not on near-black.
-  // Same role dark mode's `iceBright` plays, just authored for light mode's
-  // ink-fill button rather than a dark ground.
-  iceBright: '#5fe1ff',
-  // The `wash` tint (§4: "attention stat cell") — near-white, stationary,
-  // marks a semantic region. Not a luster; see the file header.
-  iceWash: '#e9fbff',
-  scrim: 'rgba(14, 15, 16, 0.5)',
+// ---- Type primitives (named by what they ARE — no roles assigned here) ----
+export const freshwaterFonts = {
+  grotesk: "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif",
+  mono: "'Azeret Mono', ui-monospace, 'SF Mono', Menlo, monospace",
 };
 
-export const freshwaterDarkPrimitives = {
-  abyss: '#0e0f10',
-  charcoal: '#17181a',
-  paper: '#f5f5f7',
-  ash: '#9da1a6',
-  graphite: '#2b2d30',
-  graphiteSubtle: '#202123',
-  iceBright: '#4dd8ff',
-  iceDusk: '#062a33',
-  scrim: 'rgba(0, 0, 0, 0.6)',
+// ---- Color primitives ----
+
+/**
+ * [derived] Light-register neutral, one cool near-white hue stepped
+ * 100 (brightest) → 500 (least light) — replaces `paper`/`cloud` and the old
+ * `freshwaterSlate` scale. Only spans its light end, same as Pearl's
+ * `alabaster`; the dark register lives in `freshwaterGraphite` below, not as
+ * a continuation of this scale.
+ */
+export const freshwaterIce = {
+  100: '#fdfdfd', // paper — page background (light) / borrowed as text + backgroundInverse/surfaceInverse (dark)
+  200: '#fafafa', // cloud — raised surface (light) / borrowed as surfaceInverse (dark)
+  300: '#eef0f1', // border, subtle
+  400: '#e3e5e7', // border / borrowed as borderInverse (dark)
+  500: '#5b5b60', // text, subtle
+};
+
+/**
+ * [derived] Dark-register neutral, stepped 500 (least dark) → 900
+ * (darkest) — replaces `abyss`/`charcoal`/`ash`/`graphite`/`graphiteSubtle`.
+ * Only spans its dark end, mirroring Pearl's `squidInk`; `graphite[900]` is
+ * also borrowed directly as light mode's `text` (a "same hex, different
+ * role" reuse, not a duplicate value — same pattern as `freshwaterIce[100]`
+ * being borrowed as dark mode's `text`).
+ */
+export const freshwaterGraphite = {
+  500: '#9da1a6', // text, subtle (dark)
+  600: '#2b2d30', // border (dark) / borrowed as borderInverse (light)
+  700: '#202123', // border, subtle (dark)
+  800: '#17181a', // raised surface (dark) / borrowed as surfaceInverse (light)
+  900: '#0e0f10', // page background (dark) / borrowed as text + backgroundInverse (light)
+};
+
+/**
+ * [derived] The accent hue — electric blue, spent only where the system
+ * speaks (statuses, deltas, selection, the primary CTA). One scale reused
+ * across both modes rather than five separately-named `ice*` primitives:
+ * `100`/`600` are the near-white wash and near-black dusk used as
+ * `accentSubtle` in light/dark respectively, `200`–`500` are the hue itself
+ * at descending lightness. Steps happen to fall in strict lightness order
+ * (unlike `freshwaterIce`/`freshwaterGraphite`, which only span one register
+ * each) because this hue is genuinely used across the full range in both
+ * modes.
+ */
+export const freshwaterGlacier = {
+  100: '#e9fbff', // wash — accentSubtle, light mode
+  200: '#5fe1ff', // bright step — text on the solid-ink primary fill, light mode
+  300: '#4dd8ff', // accent, dark mode
+  400: '#00b8e6', // accent, light mode
+  500: '#0089b3', // deep step — accentHover, light mode
+  600: '#062a33', // dusk — accentSubtle, dark mode
+};
+
+const freshwaterScrim = {
+  light: 'rgba(14, 15, 16, 0.5)',
+  dark: 'rgba(0, 0, 0, 0.6)',
 };
 
 // [derived] Sentiment families, one flattened 100 (lightest)→800 (darkest)
 // scale per hue, shared by both modes — a step number means the same
-// lightness regardless of which theme mode reads it.
+// lightness regardless of which theme mode reads it. Retuned 2026-08-29 for
+// harmony with the cool, vibrant `glacier` accent: `spring` (positive) is a
+// cool mint kept out of `glacier`'s own blue range so the two don't read as
+// one hue; `pool` (info, ~226° indigo-blue) stays as-is — closest in the
+// wheel to `glacier` (~193°) of any sentiment hue, which is deliberate, it's
+// the system's other "cool, electric" signal; `canyon` (negative) is the
+// palette's one warm hue, picked over a cooler red/coral so it doesn't fight
+// `pool` for the "which blue is this" read; `sulphur` (warn) leans
+// yellow-green rather than amber, keeping it out of `canyon`'s warm range.
 export const freshwaterSentiment = {
-  // `positive` on brand: a cyan family tuned around the `ice` accent hue
-  // (~193°) rather than the generic green every other theme's scale uses —
-  // it reads as "the system's own good signal," not a borrowed traffic-light
-  // color. Kept a distinct hue from `tide` (info, ~226° indigo-blue) so the
-  // two don't collapse into each other.
-  lagoon: { 100: '#e3f6fc', 200: '#b9e7f5', 300: '#7dd3ec', 400: '#29b6e0', 500: '#0098c4', 600: '#116e8a', 700: '#0b5468', 800: '#0a222b' },
-  coral: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
-  sunlight: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
-  tide: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
+  spring: { 100: '#e4f9f1', 200: '#b7ecda', 300: '#7fdcbc', 400: '#2cbe8d', 500: '#0a9e6e', 600: '#0c7050', 700: '#0a5540', 800: '#0b241c' },
+  canyon: { 100: '#fbede7', 200: '#f0c4b0', 300: '#e8a084', 400: '#d46b45', 500: '#b14e2e', 600: '#7a3620', 700: '#622a1a', 800: '#271410' },
+  sulphur: { 100: '#fbf6dc', 200: '#ede29a', 300: '#dccb5a', 400: '#c2ac24', 500: '#8f7e14', 600: '#645a12', 700: '#584f10', 800: '#242009' },
+  pool: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
 // Deliberate deviation from the doc's "radius 0 throughout": a slight 2px
@@ -88,10 +134,6 @@ const freshwaterFontWeight = { regular: '400', medium: '500', semibold: '600', b
 // reads in Azeret Mono too, leaning further into the ops-console register —
 // Space Grotesk stays reserved for display/heading. Both loaded via
 // @fontsource in .storybook/preview.tsx.
-export const freshwaterFonts = {
-  grotesk: "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif",
-  mono: "'Azeret Mono', ui-monospace, 'SF Mono', Menlo, monospace",
-};
 const freshwaterFontFamily = {
   display: freshwaterFonts.grotesk,
   heading: freshwaterFonts.grotesk,
@@ -116,44 +158,44 @@ const freshwaterText = {
 
 export const freshwaterLightThemeClass = createTheme(vars, {
   color: {
-    background: freshwaterLightPrimitives.paper,
-    surface: freshwaterLightPrimitives.cloud,
-    overlay: freshwaterLightPrimitives.scrim,
+    background: freshwaterIce[100],
+    surface: freshwaterIce[200],
+    overlay: freshwaterScrim.light,
     overlaySubtle: 'rgba(14, 15, 16, 0.08)',
-    backgroundInverse: freshwaterDarkPrimitives.abyss,
-    surfaceInverse: freshwaterDarkPrimitives.charcoal,
-    text: freshwaterLightPrimitives.ink,
-    textSubtle: freshwaterLightPrimitives.slate,
-    textInverse: freshwaterDarkPrimitives.paper,
-    textInverseSubtle: freshwaterDarkPrimitives.ash,
-    border: freshwaterLightPrimitives.hairline,
+    backgroundInverse: freshwaterGraphite[900],
+    surfaceInverse: freshwaterGraphite[800],
+    text: freshwaterGraphite[900],
+    textSubtle: freshwaterIce[500],
+    textInverse: freshwaterIce[100],
+    textInverseSubtle: freshwaterGraphite[500],
+    border: freshwaterIce[400],
     // The doc's heavy "2px solid #0E0F10" structural rule — full ink, not a
     // lifted neutral step.
-    borderStrong: freshwaterLightPrimitives.ink,
-    borderSubtle: freshwaterLightPrimitives.hairlineSubtle,
-    borderInverse: freshwaterDarkPrimitives.graphite,
-    shadow: freshwaterLightPrimitives.hairline,
+    borderStrong: freshwaterGraphite[900],
+    borderSubtle: freshwaterIce[300],
+    borderInverse: freshwaterGraphite[600],
+    shadow: freshwaterIce[400],
     // Doc §4 Geometry: "Solid-ink primary (#0E0F10, white text), outlined
-    // secondary." Primary is the console's own ink, not the ice accent —
-    // ice is spent only where the system speaks (statuses, deltas,
+    // secondary." Primary is the console's own ink, not the glacier accent —
+    // glacier is spent only where the system speaks (statuses, deltas,
     // selection), never as a CTA fill.
-    primary: freshwaterLightPrimitives.ink,
-    onPrimary: freshwaterLightPrimitives.paper,
-    accent: freshwaterLightPrimitives.ice,
-    accentHover: freshwaterLightPrimitives.iceDeep,
-    accentSubtle: freshwaterLightPrimitives.iceWash,
-    onAccent: freshwaterLightPrimitives.ink,
-    onAccentSubtle: freshwaterLightPrimitives.ink,
-    focusRing: freshwaterLightPrimitives.ice,
+    primary: freshwaterGraphite[900],
+    onPrimary: freshwaterIce[100],
+    accent: freshwaterGlacier[400],
+    accentHover: freshwaterGlacier[500],
+    accentSubtle: freshwaterGlacier[100],
+    onAccent: freshwaterGraphite[900],
+    onAccentSubtle: freshwaterGraphite[900],
+    focusRing: freshwaterGlacier[400],
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
     // body text despite having a lower luminance-contrast ratio (saturation,
     // not just lightness, drives perceived prominence); 65% keeps the hue
     // identifiable while quieting it below both `text` and plain body copy.
-    positive: { surface: freshwaterSentiment.lagoon[100], border: freshwaterSentiment.lagoon[200], text: freshwaterSentiment.lagoon[700], icon: `color-mix(in srgb, ${freshwaterSentiment.lagoon[500]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: freshwaterSentiment.coral[100], border: freshwaterSentiment.coral[200], text: freshwaterSentiment.coral[600], icon: `color-mix(in srgb, ${freshwaterSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: freshwaterSentiment.sunlight[100], border: freshwaterSentiment.sunlight[200], text: freshwaterSentiment.sunlight[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: freshwaterSentiment.tide[100], border: freshwaterSentiment.tide[200], text: freshwaterSentiment.tide[700], icon: `color-mix(in srgb, ${freshwaterSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})` },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -165,38 +207,42 @@ export const freshwaterLightThemeClass = createTheme(vars, {
 
 export const freshwaterDarkThemeClass = createTheme(vars, {
   color: {
-    background: freshwaterDarkPrimitives.abyss,
-    surface: freshwaterDarkPrimitives.charcoal,
-    overlay: freshwaterDarkPrimitives.scrim,
+    background: freshwaterGraphite[900],
+    surface: freshwaterGraphite[800],
+    overlay: freshwaterScrim.dark,
     overlaySubtle: 'rgba(255, 255, 255, 0.10)',
-    backgroundInverse: freshwaterLightPrimitives.paper,
-    surfaceInverse: freshwaterLightPrimitives.cloud,
-    text: freshwaterDarkPrimitives.paper,
-    textSubtle: freshwaterDarkPrimitives.ash,
-    textInverse: freshwaterLightPrimitives.ink,
-    textInverseSubtle: freshwaterLightPrimitives.slate,
-    border: freshwaterDarkPrimitives.graphite,
+    backgroundInverse: freshwaterIce[100],
+    surfaceInverse: freshwaterIce[200],
+    text: freshwaterIce[100],
+    textSubtle: freshwaterGraphite[500],
+    textInverse: freshwaterGraphite[900],
+    textInverseSubtle: freshwaterIce[500],
+    border: freshwaterGraphite[600],
     // Structural rule inverts too — full paper-white against the dark
     // ground, the same "full ink" idea the light mode's rule carries.
-    borderStrong: freshwaterDarkPrimitives.paper,
-    borderSubtle: freshwaterDarkPrimitives.graphiteSubtle,
-    borderInverse: freshwaterLightPrimitives.hairline,
-    shadow: freshwaterDarkPrimitives.graphite,
+    borderStrong: freshwaterIce[100],
+    borderSubtle: freshwaterGraphite[700],
+    borderInverse: freshwaterIce[400],
+    // [derived] A shadow is occlusion: it must always DARKEN, and every
+    // neutral this theme has in dark mode is lighter than `background` — so
+    // this stays a fixed dark value rather than a `freshwaterGraphite` step,
+    // same reasoning as Pearl's dark-mode `shadow` token.
+    shadow: 'rgba(0, 0, 0, 0.55)',
     // Solid-ink primary flips with the ground: dark mode's "ink" fill is the
     // paper-white step, set against near-black text — same B/W-console
     // identity, inverted.
-    primary: freshwaterDarkPrimitives.paper,
-    onPrimary: freshwaterDarkPrimitives.abyss,
-    accent: freshwaterDarkPrimitives.iceBright,
-    accentHover: freshwaterLightPrimitives.ice,
-    accentSubtle: freshwaterDarkPrimitives.iceDusk,
-    onAccent: freshwaterDarkPrimitives.abyss,
-    onAccentSubtle: freshwaterDarkPrimitives.paper,
-    focusRing: freshwaterDarkPrimitives.iceBright,
-    positive: { surface: freshwaterSentiment.lagoon[800], border: freshwaterSentiment.lagoon[600], text: freshwaterSentiment.lagoon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.lagoon[400]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: freshwaterSentiment.coral[800], border: freshwaterSentiment.coral[700], text: freshwaterSentiment.coral[300], icon: `color-mix(in srgb, ${freshwaterSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: freshwaterSentiment.sunlight[800], border: freshwaterSentiment.sunlight[600], text: freshwaterSentiment.sunlight[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: freshwaterSentiment.tide[800], border: freshwaterSentiment.tide[600], text: freshwaterSentiment.tide[300], icon: `color-mix(in srgb, ${freshwaterSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
+    primary: freshwaterIce[100],
+    onPrimary: freshwaterGraphite[900],
+    accent: freshwaterGlacier[300],
+    accentHover: freshwaterGlacier[400],
+    accentSubtle: freshwaterGlacier[600],
+    onAccent: freshwaterGraphite[900],
+    onAccentSubtle: freshwaterIce[100],
+    focusRing: freshwaterGlacier[300],
+    positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})` },
+    warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})` },
+    info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})` },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -212,22 +258,22 @@ globalStyle(
   { textTransform: 'uppercase' },
 );
 
-// Light mode's primary fill is solid ink — `iceBright` (tuned for contrast
+// Light mode's primary fill is solid ink — `glacier[200]` (tuned for contrast
 // on near-black) reads clean there, matching the reference mockup's button
 // text. Dark mode's primary fill inverts to paper-white (see
 // `freshwaterDarkThemeClass.color.primary` above), where this same bright
 // cyan would fail contrast, so it keeps its default near-black `onPrimary`
 // text instead of an accent override.
 globalStyle(`${freshwaterLightThemeClass} [data-component="button"][data-variant="primary"]`, {
-  color: freshwaterLightPrimitives.iceBright,
+  color: freshwaterGlacier[200],
 });
 
 // The shared Button recipe's canon primary carries an `inset 0 1px 0
 // accentSubtle` top-highlight, sized for Pearl's near-fill-hued
-// `accentSubtle`. Freshwater's is a bright wash instead (`iceWash`/
-// `iceDusk`) — miles lighter than the solid-ink/paper-white fill — so that
-// same inset reads as a stark seam across the top edge, not a sheen. The
-// doc's own geometry rules this out anyway ("No offset shadows — those
+// `accentSubtle`. Freshwater's is a bright wash instead (`glacier[100]`/
+// `glacier[600]`) — miles lighter than the solid-ink/paper-white fill — so
+// that same inset reads as a stark seam across the top edge, not a sheen.
+// The doc's own geometry rules this out anyway ("No offset shadows — those
 // belong to 6a, a different flavor"), so it's dropped entirely rather than
 // re-tuned; a background hue-shift carries hover/press feedback instead,
 // same technique Pearl and Tahitian use for their own flat fills.
@@ -235,20 +281,28 @@ globalStyle(
   `${freshwaterLightThemeClass} [data-component="button"][data-variant="primary"], ${freshwaterDarkThemeClass} [data-component="button"][data-variant="primary"]`,
   { boxShadow: 'none' },
 );
-globalStyle(
-  [
-    `${freshwaterLightThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
-    `${freshwaterDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
-  ].join(', '),
-  {
-    // The base recipe's own `:hover` rule (translateY lift + drop shadow)
-    // outranks this file's plain resting `boxShadow: none` once `:hover`
-    // matches — needs restating here, not just at rest.
-    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 85%, ${vars.color.accent})`,
-    boxShadow: 'none',
-    transform: 'none',
-  },
-);
+globalStyle(`${freshwaterLightThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`, {
+  // The base recipe's own `:hover` rule (translateY lift + drop shadow)
+  // outranks this file's plain resting `boxShadow: none` once `:hover`
+  // matches — needs restating here, not just at rest.
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 85%, ${vars.color.accent})`,
+  boxShadow: 'none',
+  transform: 'none',
+});
+
+// Dark mode: full bright-blue fill, ink border — the accent carries the
+// whole box instead of a strip along one edge.
+globalStyle(`${freshwaterDarkThemeClass} [data-component="button"][data-variant="primary"]`, {
+  backgroundColor: freshwaterGlacier[300],
+  color: freshwaterGraphite[900],
+  border: `1px solid ${freshwaterGraphite[900]}`,
+  boxShadow: 'none',
+});
+globalStyle(`${freshwaterDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`, {
+  backgroundColor: freshwaterIce[100],
+  boxShadow: 'none',
+  transform: 'none',
+});
 
 // Input's resting border reads too quiet against the console's hard-edged
 // register at the shared `color.border` hairline — `color.text` (near-black
@@ -296,7 +350,7 @@ globalStyle(
 
 // `headingSm` and `displayLg` only, not the full heading→display range
 // Tahitian uppercases (see tahitian.css.ts) — Freshwater's console register
-// is restrained ("neon ice-blue only where the system speaks," docs/theme/
+// is restrained ("neon accent only where the system speaks," docs/theme/
 // theme-revision-decisions.md §4), not poster-scale maximalism everywhere.
 // `displaySm` (stat figures, numerals) is excluded on purpose: caps is a
 // no-op on digits, so uppercasing it would do nothing for the numbers that
@@ -312,3 +366,65 @@ globalStyle(
   ].join(', '),
   { textTransform: 'uppercase' },
 );
+
+// ---- 8b, adapted: Freshwater's own sphere ----
+//
+// `PearlSphere` reads `pearlTreatments.luster` directly (bespoke brand
+// artwork — see its own file comment), so a per-theme look means overriding
+// its two styled elements here, same mechanism as Tahitian's and South Sea's
+// own sphere overrides.
+//
+// Not a port of 8b's soft nacre gradient — that reads as decorative, and
+// this console's whole identity is "electric blue spent only where the
+// system speaks, never as decoration" (file header). So: a hard two-tone
+// split (`glacier[400]`/`glacier[200]`, no blended midtones) instead of a
+// smooth radial, and a zero-blur offset shadow instead of a soft drop —
+// flat, graphic shading to match the console's own flat surfaces (`radius:
+// 0` everywhere else in this theme). Static, no sweep — an ambient animated
+// loop is exactly the kind of decoration this theme's identity rules out;
+// Pearl's is the one brand object allowed to animate at rest (`PearlSphere`'s
+// own comment).
+// Prior freshwater sphere version kept in git history for quick rollback.
+globalStyle(`${freshwaterLightThemeClass} .${sphereBody}`, {
+  backgroundImage: `
+    radial-gradient(circle at 30% 24%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.76) 16%, rgba(255,255,255,0.18) 28%, transparent 42%),
+    radial-gradient(circle at 66% 76%, rgba(6, 67, 87, 0.28) 0%, rgba(6, 67, 87, 0.14) 32%, transparent 62%),
+    linear-gradient(135deg, #ebffff 0%, #b8f2ff 12%, #67dfff 30%, #1db3de 52%, #0d8fbd 70%, #0b5f7d 100%)
+  `,
+  backgroundColor: '#1db3de',
+  boxShadow: `0 0 0 2px ${freshwaterGraphite[900]}`,
+  filter: 'contrast(1.08) saturate(1.08)',
+  animation: 'none',
+});
+// Cast shadow lives on `sphereContact` alone now — a flattened ellipse, not
+// a clone of the sphere's own circle. The highlight in `sphereBody`'s
+// gradient sits at `30% 24%` (top-left), so the shadow it casts falls
+// down-and-right, detached from the sphere's edge rather than fused to it.
+globalStyle(`${freshwaterLightThemeClass} .${sphereContact}`, {
+  background: 'radial-gradient(ellipse at center, rgba(14, 15, 16, 0.32) 0%, rgba(14, 15, 16, 0.16) 55%, transparent 78%)',
+  opacity: 1,
+  width: '130px',
+  height: '34px',
+  left: 'calc(50% + 22px)',
+  bottom: '-22px',
+});
+
+globalStyle(`${freshwaterDarkThemeClass} .${sphereBody}`, {
+  backgroundImage: `
+    radial-gradient(circle at 30% 24%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.7) 16%, rgba(255,255,255,0.16) 28%, transparent 42%),
+    radial-gradient(circle at 66% 76%, rgba(5, 42, 56, 0.34) 0%, rgba(5, 42, 56, 0.14) 32%, transparent 62%),
+    linear-gradient(135deg, #dffcff 0%, #a8efff 12%, #6fdfff 30%, #2cb0df 52%, #0b7eaa 70%, #083d4a 100%)
+  `,
+  backgroundColor: '#2cb0df',
+  boxShadow: `0 0 0 2px ${freshwaterGraphite[900]}`,
+  filter: 'contrast(1.1) saturate(1.12)',
+  animation: 'none',
+});
+globalStyle(`${freshwaterDarkThemeClass} .${sphereContact}`, {
+  background: 'radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.28) 55%, transparent 78%)',
+  opacity: 1,
+  width: '130px',
+  height: '34px',
+  left: 'calc(50% + 22px)',
+  bottom: '-22px',
+});
