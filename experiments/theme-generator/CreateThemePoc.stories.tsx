@@ -9,7 +9,7 @@ import { Text } from '../../src/components/Text';
 import { Icon } from '../../src/components/Icon/Icon';
 import { PiLightning, PiShieldCheck, PiSparkle, PiChartLineUp } from 'react-icons/pi';
 import { color } from '../../src/tokens';
-import { pearlLightThemeClass } from '../../src/themes/pearl.css';
+import { pearlLightThemeClass } from '../../src/themes/pearl/pearl.css';
 import '../../src/fonts/boska.css'; // self-hosted display face used by the generated theme
 import {
   DEFAULT_INPUT,

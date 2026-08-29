@@ -352,6 +352,7 @@ const BASE_TYPE: Record<
   headingLg: { size: 2.0, lineHeight: 1.2, weight: 'bold', tracking: -0.015 },
   displaySm: { size: 2.5, lineHeight: 1.15, weight: 'bold', tracking: -0.02 },
   displayLg: { size: 3.5, lineHeight: 1.05, weight: 'bold', tracking: -0.025 },
+  displayXl: { size: 5, lineHeight: 1.05, weight: 'bold', tracking: -0.035 },
 };
 
 const SENTIMENT_ANCHOR = { positive: 150, negative: 27, warn: 80, info: 250 } as const;
@@ -401,7 +402,7 @@ const MIN_PX: Partial<Record<keyof typeof text, number>> = {
 // Multi-line copy needs breathing room (Impeccable `tight-leading`); display
 // steps are single-line and exempt.
 const MIN_LEADING = 1.3;
-const DISPLAY_STEPS = new Set(['displaySm', 'displayLg']);
+const DISPLAY_STEPS = new Set(['displaySm', 'displayLg', 'displayXl']);
 
 function resolvePersonality(id: PersonalityId, variantId: string): PersonalityTraits {
   const p = PERSONALITIES[id];

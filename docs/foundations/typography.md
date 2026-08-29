@@ -60,29 +60,58 @@ Body copy's line-height additionally targets **≥1.5×** — SC 1.4.8 Visual Pr
 (AAA), "at least 1.5 within paragraphs." Not a hard AA requirement, but the default
 authored value meets it anyway rather than needing a user override to get there.
 
-## Type scale — worked example (Pearl)
+## Type scale — a shared 4px-grid ramp
 
-Each theme picks the unitless ratio that lands *that theme's own font-size* on the 8px
-soft grid (`spacing-system.md`) — so the ratio differs per theme even where the intent
-(1.5× body, 1.25× heading, ~1.05× display) is shared. Pearl:
+`fontSize` is a strict 4px multiple at every step, in every theme — not just an 8px
+soft target with occasional escapes. `caption` is the one deliberate exception: the
+nearest true 4px neighbors are 8px (below the system's 11px legibility floor for
+functional UI text) and 12px (collides with `bodySm`), so it holds 11px instead.
+`lineHeight`'s *resolved* pixel value is also always a 4px multiple, `caption`
+included — only its raw font-size escapes the grid.
 
-Code stores `fontSize`/`letterSpacing` in rem/em and `lineHeight` as an unitless
-ratio (see above) — the table below rounds display values to whole/near px for
-readability. `lineHeight` ratio rounded to 3 decimals.
+Because the size ramp itself is now shared across all four themes, only
+`fontWeight`/`letterSpacing` vary per theme (see each theme's `src/themes/*.css.ts`
+for those). Code stores `fontSize`/`letterSpacing` in rem/em and `lineHeight` as a
+unitless ratio (see above) — this table shows Pearl's values as the reference;
+`lineHeight` ratio rounded to 3 decimals.
 
 | Variant | `fontSize` | `lineHeight` | Resolves to | `letterSpacing` | Grid |
 |---|---|---|---|---|---|
-| `bodySm` | 12px (`0.75rem`) | `1.667` | 20px | 0 | 4px escape |
-| `bodyMd` | 14px (`0.875rem`) | `1.714` | 24px | 0 | 8px |
-| `bodyLg` | 15px (`0.9375rem`) | `1.6` | 24px | 0 | 8px |
-| `headingSm` | 20px (`1.25rem`) | `1.2` | 24px | -0.2px (`-0.01em`) | 8px |
-| `headingMd` | 24px (`1.5rem`) | `1.333` | 32px | -0.36px (`-0.015em`) | 8px |
-| `headingLg` | 34px (`2.125rem`) | `1.294` | 44px | -0.68px (`-0.02em`) | 4px escape |
-| `displaySm` | 56px (`3.5rem`) | `1.071` | 60px | -1.68px (`-0.03em`) | 4px escape |
-| `displayLg` | 84px (`5.25rem`) | `1.048` | 88px | -3.36px (`-0.04em`) | 8px |
+| `caption` | 11px (`0.6875rem`) | `1.4545` | 16px | 0 | 4px escape (fontSize only) |
+| `bodySm` | 12px (`0.75rem`) | `1.667` | 20px | 0 | 4px |
+| `bodyMd` | 16px (`1rem`) | `1.5` | 24px | 0 | 4px |
+| `bodyLg` | 24px (`1.5rem`) | `1.5` | 36px | 0 | 4px |
+| `headingSm` | 32px (`2rem`) | `1.25` | 40px | -0.32px (`-0.01em`) | 4px |
+| `headingMd` | 40px (`2.5rem`) | `1.2` | 48px | -0.6px (`-0.015em`) | 4px |
+| `headingLg` | 56px (`3.5rem`) | `1.143` | 64px | -1.12px (`-0.02em`) | 4px |
+| `displaySm` | 72px (`4.5rem`) | `1.056` | 76px | -2.16px (`-0.03em`) | 4px |
+| `displayLg` | 112px (`7rem`) | `1.071` | 120px | -4.48px (`-0.04em`) | 4px |
+| `displayXl` | 152px (`9.5rem`) | `1.053` | 160px | -6.84px (`-0.045em`) | 4px |
 
-Other themes' values live in their own `src/themes/*.css.ts` — same method, different
-numbers, since each theme's font-sizes are its own.
+### `displayXl` — the poster step, and why it exists
+
+`displayXl` is identity type: a wordmark on a title page, and nothing else. It
+was **promoted, not designed in advance** — the introduction page set its
+wordmark at `displayLg` and measured it at 13% of the content width, with the
+brand object rendering 1.75× the height of the brand name. The scale had no
+larger step to reach for.
+
+That is the promotion test this system uses for canon generally (ADR-0007,
+"canon grows by promotion, not accretion"): a real consumer needed it, the
+absence forced a page-local workaround, and a second consumer (`Hero`) was
+already queued behind it. The alternative — overriding `fontSize` on the page
+— was rejected because it would put a raw type value outside the theme layer,
+which is exactly what the reskinning promise forbids (`ROADMAP.md`).
+
+Adding it was a **breaking contract change**, and deliberately so: all four
+themes had to author a real value before the build would pass, and the
+compiler also caught two consumers that were easy to forget — `Text.css.ts`'s
+recipe and `experiments/theme-generator`. That coordination tax is the
+contract working, not a cost to route around (ADR-0004, ADR-0007).
+
+**Do not reach for it for section headings.** `displayLg` remains the top of
+the *reading* hierarchy; `displayXl` is a register above it that most pages
+should never enter.
 
 ## Font-weight scale
 
@@ -93,9 +122,9 @@ are consistent across all four themes; only which name a step defaults to differ
 | Name | Value | Pearl defaults | Tahitian / Freshwater / South Sea default |
 |---|---|---|---|
 | `regular` | 400 | `bodySm`, `bodyMd`, `bodyLg` | `bodySm`, `bodyMd`, `bodyLg` |
-| `medium` | 500 | `headingSm`, `headingMd`, `headingLg`, `displaySm`, `displayLg` | — (override only) |
-| `semibold` | 600 | — (override only) | `headingSm`, `headingMd`, `headingLg` |
-| `bold` | 700 | — (override only) | `displaySm`, `displayLg` |
+| `medium` | 500 | `headingSm`, `headingMd`, `headingLg`, `displaySm`, `displayLg`, `displayXl` | — (override only) |
+| `semibold` | 600 | — (override only) | `headingSm`, `headingMd`, `headingLg`, and Tahitian's `displaySm`/`displayLg`/`displayXl` |
+| `bold` | 700 | — (override only) | Freshwater and South Sea's `displaySm`, `displayLg`, `displayXl` |
 
 Pearl is the one outlier, defaulting headings and displays one step lighter
 (`medium` throughout) than the other three (`semibold` heading / `bold` display).

@@ -200,5 +200,11 @@ export const vars = createThemeContract({
     headingLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     displaySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     displayLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    // The poster step. Added because `displayLg` topped out below what a
+    // title page needs — a wordmark set at it read as a heading rather than
+    // an identity. Every theme must author a real value: a theme that has no
+    // use for poster type still has to say what its largest voice IS, which
+    // is the point of a total contract (ADR-0005).
+    displayXl: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
   },
 });

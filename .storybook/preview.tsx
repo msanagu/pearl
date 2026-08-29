@@ -5,11 +5,17 @@ import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
 import '@fontsource/space-grotesk/700.css';
+// Freshwater's mono (docs/theme/theme-revision-decisions.md §4) — data only:
+// ids, values, labels, timestamps. Zodiak/General Sans (South Sea) aren't on
+// @fontsource — loaded by CDN link in `preview-head.html` instead.
+import '@fontsource/azeret-mono/400.css';
+import '@fontsource/azeret-mono/500.css';
+import '@fontsource/azeret-mono/600.css';
 import { vars } from '../src/theme.css';
-import { tahitianLightThemeClass, tahitianDarkThemeClass, tahitianTreatmentClass } from '../src/themes/tahitian.css';
-import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater.css';
-import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea.css';
-import { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass } from '../src/themes/pearl.css';
+import { tahitianLightThemeClass, tahitianDarkThemeClass, tahitianTreatmentClass } from '../src/themes/tahitian/tahitian.css';
+import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater/freshwater.css';
+import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea/south-sea.css';
+import { pearlLightThemeClass, pearlDarkThemeClass, pearlTreatmentClass } from '../src/themes/pearl/pearl.css';
 
 // Theme × mode matrix. Each of Pearl's three named themes ships a real light
 // AND dark pair (docs/fable5-handoff-three-themes.md) — Tahitian/Freshwater/
@@ -35,7 +41,7 @@ const themeDefaultMode: Record<string, 'light' | 'dark'> = {
 
 const preview: Preview = {
   parameters: {
-      layout: 'fullscreen',
+    layout: 'fullscreen',
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -47,7 +53,7 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical', // Optional: sorts remaining items alphabetically
-        order: ['Foundations', 'Brand', 'Components', 'Templates', 'Audit', "*"],
+        order: ['Introduction', 'Foundations', 'Brand', 'Components', 'Templates', 'Audit', "*"],
       },
     },
   },
@@ -61,8 +67,8 @@ const preview: Preview = {
         items: [
           { value: 'pearl', title: 'Pearl' },
           { value: 'tahitian', title: 'Tahitian' },
-          // { value: 'freshwater', title: 'Freshwater' },
-          // { value: 'southSea', title: 'South Sea' },
+          { value: 'freshwater', title: 'Freshwater' },
+          { value: 'southSea', title: 'South Sea' },
         ],
         dynamicTitle: true,
       },

@@ -1,9 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, fontFamily } from '../tokens';
 import { Text } from '../components/Text/Text';
-import { pearlBrandWordmark } from '../themes/pearl.roles';
-import { tahitianBrandWordmark } from '../themes/tahitian.roles';
-import { southSeaBrandWordmark } from '../themes/south-sea.roles';
 import * as css from './tokens.css';
 
 /**
@@ -12,12 +9,12 @@ import * as css from './tokens.css';
  * (canon type + per-theme role treatments). Not a story file itself.
  */
 
-/** Which brand wordmark to show for the Storybook toolbar's active theme — Freshwater falls back to Pearl's rather than fabricating one (it has no role table yet). */
-export const brandWordmarkByTheme: Record<string, { text: string; role?: 'inlineEmphasis' }> = {
-  pearl: pearlBrandWordmark,
-  tahitian: tahitianBrandWordmark,
-  southSea: southSeaBrandWordmark,
-};
+/**
+ * Re-exported from `themes/brandWordmark.ts` — this file used to keep its
+ * own literal copy of the same map, which is how Freshwater's wordmark
+ * ended up defined in one and missing from the other. One source now.
+ */
+export { brandWordmarkByTheme } from '../themes/brandWordmark';
 
 /** The theme's own nav wordmark (same markup as `HeroNav`) rather than a plain heading, so a docs page shows the real branded mark, not a label standing in for it. */
 export function Wordmark({

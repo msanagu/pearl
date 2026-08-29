@@ -56,6 +56,7 @@ export const textRecipe = recipe({
       headingLg: { fontFamily: fontFamily.heading, fontSize: text.headingLg.fontSize, lineHeight: text.headingLg.lineHeight, fontWeight: text.headingLg.fontWeight, letterSpacing: text.headingLg.letterSpacing },
       displaySm: { fontFamily: fontFamily.display, fontSize: text.displaySm.fontSize, lineHeight: text.displaySm.lineHeight, fontWeight: text.displaySm.fontWeight, letterSpacing: text.displaySm.letterSpacing },
       displayLg: { fontFamily: fontFamily.display, fontSize: text.displayLg.fontSize, lineHeight: text.displayLg.lineHeight, fontWeight: text.displayLg.fontWeight, letterSpacing: text.displayLg.letterSpacing },
+      displayXl: { fontFamily: fontFamily.display, fontSize: text.displayXl.fontSize, lineHeight: text.displayXl.lineHeight, fontWeight: text.displayXl.fontWeight, letterSpacing: text.displayXl.letterSpacing },
     },
     prominence: {
       default: { color: color.text },

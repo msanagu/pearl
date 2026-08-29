@@ -14,10 +14,9 @@ a finished product.** Every architectural call in this repo is timestamped
 (commit history, ADR `date` fields) and, where relevant, checked against
 external prior art (see ADR-0007's and ADR-0008's "convergent work" sections)
 rather than asserted from taste alone. The differentiator from a normal
-portfolio component library is that claim being falsifiable: the decisions,
-the reasoning, and the dates they were made are all in the repo, so "this
-holds up" or "this didn't age well" is a question anyone can actually check
-against the commit log, not take on faith.
+portfolio component library is that claim being checkable: every decision
+records the options weighed, the trade-offs accepted, and the conditions that
+would make it worth revisiting — in dated ADRs, not asserted from taste.
 
 The concrete hypothesis under test: that a design system whose token layer,
 component API, and governance docs are structured for machine legibility from
@@ -131,6 +130,10 @@ MCP server that detects this pattern automatically across repos
   space (`xs,sm,md,lg,xl,'2xl'` — 6-step, the one non-camelCase, quoted
   token key in the system), radius, and the full typography scale
   (fixed font-size/line-height pairs per variant, never a unitless ratio).
+  The type scale runs `caption` → `displayXl`; `displayXl` is the poster step
+  (identity type only) and was promoted 2026-08-28 rather than designed in —
+  see `foundations/typography.md`. The space scale has NOT had the equivalent
+  step added and currently tops out at `2xl` (open question 15).
 - Concrete themes fulfill that shape; the styling engine's type system is
   expected to fail the build if a theme omits a token (this completeness
   guarantee is native to vanilla-extract's `createTheme`, and is one of the
@@ -196,6 +199,15 @@ back to the design system itself — kept for what it taught, not shipped.
 | 9 | **Tag** | ✅ shipped | static, non-interactive label — `neutral` + Alert-matching sentiment variants; interactive/removable is a future `Chip`, not this |
 | — | Brand: `PearlSphere` | ✅ shipped | `src/brand/` — bespoke artwork, not a themeable canon component (see ADR-0007 on why it doesn't force a 5th theme) |
 | — | Progress Bar, Badge, Grid | planned | native-vs-custom (Progress Bar) and build-vs-adopt calls deferred to implementation time |
+
+**Pages (Storybook, composed from the above — not exported from the package):**
+`Introduction` (the system's front door, pinned first in the sidebar) plus the
+`Templates/` set (Docs, Form, Hero). The introduction page doubles as the
+system's own stress test: it is built only from shipped primitives, and where
+it needed something the system lacked, that gap was recorded rather than
+patched locally — `displayXl` was promoted to the type scale because of it
+(`foundations/typography.md`), and open questions 14 (`Text` UA margins) and
+15 (space scale above `2xl`) were opened from it.
 
 **Deferred, not in MVP scope:** Tabs (would be the intended justified
 Context/compound-component showcase, if revisited), Dialog, Tooltip,

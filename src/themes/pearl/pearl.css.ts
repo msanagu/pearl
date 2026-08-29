@@ -1,5 +1,5 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
-import { vars } from '../theme.css';
+import { vars } from '../../theme.css';
 
 /**
  * Pearl — the flagship theme, and the one the docs site is pinned to.
@@ -166,22 +166,28 @@ const pearlFontFamily = {
 };
 
 /**
- * displayLg is 4c's hero (84px/1.02). bodyLg is 4c's lede (15px/1.6). The rest
- * are [derived] to sit on that ramp.
+ * Every step's fontSize is a strict 4px multiple (the 8px soft grid's floor),
+ * with one deliberate escape: `caption` sits at 11px — the system's 11px
+ * legibility floor for functional UI text — because the nearest true 4px
+ * neighbors are 8px (below that floor) and 12px (collides with `bodySm`).
+ * `lineHeight` is chosen so the resolved pixel value still lands on 4px
+ * (16px, same as its neighbors) even though the fontSize itself is escaping
+ * the grid, `caption` included.
  *
- * Note: 4c also sets `letter-spacing: -.04em` on the hero. The contract has no
- * tracking token, so that is currently unexpressable — flagged, not solved.
+ * Numbers no longer trace to 4c's original spec (84px hero, 15px lede) — the
+ * 4px grid is the binding contract now, not the source reference.
  */
 const pearlText = {
-  caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 16px 8-grid
-  bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px escape
-  bodyMd: { fontSize: '0.875rem', lineHeight: '1.7143', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
-  bodyLg: { fontSize: '0.9375rem', lineHeight: '1.6', fontWeight: '400', letterSpacing: '0' }, // 24px 8-grid
-  headingSm: { fontSize: '1.25rem', lineHeight: '1.2', fontWeight: '500', letterSpacing: '-0.01em' }, // 24px 8-grid
-  headingMd: { fontSize: '1.5rem', lineHeight: '1.3333', fontWeight: '500', letterSpacing: '-0.015em' }, // 32px 8-grid
-  headingLg: { fontSize: '2.125rem', lineHeight: '1.2941', fontWeight: '500', letterSpacing: '-0.02em' }, // 44px 4px escape
-  displaySm: { fontSize: '3.5rem', lineHeight: '1.0714', fontWeight: '500', letterSpacing: '-0.03em' }, // 60px 4px escape
-  displayLg: { fontSize: '5.25rem', lineHeight: '1.0476', fontWeight: '500', letterSpacing: '-0.04em' }, // 88px 8-grid
+  caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 11px floor, 16px 4px-grid line-height
+  bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 20px 4px grid
+  bodyMd: { fontSize: '1rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 24px 4px grid
+  bodyLg: { fontSize: '1.5rem', lineHeight: '1.5', fontWeight: '400', letterSpacing: '0' }, // 36px 4px grid
+  headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '500', letterSpacing: '-0.01em' }, // 40px 4px grid
+  headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '500', letterSpacing: '-0.015em' }, // 48px 4px grid
+  headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '500', letterSpacing: '-0.02em' }, // 64px 4px grid
+  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '500', letterSpacing: '-0.03em' }, // 76px 4px grid
+  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '500', letterSpacing: '-0.04em' }, // 120px 4px grid
+  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '500', letterSpacing: '-0.045em' }, // 160px 4px grid
 };
 
 // ---- Canon theme (light) ----
@@ -331,12 +337,15 @@ globalStyle(
 );
 
 // The face — unconditional. A role owns its treatment wherever it is set.
+// Sentence case, body face (`pearlRoles.preheading` → `sansSentence` in
+// pearl.roles.ts) — mono/upper/tracked is Freshwater/Tahitian's console
+// idiom, not Pearl's; a plain sentence-case label like "Active sessions"
+// read as a data readout under that treatment, which is the wrong register
+// for the flagship's quiet register.
 globalStyle(
   `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
   {
-    fontFamily: pearlFonts.mono,
-    textTransform: 'uppercase',
-    letterSpacing: '0.12em',
+    fontFamily: pearlFonts.sans,
   },
 );
 
@@ -345,7 +354,7 @@ globalStyle(
 // scale and a preheading would render at body size, stopping it out-ranking the
 // heading it sits above. But this is a default, not a mandate: `typeScale` and
 // `role` are independent axes, so `role="preheading" typeScale="headingLg"`
-// (the Hero's oversized `01`/`02` ordinals) has to keep the mono/tracked face
+// (the Hero's oversized `01`/`02` ordinals) has to keep the preheading face
 // at the larger size. `Text` writes `data-type-scale` exactly when the caller
 // named a scale, so this rule stands down whenever they did — otherwise its
 // class+attribute specificity would silently outrank the recipe and pin every

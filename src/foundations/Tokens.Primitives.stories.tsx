@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { alabaster, squidInk, marineLayer, squidInkAlpha, alabasterAlpha, pearlSentiment } from '../themes/pearl.css';
-import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '../themes/tahitian.css';
-import { pearlBrandWordmark } from '../themes/pearl.roles';
-import { tahitianBrandWordmark } from '../themes/tahitian.roles';
+import { alabaster, squidInk, marineLayer, squidInkAlpha, alabasterAlpha, pearlSentiment } from '../themes/pearl/pearl.css';
+import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '../themes/tahitian/tahitian.css';
+import { pearlBrandWordmark } from '../themes/pearl/pearl.roles';
+import { tahitianBrandWordmark } from '../themes/tahitian/tahitian.roles';
 import { Wordmark } from './typeSpecimens';
 import * as css from './primitives.css';
 

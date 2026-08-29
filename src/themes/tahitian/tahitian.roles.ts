@@ -1,4 +1,4 @@
-import type { ThemeRoles } from './roles';
+import type { ThemeRoles } from '../roles';
 import { tahitianTreatments, tahitianTypeTreatments } from './tahitian.css';
 
 export const tahitianDescription =
@@ -7,8 +7,10 @@ export const tahitianDescription =
 /**
  * The nav wordmark — plain, no `role`. Overtone is reserved for one
  * emphasized word and image plates (`inlineEmphasis`/`imageOverlay`); the
- * brand mark itself stays undecorated white/near-black, matching 14a. The
- * uppercase comes for free from the theme's global heading transform.
+ * brand mark itself stays undecorated white/near-black, matching 14a. Text
+ * is hardcoded uppercase (not a CSS `text-transform`) — Tahitian's poster
+ * register renders every wordmark in caps, same as the other three themes'
+ * own name.
  */
 export const tahitianBrandWordmark = {
   text: 'TAHITIAN',

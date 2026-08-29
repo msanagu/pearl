@@ -31,6 +31,7 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(
       <span
         ref={ref}
         data-component="tag"
+        data-variant={variant}
         className={clsx(tag({ variant }), className)}
         {...rest}
       >

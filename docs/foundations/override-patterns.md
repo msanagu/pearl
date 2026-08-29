@@ -73,6 +73,40 @@ selectors, feature overrides would need to match or exceed that specificity, and
 the "just works" guarantee above would need `@layer` to restore. Component authors
 should keep this in mind — it's what keeps overrides predictable as the library grows.
 
+### Limit: themes do not nest
+
+A theme styles components through `globalStyle` **descendant** selectors keyed
+on its theme class:
+
+```
+.tahitianDarkThemeClass [data-component="button"][data-variant="primary"] { ... }
+.pearlLightThemeClass   [data-component="button"][data-variant="primary"] { ... }
+```
+
+Put a Pearl-classed subtree inside a Tahitian-classed page and **both**
+selectors match the inner button, at identical specificity (0,3,0). CSS breaks
+that tie by **source order, not proximity** — there is no "nearest ancestor
+wins" rule for descendant selectors — so the inner theme loses to whichever
+stylesheet happens to load last, at any nesting depth.
+
+The practical rule:
+
+- **Custom properties nest correctly.** A nested theme class does re-resolve
+  `vars.*`, so colors, spacing, and radii follow the inner theme.
+- **`globalStyle` rules do not.** Anything a theme expresses that way — font
+  family, casing, tracking, per-variant borders — leaks into nested subtrees.
+
+So a page cannot render two themes side by side by nesting. Verified 2026-08-28
+against the introduction page's theme specimens, which now render each theme in
+its own frame instead. Real isolation is the only reliable answer today.
+
+**Possible fix, not adopted:** CSS `@scope` with a scope limit
+(`@scope (.themeClass) to ([data-theme-root])`) expresses exactly this boundary
+with one shared marker and no cross-theme coupling. It would need every theme's
+`globalStyle` rewritten and vanilla-extract has no `@scope` API, so it is an
+ADR-sized change rather than a patch. Revisit if nesting is ever needed in
+product code rather than only in this system's own documentation.
+
 ---
 
 ## Secondary mechanism: `className` — for single-instance overrides only

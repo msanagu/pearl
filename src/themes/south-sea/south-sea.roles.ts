@@ -1,4 +1,4 @@
-import type { ThemeRoles } from './roles';
+import type { ThemeRoles } from '../roles';
 import { southSeaFonts } from './south-sea.css';
 
 /**
@@ -8,8 +8,11 @@ export const southSeaDescription =
   'Golden-hour maison restraint: a roman/italic serif mix and a hairline rule do the talking; conch does exactly one loud thing per view.';
 
 /** The nav wordmark — text plus which typography role (if any) decorates it. */
+// Sentence case ("South Sea"), not the all-lowercase "south sea" the
+// wordmark carried before — matches the design reference's own logotype
+// (frames 11b/13a).
 export const southSeaBrandWordmark = {
-  text: 'south sea',
+  text: 'South Sea',
   role: 'inlineEmphasis' as const,
 };
 
@@ -20,11 +23,20 @@ export const southSeaBrandWordmark = {
  * South Sea's identity is type, space, and restraint, not a lit surface.
  */
 export const southSeaTypeTreatments = {
-  serifItalic: { fontFamily: southSeaFonts.serif, fontStyle: 'italic' as const },
-  /** The `/ LABEL /` slash-wrapped caption idiom — sentence-tracked roman
-   * serif, not mono: South Sea has no mono idiom (ADR-0007 rule 1 — honestly
-   * aliasing rather than fabricating one). */
-  slashLabel: { fontFamily: southSeaFonts.serif, case: 'upper' as const, tracking: '0.2em' },
+  // `serifItalic` — the ITALIC half of the roman/italic mix, so it reads
+  // `southSeaFonts.serifItalic` (Times), not `southSeaFonts.serif` (Zodiak)
+  // with a synthesized slant. See that token's own comment for why: the
+  // maison identity's italic voice is Times', not Zodiak's own italic.
+  // `-0.02em` tracking matches the wordmark treatment in the design
+  // reference (Claude Design's own panel, Times Italic, tracking -0.02em).
+  serifItalic: { fontFamily: southSeaFonts.serifItalic, fontStyle: 'italic' as const, letterSpacing: '-0.02em' },
+  /** The `/ LABEL /` slash-wrapped caption idiom — all-caps General Sans at
+   * an airy tracking, not the serif: a maison identity still wants its
+   * micro-labels legible and quiet, and Zodiak's italic-leaning roman reads
+   * cramped at caption size and full caps. South Sea has no mono idiom
+   * (ADR-0007 rule 1 — honestly aliasing to the sans rather than fabricating
+   * one). */
+  slashLabel: { fontFamily: southSeaFonts.sans, case: 'upper' as const, tracking: '0.28em' },
   /** The plain body sans — what `dataDigits` honestly aliases to, since no
    * dedicated tabular/mono face exists in this theme. */
   sansBody: { fontFamily: southSeaFonts.sans },

@@ -1,4 +1,4 @@
-import type { ThemeRoles } from './roles';
+import type { ThemeRoles } from '../roles';
 import { pearlFonts, pearlTreatments } from './pearl.css';
 
 /**
@@ -24,7 +24,12 @@ export const pearlBrandWordmark = {
  */
 export const pearlTypeTreatments = {
   serifItalic: { fontFamily: pearlFonts.serif, fontStyle: 'italic' as const },
-  monoCapsTracked: { fontFamily: pearlFonts.mono, case: 'upper' as const, tracking: '0.12em' },
+  // Sentence case, body face — reads as a quiet label rather than a data
+  // readout. Replaces an earlier mono/upper/tracked treatment that made
+  // every preheading (including plain sentence-case labels like "Active
+  // sessions") look like console output; that idiom is Freshwater/Tahitian's
+  // now, not Pearl's.
+  sansSentence: { fontFamily: pearlFonts.sans },
   monoTabular: { fontFamily: pearlFonts.mono, tabularFigures: true },
 } satisfies Record<string, unknown>;
 
@@ -48,7 +53,7 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     // No `size` — inline emphasis rides whatever variant it's set in.
   },
   preheading: {
-    treatment: 'monoCapsTracked',
+    treatment: 'sansSentence',
     intent: 'The short line above a heading, and standalone labels/IDs/metadata.',
     size: 'caption',
   },

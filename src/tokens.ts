@@ -222,24 +222,28 @@ export interface TextVariantTokens {
 }
 
 export interface TextTokens {
-  /** 11/16. Below the reading floor — labels, tabular data, micro-metadata. */
+  /** 10/16. Deliberate 4px-grid escape (fontSize only) — 12px would collide
+   * with `bodySm`, 8px is below the legible floor. Labels, tabular data,
+   * micro-metadata. */
   caption: TextVariantTokens;
-  /** 12/16. Fine print, captions, metadata. */
+  /** 12/20. Fine print, captions, metadata. */
   bodySm: TextVariantTokens;
-  /** 14/20. Default body text. */
+  /** 16/24. Default body text. */
   bodyMd: TextVariantTokens;
-  /** 16/24. Lead paragraphs, comfortable reading. */
+  /** 24/36. Lead paragraphs, comfortable reading. */
   bodyLg: TextVariantTokens;
-  /** 20/24. Subsection headings. */
+  /** 32/40. Subsection headings. */
   headingSm: TextVariantTokens;
-  /** 24/32. Section headings. */
+  /** 40/48. Section headings. */
   headingMd: TextVariantTokens;
-  /** 32/40. Page titles. */
+  /** 56/64. Page titles. */
   headingLg: TextVariantTokens;
-  /** 40/48. Large hero / marketing type — above document headings. */
+  /** 80/84. Large hero / marketing type — above document headings. */
   displaySm: TextVariantTokens;
-  /** 56/64. Ultra-large landing/hero display type. */
+  /** 112/120. Ultra-large landing/hero display type. */
   displayLg: TextVariantTokens;
+  /** 152/160. Poster scale — the theme's largest voice. Identity and title pages only. */
+  displayXl: TextVariantTokens;
 }
 
 // The annotations are the whole trick: TS checks `vars.*` against each interface
