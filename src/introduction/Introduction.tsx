@@ -14,7 +14,7 @@ import { Row } from '../components/Row/Row';
 import { Stack } from '../components/Stack/Stack';
 import { Alert } from '../components/Alert/Alert';
 import { Icon } from '../components/Icon/Icon';
-import { PearlSphere } from '../brand/PearlSphere';
+import { PearlSphere } from '../components/brand/PearlSphere';
 import { color } from '../tokens';
 import { themeSpecimens, type ThemeKey } from './ThemeSpecimen';
 import * as css from './Introduction.css';

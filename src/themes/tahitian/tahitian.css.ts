@@ -1,7 +1,7 @@
 import { createTheme, globalStyle, keyframes, style } from '@vanilla-extract/css';
 import { vars } from '../../theme.css';
 import { fieldMeta, label as fieldLabel } from '../../components/Field/Field.css';
-import { body as sphereBody } from '../../brand/PearlSphere.css';
+import { body as sphereBody } from '../../components/brand/PearlSphere.css';
 
 /**
  * Tahitian — one of Pearl's three named themes (docs/fable5-handoff-three-themes.md).
@@ -32,7 +32,16 @@ import { body as sphereBody } from '../../brand/PearlSphere.css';
  * unambiguously green — no purple in either (an earlier dark-mode accent
  * hover strayed into aubergine; this replaces it, not extends it), and
  * neither uses "Deep"/"Mist"-style modifier words — like the neutral ramp,
- * each is a plain 100→700 numeric scale.
+ * each is a plain numeric scale.
+ *
+ * Both accents' rungs are placed by VALUE against the neutral ramp, so
+ * `peacock[600]` and `platinum[600]` sit at the same lightness. This is why
+ * the two scales do not share step numbers: light mode's accent works the
+ * 300–700 range, dark mode's the 300–400 range, because each is tuned against
+ * an opposite ground. See each scale's own comment for the 2026-08-29
+ * renumber, which replaced a role-based numbering (`100`/`500`/`700` meaning
+ * subtle/base/hover in both modes) that had left `seaglass` running backwards
+ * relative to every other palette in the system.
  *
  * ## No shared scales.ts
  * Every non-color scale (radius/space/controlHeight/fontWeight/fontFamily/
@@ -65,16 +74,46 @@ export const tahitianCharcoal = {
   950: '#0E0E10', // page background (dark); reused as light-mode text
 };
 
+/**
+ * Light mode's accent — the signature deep green.
+ *
+ * Rungs are placed by VALUE against the neutral ramp above, not by the role
+ * each step plays (ADR-0010's amendment). Before 2026-08-29 both accents were
+ * numbered `100`/`500`/`700` for subtle/base/hover, which made the number mean
+ * a role rather than a lightness — and left `seaglass` running backwards
+ * relative to every other palette in the system. Each step below sits at the
+ * neutral rung of the same number: `300` ≈ `platinum[300]`, `600` ≈
+ * `platinum[600]`, `700` ≈ `charcoal[700]`.
+ */
 export const tahitianPeacock = {
-  100: '#D9EFEB', // tint — accentSubtle
-  500: '#0F7A66', // base — accent
-  700: '#0B5F50', // hover
+  300: '#D9EFEB', // tint — accentSubtle (L 0.935)
+  600: '#0F7A66', // base — accent / primary / focusRing (L 0.519)
+  700: '#0B5F50', // hover (L 0.436)
 };
 
+/**
+ * Dark mode's accent — a brighter green tuned to read against near-black,
+ * not a lifted version of `peacock`. Deliberately its OWN hue: this is the one
+ * place in the system where an accent genuinely diverges per mode rather than
+ * one scale serving both.
+ *
+ * Two steps, not three. The former `100` (`#123328`) was deleted 2026-08-29 as
+ * a near-neutral filed under the accent — 0.044 chroma against this scale's
+ * own 0.108–0.119 working range, and **1.01:1 against `charcoal[800]`**, i.e.
+ * the same value under a second name. Dark `accentSubtle` now reads
+ * `charcoal[800]` directly, the same call made for Freshwater's `glacier[600]`
+ * (ADR-0010, "What a palette may be used for"). It gets no pale-tint exemption
+ * because it is dark, not pale.
+ *
+ * The hover step was also re-cut. `#7EE8BB` sat only ΔL 0.020 from the base
+ * (1.07:1 — effectively invisible, against `peacock`'s 1.44:1 in light mode)
+ * and shifted hue 180° → 164° while doing it, so the little change that did
+ * register read as "a different green" rather than "brighter." `#86F6E0`
+ * holds hue 180° exactly and lifts ΔL 0.066, comparable to peacock's 0.084.
+ */
 export const tahitianSeaglass = {
-  100: '#123328', // tint — accentSubtle, dark
-  500: '#6FE0CB', // base — accent, dark
-  700: '#7EE8BB', // hover, dark
+  300: '#86F6E0', // hover (L 0.900) — lighter than base, since the ground is dark
+  400: '#6FE0CB', // base — accent / primary / focusRing (L 0.834)
 };
 
 export const tahitianScrim = {
@@ -127,10 +166,10 @@ export const tahitianPearlColors = {
 // mid-saturation tones read fine against white but fall well under 4.5:1 on
 // near-black `charcoal`, since `background-clip: text` renders them as
 // actual foreground text color, not a decorative wash a screen-blend can
-// forgive. `green` reuses `tahitianSeaglass[500]` directly rather than
+// forgive. `green` reuses `tahitianSeaglass[400]` directly rather than
 // deriving a new bright green — it already IS peacock's dark-mode sibling.
 export const tahitianPearlColorsBright = {
-  peacock: tahitianSeaglass[500], // '#6FE0CB'
+  peacock: tahitianSeaglass[400], // '#6FE0CB'
   green: '#8FE3A8',
   blue: '#7EC8E3',
   aubergine: '#D79FC0',
@@ -278,14 +317,14 @@ export const tahitianLightThemeClass = createTheme(vars, {
     borderInverse: tahitianCharcoal[800],
     shadow: tahitianPlatinum[500],
 
-    primary: tahitianPeacock[500],
+    primary: tahitianPeacock[600],
     onPrimary: tahitianPlatinum[100],
-    accent: tahitianPeacock[500],
+    accent: tahitianPeacock[600],
     accentHover: tahitianPeacock[700],
-    accentSubtle: tahitianPeacock[100],
+    accentSubtle: tahitianPeacock[300],
     onAccent: tahitianPlatinum[100],
     onAccentSubtle: tahitianCharcoal[950],
-    focusRing: tahitianPeacock[500],
+    focusRing: tahitianPeacock[600],
 
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
@@ -326,14 +365,18 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     borderInverse: tahitianPlatinum[400],
     shadow: tahitianCharcoal[700],
 
-    primary: tahitianSeaglass[500],
+    primary: tahitianSeaglass[400],
     onPrimary: tahitianCharcoal[950],
-    accent: tahitianSeaglass[500],
-    accentHover: tahitianSeaglass[700],
-    accentSubtle: tahitianSeaglass[100],
+    accent: tahitianSeaglass[400],
+    // Hover is LIGHTER than base here, the inverse of light mode's darkening —
+    // the ground is near-black, so "more light" is the legible direction.
+    accentHover: tahitianSeaglass[300],
+    // A neutral, not a seaglass step — see `tahitianSeaglass`'s comment for the
+    // step that used to sit here and why it was deleted.
+    accentSubtle: tahitianCharcoal[800],
     onAccent: tahitianCharcoal[950],
     onAccentSubtle: tahitianPlatinum[100],
-    focusRing: tahitianSeaglass[500],
+    focusRing: tahitianSeaglass[400],
 
     positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})` },

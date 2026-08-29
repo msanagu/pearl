@@ -1,7 +1,7 @@
 import { createTheme, globalStyle, keyframes } from '@vanilla-extract/css';
 import { vars } from '../../theme.css';
 import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '../../components/Field/Field.css';
-import { sphereWrap, body as sphereBody, contact as sphereContact } from '../../brand/PearlSphere.css';
+import { sphereWrap, body as sphereBody, contact as sphereContact } from '../../components/brand/PearlSphere.css';
 
 /**
  * South Sea — "Golden Hour Maison" (docs/theme/theme-revision-decisions.md
@@ -29,40 +29,128 @@ import { sphereWrap, body as sphereBody, contact as sphereContact } from '../../
  * `.storybook/preview-head.html`) — which ships a genuine italic style, so
  * the roman/italic mix stays real rather than an oblique fake.
  *
- * Two color tiers (ADR-0005): `*Primitives` are raw named hexes; the
+ * Two color tiers (ADR-0005): `*Primitives`/scales are raw named hexes; the
  * `*ThemeClass` calls map them onto semantic roles. Scales are this theme's
  * own — not shared with Pearl/Tahitian/Freshwater.
+ *
+ * ## Neutral + accent consolidation (2026-08-29)
+ * Previously two loosely-related buckets (`southSeaLightPrimitives`,
+ * `southSeaDarkPrimitives`) named colors by where they were used
+ * (`ecru`/`hairlineStrong`/`chocolateDeep`) rather than what they are.
+ * Leaned to minimum viable steps — only values an actual role reads — and
+ * split into three single-hue scales, the pattern Pearl's
+ * `alabaster`/`squidInk` and Freshwater's `ice`/`graphite`/`glacier` already
+ * follow: `sand` covers the light (ecru) register, `driftwood` the dark
+ * (chocolate/umber) register, `conch` the accent — one scale reused across
+ * both modes rather than four separately-named `conch*` primitives.
+ *
+ * `driftwood` is the one place this doesn't collapse as cleanly as
+ * Freshwater's `ice`/`graphite`: light mode's ink (`driftwood[750]`,
+ * `#3B2C1F`) and dark mode's surface (`driftwood[850]`, `#2E2116`) are
+ * genuinely different values, not one value borrowed both ways — they were
+ * tuned separately for different contrast jobs (text on `sand[100]` vs. a
+ * surface against `driftwood[900]`), so both steps stay, rather than
+ * forcing a shared value that would fail contrast in one direction.
+ *
+ * ## Single-hue verification (2026-08-29)
+ * Checked with real HSL math, not eyeballed: each scale's steps originally
+ * clustered around a hue but weren't exactly one — `sand[600]` (taupe) sat
+ * ~15° off the rest of `sand`, and every scale had a few degrees of drift
+ * step to step. Every hex below is now re-derived from its ORIGINAL
+ * lightness and saturation at one fixed target hue per scale (`sand` 38°,
+ * `driftwood` 27°, `conch` 19°) — so lightness/saturation (and therefore
+ * contrast behavior) are unchanged from the prior pass, only hue moved.
+ * Contrast-critical pairs were re-checked after the shift: `sand[600]` on
+ * `sand[100]` is 4.6:1 (was 4.95:1, still clears WCAG AA's 4.5:1 floor).
  */
 
-export const southSeaLightPrimitives = {
-  ecru: '#F5EFE4',
-  ecruDeep: '#EFE6D6',
-  chocolate: '#3B2A1F',
+/**
+ * [derived] Light-register neutral, one warm ecru hue stepped 100
+ * (brightest) → 600 (least light). Only spans its light end, same as
+ * Pearl's `alabaster` / Freshwater's `ice`; the dark register lives in
+ * `southSeaDriftwood` below.
+ */
+// All seven steps sit at a single 38° hue (see "Single-hue verification"
+// above) — only lightness/saturation vary step to step.
+export const southSeaSand = {
+  100: '#F5EFE4', // ecru — page background (light)
+  // Near-white, distinct from ecru: tuned as its own step (not reused from
+  // 100) because it does a different job — dark mode's own `text`, and
+  // light mode's `textInverse` (text set on a dark ground) — same "tuned
+  // separately for a different contrast job" case as `southSeaDriftwood`'s
+  // own comment describes for its `750` step.
+  150: '#F3EADA', // cream — text (dark mode) / textInverse (light mode)
+  200: '#EFE6D6', // ecruDeep — raised surface (light)
+  300: '#E9E0D0', // hairlineSubtle — border, subtle (light)
+  400: '#DDD1BC', // hairline — border (light)
   // Darkened from the initial #8A7361 sample — that swatch only hit 3.9:1 on
-  // `ecru`, failing WCAG AA normal-text (4.5:1); this hits 4.95:1.
-  taupe: '#786353',
-  hairline: '#DDD0BC',
-  hairlineStrong: '#CBBA9E',
-  hairlineSubtle: '#E9E1D0',
-  conch: '#E8A184',
-  conchDeep: '#D9895F',
-  conchMist: '#FBE9DF',
-  scrim: 'rgba(59, 42, 31, 0.5)',
+  // sand[100], failing WCAG AA normal-text (4.5:1); hairlineStrong hits
+  // 4.95:1 as `taupe` did before this consolidation (now 4.6:1 post hue-fix,
+  // still clear of the 4.5:1 floor — see "Single-hue verification" above).
+  500: '#CBBA9E', // hairlineStrong — borderStrong / shadow (light)
+  600: '#786A53', // taupe — text, subtle (light)
 };
 
-export const southSeaDarkPrimitives = {
-  chocolateDeep: '#241811',
-  chocolate: '#2E2016',
-  cream: '#F3E9DA',
-  fawn: '#B8A48E',
-  umber: '#4A3626',
-  umberStrong: '#5E4732',
-  umberSubtle: '#382919',
-  conch: '#E8A184',
-  conchBright: '#F0B79C',
-  conchDusk: '#3A2419',
-  conchInk: '#241108',
-  scrim: 'rgba(0, 0, 0, 0.6)',
+/**
+ * [derived] Dark-register neutral, one chocolate/umber hue family stepped
+ * 500 (least dark) → 900 (darkest). Only spans its dark end, mirroring
+ * Pearl's `squidInk`. `driftwood[750]` is the one exception — light mode's
+ * text, not a dark-mode role — kept here rather than in `southSeaSand`
+ * because it's the same chocolate-ink hue family, just a step tuned for a
+ * different background (see the file header).
+ */
+// All seven steps sit at a single 27° hue (see "Single-hue verification"
+// above) — only lightness/saturation vary step to step.
+export const southSeaDriftwood = {
+  500: '#B8A18E', // fawn — text, subtle (dark)
+  600: '#5E4632', // umberStrong — borderStrong / shadow (dark)
+  700: '#4A3626', // umber — border (dark)
+  750: '#3B2C1F', // chocolate — text (LIGHT mode; see file header)
+  800: '#382719', // umberSubtle — border, subtle (dark)
+  850: '#2E2116', // chocolate — raised surface (dark)
+  900: '#241A11', // chocolateDeep — page background (dark)
+};
+
+/**
+ * [derived] The accent hue — conch — spent as "one small loud thing per
+ * view" (file header). One scale reused across both modes: `300` is the
+ * same hex in both (11a/11b's mode-invariant swatch), the rest are the
+ * per-mode hover/subtle steps that used to be separately-named `conch*`
+ * primitives.
+ *
+ * **Every step here carries conch's chroma.** At peak 0.115 this accent is far
+ * too saturated to do neutral work (contrast Pearl's `marineLayer` at 0.028,
+ * which legitimately doubles as muted text) — so neutral roles belong to
+ * `sand`/`driftwood`, and any step that drifts toward neutral is a neutral
+ * misfiled here. Two such steps were deleted 2026-08-29; see ADR-0010's
+ * "What a palette may be used for":
+ *
+ * - `500` (`#3A2319`, ex-`conchDusk`) was dark mode's `accentSubtle`. It
+ *   measured **1.03:1 against `driftwood[800]`** — the same color by any
+ *   perceptual standard (OKLCH L 0.283 vs 0.289). Carrying both meant two
+ *   names for one swatch, and worse, a step labelled `500` that was as dark as
+ *   another palette's `800` — breaking the expectation that a rung number
+ *   indicates roughly parallel value across palettes.
+ * - `600` (`#241108`, ex-`conchInk`) was dark mode's `onPrimary`/`onAccent` —
+ *   a near-black that had shed conch's chroma entirely. The other three themes
+ *   all draw `onAccent` from a neutral; South Sea was the lone exception.
+ *
+ * Both now point at `driftwood` (see the dark theme below). The swapped pairs
+ * were re-measured and hold: `sand[150]` on `driftwood[800]` is 11.95:1 (was
+ * 12.27:1), `driftwood[900]` on `conch[300]` is 8.18:1 (was 8.69:1).
+ */
+// All four steps sit at a single 19° hue (see "Single-hue verification"
+// above) — only lightness/saturation vary step to step.
+export const southSeaConch = {
+  100: '#FBE8DF', // conchMist — accentSubtle, light mode
+  200: '#F0B79C', // conchBright — accentHover, dark mode
+  300: '#E8A484', // conch — accent / primary, both modes
+  400: '#D9865F', // conchDeep — accentHover, light mode
+};
+
+const southSeaScrim = {
+  light: 'rgba(59, 42, 31, 0.5)',
+  dark: 'rgba(0, 0, 0, 0.6)',
 };
 
 // [derived] Sentiment families, one flattened 100 (lightest)→800 (darkest)
@@ -162,32 +250,32 @@ const southSeaText = {
 
 export const southSeaLightThemeClass = createTheme(vars, {
   color: {
-    background: southSeaLightPrimitives.ecru,
-    surface: southSeaLightPrimitives.ecruDeep,
-    overlay: southSeaLightPrimitives.scrim,
+    background: southSeaSand[100],
+    surface: southSeaSand[200],
+    overlay: southSeaScrim.light,
     overlaySubtle: 'rgba(59, 42, 31, 0.08)',
-    backgroundInverse: southSeaDarkPrimitives.chocolateDeep,
-    surfaceInverse: southSeaDarkPrimitives.chocolate,
-    text: southSeaLightPrimitives.chocolate,
-    textSubtle: southSeaLightPrimitives.taupe,
-    textInverse: southSeaDarkPrimitives.cream,
-    textInverseSubtle: southSeaDarkPrimitives.fawn,
-    border: southSeaLightPrimitives.hairline,
-    borderStrong: southSeaLightPrimitives.hairlineStrong,
-    borderSubtle: southSeaLightPrimitives.hairlineSubtle,
-    borderInverse: southSeaDarkPrimitives.umber,
-    shadow: southSeaLightPrimitives.hairlineStrong,
+    backgroundInverse: southSeaDriftwood[900],
+    surfaceInverse: southSeaDriftwood[850],
+    text: southSeaDriftwood[750],
+    textSubtle: southSeaSand[600],
+    textInverse: southSeaSand[150],
+    textInverseSubtle: southSeaDriftwood[500],
+    border: southSeaSand[400],
+    borderStrong: southSeaSand[500],
+    borderSubtle: southSeaSand[300],
+    borderInverse: southSeaDriftwood[700],
+    shadow: southSeaSand[500],
     // Conch is the one loud accent — reused for `primary` and `accent` rather
     // than authoring a second CTA hue: the maison identity is "one small
     // loud thing per view," not two.
-    primary: southSeaLightPrimitives.conch,
-    onPrimary: southSeaLightPrimitives.chocolate,
-    accent: southSeaLightPrimitives.conch,
-    accentHover: southSeaLightPrimitives.conchDeep,
-    accentSubtle: southSeaLightPrimitives.conchMist,
-    onAccent: southSeaLightPrimitives.chocolate,
-    onAccentSubtle: southSeaLightPrimitives.chocolate,
-    focusRing: southSeaLightPrimitives.conchDeep,
+    primary: southSeaConch[300],
+    onPrimary: southSeaDriftwood[750],
+    accent: southSeaConch[300],
+    accentHover: southSeaConch[400],
+    accentSubtle: southSeaConch[100],
+    onAccent: southSeaDriftwood[750],
+    onAccentSubtle: southSeaDriftwood[750],
+    focusRing: southSeaConch[400],
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
     // body text despite having a lower luminance-contrast ratio (saturation,
@@ -208,33 +296,40 @@ export const southSeaLightThemeClass = createTheme(vars, {
 
 export const southSeaDarkThemeClass = createTheme(vars, {
   color: {
-    background: southSeaDarkPrimitives.chocolateDeep,
-    surface: southSeaDarkPrimitives.chocolate,
-    overlay: southSeaDarkPrimitives.scrim,
+    background: southSeaDriftwood[900],
+    surface: southSeaDriftwood[850],
+    overlay: southSeaScrim.dark,
     overlaySubtle: 'rgba(255, 255, 255, 0.10)',
-    backgroundInverse: southSeaLightPrimitives.ecru,
-    surfaceInverse: southSeaLightPrimitives.ecruDeep,
-    text: southSeaDarkPrimitives.cream,
-    textSubtle: southSeaDarkPrimitives.fawn,
-    textInverse: southSeaLightPrimitives.chocolate,
-    textInverseSubtle: southSeaLightPrimitives.taupe,
-    border: southSeaDarkPrimitives.umber,
-    borderStrong: southSeaDarkPrimitives.umberStrong,
-    borderSubtle: southSeaDarkPrimitives.umberSubtle,
-    borderInverse: southSeaLightPrimitives.hairline,
-    shadow: southSeaDarkPrimitives.umberStrong,
+    backgroundInverse: southSeaSand[100],
+    surfaceInverse: southSeaSand[200],
+    text: southSeaSand[150],
+    textSubtle: southSeaDriftwood[500],
+    textInverse: southSeaDriftwood[750],
+    textInverseSubtle: southSeaSand[600],
+    border: southSeaDriftwood[700],
+    borderStrong: southSeaDriftwood[600],
+    borderSubtle: southSeaDriftwood[800],
+    borderInverse: southSeaSand[400],
+    shadow: southSeaDriftwood[600],
     // Conch stays the same hue across modes (11a/11b) — a mode-invariant
     // swatch, same model as Pearl's sentiment steps — brightened one notch
-    // (`conchBright`) only where it sits as hover feedback against the dark
+    // (`conch[200]`) only where it sits as hover feedback against the dark
     // ground, not as a second accent.
-    primary: southSeaDarkPrimitives.conch,
-    onPrimary: southSeaDarkPrimitives.conchInk,
-    accent: southSeaDarkPrimitives.conch,
-    accentHover: southSeaDarkPrimitives.conchBright,
-    accentSubtle: southSeaDarkPrimitives.conchDusk,
-    onAccent: southSeaDarkPrimitives.conchInk,
-    onAccentSubtle: southSeaDarkPrimitives.cream,
-    focusRing: southSeaDarkPrimitives.conchBright,
+    //
+    // `onPrimary`/`onAccent`/`accentSubtle` read from `driftwood`, not from
+    // conch: a text foreground and a dark-mode background are neutral jobs,
+    // and conch is an accent-only palette (see `southSeaConch`'s comment for
+    // the two steps deleted over exactly this). This also brings South Sea
+    // in line with Pearl/Freshwater/Tahitian, all of which already source
+    // `onAccent` from a neutral.
+    primary: southSeaConch[300],
+    onPrimary: southSeaDriftwood[900],
+    accent: southSeaConch[300],
+    accentHover: southSeaConch[200],
+    accentSubtle: southSeaDriftwood[800],
+    onAccent: southSeaDriftwood[900],
+    onAccentSubtle: southSeaSand[150],
+    focusRing: southSeaConch[200],
     positive: { surface: southSeaSentiment.seaMoss[800], border: southSeaSentiment.seaMoss[600], text: southSeaSentiment.seaMoss[300], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[400]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: southSeaSentiment.urchin[800], border: southSeaSentiment.urchin[700], text: southSeaSentiment.urchin[300], icon: `color-mix(in srgb, ${southSeaSentiment.urchin[400]} 65%, ${vars.color.textSubtle})` },
     warn: { surface: southSeaSentiment.shell[800], border: southSeaSentiment.shell[600], text: southSeaSentiment.shell[300], icon: `color-mix(in srgb, ${southSeaSentiment.shell[400]} 65%, ${vars.color.textSubtle})` },
@@ -555,12 +650,12 @@ globalStyle(`${southSeaDarkThemeClass} .${sphereContact}`, {
 /*
 globalStyle(`${southSeaLightThemeClass} [data-component="tag"][data-variant="positive"]`, {
   background: southSeaSentiment.lagoon[600],
-  color: southSeaLightPrimitives.ecru,
+  color: southSeaSand[100],
   border: 'none',
 });
 globalStyle(`${southSeaDarkThemeClass} [data-component="tag"][data-variant="positive"]`, {
   background: southSeaSentiment.lagoon[300],
-  color: southSeaDarkPrimitives.chocolateDeep,
+  color: southSeaDriftwood[900],
   border: 'none',
 });
 */

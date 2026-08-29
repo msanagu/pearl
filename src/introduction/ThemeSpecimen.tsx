@@ -8,7 +8,7 @@ import { Stack } from '../components/Stack/Stack';
 import { Tag } from '../components/Tag/Tag';
 import { color, space } from '../tokens';
 import { brandWordmarkByTheme } from '../foundations/typeSpecimens';
-import { WordMark } from '../brand/WordMark';
+import { WordMark } from '../components/brand/WordMark';
 
 /**
  * One theme's specimen — deliberately carries NO theme class of its own. It

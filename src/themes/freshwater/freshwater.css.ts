@@ -1,7 +1,7 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '../../theme.css';
 import { fieldMeta, label as fieldLabel } from '../../components/Field/Field.css';
-import { body as sphereBody, contact as sphereContact } from '../../brand/PearlSphere.css';
+import { body as sphereBody, contact as sphereContact } from '../../components/brand/PearlSphere.css';
 
 /**
  * Freshwater — one of Pearl's three named themes
@@ -47,17 +47,20 @@ export const freshwaterFonts = {
 
 /**
  * [derived] Light-register neutral, one cool near-white hue stepped
- * 100 (brightest) → 500 (least light) — replaces `paper`/`cloud` and the old
+ * 100 (brightest) → 400 (least light) — replaces `paper`/`cloud` and the old
  * `freshwaterSlate` scale. Only spans its light end, same as Pearl's
  * `alabaster`; the dark register lives in `freshwaterGraphite` below, not as
  * a continuation of this scale.
+ *
+ * Every step here sits above OKLCH L 0.92 — a tight near-white band. The
+ * former `500` (`#5b5b60`, L 0.473) was not a member of that band at all; it
+ * moved to `graphite[550]` on 2026-08-29. See `freshwaterGraphite`'s note.
  */
 export const freshwaterIce = {
   100: '#fdfdfd', // paper — page background (light) / borrowed as text + backgroundInverse/surfaceInverse (dark)
   200: '#fafafa', // cloud — raised surface (light) / borrowed as surfaceInverse (dark)
   300: '#eef0f1', // border, subtle
   400: '#e3e5e7', // border / borrowed as borderInverse (dark)
-  500: '#5b5b60', // text, subtle
 };
 
 /**
@@ -67,11 +70,32 @@ export const freshwaterIce = {
  * also borrowed directly as light mode's `text` (a "same hex, different
  * role" reuse, not a duplicate value — same pattern as `freshwaterIce[100]`
  * being borrowed as dark mode's `text`).
+ *
+ * ## Both mid-tones live here (2026-08-29)
+ * `550` arrived from `ice[500]` — same hex, refiled. The two scales had been
+ * split by *which mode consumed a step* rather than by *what value it is*,
+ * which put the two mid-greys on opposite sides of the divide and inverted
+ * them: `graphite[500]` (L 0.707) was lighter than `ice[500]` (L 0.473), so
+ * the dark palette's lightest step outranked the light palette's darkest,
+ * while both claimed rung 500 despite sitting 2.6:1 apart.
+ *
+ * Both now sit at graphite's light end, ordered by value. Freshwater has no
+ * third home for mid-tones the way Pearl parks them in `marineLayer` — that
+ * only works there because Pearl's accent measures 0.028 chroma and reads as
+ * a tinted neutral; `glacier` peaks at 0.137 and could never carry muted text
+ * (ADR-0010, "What a palette may be used for").
+ *
+ * `550`, not a renumber of `600`–`900`: the half-step keeps the churn to one
+ * key and matches the precedent already set by `sand[150]`/`driftwood[750]`
+ * in South Sea. The rung spacing here is genuinely lumpy — L 0.707, 0.473,
+ * then 0.296/0.248/0.209/0.168 bunched at the dark end — but that is the
+ * canonical-ladder work, not this refiling.
  */
 export const freshwaterGraphite = {
   500: '#9da1a6', // text, subtle (dark)
+  550: '#5b5b60', // text, subtle (light) — ex-`ice[500]`, see above
   600: '#2b2d30', // border (dark) / borrowed as borderInverse (light)
-  700: '#202123', // border, subtle (dark)
+  700: '#202123', // border, subtle (dark) / accentSubtle (dark)
   800: '#17181a', // raised surface (dark) / borrowed as surfaceInverse (light)
   900: '#0e0f10', // page background (dark) / borrowed as text + backgroundInverse (light)
 };
@@ -93,7 +117,6 @@ export const freshwaterGlacier = {
   300: '#4dd8ff', // accent, dark mode
   400: '#00b8e6', // accent, light mode
   500: '#0089b3', // deep step — accentHover, light mode
-  600: '#062a33', // dusk — accentSubtle, dark mode
 };
 
 const freshwaterScrim = {
@@ -165,7 +188,7 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     backgroundInverse: freshwaterGraphite[900],
     surfaceInverse: freshwaterGraphite[800],
     text: freshwaterGraphite[900],
-    textSubtle: freshwaterIce[500],
+    textSubtle: freshwaterGraphite[550],
     textInverse: freshwaterIce[100],
     textInverseSubtle: freshwaterGraphite[500],
     border: freshwaterIce[400],
@@ -216,7 +239,7 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     text: freshwaterIce[100],
     textSubtle: freshwaterGraphite[500],
     textInverse: freshwaterGraphite[900],
-    textInverseSubtle: freshwaterIce[500],
+    textInverseSubtle: freshwaterGraphite[550],
     border: freshwaterGraphite[600],
     // Structural rule inverts too — full paper-white against the dark
     // ground, the same "full ink" idea the light mode's rule carries.
@@ -235,7 +258,15 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     onPrimary: freshwaterGraphite[900],
     accent: freshwaterGlacier[300],
     accentHover: freshwaterGlacier[400],
-    accentSubtle: freshwaterGlacier[600],
+    // A neutral, not a glacier step. The former `glacier[600]` (`#062a33`) was
+    // a near-neutral filed under the accent — 0.043 chroma against glacier's
+    // own 0.116–0.137 working range, and 1.06:1 against `graphite[700]`, i.e.
+    // the same value. It was deleted 2026-08-29 (ADR-0010, "What a palette may
+    // be used for"). `graphite[700]` sits one step above `surface`, so the
+    // region still reads as raised; what it no longer carries is a teal tint,
+    // which this theme's own identity rule argues against anyway — ice-blue is
+    // "spent only where the system speaks," and a background wash is decoration.
+    accentSubtle: freshwaterGraphite[700],
     onAccent: freshwaterGraphite[900],
     onAccentSubtle: freshwaterIce[100],
     focusRing: freshwaterGlacier[300],
@@ -270,9 +301,9 @@ globalStyle(`${freshwaterLightThemeClass} [data-component="button"][data-variant
 
 // The shared Button recipe's canon primary carries an `inset 0 1px 0
 // accentSubtle` top-highlight, sized for Pearl's near-fill-hued
-// `accentSubtle`. Freshwater's is a bright wash instead (`glacier[100]`/
-// `glacier[600]`) — miles lighter than the solid-ink/paper-white fill — so
-// that same inset reads as a stark seam across the top edge, not a sheen.
+// `accentSubtle`. Freshwater's is a bright wash instead (`glacier[100]` in
+// light, `graphite[700]` in dark) — miles off the solid-ink/paper-white fill —
+// so that same inset reads as a stark seam across the top edge, not a sheen.
 // The doc's own geometry rules this out anyway ("No offset shadows — those
 // belong to 6a, a different flavor"), so it's dropped entirely rather than
 // re-tuned; a background hue-shift carries hover/press feedback instead,

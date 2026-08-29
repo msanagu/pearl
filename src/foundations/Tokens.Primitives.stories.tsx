@@ -8,12 +8,12 @@ import {
   freshwaterGlacier,
   freshwaterSentiment,
 } from '../themes/freshwater/freshwater.css';
-import { southSeaLightPrimitives, southSeaDarkPrimitives, southSeaSentiment } from '../themes/south-sea/south-sea.css';
+import { southSeaSand, southSeaDriftwood, southSeaConch, southSeaSentiment } from '../themes/south-sea/south-sea.css';
 import { pearlBrandWordmark } from '../themes/pearl/pearl.roles';
 import { tahitianBrandWordmark } from '../themes/tahitian/tahitian.roles';
 import { freshwaterBrandWordmark } from '../themes/freshwater/freshwater.roles';
 import { southSeaBrandWordmark } from '../themes/south-sea/south-sea.roles';
-import { WordMark } from '../brand/WordMark';
+import { WordMark } from '../components/brand/WordMark';
 import * as css from './primitives.css';
 
 /**
@@ -32,11 +32,10 @@ import * as css from './primitives.css';
  * string, they print as their derivation (`hue[step] @ N%`), since the
  * opacity is the meaningful fact, not the composited channel math.
  *
- * Pearl/Tahitian's neutrals are numeric ramps (`Scale`); Freshwater/South
- * Sea's are named hexes with no shared step number between light and dark
- * (`NamedSwatches`/`ModePair`) — both modes are shown side by side rather
- * than filtered by the toolbar's color-mode global, same reasoning as
- * Pearl/Tahitian showing both without a mode filter.
+ * All four themes' neutrals are now numeric ramps (`Scale`) — Freshwater and
+ * South Sea's used to be named hexes with no shared step number between
+ * light and dark, but both were consolidated onto the same one-hue-per-
+ * register pattern Pearl's `alabaster`/`squidInk` already used (2026-08-29).
  */
 
 // Pearl's palest steps (e.g. alabaster[100], `#FDFCFA`) sit within a few
@@ -120,42 +119,6 @@ function AlphaScale({
   );
 }
 
-// Freshwater/South Sea's neutrals are named hexes (`paper`, `ecru`, `conch`),
-// not a numeric ramp — `scrim` is excluded everywhere it's passed, same as
-// Pearl/Tahitian's sections never show their `overlay`-ish values here.
-function NamedSwatches({ swatches }: { swatches: Record<string, string> }) {
-  return (
-    <div className={css.namedGrid}>
-      {Object.entries(swatches).map(([name, hex]) => (
-        <div key={name} className={css.namedCell}>
-          <div className={css.namedSwatch} style={{ background: hex, borderColor: contrastBorder(hex) }} />
-          <span>{name}</span>
-          <span className={css.stepHex}>{hex}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Light/dark shown side by side rather than filtered by the toolbar's color
-// mode — same reasoning as Pearl/Tahitian's sections above: both of a
-// theme's primitive sets are the reference, not just whichever mode happens
-// to be active.
-function ModePair({ light, dark }: { light: Record<string, string>; dark: Record<string, string> }) {
-  return (
-    <div className={css.modeColumns}>
-      <div className={css.modeColumn}>
-        <p className={css.modeLabel}>Light</p>
-        <NamedSwatches swatches={light} />
-      </div>
-      <div className={css.modeColumn}>
-        <p className={css.modeLabel}>Dark</p>
-        <NamedSwatches swatches={dark} />
-      </div>
-    </div>
-  );
-}
-
 function SentimentScales({ sentiment }: { sentiment: Record<string, Record<number, string>> }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -200,10 +163,6 @@ function TahitianSection() {
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
-      <p style={{ fontSize: 12, color: 'inherit', opacity: 0.7, margin: 0 }}>
-        One continuous ramp, divided into two named halves — light mode
-        reads platinum's steps, dark mode reads charcoal's.
-      </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Scale label="platinum" steps={tahitianPlatinum} />
         <Scale label="charcoal" steps={tahitianCharcoal} />
@@ -244,10 +203,6 @@ function FreshwaterSection() {
 }
 
 function SouthSeaSection() {
-  const { ecru, ecruDeep, chocolate, taupe, hairline, hairlineStrong, hairlineSubtle } = southSeaLightPrimitives;
-  const { chocolateDeep, chocolate: chocolateDark, cream, fawn, umber, umberStrong, umberSubtle } = southSeaDarkPrimitives;
-  const { conch: conchLight, conchDeep, conchMist } = southSeaLightPrimitives;
-  const { conch: conchDark, conchBright, conchDusk, conchInk } = southSeaDarkPrimitives;
   return (
     <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <div className={css.themeTitle}>
@@ -255,16 +210,13 @@ function SouthSeaSection() {
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
-      <ModePair
-        light={{ ecru, ecruDeep, chocolate, taupe, hairline, hairlineStrong, hairlineSubtle }}
-        dark={{ chocolateDeep, chocolate: chocolateDark, cream, fawn, umber, umberStrong, umberSubtle }}
-      />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Scale label="sand" steps={southSeaSand} />
+        <Scale label="driftwood" steps={southSeaDriftwood} />
+      </div>
 
       <h3 className={css.groupTitle}>Accent</h3>
-      <ModePair
-        light={{ conch: conchLight, conchDeep, conchMist }}
-        dark={{ conch: conchDark, conchBright, conchDusk, conchInk }}
-      />
+      <Scale label="conch" steps={southSeaConch} />
 
       <h3 className={css.groupTitle}>Sentiment</h3>
       <SentimentScales sentiment={southSeaSentiment} />

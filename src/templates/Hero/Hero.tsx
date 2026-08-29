@@ -5,8 +5,8 @@ import { Button } from '../../components/Button/Button';
 import { Row } from '../../components/Row/Row';
 import { Stack } from '../../components/Stack/Stack';
 import { Icon } from '../../components/Icon/Icon';
-import { PearlSphere } from '../../brand/PearlSphere';
-import { WordMark } from '../../brand/WordMark';
+import { PearlSphere } from '../../components/brand/PearlSphere';
+import { WordMark } from '../../components/brand/WordMark';
 import { color, space } from '../../tokens';
 import * as css from './Hero.css';
 

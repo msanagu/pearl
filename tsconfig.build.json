@@ -16,6 +16,8 @@
     "src/**/*.test.tsx",
     "src/**/*.stories.tsx",
     "src/test",
-    "src/foundations"
+    "src/foundations",
+    // Build-time validation only (ADR-0010) — never part of the public API.
+    "src/validate"
   ]
 }

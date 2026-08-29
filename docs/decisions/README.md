@@ -60,6 +60,7 @@ embedding pipeline can chunk and filter cleanly:
 | [0007](./0007-treatments-and-roles.md) | Two system tiers — treatments and roles | proposed |
 | [0008](./0008-dsds-vocabulary-alignment.md) | Align manifest vocabulary with DSDS; do not depend on it | proposed |
 | [0009](./0009-jsdoc-minimum-viable-clarity.md) | JSDoc stays minimum-viable; stories are the usage reference, not @example | accepted |
+| [0010](./0010-color-space-and-contrast-enforcement.md) | Author color in OKLCH, enforce contrast on pairs, declare the fewest steps that survive | proposed |
 
 ## Where ADRs sit in the wider knowledge base
 
