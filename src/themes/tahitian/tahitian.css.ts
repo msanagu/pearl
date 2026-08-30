@@ -226,9 +226,9 @@ const tahitianText = {
   headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '400', letterSpacing: '0' }, // 40px 4px grid
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '400', letterSpacing: '0' }, // 48px 4px grid
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '400', letterSpacing: '0.004em' }, // 64px 4px grid
-  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '400', letterSpacing: '0.004em' }, // 76px 4px grid
-  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '400', letterSpacing: '0.004em' }, // 120px 4px grid
-  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '400', letterSpacing: '0.004em' }, // 160px 4px grid
+  displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '400', letterSpacing: '0.004em' }, // 76px ceiling, clamped fluid below it
+  displayLg: { fontSize: 'clamp(2.75rem, 11vw, 7rem)', lineHeight: '1.071429', fontWeight: '400', letterSpacing: '0.004em' }, // 120px ceiling, clamped fluid below it
+  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1.052632', fontWeight: '400', letterSpacing: '0.004em' }, // 160px ceiling, clamped fluid below it
 };
 
 // ---- Extension treatment: overtone ----

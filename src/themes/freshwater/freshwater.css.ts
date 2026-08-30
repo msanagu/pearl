@@ -1,4 +1,4 @@
-import { createTheme, globalStyle } from '@vanilla-extract/css';
+import { createTheme, globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere.css';
@@ -133,6 +133,24 @@ export const freshwaterGlacier = {
   600: '#005E78', // deepest step — accentHover, light mode
 };
 
+// Alpha cut of `glacier[600]` (`#005E78`, deep teal-blue) for dark-mode
+// washes. `glacier[100]`/`[200]` are bright, near-white cyans — alpha-blended
+// over a dark surface they only ever lighten it, which reads as a glow, not
+// a tint. This deep step is darker than the surfaces it composites over, so
+// blending it in actually shifts the surface's hue toward blue.
+//
+// `600`'s alpha is capped at 0.5, not chosen for looks alone: composited over
+// `freshwaterGraphite[800]` (the dark `surface` token), `textSubtle` against
+// that peak measures 4.65:1 at 0.5 vs 4.22:1 at 0.6 — the difference between
+// clearing and missing WCAG AA's 4.5:1 floor for normal text. `text` and the
+// dark-mode accent clear both by a wide margin regardless (verified
+// 2026-08-29); `textSubtle` is the tight constraint here because a hovered
+// card's body copy can land under the gradient's own peak stop.
+const freshwaterGlacierAlpha = {
+  600: 'rgba(0, 94, 120, 0.5)',
+  0: 'rgba(0, 94, 120, 0)',
+};
+
 const freshwaterScrim = {
   light: 'rgba(14, 15, 16, 0.5)',
   dark: 'rgba(0, 0, 0, 0.6)',
@@ -188,9 +206,9 @@ const freshwaterText = {
   headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '600', letterSpacing: '-0.005em' }, // 40px 4px grid
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.01em' }, // 48px 4px grid
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '600', letterSpacing: '-0.01em' }, // 64px 4px grid
-  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px 4px grid
-  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '700', letterSpacing: '-0.03em' }, // 120px 4px grid
-  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '700', letterSpacing: '-0.035em' }, // 160px 4px grid
+  displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px ceiling, clamped fluid below it
+  displayLg: { fontSize: 'clamp(2.75rem, 11vw, 7rem)', lineHeight: '1.071429', fontWeight: '700', letterSpacing: '-0.03em' }, // 120px ceiling, clamped fluid below it
+  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1.052632', fontWeight: '700', letterSpacing: '-0.035em' }, // 160px ceiling, clamped fluid below it
 };
 
 export const freshwaterLightThemeClass = createTheme(vars, {
@@ -456,10 +474,10 @@ globalStyle(`${freshwaterLightThemeClass} .${sphereBody}`, {
 globalStyle(`${freshwaterLightThemeClass} .${sphereContact}`, {
   background: 'radial-gradient(ellipse at center, rgba(14, 15, 16, 0.32) 0%, rgba(14, 15, 16, 0.16) 55%, transparent 78%)',
   opacity: 1,
-  width: '130px',
-  height: '34px',
-  left: 'calc(50% + 22px)',
-  bottom: '-22px',
+  width: '77.4%',
+  height: '20.2%',
+  left: 'calc(50% + 13.1%)',
+  bottom: '-13.1%',
 });
 
 globalStyle(`${freshwaterDarkThemeClass} .${sphereBody}`, {
@@ -476,10 +494,10 @@ globalStyle(`${freshwaterDarkThemeClass} .${sphereBody}`, {
 globalStyle(`${freshwaterDarkThemeClass} .${sphereContact}`, {
   background: 'radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.28) 55%, transparent 78%)',
   opacity: 1,
-  width: '130px',
-  height: '34px',
-  left: 'calc(50% + 22px)',
-  bottom: '-22px',
+  width: '77.4%',
+  height: '20.2%',
+  left: 'calc(50% + 13.1%)',
+  bottom: '-13.1%',
 });
 
 // `wash` — Freshwater's extension treatment (ADR-0007). Assigned to
@@ -488,11 +506,39 @@ export const [freshwaterExtensionClass, freshwaterTreatments] = createTheme({
   wash: {
     angle: '90deg',
     gradient: 'linear-gradient(90deg, #E9FBFF 0%, rgba(233, 251, 255, 0) 60%)',
-    gradientDark: 'linear-gradient(90deg, rgba(58, 61, 64, 0.55) 0%, rgba(58, 61, 64, 0) 60%)',
+    // Deep glacier alpha, not a neutral gray and not the bright cyan steps —
+    // both of those lighten a dark surface (read as a glow); this tints it.
+    gradientDark: `linear-gradient(90deg, ${freshwaterGlacierAlpha[600]} 0%, ${freshwaterGlacierAlpha[0]} 60%)`,
     duration: '250ms',
     easing: 'ease',
     opacity: '1',
+    // Not 2a's literal near-white swatch (`#E9FBFF`/`#F4FDFF`) — that reads as
+    // intended on a flat surface, but composited over an already-dimmed photo
+    // (`indexPlateImage`'s own 0.45 opacity) it was nearly indistinguishable
+    // from plain white. `glacier[200]`, the saturated cyan step, at a lower
+    // alpha reads as an actual blue tint while leaving the photo visible.
+    plateGradient: 'linear-gradient(135deg, rgba(95, 225, 255, 0.4) 0%, rgba(95, 225, 255, 0) 65%)',
+    plateGradientDark: `linear-gradient(135deg, ${freshwaterGlacierAlpha[600]} 0%, rgba(0, 94, 120, 0.3) 55%, ${freshwaterGlacierAlpha[0]} 100%)`,
   },
+});
+
+// `inlineEmphasis` (freshwater.roles.ts) — plain accent-colored text, not
+// `wash`. The highlighter background read too much like a browser text-
+// selection artifact rather than an authored treatment, and sat directly
+// next to `cardHover`'s own use of `wash` (a hover-triggered surface tint)
+// with nothing distinguishing "this is emphasis" from "this is hovered" as
+// concepts, even though the CSS mechanism was the same gradient either way.
+// `color.accent`, not a raw glacier step — the semantic token, so this
+// tracks the theme's own accent definition if it ever moves, and it already
+// clears 4.5:1 text contrast against both background and surface in both
+// modes (measured: light 4.65:1/4.53:1, dark 11.5:1/10.6:1 — comfortable
+// margin, not a near-miss). No `text-decoration` — deliberately not
+// underlined, so it can't be mistaken for `Link`, which is.
+globalStyle(`${freshwaterLightThemeClass} [data-role="inlineEmphasis"]`, {
+  color: vars.color.accent,
+});
+globalStyle(`${freshwaterDarkThemeClass} [data-role="inlineEmphasis"]`, {
+  color: vars.color.accent,
 });
 
 globalStyle(
@@ -522,3 +568,33 @@ globalStyle(
     opacity: freshwaterTreatments.wash.opacity,
   },
 );
+
+/** Static wash over a photographic plate — Tahitian's `overtonePlate`
+ * equivalent, but stationary (no animation): apply as a className to a
+ * wrapper around an `<img>`. */
+export const washPlate = style({
+  position: 'relative',
+  overflow: 'hidden',
+  isolation: 'isolate',
+});
+
+globalStyle(`${washPlate}::after`, {
+  content: '',
+  position: 'absolute',
+  zIndex: 1,
+  inset: 0,
+  background: freshwaterTreatments.wash.plateGradient,
+  pointerEvents: 'none',
+});
+
+globalStyle(`${freshwaterDarkThemeClass} ${washPlate}::after`, {
+  background: freshwaterTreatments.wash.plateGradientDark,
+});
+
+globalStyle(`${washPlate} > img`, {
+  display: 'block',
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  filter: 'grayscale(1)',
+});

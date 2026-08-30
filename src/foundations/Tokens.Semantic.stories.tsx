@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { color, controlHeight, radius, space } from '@tokens';
-import { Wordmark, brandWordmarkByTheme } from './typeSpecimens';
+import { WordMark, brandWordmarkByTheme } from './typeSpecimens';
 import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import * as css from './tokens.css';
 
@@ -84,7 +84,10 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
     <div className={css.page}>
       <section className={css.section}>
-        <Wordmark wordmark={wordmark} className={css.wordmarkTitle} />
+        {/* `scale={2.8}` reproduces this page's prior `displayLg` size
+            against `WordMark`'s `headingMd`-relative base — see the
+            re-export's comment in `typeSpecimens.tsx`. */}
+        <WordMark {...wordmark} scale={2.8} className={css.wordmarkTitle} />
 
         <h3 className={css.subsectionTitle}>Surface</h3>
         <div className={css.row}>

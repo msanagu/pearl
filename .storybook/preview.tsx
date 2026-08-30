@@ -13,7 +13,7 @@ import '@fontsource/azeret-mono/500.css';
 import '@fontsource/azeret-mono/600.css';
 import { vars } from '../src/theme.css';
 import { tahitianLightThemeClass, tahitianDarkThemeClass, tahitianExtensionClass } from '../src/themes/tahitian/tahitian.css';
-import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '../src/themes/freshwater/freshwater.css';
+import { freshwaterLightThemeClass, freshwaterDarkThemeClass, freshwaterExtensionClass } from '../src/themes/freshwater/freshwater.css';
 import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea/south-sea.css';
 import { pearlLightThemeClass, pearlDarkThemeClass, pearlExtensionClass } from '../src/themes/pearl/pearl.css';
 
@@ -64,6 +64,7 @@ const themes: Record<string, ThemeEntry> = {
   freshwater: {
     light: freshwaterLightThemeClass,
     dark: freshwaterDarkThemeClass,
+    extension: freshwaterExtensionClass,
     defaultMode: 'light',
   },
   southSea: {

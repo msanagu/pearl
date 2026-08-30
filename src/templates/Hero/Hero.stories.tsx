@@ -29,6 +29,7 @@ const meta: Meta<typeof Hero> = {
           args={{
             brandName: context.args.brandName ?? wordmark.text,
             brandRole: context.args.brandRole ?? wordmark.role,
+            brandUnderscoreColor: context.args.brandUnderscoreColor ?? wordmark.underscoreColor,
           }}
         />
       );

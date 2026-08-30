@@ -1,10 +1,20 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 import { color, space } from '@tokens';
+import { sphereWrap, contact as sphereContact } from '@components/_brand/PearlSphere.css';
+
+// Header (headline + `measure="lg"` body copy) needs ~700px at its own
+// natural width, plus the `2xl` gap (48px) and the sphere's own ceiling
+// (220px) — call it 970px to actually fit side by side. Below 720px, `.main`
+// stacked the layout but the sphere/nav swap didn't happen until here, so
+// there was a dead zone where the row-layout `wrap` prop triggered an
+// unstyled mid-row wrap before the intentional column layout ever kicked
+// in. One breakpoint for both now — no gap between them.
+const MOBILE = '(max-width: 1024px)';
 
 export const main = style({
   minHeight: 520,
   '@media': {
-    '(max-width: 720px)': {
+    [MOBILE]: {
       minHeight: 'auto',
       flexDirection: 'column',
       alignItems: 'stretch',
@@ -18,20 +28,68 @@ export const main = style({
 
 export const header = style({
   '@media': {
-    '(max-width: 720px)': {
+    [MOBILE]: {
       minWidth: 0,
       flex: '0 1 auto',
     },
   },
 });
 
+// At the width it would wrap under the header, the sphere leaves the hero
+// body entirely rather than stack awkwardly below the CTAs — `navSphere`
+// below is its replacement, a small mark next to the wordmark instead.
 export const sphere = style({
   '@media': {
-    '(max-width: 720px)': {
-      alignSelf: 'center',
-      transform: 'scale(0.72)',
-      transformOrigin: 'center',
-      margin: '-24px 0',
+    [MOBILE]: {
+      display: 'none',
+    },
+  },
+});
+
+// Nav-scale stand-in for `sphere` on mobile: hidden by default (desktop's
+// nav has no sphere at all — the hero body's is enough), shown only once
+// the body's own copy disappears at `MOBILE`. Sized down via a descendant
+// override on `sphereWrap` rather than a second wrapper size prop, since
+// `PearlSphere` always renders that class internally regardless of context.
+export const navSphere = style({
+  display: 'none',
+  '@media': {
+    [MOBILE]: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+  },
+});
+
+globalStyle(`${navSphere} .${sphereWrap}`, {
+  width: 20,
+  height: 20,
+});
+
+// No contact shadow at nav scale — a drop shadow under a small mark in a
+// text-height row reads as a rendering artifact, not a material cue.
+globalStyle(`${navSphere} .${sphereContact}`, {
+  display: 'none',
+});
+
+// Anchors the descendant override below — `WordMark` renders at its
+// unscaled default (`headingMd`, 2.5rem/40px) everywhere by default, which
+// is fine standing alone in the desktop nav but reads as mismatched next to
+// `navSphere`'s fixed 20px dot once both are visible together at `MOBILE`
+// (a ~2:1 size ratio between the mark and the wordmark beside it). Scoped to
+// this wrapper, not a global `WordMark` change, so the desktop nav — where
+// there's no sphere to harmonize against — keeps its full size.
+export const navBrand = style({});
+
+globalStyle(`${navBrand} [data-component="brand-wordmark"]`, {
+  '@media': {
+    [MOBILE]: {
+      // 20px, matching `navSphere`'s own fixed size exactly — a wordmark's
+      // glyphs don't fill their full font-size box the way a circle fills
+      // its own bounding box, so equal font-size-to-diameter reads as
+      // slightly SMALLER text next to the dot, not larger — the harmonious
+      // pairing this was actually solving for.
+      fontSize: '20px',
     },
   },
 });

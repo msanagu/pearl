@@ -84,28 +84,76 @@ export const alabaster = {
  * above background" elevation claim (see the dark theme's `shadow` comment
  * below) — was 1.08:1. Functionally one color wearing four labels.
  *
- * `900` is untouched — it's canon ink/obsidian, referenced by name and by
- * hex elsewhere, not a step free to move. `600`–`800` now spread up from it in
- * even OKLCH steps (L 0.203 → 0.500, one hue, chroma climbing with lightness
- * the way a neutral's does), so each rung is honestly further from the ink
- * than the last:
- * - `800` vs `900` (elevation): 1.08:1 → **1.33:1**.
- * - `600` vs `900` (default border vs background): 1.27:1 → **2.98:1** — just
- *   under the 3:1 non-text floor, the quiet-but-real reading
- *   docs/foundations/control-affordances.md asks of a resting boundary,
- *   distinct from `borderStrong` (`urchin[400]`, 5:1+) which still
- *   carries the emphasis case.
- * - `700` vs `800` (borderFaint vs the surface it doubles as a border on):
- *   1.06:1 → **1.47:1**.
+ * `600`–`800` spread up from `900` in even CONTRAST steps (not even `L`
+ * steps — see the third pass below for why that distinction is the whole
+ * fix), one hue throughout, chroma climbing with lightness the way a
+ * neutral's does:
+ * - **Third pass (2026-08-29):** `900` itself was silently off-hue the
+ *   entire time — 297.12° (unrotated violet) while `600`–`800` sat at
+ *   248–251°, a single-hue-per-scale violation (ADR-0010) nobody had
+ *   checked for, only caught by rechecking after the second pass looked
+ *   suspicious. Rotated `900` onto the same ~250° hue, holding its `L`/`C`
+ *   fixed (`#17161A` → `#14171A` — a one-hex-digit shift, not a visible
+ *   change on its own). With a true single-hue anchor, `800`/`700`/`600`
+ *   were re-solved as a chain, each one 1.6:1 against the step below it,
+ *   instead of tuning `800` alone against `900` and leaving `700`/`800`
+ *   to whatever fell out (that was the second pass's actual mistake: fixing
+ *   one adjacent pair moved the problem to its neighbor rather than
+ *   removing it — `700` vs `800` measured 1.09:1 after that pass, worse
+ *   than the 1.47:1 it started at).
+ *   - `800` vs `900` (elevation — `Card`'s hover luster, a translucent sheen
+ *     layered ON TOP of `surface`, wasn't perceptible when the resting
+ *     state under it barely read as elevated to begin with): 1.08:1 →
+ *     1.33:1 → **1.61:1**.
+ *   - `700` vs `800` (borderFaint vs the surface it doubles as a border on):
+ *     1.06:1 → 1.47:1 → 1.09:1 → **1.62:1**.
+ *   - `600` vs `700`: **1.60:1** (not previously reported on its own).
+ *   - `600` vs `900` (default border vs background) rose to **4.16:1** as a
+ *     side effect — up from the 2.98:1 `control-affordances.md` calls
+ *     "just under the 3:1 non-text floor." Not what was asked for this
+ *     pass; a border reading a little stronger than its original spec is a
+ *     fair trade for a scale where every adjacent step finally separates
+ *     evenly, but it's a real, documented change to that pair's contract,
+ *     not a rounding difference — revisit if 4.16:1 reads as heavier than
+ *     the "quiet-but-real" resting boundary that doc asks for.
  *
  * `alabaster`'s equivalent register (100–300) has the identical shape of
  * problem — 1.06:1 between `surface` and `background` — left alone here since
  * it wasn't what was asked; the same fix would apply if it comes up.
+ *
+ * ## One hue with `urchin`, not a rotation away from it (2026-08-29)
+ * Two earlier passes chased this scale's hue in the wrong direction: first
+ * settling on ~250°, then nudging to 268° because 250° "read as navy" —
+ * except 268° is still squarely in OKLCH's blue band (pure `#0000FF` sits at
+ * 264°), so the rotation traded one blue for another and dark mode kept
+ * reading stark/cold. The actual fix is upstream of any of these numbers:
+ * `squidInk` was never its own family. It's `urchin`'s neutral end —
+ * matched to the SAME hue (297.5°), just held at far lower chroma than
+ * `urchin`'s working range. `900` at this hue lands back on `#17161A` — the
+ * original canon ink value — which is the tell that 297.5° was the right
+ * anchor all along.
+ *
+ * ## Dark-only, and one step lighter near the bottom (2026-08-29)
+ * `squidInk` dropped its lightest rung (`600`, `#7B768A`) — a genuinely
+ * *mid*-value neutral that only ever did one job (dark theme's default
+ * `border`), and did it worse than a real accent color would (see
+ * `urchin`'s comment: that role now reads `urchin[500]`, so this scale can
+ * stay what its name always implied — the DARK register only, not a
+ * neutral that reaches all the way to mid-gray.
+ *
+ * That freed room to fix a real problem: `surface` vs `background` (`800`
+ * vs `900`) was a 1.61:1 jump — correctly fixed from an inaccessible
+ * 1.08:1 two passes ago, but the fix overshot into a hard-edged step with
+ * nothing between it and the page. A new `850` rung sits partway into that
+ * gap (surface moves here), softening the jump to 1.38:1 while keeping it
+ * well clear of the original bug's territory; `750` (`borderSubtle`) sits
+ * one more even step above that, at the same ~1.38:1 hop. `900` is
+ * untouched — still `#17161A`, still the canon anchor everything else is
+ * solved against.
  */
 export const squidInk = {
-  600: '#656072', // hairline — default border, dark mode
-  700: '#494652', // hairlineFaint — surfaceHover doubles as faint border
-  800: '#2F2D35', // slateDeep — raised surface
+  750: '#484550', // hairlineFaint — surfaceHover doubles as faint border
+  850: '#323037', // slateDeep — raised surface
   900: '#17161A', // [4c/spec] ink / obsidian — primary text (light) / page background (dark)
 };
 
@@ -168,15 +216,42 @@ export const squidInk = {
  * contrast pairing above was re-checked against the new values and still
  * holds: `500` 4.57:1/4.85:1, `200` (dark) 9.41:1/7.09:1, `400` (dark) 5.03:1/
  * 3.79:1, `600` 6.59:1/7.00:1.
+ *
+ * ## The ×0.8 cut reverted (2026-08-29)
+ * That cut was chasing a symptom, not the cause: `squidInk` reading "waaay
+ * more purple" was because it briefly shared `urchin`'s exact hue at
+ * `squidInk`'s own (much higher) chroma, not because `urchin` itself was too
+ * saturated. Now that `squidInk` is anchored at a far lower chroma register
+ * of the same hue (see its own comment), there's no confusion left to
+ * dodge, and pulling `urchin` back was what made light mode's accents read
+ * as generic gray instead of "muted purple." Restored to the eased-curve
+ * values this cut was applied on top of.
+ *
+ * ## Chroma ×1.35, and it now covers `squidInk`'s old `border` duty
+ * (2026-08-29) `squidInk[600]` — the old dark-mode default `border` and
+ * light-mode `borderInverse` — is gone (see `squidInk`'s comment): it was a
+ * genuinely mid-value neutral, i.e. exactly the register an ACCENT should
+ * own, not a fourth gray. `500` (dark `border`, 3.55:1 vs `squidInk[900]`)
+ * and `400` (light `borderInverse`, 3.61:1 vs `squidInk[850]`) pick up that
+ * work, each clearing the 3:1 non-text floor while staying under `400`'s
+ * own `borderStrong` weight (4.99:1) so the two borders still separate.
+ * Taking on quiet-chrome duty on top of being the one signal color made the
+ * whole ramp read too tame for an "accent" — chroma is boosted ×1.35 across
+ * every rung (same `L`/`H`) to compensate, muted violet rather than
+ * near-gray. Every previously-verified pairing still clears its bar at the
+ * new chroma: `500` (`textSubtle`, light) 4.57:1, `600` (`accent`, light)
+ * 6.70:1, `700` (`accentHover`, light) 9.76:1, `100` (`accent`, dark) vs
+ * `background`/`surface` 12.49:1/9.03:1 — comfortably above the 4.5:1 TEXT
+ * bar `accentContrast.test.ts` holds `accent` to, not just the 3:1 UI floor.
  */
 export const urchin = {
-  100: '#D7D6DC', // marine — accentSubtle (light) / accent + focusRing (dark)
-  200: '#BCBAC5', // lavenderPale — body copy, dark mode
-  300: '#A39FB0', // marineStrong — emphasis border, light mode
-  400: '#8A849D', // marineStrong — emphasis border, dark mode / accentSubtle, dark
-  500: '#726A8A', // slate — body copy, light mode
-  600: '#5C5078', // violet — accent + focusRing, light mode
-  700: '#463766', // violetDeep — accentHover, light mode
+  100: '#D7D6DE', // marine — accentSubtle (light) / accent + focusRing (dark)
+  200: '#BCB9C8', // lavenderPale — body copy, dark mode
+  300: '#A49DB5', // marineStrong — emphasis border, light mode
+  400: '#8B82A3', // marineStrong — emphasis border, dark mode / accentSubtle, dark / borderInverse, light
+  500: '#746893', // slate — body copy, light mode / border, dark mode
+  600: '#5E4C81', // violet — accent + focusRing, light mode
+  700: '#483072', // violetDeep — accentHover, light mode
 };
 
 /**
@@ -274,9 +349,9 @@ const pearlText = {
   headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '500', letterSpacing: '-0.01em' }, // 40px 4px grid
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '500', letterSpacing: '-0.015em' }, // 48px 4px grid
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '500', letterSpacing: '-0.02em' }, // 64px 4px grid
-  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '500', letterSpacing: '-0.03em' }, // 76px 4px grid
-  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '500', letterSpacing: '-0.04em' }, // 120px 4px grid
-  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '500', letterSpacing: '-0.045em' }, // 160px 4px grid
+  displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '500', letterSpacing: '-0.03em' }, // 76px ceiling, clamped fluid below it
+  displayLg: { fontSize: 'clamp(2.75rem, 11vw, 7rem)', lineHeight: '1.071429', fontWeight: '500', letterSpacing: '-0.04em' }, // 120px ceiling, clamped fluid below it
+  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1.052632', fontWeight: '500', letterSpacing: '-0.045em' }, // 160px ceiling, clamped fluid below it
 };
 
 // ---- Canon theme (light) ----
@@ -290,7 +365,7 @@ export const pearlLightThemeClass = createTheme(vars, {
     // References squidInk directly — cannot drift from the dark theme below,
     // since both read the same module-scoped palette.
     backgroundInverse: squidInk[900],
-    surfaceInverse: squidInk[800],
+    surfaceInverse: squidInk[850],
 
     text: squidInk[900],
     textSubtle: urchin[500],
@@ -300,7 +375,11 @@ export const pearlLightThemeClass = createTheme(vars, {
     border: alabaster[500],
     borderStrong: urchin[300],
     borderSubtle: alabaster[400],
-    borderInverse: squidInk[600],
+    // `urchin[400]`, not a `squidInk` step — see `squidInk`'s comment: that
+    // scale dropped its one mid-value rung, and this border's weight is
+    // exactly the accent's register, not a fourth gray. 3.61:1 vs
+    // `surfaceInverse` (`squidInk[850]`), clear of the 3:1 non-text floor.
+    borderInverse: urchin[400],
     shadow: urchin[300],
 
     // [4c] Primary CTA fill — the dark gradient's flat approximation (no
@@ -363,7 +442,7 @@ export const pearlLightThemeClass = createTheme(vars, {
 export const pearlDarkThemeClass = createTheme(vars, {
   color: {
     background: squidInk[900],
-    surface: squidInk[800],
+    surface: squidInk[850],
     overlay: 'rgba(0, 0, 0, 0.62)', // [derived] pure black, not squidInk-anchored — a backdrop must always darken, and squidInk has no dark-appropriate pale step to flip to for this mode
     overlaySubtle: alabasterAlpha[10],
     backgroundInverse: alabaster[300],
@@ -374,9 +453,13 @@ export const pearlDarkThemeClass = createTheme(vars, {
     textInverse: squidInk[900],
     textInverseSubtle: urchin[500],
 
-    border: squidInk[600],
+    // `urchin[500]`, not a `squidInk` step — see `squidInk`'s comment: the
+    // scale dropped its mid-value rung, and this border's weight belongs to
+    // the accent's register. 3.55:1 vs `background`, one step quieter than
+    // `borderStrong` (`urchin[400]`, 4.99:1) so the two still separate.
+    border: urchin[500],
     borderStrong: urchin[400],
-    borderSubtle: squidInk[700],
+    borderSubtle: squidInk[750],
     borderInverse: alabaster[500],
     // [derived] Black, not a urchin step. A shadow is occlusion: it must
     // always DARKEN. Every neutral this theme has in dark mode — marine,
@@ -747,16 +830,59 @@ globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="tr
   transform: pearlTreatments.luster.driftTo,
 });
 
-// 9a: deeper dark-mode stops for the same drift.
+// 9a's own dark stops (marine.850/silver.850/seagreen.900) measured within
+// 0.0004 luminance of `surface` post squidInk-hue-fix — mathematically
+// invisible, not "deeper." A sheen needs to catch light against a dark
+// ground, not go darker than it; these are the same three hues LIGHT-toned
+// instead (verified: `textSubtle` 4.64:1 at the dominant stop's peak).
+export const pearlDarkLusterGradient = [
+  `radial-gradient(ellipse at center, rgba(214, 224, 236, 0.30) 0%`,
+  `rgba(226, 224, 232, 0.19) 32%`,
+  `rgba(214, 236, 224, 0.11) 52%`,
+  `transparent 68%)`,
+].join(', ');
+
 globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {
-  background: [
-    // marine.850 (#332F3D) — dominant, matching light mode's own ordering.
-    `radial-gradient(ellipse at center, rgba(51, 47, 61, 0.30) 0%`,
-    // silver.850 (#4A4850) — undertone.
-    `rgba(74, 72, 80, 0.19) 32%`,
-    // seagreen.900 (#16211C) — the thin late breath.
-    `rgba(22, 33, 28, 0.11) 52%`,
-    `transparent 68%)`,
-  ].join(', '),
+  background: pearlDarkLusterGradient,
+  transition: 'opacity 3.5s ease, transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)',
+});
+
+// `secondaryHover` (pearl.roles.ts) — same luster drift as cardHover.
+globalStyle(pearlButton('secondary'), {
+  position: 'relative',
+  overflow: 'hidden',
+  // Card's glow gets a stacking context for free from its hover `transform`;
+  // secondary's hover never transforms, so the `::after`'s z-index:-1 needs
+  // its own context here or it paints behind the wrong layer.
+  isolation: 'isolate',
+});
+
+globalStyle(pearlButton('secondary', '::after'), {
+  content: '',
+  position: 'absolute',
+  zIndex: -1,
+  inset: 0,
+  background: pearlTreatments.luster.driftGradient,
+  opacity: 0,
+  pointerEvents: 'none',
+  transform: pearlTreatments.luster.driftFrom,
+  transition: `opacity ${pearlTreatments.luster.driftOpacityDuration} ease, transform ${pearlTreatments.luster.driftDuration} ${pearlTreatments.luster.driftEasing}`,
+  '@media': {
+    '(prefers-reduced-motion: reduce)': { transition: 'none' },
+  },
+});
+
+globalStyle(sel(pearlLightThemeClass, 'secondary', ':not(:disabled):hover::after'), {
+  opacity: pearlTreatments.luster.driftOpacity,
+  transform: pearlTreatments.luster.driftTo,
+});
+
+globalStyle(sel(pearlDarkThemeClass, 'secondary', ':not(:disabled):hover::after'), {
+  opacity: pearlTreatments.luster.driftOpacityDark,
+  transform: pearlTreatments.luster.driftTo,
+});
+
+globalStyle(sel(pearlDarkThemeClass, 'secondary', '::after'), {
+  background: pearlDarkLusterGradient,
   transition: 'opacity 3.5s ease, transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)',
 });

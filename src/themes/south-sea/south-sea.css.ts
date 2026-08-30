@@ -275,9 +275,9 @@ const southSeaText = {
   headingSm: { fontSize: '2rem', lineHeight: '1.25', fontWeight: '600', letterSpacing: '-0.01em' }, // 40px 4px grid
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.015em' }, // 48px 4px grid
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '600', letterSpacing: '-0.02em' }, // 64px 4px grid
-  displaySm: { fontSize: '4.5rem', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px 4px grid
-  displayLg: { fontSize: '7rem', lineHeight: '1.071429', fontWeight: '700', letterSpacing: '-0.02em' }, // 120px 4px grid
-  displayXl: { fontSize: '9.5rem', lineHeight: '1.052632', fontWeight: '700', letterSpacing: '-0.025em' }, // 160px 4px grid
+  displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px ceiling, clamped fluid below it
+  displayLg: { fontSize: 'clamp(2.75rem, 11vw, 7rem)', lineHeight: '1.071429', fontWeight: '700', letterSpacing: '-0.02em' }, // 120px ceiling, clamped fluid below it
+  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1.052632', fontWeight: '700', letterSpacing: '-0.025em' }, // 160px ceiling, clamped fluid below it
 };
 
 export const southSeaLightThemeClass = createTheme(vars, {
@@ -405,14 +405,19 @@ export const southSeaDarkThemeClass = createTheme(vars, {
 // treatments reference a color, so there's nothing for light/dark to diverge
 // on the way `inlineEmphasis`'s gradient does in Tahitian.
 
-// `serifItalic` — the roman/italic serif mix. Verified against Fontshare's
-// live Zodiak delivery (both roman and italic download and apply
-// correctly), so this is a genuine italic style switch, not an oblique fake
-// riding on a fallback font.
+// `inlineEmphasis` — plain accent-colored text, not the roman/italic serif
+// mix (nixed 2026-08-29, same call as Freshwater's `wash` → accent-text
+// swap). No `fontFamily`/`fontStyle`/`letterSpacing` here anymore, which is
+// also why the compound `[data-type-scale="..."][data-role="inlineEmphasis"]`
+// specificity-tiebreaker rule that used to sit below the display block is
+// gone: it existed only to make sure this rule's font-family won against
+// the heading-face rule's, and a `color`-only rule has nothing to win —
+// `color` and `fontFamily` are different properties, so both rules apply
+// cleanly together with no conflict. Verified against both background and
+// surface, both modes, before using it as text color: light 4.90:1/4.53:1,
+// dark 8.18:1/7.49:1 — all clear 4.5:1 with real margin.
 globalStyle(`${southSeaLightThemeClass} [data-role="inlineEmphasis"], ${southSeaDarkThemeClass} [data-role="inlineEmphasis"]`, {
-  fontFamily: southSeaFonts.serifItalic,
-  fontStyle: 'italic',
-  letterSpacing: '-0.02em',
+  color: vars.color.accent,
 });
 
 // Body text borrows the italic voice for variety — Zodiak roman stays the
@@ -509,47 +514,15 @@ globalStyle(
 );
 
 // The wordmark (`WordMark`/`HeroNav`) carries BOTH `data-type-scale="headingMd"`
-// and `data-role="inlineEmphasis"` on the SAME element — unlike the display
-// case below, there's no nested descendant to give one selector higher
-// specificity, so the two single-attribute selectors above tie and source
-// order alone decided the winner (the heading rule, being later, was
-// silently clobbering the wordmark's Times italic with Boska). This compound
-// selector — both attributes on one element — outranks either rule alone and
-// restores the roman/italic mix wherever a heading step is also marked
-// `inlineEmphasis`.
-globalStyle(
-  [
-    `${southSeaLightThemeClass} [data-type-scale="headingSm"][data-role="inlineEmphasis"]`,
-    `${southSeaDarkThemeClass} [data-type-scale="headingSm"][data-role="inlineEmphasis"]`,
-    `${southSeaLightThemeClass} [data-type-scale="headingMd"][data-role="inlineEmphasis"]`,
-    `${southSeaDarkThemeClass} [data-type-scale="headingMd"][data-role="inlineEmphasis"]`,
-    `${southSeaLightThemeClass} [data-type-scale="headingLg"][data-role="inlineEmphasis"]`,
-    `${southSeaDarkThemeClass} [data-type-scale="headingLg"][data-role="inlineEmphasis"]`,
-  ].join(', '),
-  {
-    fontFamily: southSeaFonts.serifItalic,
-    fontStyle: 'italic',
-    letterSpacing: '-0.02em',
-  },
-);
-
-// `cardHover` (south-sea.roles.ts) — a hovered card's heading tips into the
-// same italic treatment `inlineEmphasis` uses, rather than any lit surface.
-globalStyle(
-  [
-    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingSm"]`,
-    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingSm"]`,
-    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingMd"]`,
-    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingMd"]`,
-    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingLg"]`,
-    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingLg"]`,
-  ].join(', '),
-  {
-    fontFamily: southSeaFonts.serifItalic,
-    fontStyle: 'italic',
-    letterSpacing: '-0.02em',
-  },
-);
+// and `data-role="inlineEmphasis"` on the SAME element. A compound
+// specificity-tiebreaker rule used to live here, needed because the heading
+// rule above and the old `inlineEmphasis` rule both set `fontFamily` and
+// tied on specificity, with source order silently deciding the winner. Once
+// `inlineEmphasis` (above, in this file) stopped setting `fontFamily` at all
+// — plain `color`, not a font swap — the property conflict this rule existed
+// to resolve no longer exists: the heading rule's Boska/roman stands, and
+// `inlineEmphasis`'s accent color layers on top of it with nothing to fight
+// over. Removed rather than left as dead weight.
 
 // Display (all three steps, including the hero numerals like "1,284" that
 // ride `displaySm`) — Boska, uppercase, roman, Regular. One weight across

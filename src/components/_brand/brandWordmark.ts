@@ -7,6 +7,10 @@ import { freshwaterBrandWordmark } from '@themes/freshwater/freshwater.roles';
 export interface BrandWordmark {
   text: string;
   role?: 'inlineEmphasis';
+  /** Literal color for a `_` in `text` (see `WordMark.tsx`) — a graphical
+   * accent, not text, so a theme may use a value that doesn't clear text
+   * contrast ratios. */
+  underscoreColor?: string;
 }
 
 /**

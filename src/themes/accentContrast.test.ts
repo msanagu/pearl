@@ -68,7 +68,7 @@ const themes: AccentPairs[] = [
   {
     theme: 'pearl dark',
     background: squidInk[900],
-    surface: squidInk[800],
+    surface: squidInk[850],
     accent: urchin[100],
     accentHover: alabaster[100],
     onAccent: squidInk[900],

@@ -327,9 +327,17 @@ export interface IntroductionProps {
    * dependency (ADR-0007 rule 3).
    */
   plateTreatment?: string;
+  /**
+   * Class for a theme's effect treatment, applied ambiently to the stats
+   * card — a demo of a downstream team reusing an exported treatment
+   * (`luster`/`overtone`/`wash`) on a plain, non-interactive, non-imagery
+   * surface, not one of the contexts it ships on elsewhere (see
+   * `statsTreatments.css.ts`). South Sea has none and passes nothing.
+   */
+  statsTreatment?: string;
 }
 
-export function Introduction({ plateTreatment = '' }: IntroductionProps) {
+export function Introduction({ plateTreatment = '', statsTreatment = '' }: IntroductionProps) {
   useEffect(() => {
     // Storybook renders this story inside a preview iframe, so a
     // `#decision-log` in the top-level URL never triggers the browser's
@@ -362,12 +370,12 @@ export function Introduction({ plateTreatment = '' }: IntroductionProps) {
           replaced — a native anchor attribute instead of a click handler
           doing the same thing manually. */}
       <Hero
-        // `Hero` deliberately has no default for `brandRole` — Tahitian's
-        // plain-white wordmark needs to pass `undefined` and have it stick,
-        // so a default here would silently override that. This page is
-        // Pearl-only (no theme toolbar), so it passes Pearl's own wordmark
-        // data directly — the same source `ThemeSpecimen` reads — instead
-        // of a second hardcoded 'pearl' that could drift from it.
+        // This page is Pearl-only (no theme toolbar) and always says
+        // "pearl" — never the dynamic per-theme wordmark
+        // `templates/Hero.stories.tsx` resolves from the toolbar — so both
+        // text and role come from `pearlBrandWordmark` directly (one
+        // source, no second hardcoded 'pearl' that could drift from it):
+        // the real wordmark, `inlineEmphasis` included.
         brandName={pearlBrandWordmark.text}
         brandRole={pearlBrandWordmark.role}
         primaryHref="#decision-log"
@@ -379,35 +387,6 @@ export function Introduction({ plateTreatment = '' }: IntroductionProps) {
 
       <div className={css.page}>
         <div className={css.sectionFlow}>
-          {/* ---------------- Stats ---------------- */}
-          <section aria-label="What is shipped">
-            <Card padding="xl">
-              <Row justify="between" align="center" gap="lg" wrap>
-                {stats.map((stat, index) => (
-                  <Fragment key={stat.label}>
-                    {index > 0 && (
-                      <div className={css.statDivider} aria-hidden="true" />
-                    )}
-                    <Stack gap="md">
-                      <Text as="p" typeScale="displaySm" style={{ margin: 0 }}>
-                        {stat.value}
-                      </Text>
-                      <Text
-                        role="preheading"
-                        as="p"
-                        typeScale="caption"
-                        prominence="subtle"
-                        style={{ margin: 0 }}
-                      >
-                        {stat.label}
-                      </Text>
-                    </Stack>
-                  </Fragment>
-                ))}
-              </Row>
-            </Card>
-          </section>
-
           {/* ---------------- Reskinning ---------------- */}
           <section>
             <div className={css.sectionBody}>
@@ -762,6 +741,35 @@ export function Introduction({ plateTreatment = '' }: IntroductionProps) {
                 </div>
               </div>
             </div>
+          </section>
+
+          {/* ---------------- Stats ---------------- */}
+          <section aria-label="What is shipped">
+            <Card padding="xl" className={statsTreatment}>
+              <Row justify="between" align="center" gap="lg" wrap>
+                {stats.map((stat, index) => (
+                  <Fragment key={stat.label}>
+                    {index > 0 && (
+                      <div className={css.statDivider} aria-hidden="true" />
+                    )}
+                    <Stack gap="md">
+                      <Text as="p" typeScale="displaySm" style={{ margin: 0 }}>
+                        {stat.value}
+                      </Text>
+                      <Text
+                        role="preheading"
+                        as="p"
+                        typeScale="caption"
+                        prominence="subtle"
+                        style={{ margin: 0 }}
+                      >
+                        {stat.label}
+                      </Text>
+                    </Stack>
+                  </Fragment>
+                ))}
+              </Row>
+            </Card>
           </section>
 
           {/* ---------------- Next ---------------- */}

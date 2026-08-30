@@ -6,7 +6,7 @@ import type { ThemeRoles } from '@themes/roles';
 import { pearlBrandWordmark, pearlDescription, pearlRoles } from '@themes/pearl/pearl.roles';
 import { tahitianDescription, tahitianRoles } from '@themes/tahitian/tahitian.roles';
 import { southSeaDescription, southSeaRoles } from '@themes/south-sea/south-sea.roles';
-import { FamilySwatch, TypeSpecimen, WeightSwatch, Wordmark, brandWordmarkByTheme, useComputed } from './typeSpecimens';
+import { FamilySwatch, TypeSpecimen, WeightSwatch, WordMark, brandWordmarkByTheme, useComputed } from './typeSpecimens';
 import * as css from './tokens.css';
 
 /**
@@ -97,8 +97,13 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
     <div className={css.page}>
       <section className={css.section}>
-        <Wordmark
-          wordmark={brandWordmarkByTheme[theme] ?? pearlBrandWordmark}
+        {/* `scale={2.8}` — see the re-export's own comment in
+            `typeSpecimens.tsx` for why: reproduces the size this page used
+            to render at (`displayLg`, `7rem`) against `WordMark`'s
+            `headingMd`-relative base (`2.5rem`). */}
+        <WordMark
+          {...(brandWordmarkByTheme[theme] ?? pearlBrandWordmark)}
+          scale={2.8}
           className={css.wordmarkTitle}
         />
 

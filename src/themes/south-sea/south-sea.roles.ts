@@ -26,13 +26,16 @@ export const southSeaBrandWordmark = {
  * as a `PearlSphere` override, not a typography role.
  */
 export const southSeaTypeTreatments = {
-  // `serifItalic` — the ITALIC half of the roman/italic mix, so it reads
-  // `southSeaFonts.serifItalic` (Times), not `southSeaFonts.serif` (Zodiak)
-  // with a synthesized slant. See that token's own comment for why: the
-  // maison identity's italic voice is Times', not Zodiak's own italic.
-  // `-0.02em` tracking matches the wordmark treatment in the design
-  // reference (Claude Design's own panel, Times Italic, tracking -0.02em).
-  serifItalic: { fontFamily: southSeaFonts.serifItalic, fontStyle: 'italic' as const, letterSpacing: '-0.02em' },
+  // Plain accent-colored text, no font/style change — replaces `serifItalic`
+  // as `inlineEmphasis`'s treatment (2026-08-29, same call as Freshwater's
+  // `wash` → accent-text swap). `serifItalic` itself is gone from this
+  // catalog, not left orphaned: nothing else in the role table referenced
+  // it (only `inlineEmphasis` did), and `southSeaFonts.serifItalic` — the
+  // underlying font token — is still used directly by the theme-wide body
+  // italic rule in `south-sea.css.ts`, which was never role-gated to begin
+  // with. Verified against both background and surface, both modes, before
+  // using accent as text color: light 4.90:1/4.53:1, dark 8.18:1/7.49:1.
+  accentText: { color: 'accent' },
   /** The `/ LABEL /` slash-wrapped caption idiom — all-caps General Sans at
    * an airy tracking, not the serif: a maison identity still wants its
    * micro-labels legible and quiet, and Zodiak's italic-leaning roman reads
@@ -55,8 +58,8 @@ type SouthSeaTreatmentName = keyof typeof southSeaTypeTreatments;
  */
 export const southSeaRoles: ThemeRoles<SouthSeaTreatmentName> = {
   inlineEmphasis: {
-    treatment: 'serifItalic',
-    intent: 'The roman/italic serif mix — pull quotes, inline interjections, the hairline-gapped heading pairing.',
+    treatment: 'accentText',
+    intent: 'Accent-colored text, undecorated — pull quotes, inline interjections, the hairline-gapped heading pairing. Not underlined on purpose, so it reads distinctly from `Link`.',
     scope: ['inline', 'heading'],
     source: '1g',
   },
@@ -69,11 +72,5 @@ export const southSeaRoles: ThemeRoles<SouthSeaTreatmentName> = {
   dataDigits: {
     treatment: 'sansBody',
     intent: 'No dedicated tabular face exists yet — honestly aliases to the body sans rather than fabricating a tabular treatment.',
-  },
-  cardHover: {
-    treatment: 'serifItalic',
-    intent: 'A hovered card heading tips into the italic half of the roman/italic mix — no lit surface, just a register shift already native to this theme\'s type.',
-    on: 'type',
-    trigger: 'hover',
   },
 };

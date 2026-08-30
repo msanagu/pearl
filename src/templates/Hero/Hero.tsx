@@ -33,6 +33,8 @@ export interface HeroProps {
    * (Tahitian's brand mark stays undecorated — overtone is reserved for
    * `imageOverlay` and one emphasized word). @default 'inlineEmphasis' */
   brandRole?: 'inlineEmphasis';
+  /** Literal color for a `_` in `brandName` — see `WordMark.tsx`. */
+  brandUnderscoreColor?: string;
 }
 
 /**
@@ -142,10 +144,18 @@ export function HeroNav({
   // Tahitian's plain-white wordmark needs, since JS default params trigger
   // on `undefined` regardless of whether the caller meant "unset".
   brandRole,
-}: Pick<HeroProps, 'githubHref' | 'brandName' | 'brandRole'>): ReactNode {
+  brandUnderscoreColor,
+}: Pick<HeroProps, 'githubHref' | 'brandName' | 'brandRole' | 'brandUnderscoreColor'>): ReactNode {
   return (
     <Row justify="between" align="center" style={{ width: '100%' }}>
-      <WordMark text={brandName} role={brandRole} />
+      <Row gap="sm" align="center" className={css.navBrand}>
+        {/* Hidden until the hero body's own sphere disappears at the same
+            breakpoint (`css.sphere`'s `display: none`) — see `css.navSphere`. */}
+        <div className={css.navSphere}>
+          <PearlSphere />
+        </div>
+        <WordMark text={brandName} role={brandRole} underscoreColor={brandUnderscoreColor} />
+      </Row>
       <Row gap="lg" align="center">
         <button
           type="button"
@@ -188,13 +198,14 @@ export function Hero({
   brandName = 'pearl',
   // No default — see the matching comment on `HeroNav`.
   brandRole,
+  brandUnderscoreColor,
 }: HeroProps) {
   return (
     <Stack>
       {/* GAP — no Nav/Header layout component. Utility chrome only. */}
       <div>
         <Row style={{ ...heroContentStyle, borderBottom: `1px solid ${color.border}`, padding: `${space.md} 0` }}>
-          <HeroNav githubHref={githubHref} brandName={brandName} brandRole={brandRole} />
+          <HeroNav githubHref={githubHref} brandName={brandName} brandRole={brandRole} brandUnderscoreColor={brandUnderscoreColor} />
         </Row>
       </div>
 
@@ -202,6 +213,7 @@ export function Hero({
         className={css.main}
         gap="2xl"
         align="center"
+        justify="between"
         wrap
         style={{
           maxWidth: HERO_BAND_MAX_WIDTH,
@@ -230,7 +242,12 @@ export function Hero({
           this preheading + h1 pair belongs inside a real `<header>` element;
           nothing in the system renders one, so it's vanilla here.
         */}
-        <Stack as="header" className={css.header} gap="lg" style={{ flex: 1 }}>
+        {/* No `flex: 1` — that forced the header to fill all remaining row
+            width even though its content (the headline, `measure="lg"`
+            body copy) never grows to fill it, stranding the sphere far to
+            the right with a dead gap between them at wide viewports. Sized
+            to its own content instead, same as the sphere. */}
+        <Stack as="header" className={css.header} gap="lg">
           {/* Second pivot on this headline: "enforces its own rules" was the
               compile-time-guarantee angle (still true, still argued by items
               01/02 below) — this is a different lead entirely. PROJECT_BRIEF's

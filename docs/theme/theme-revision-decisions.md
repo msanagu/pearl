@@ -72,7 +72,7 @@ Unifying them is what produced the `=== 'tahitian'` escape hatch.
 | Pearl | `luster` | The sphere, the hairline rule, card hover. Three surfaces, two motion behaviors — the mechanism's acceptance test |
 | Tahitian | `overtone` | Imagery plates only. Name comes straight from turns 3b/4a ("Overtone Plates") |
 | Freshwater | `wash` | Originally a stationary semantic tint; also drives card hover as of 2026-08-29, see §4 |
-| South Sea | *(none)* | `glow` (a lit-surface hover halo) was proposed and struck 2026-08-29 — see §5. `cardHover` exists but is typographic, not a surface effect |
+| South Sea | *(none)* | `glow` (a lit-surface hover halo) was proposed and struck 2026-08-29 — see §5 |
 
 ---
 
@@ -255,12 +255,8 @@ contract's champagne "luster" is fabricated — discard it; the placeholder
 Note the source render leaks a `lusterShim` debug label, further evidence of the
 slot being patched around.
 
-**Update (2026-08-29): `cardHover` ships as a typographic effect instead.**
-A hovered card heading swaps from roman Boska to the italic serif
-(`south-sea.roles.ts`'s `cardHover` role, pointed at the existing
-`serifItalic` treatment) — the same roman/italic mix the theme already uses
-for `inlineEmphasis`, just triggered by hover instead of authored per call
-site. No new surface, no light source.
+A roman→italic `cardHover` (reusing `serifItalic`) was tried 2026-08-29 and
+reverted — South Sea currently ships no `cardHover` role at all.
 
 ---
 
@@ -365,8 +361,8 @@ padding ramp.
   record ([`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md),
   `proposed`) — theme-owned, theme-named effects, each requiring a written
   description of where/how it applies. Pending acceptance.
-- ~~**South Sea's `glow`**~~ struck 2026-08-29: no lit-surface effect shipped;
-  `cardHover` is a typographic roman/italic swap instead, see §5's "Update."
+- ~~**South Sea's `glow`**~~ struck 2026-08-29: no lit-surface effect ships.
+  A typographic `cardHover` was tried and reverted the same day — see §5.
 - **Per-theme configuration schema** — the axis vocabulary, the path-addressing
   scheme, and the machine-checkable vs. advisory split. The theme-effects
   decision record names this layer but does not specify it. Candidate: a

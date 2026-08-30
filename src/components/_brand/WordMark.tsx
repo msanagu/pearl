@@ -22,6 +22,11 @@ export interface WordMarkProps extends Partial<BrandWordmark> {
    * rule (`ThemeSpecimen`'s header). @default 1
    */
   scale?: number;
+  /** Merged with the wordmark's own recipe classes via `Text`, not a
+   * replacement — the standard `className` passthrough (ADR-0003). Added
+   * when `Typography.stories.tsx` switched from a local reimplementation to
+   * this real component and needed its own layout spacing preserved. */
+  className?: string;
 }
 
 /**
@@ -42,18 +47,19 @@ export interface WordMarkProps extends Partial<BrandWordmark> {
  * keys off the literal `_` in `text` rather than a theme id. No other
  * wordmark contains one.
  */
-export function WordMark({ text = 'pearl', role, scale = 1 }: WordMarkProps) {
+export function WordMark({ text = 'pearl', role, underscoreColor, scale = 1, className }: WordMarkProps) {
   return (
     <Text
       as="span"
       role={role}
       typeScale="headingMd"
       data-component="brand-wordmark"
+      className={className}
       style={scale !== 1 ? { fontSize: `${HEADING_MD_SIZE_REM * scale}rem` } : undefined}
     >
       {text.split(/(_)/).map((part, i) =>
         part === '_' ? (
-          <span key={i} style={{ color: color.accent }}>
+          <span key={i} style={{ color: underscoreColor ?? color.accent }}>
             _
           </span>
         ) : (

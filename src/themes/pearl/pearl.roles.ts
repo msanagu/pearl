@@ -111,4 +111,14 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     },
     source: '4c',
   },
+  secondaryHover: {
+    treatment: 'luster',
+    intent: 'Same drift as cardHover, on the secondary button.',
+    on: 'control',
+    trigger: 'hover',
+    chroma: 'desaturated',
+    limitsByChroma: {
+      desaturated: { alpha: { max: 0.42 } },
+    },
+  },
 };

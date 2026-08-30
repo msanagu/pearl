@@ -15,14 +15,21 @@ import { pearlTreatments } from '@themes/pearl/pearl.css';
  * `9s ease-in-out infinite` matches `orbSpeed`.
  */
 const sweep = keyframes({
-  '0%, 100%': { backgroundPosition: `${pearlTreatments.luster.sheenFrom}, center` },
+  '0%, 100%': {
+    backgroundPosition: `${pearlTreatments.luster.sheenFrom}, center`,
+  },
   '50%': { backgroundPosition: `${pearlTreatments.luster.sheenTo}, center` },
 });
 
+// Fluid, not a single breakpoint swap — scales continuously from mobile up
+// to its 220px ceiling, so there's no hard jump at any viewport width. The
+// 120px floor matches what the old `scale(0.72)` mobile override produced
+// (168 × 0.72 ≈ 121px), so small screens read the same as before.
 export const sphereWrap = style({
   position: 'relative',
-  width: 168,
-  height: 168,
+  width: 'clamp(120px, 20vw, 420px)',
+  height: 'clamp(120px, 20vw, 420px)',
+  // marginRight: ,
   flexShrink: 0,
 });
 
@@ -49,13 +56,18 @@ export const body = style({
   },
 });
 
-/** Contact shadow beneath the sphere — its own element, never animated. */
+/**
+ * Contact shadow beneath the sphere — its own element, never animated.
+ * Percentage-sized against `sphereWrap` (a square), so it scales with the
+ * sphere instead of needing its own breakpoint — theme overrides that resize
+ * or reposition this (Freshwater) do the same in percentages, not px.
+ */
 export const contact = style({
   position: 'absolute',
   left: '50%',
-  bottom: '-10px',
-  width: 130,
-  height: 16,
+  bottom: '-6%',
+  width: '77%',
+  height: '9.5%',
   borderRadius: '50%',
   transform: 'translateX(-50%)',
   background: pearlTreatments.luster.contactShadow,

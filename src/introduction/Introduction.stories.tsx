@@ -3,6 +3,14 @@ import { Introduction } from './Introduction';
 import introductionSource from './Introduction.tsx?raw';
 import { templateSource } from '@/templates/templateSource';
 import { overtonePlate } from '@themes/tahitian/tahitian.css';
+import { washPlate } from '@themes/freshwater/freshwater.css';
+import { statsPearl, statsTahitian, statsFreshwater } from './statsTreatments.css';
+
+const statsTreatmentByTheme: Record<string, string> = {
+  pearl: statsPearl,
+  tahitian: statsTahitian,
+  freshwater: statsFreshwater,
+};
 
 /**
  * The system's front door — what Pearl is, the decisions that shape it, and
@@ -26,7 +34,14 @@ const meta: Meta<typeof Introduction> = {
         args={{
           plateTreatment:
             context.args.plateTreatment ??
-            (context.globals.theme === 'tahitian' ? overtonePlate : ''),
+            (context.globals.theme === 'tahitian'
+              ? overtonePlate
+              : context.globals.theme === 'freshwater'
+                ? washPlate
+                : ''),
+          statsTreatment:
+            context.args.statsTreatment ??
+            (statsTreatmentByTheme[context.globals.theme as string] ?? ''),
         }}
       />
     ),

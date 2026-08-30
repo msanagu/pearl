@@ -1,6 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, fontFamily } from '@tokens';
-import { Text } from '@components/Text/Text';
 import * as css from './tokens.css';
 
 /**
@@ -16,26 +15,20 @@ import * as css from './tokens.css';
  */
 export { brandWordmarkByTheme } from '@components/_brand/brandWordmark';
 
-/** The theme's own nav wordmark (same markup as `HeroNav`) rather than a plain heading, so a docs page shows the real branded mark, not a label standing in for it. */
-export function Wordmark({
-  wordmark,
-  className,
-}: {
-  wordmark: { text: string; role?: 'inlineEmphasis' };
-  className?: string;
-}) {
-  return (
-    <Text
-      as="h2"
-      role={wordmark.role}
-      typeScale="displayLg"
-      data-component="brand-wordmark"
-      className={className}
-    >
-      {wordmark.text}
-    </Text>
-  );
-}
+/**
+ * Re-exported, not reimplemented — this file used to define its own local
+ * `Wordmark` that rendered `wordmark.text` as a plain `<Text>` heading,
+ * "same markup as `HeroNav`" per its own comment, except it wasn't: it never
+ * split `text` on `_` or colored the underscore, so Freshwater's
+ * `FRESHWTR_OPS` rendered here with a plain-colored underscore while
+ * `HeroNav`/`ThemeSpecimen` (which do use the real component) rendered
+ * Freshwater's actual vibrant one — the exact kind of drift this whole
+ * module's docstring already warns about for `brandWordmarkByTheme`.
+ * `scale={2.8}` reproduces the old local component's `displayLg` size
+ * (`7rem`) against `WordMark`'s own `headingMd`-relative base (`2.5rem`):
+ * `7 / 2.5 = 2.8`.
+ */
+export { WordMark } from '@components/_brand/WordMark';
 
 /**
  * Reads one or more computed CSS properties off the DOM node it's attached

@@ -25,7 +25,7 @@ import { WordMark } from '@components/_brand/WordMark';
  * correctly; `globalStyle` rules do not, so real isolation is the only
  * honest way to render two themes on one page.
  */
-type SpecimenWordmark = { text: string; role?: 'inlineEmphasis' };
+type SpecimenWordmark = { text: string; role?: 'inlineEmphasis'; underscoreColor?: string };
 
 export const themeSpecimens = {
   // `brandWordmarkByTheme` is keyed by `string` (it's shared with call sites
@@ -85,7 +85,7 @@ export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimen
               documented "heavy 2px rule under the header" geometry
               (docs/theme/theme-revision-decisions.md §4). */}
           <div style={{ paddingBottom: space.sm, borderBottom: `2px solid ${color.borderStrong}` }}>
-            <WordMark text={wordmark.text} role={wordmark.role} scale={0.4} />
+            <WordMark text={wordmark.text} role={wordmark.role} underscoreColor={wordmark.underscoreColor} scale={0.4} />
           </div>
           <Row justify="between" align="center" gap="sm">
             <Stack gap="sm">
