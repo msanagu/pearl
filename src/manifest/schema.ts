@@ -79,10 +79,10 @@ export interface ComponentProp {
 
 /**
  * A real component's API surface plus real usage examples — Pearl's `Component`
- * entity. `metadata.props` comes from `react-docgen-typescript` reading the
- * component's actual TS source, never hand-typed. `documentBlocks` (type
- * `'example'`) hold literal story `render` source pulled from the component's
- * own `.stories.tsx` — real, working compositions, not invented ones.
+ * entity. `metadata.props` comes from `react-docgen` reading the component's
+ * actual TS source, never hand-typed. `documentBlocks` (type `'example'`)
+ * hold literal story `render` source pulled from the component's own
+ * `.stories.tsx` — real, working compositions, not invented ones.
  */
 export interface ComponentEntity extends ManifestEntityBase {
   kind: 'Component';
