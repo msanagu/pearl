@@ -779,14 +779,21 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
      * `driftInset` spills the ellipse past the card's own box so no hard
      * edge shows. Palette: marine dominant, silver undertone, seagreen a
      * thin late breath (own spec, not the sphere's — `theme-revision-
-     * decisions.md`). Held under limitsByChroma.desaturated.alpha.max (0.30).
+     * decisions.md`). Alpha held at `limitsByChroma.desaturated.alpha.max`
+     * (0.42, `pearl.roles.ts` — `cardHover`/`secondaryHover`); a prior pass
+     * nudged the dominant stop to 0.46 without checking that ceiling, which
+     * this reverts.
      *
-     * Stops nudged up a hair (2026-08-29) — 0.42/0.26/0.15 → 0.46/0.29/0.17 —
-     * light mode already read well but wanted a touch more presence on the
-     * hover pass; small enough that no downstream contrast check moves.
+     * Chroma boosted ~3× on marine/seagreen, ~2.2× on silver (2026-08-29) —
+     * the stops were OKLCH C 0.004–0.014, near-imperceptible pastels that
+     * read as "the surface got slightly lighter" rather than a colored
+     * sheen, on `secondary` most of all (a small control, less area for a
+     * faint tint to register in). `L`/`H`/alpha unchanged, so this doesn't
+     * touch the `desaturated` alpha ceiling above — only how saturated the
+     * color under that ceiling is.
      */
     driftGradient:
-      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.46) 0%, rgba(251, 250, 247, 0.29) 32%, rgba(237, 241, 238, 0.17) 52%, transparent 68%)',
+      'radial-gradient(ellipse at center, rgba(216, 210, 240, 0.42) 0%, rgba(252, 250, 243, 0.26) 32%, rgba(231, 244, 234, 0.15) 52%, transparent 68%)',
     /** How far the bloom spills past the card, so its edge never shows. */
     driftInset: '-45%',
     /** Resting and hovered positions — a ~30% diagonal traverse. */
@@ -886,10 +893,17 @@ globalStyle(lusterAfterDark(':not(:disabled):hover::after'), {
 // `textSubtle` still clears 4.5:1 against the composited card background —
 // while the higher opacity reads as a faster, more decisive arrival instead
 // of a slow fade to the same dim ceiling.
+//
+// Chroma boosted the same way `driftGradient` (light) was (2026-08-29),
+// same factors per hue: this was equally washed-out, and `secondary`'s
+// hover was effectively invisible in dark mode. Checked again at the
+// boosted color, not assumed: `textSubtle` still measures 4.51:1 at the
+// dominant stop's peak (4.55:1 before the boost) — the ~3× chroma costs
+// 0.04:1, nowhere near the 4.5 floor.
 export const pearlDarkLusterGradient = [
-  `radial-gradient(ellipse at center, rgba(214, 224, 236, 0.22) 0%`,
-  `rgba(226, 224, 232, 0.14) 32%`,
-  `rgba(214, 236, 224, 0.08) 52%`,
+  `radial-gradient(ellipse at center, rgba(201, 226, 255, 0.22) 0%`,
+  `rgba(227, 222, 240, 0.14) 32%`,
+  `rgba(178, 248, 213, 0.08) 52%`,
   `transparent 68%)`,
 ].join(', ');
 
