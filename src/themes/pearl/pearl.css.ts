@@ -59,7 +59,7 @@ export const pearlFonts = {
 //   a squidInk step: alabaster is warm (R>G>B) and squidInk's other steps are
 //   all cool (B>R>G), so a `squidInk[100]` alias would claim hue coherence
 //   squidInk doesn't actually have. It's a borrowed value, not squidInk's own.
-// - `marineLayer` — cool violet-gray accent. Quiet work only: focus ring,
+// - `urchin` — cool violet-gray accent. Quiet work only: focus ring,
 //   selected tint, muted/body text, sheen. Never a fill.
 //
 // `pewterLight` (`#9B96A8`) from the old dark-mode primitives was unused in
@@ -73,21 +73,91 @@ export const alabaster = {
   500: '#DEDAD2', // [4c] hairline — default border
 };
 
+/**
+ * ## Real separation, not four names for one swatch (2026-08-29)
+ * The four steps used to span OKLCH L 0.203–0.289 — an 0.086 range, closer
+ * together than `alabaster`'s own top four (0.889–0.991, a register that's
+ * SUPPOSED to read as one near-white wash). Pairwise contrast bore that out:
+ * every adjacent pair measured 1.06–1.18:1, and `surface`(800) against
+ * `background`(900) — the pair carrying dark mode's entire "surface reads
+ * above background" elevation claim (see the dark theme's `shadow` comment
+ * below) — was 1.08:1. Functionally one color wearing four labels.
+ *
+ * `900` is untouched — it's canon ink/obsidian, referenced by name and by
+ * hex elsewhere, not a step free to move. `600`–`800` now spread up from it in
+ * even OKLCH steps (L 0.203 → 0.500, one hue, chroma climbing with lightness
+ * the way a neutral's does), so each rung is honestly further from the ink
+ * than the last:
+ * - `800` vs `900` (elevation): 1.08:1 → **1.33:1**.
+ * - `600` vs `900` (default border vs background): 1.27:1 → **2.98:1** — just
+ *   under the 3:1 non-text floor, the quiet-but-real reading
+ *   docs/foundations/control-affordances.md asks of a resting boundary,
+ *   distinct from `borderStrong` (`urchin[400]`, 5:1+) which still
+ *   carries the emphasis case.
+ * - `700` vs `800` (borderFaint vs the surface it doubles as a border on):
+ *   1.06:1 → **1.47:1**.
+ *
+ * `alabaster`'s equivalent register (100–300) has the identical shape of
+ * problem — 1.06:1 between `surface` and `background` — left alone here since
+ * it wasn't what was asked; the same fix would apply if it comes up.
+ */
 export const squidInk = {
-  600: '#2B2A32', // [spec] hairline — default border, dark mode
-  700: '#232229', // [spec] hairlineFaint — surfaceHover doubles as faint border
-  800: '#1E1D23', // [spec] slateDeep — raised surface
+  600: '#656072', // hairline — default border, dark mode
+  700: '#494652', // hairlineFaint — surfaceHover doubles as faint border
+  800: '#2F2D35', // slateDeep — raised surface
   900: '#17161A', // [4c/spec] ink / obsidian — primary text (light) / page background (dark)
 };
 
-/** Marine Layer — desaturated work only: focus ring, selected tint, subtle text, sheen. Never a fill. */
-export const marineLayer = {
-  100: '#D7D5DF', // [spec] marine — accent/focusRing/tint, identical hex both modes
-  200: '#C9C5D2', // [spec] lavenderPale — body copy, dark mode
-  300: '#B8B5C6', // [spec] marineStrong — emphasis border, light mode
-  400: '#8E8B9E', // [spec] marineStrong — emphasis border, dark mode
-  500: '#6E6A78', // [4c] slate — body copy, light mode
-  600: '#6A6672', // labels, muted text, accent — light mode
+/**
+ * Urchin — Pearl's violet family. Chromatic across the whole ramp now,
+ * not just at the deep end.
+ *
+ * ## Why every step moved, not just accent (2026-08-29)
+ * The first pass fixed `600`/`700` in isolation — the two steps `accent`/
+ * `accentHover` needed — and left `100`–`500` at their original 0.014–0.028
+ * OKLCH chroma. That produced a ramp that visibly BROKE partway through: five
+ * gray swatches, then two saturated violet ones bolted on the end, because
+ * chroma dipped (0.028 → 0.022) right before jumping to 0.070.
+ *
+ * Chroma and lightness now both step evenly across all seven rungs — chroma
+ * 0.018 → 0.080 in six equal increments, lightness 0.878 → 0.375 in six equal
+ * decrements, one hue (297°) throughout. `100`–`500` read a hair more violet
+ * than before at a glance; nothing that reads them as neutral-ish UI chrome
+ * (borders, tints, sheen) depends on them staying gray, and the underlying
+ * problem — `accent` needing to separate from `textSubtle` — is what forced
+ * the ramp to have a real endpoint to travel to in the first place:
+ *
+ * - `600` (`#6A6672`, the pre-fix accent) measured **1.06:1 against `500`**,
+ *   which is `textSubtle`. A link and a timestamp were the same color.
+ * - Against 16.25:1 prose, a 5.04:1 link read as de-emphasized text — exactly
+ *   backwards for the one thing on the line you can click.
+ *
+ * `600` now separates from `textSubtle` by value AND hue — 1.44:1 apart at
+ * roughly double the chroma. `700` is its hover, one more even step down.
+ *
+ * Every text/border pairing below was re-measured against the ramp it lands
+ * on, not assumed from the old values:
+ * - `500` (`textSubtle`, light) — 4.58:1 on `background`, 4.86:1 on `surface`.
+ * - `200` (`textSubtle`, dark) — 9.34:1 / 8.68:1 on the dark ground.
+ * - `600` (`accent`, light) — 6.57:1 / 6.98:1. `700` (`accentHover`) — 9.48:1 /
+ *   10.07:1.
+ * - `100` (`accent`, dark) — 12.47:1 / 11.58:1, untouched in practice since it
+ *   already cleared every bar by a wide margin.
+ * - `400` (`borderStrong`, dark) — 5.03:1 / 4.67:1, still well past the 3:1
+ *   non-text floor.
+ * `300` as light mode's `borderStrong` was already below 3:1 against `surface`
+ * before this pass (1.92:1) — an existing gap in what "emphasis" border means
+ * here, not a regression this ramp introduces (it's now 2.34:1, closer but
+ * still short).
+ */
+export const urchin = {
+  100: '#D8D5E2', // marine — accentSubtle (light) / accent + focusRing (dark)
+  200: '#BDB8CC', // lavenderPale — body copy, dark mode
+  300: '#A49DB7', // marineStrong — emphasis border, light mode
+  400: '#8B83A2', // marineStrong — emphasis border, dark mode / accentSubtle, dark
+  500: '#73698E', // slate — body copy, light mode
+  600: '#5C507A', // violet — accent + focusRing, light mode
+  700: '#463766', // violetDeep — accentHover, light mode
 };
 
 /**
@@ -97,7 +167,7 @@ export const marineLayer = {
  * fixed surface. Two separate palettes, not one: `squidInkAlpha` anchors on
  * `squidInk[900]` (cool), `alabasterAlpha` on `alabaster[300]` (warm) —
  * squidInk has no pale step of its own to use instead (see squidInk's
- * comment above). Not anchored on `marineLayer` (accent) — most other
+ * comment above). Not anchored on `urchin` (accent) — most other
  * themes' accent is a saturated brand hue, so an accent-anchored wash would
  * be neutral here by coincidence and wrong everywhere else.
  */
@@ -204,15 +274,15 @@ export const pearlLightThemeClass = createTheme(vars, {
     surfaceInverse: squidInk[800],
 
     text: squidInk[900],
-    textSubtle: marineLayer[500],
+    textSubtle: urchin[500],
     textInverse: alabaster[300], // moonlight — borrowed, see squidInk's comment above
-    textInverseSubtle: marineLayer[200],
+    textInverseSubtle: urchin[200],
 
     border: alabaster[500],
-    borderStrong: marineLayer[300],
+    borderStrong: urchin[300],
     borderSubtle: alabaster[400],
     borderInverse: squidInk[600],
-    shadow: marineLayer[300],
+    shadow: urchin[300],
 
     // [4c] Primary CTA fill — the dark gradient's flat approximation (no
     // gradient token in canon yet; see decisions doc §8, "under evaluation").
@@ -223,25 +293,33 @@ export const pearlLightThemeClass = createTheme(vars, {
     // it is NOT the button fill (that's `primary`, above). Reusing accent for
     // both would make every subtle use (focus borders, underlines, hover
     // states) go loud too.
-    accent: marineLayer[600],
-    accentHover: squidInk[900],
-    accentSubtle: marineLayer[100],
+    //
+    // `600`/`700`, not `100` — see `urchin`'s comment for why the whole
+    // ramp is chromatic now. `accentHover` used to BE `squidInk[900]` (prose
+    // ink); that made hover the loudest thing on the page rather than a step
+    // beyond resting, and it left accent with nowhere to go on press. `700` is
+    // a real hover: 1.44:1 darker than `600`, one more even step down the
+    // same ramp.
+    accent: urchin[600],
+    accentHover: urchin[700],
+    accentSubtle: urchin[100],
     onAccent: alabaster[300],
     onAccentSubtle: squidInk[900],
     /**
-     * Marine 600, not marine 100 — the one place the "same hex in both modes"
+     * Urchin 600, not urchin 100 — the one place the "same hex in both modes"
      * symmetry below had to break.
      *
      * A focus ring is painted OUTSIDE the control, on the page, so the only
-     * contrast that matters is ring-vs-background. Marine 100 (#D7D5DF) against
-     * linen is 1.2:1 — in light mode the ring was, in practice, invisible on
-     * every control that draws one (Button, Card, Input, XButton). Marine 600 is
-     * 5.0:1, clearing the 3:1 non-text minimum. Dark mode keeps marine 100
-     * (12.4:1 on obsidian) — the step differs per mode precisely so the
-     * *relationship* to the background stays the same, which is the rule the
-     * palettes already follow everywhere else.
+     * contrast that matters is ring-vs-background. Urchin 100 against linen is
+     * 1.3:1 — in light mode the ring was, in practice, invisible on every
+     * control that draws one (Button, Card, Input, XButton). Urchin 600 is the
+     * ramp's violet accent step (6.6:1, `urchin`'s comment explains why
+     * it's chromatic at all), which clears the 3:1 non-text minimum with room
+     * to spare. Dark mode keeps marine 100 (12.5:1 on obsidian) — the step
+     * differs per mode precisely so the *relationship* to the background stays
+     * the same, which is the rule the palettes already follow everywhere else.
      */
-    focusRing: marineLayer[600],
+    focusRing: urchin[600],
 
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
@@ -273,15 +351,15 @@ export const pearlDarkThemeClass = createTheme(vars, {
     surfaceInverse: alabaster[200],
 
     text: alabaster[300], // moonlight — borrowed, see squidInk's comment above
-    textSubtle: marineLayer[200],
+    textSubtle: urchin[200],
     textInverse: squidInk[900],
-    textInverseSubtle: marineLayer[500],
+    textInverseSubtle: urchin[500],
 
     border: squidInk[600],
-    borderStrong: marineLayer[400],
+    borderStrong: urchin[400],
     borderSubtle: squidInk[700],
     borderInverse: alabaster[500],
-    // [derived] Black, not a marineLayer step. A shadow is occlusion: it must
+    // [derived] Black, not a urchin step. A shadow is occlusion: it must
     // always DARKEN. Every neutral this theme has in dark mode — marine,
     // squidInk's own steps — is LIGHTER than `background`, so used as a shadow
     // it renders as a halo glowing out from under the element instead of light
@@ -300,14 +378,14 @@ export const pearlDarkThemeClass = createTheme(vars, {
     primary: alabaster[100], // chalk
     onPrimary: squidInk[900],
 
-    // Marine (#D7D5DF) is the same hex in both modes — highlight in light,
+    // Urchin 100 is the same hex in both modes — accentSubtle in light,
     // accent in dark — and never becomes a fill in either.
-    accent: marineLayer[100],
+    accent: urchin[100],
     accentHover: alabaster[100], // chalk
-    accentSubtle: marineLayer[400],
+    accentSubtle: urchin[400],
     onAccent: squidInk[900],
     onAccentSubtle: squidInk[900],
-    focusRing: marineLayer[100],
+    focusRing: urchin[100],
 
     positive: { surface: pearlSentiment.algae[800], border: pearlSentiment.algae[600], text: pearlSentiment.algae[300], icon: `color-mix(in srgb, ${pearlSentiment.algae[400]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: pearlSentiment.coral[800], border: pearlSentiment.coral[600], text: pearlSentiment.coral[300], icon: `color-mix(in srgb, ${pearlSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
@@ -439,7 +517,7 @@ const primaryCta = (state = '') => pearlButton('primary', state);
 /**
  * Press occlusion. Black, not `color.shadow`, for the reason recorded on the
  * dark theme's `shadow` token — an inset must DARKEN. Here that argument binds
- * in *both* modes: light mode's `shadow` (#B8B5C6) is far lighter than the ink
+ * in *both* modes: light mode's `shadow` (#A49DB7) is far lighter than the ink
  * fill it would be painted inside, so it lightens the press instead of
  * deepening it. This is occlusion inside the control, unrelated to elevation
  * under it, so it is deliberately not a theme color slot.
@@ -546,6 +624,13 @@ globalStyle(primaryCta(':disabled'), {
  * which infers its own contract — the same public mechanism a downstream author
  * uses, per rule 2 (no privileged internal path).
  *
+ * The two halves of the returned tuple are named for the two different jobs
+ * they do, which is why they don't share a stem. The class is what *extends*
+ * the contract — applying it adds slots `theme.css.ts` never declared, so it
+ * is `pearlExtensionClass`. The vars object holds the treatments themselves
+ * (`luster`), so it stays `pearlTreatments`. "Extension treatment" (ADR-0007)
+ * is the pair, not either half.
+ *
  * Stops are [4c]'s sphere: three hues at low alpha. This retires the handoff's
  * "highlights, never rainbow" rule and its near-monochrome silver stops. The
  * replacement constraint — three hues max, none above .42 alpha — is recorded
@@ -553,7 +638,7 @@ globalStyle(primaryCta(':disabled'), {
  *
  * Dark-mode values are [derived]; 4c only specifies light.
  */
-export const [pearlTreatmentClass, pearlTreatments] = createTheme({
+export const [pearlExtensionClass, pearlTreatments] = createTheme({
   luster: {
     /** Sweep angle, shared by sphere / rule / surface drift. [4c] */
     angle: '115deg',
@@ -653,7 +738,7 @@ globalStyle(
 // seagreen a thin late breath") — just deeper steps, hence "same token."
 //
 // No named `silver`/`marine`/`seagreen` scale reaches an 850/900 step
-// anywhere else in this file (`marineLayer` tops out at 600) — these are
+// anywhere else in this file (`urchin` tops out at 600) — these are
 // approximated to match 9a's labeled swatches (not legible to exact hex in
 // the reference capture), not read off an existing scale.
 globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {

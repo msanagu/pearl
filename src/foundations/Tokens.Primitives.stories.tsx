@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { alabaster, squidInk, marineLayer, squidInkAlpha, alabasterAlpha, pearlSentiment } from '@themes/pearl/pearl.css';
+import { alabaster, squidInk, urchin, squidInkAlpha, alabasterAlpha, pearlSentiment } from '@themes/pearl/pearl.css';
 import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '@themes/tahitian/tahitian.css';
 import {
   freshwaterIce,
@@ -140,7 +140,7 @@ function PearlSection() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Scale label="alabaster" steps={alabaster} />
         <Scale label="squidInk" steps={squidInk} />
-        <Scale label="marineLayer" steps={marineLayer} />
+        <Scale label="urchin" steps={urchin} />
       </div>
 
       <h3 className={css.groupTitle}>Alpha</h3>

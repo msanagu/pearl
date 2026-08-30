@@ -147,6 +147,15 @@ export const Prominence: Story = {
  * It is opt-in and independent of `as`: measure belongs to running prose, and a
  * `<p>` is just as often a one-line form hint, where a cap would be wrong.
  */
+/**
+ * One specimen string, shared by every block below — the point of the story is
+ * that identical prose wraps differently per step, which only reads if the
+ * prose is genuinely identical. It was previously inlined twice and had already
+ * drifted from the claims the system actually makes.
+ */
+const measureSpecimen =
+  'A theme that omits a token fails to compile rather than rendering wrong, which is the whole reason the contract lives in TypeScript rather than in a document describing it.';
+
 export const Measure: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -156,9 +165,7 @@ export const Measure: Story = {
             measure=&quot;{step}&quot; — {measureScale[step]}
           </Text>
           <Text typeScale="bodyMd" as="p" measure={step}>
-            Not a doc that goes stale. A type the compiler checks. Every theme&rsquo;s rules
-            are data — structured, queryable, and impossible to drift from what actually
-            ships, which is the whole reason the contract lives in TypeScript.
+            {measureSpecimen}
           </Text>
         </div>
       ))}
@@ -167,9 +174,7 @@ export const Measure: Story = {
           unset — fills the container
         </Text>
         <Text typeScale="bodyMd" as="p">
-          Not a doc that goes stale. A type the compiler checks. Every theme&rsquo;s rules
-          are data — structured, queryable, and impossible to drift from what actually
-          ships, which is the whole reason the contract lives in TypeScript.
+          {measureSpecimen}
         </Text>
       </div>
     </div>

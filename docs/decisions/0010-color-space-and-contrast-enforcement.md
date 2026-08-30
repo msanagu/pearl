@@ -206,12 +206,12 @@ it. Measured peak chroma across the four accents:
 
 | accent palette | peak chroma |
 |---|---|
-| Pearl `marineLayer` | **0.028** |
+| Pearl `urchin` | **0.028** |
 | Tahitian `peacock` | 0.094 |
 | South Sea `conch` | 0.115 |
 | Freshwater `glacier` | 0.137 |
 
-`marineLayer` serves `accent`/`accentSubtle`/`focusRing` *and*
+`urchin` serves `accent`/`accentSubtle`/`focusRing` *and*
 `textSubtle`/`textInverseSubtle`/`borderStrong`/`shadow` at once — a deliberate
 choice recorded in its own comment ("desaturated work only… never a fill"), and
 one that only works because at 0.028 chroma it is functionally a tinted
@@ -234,7 +234,7 @@ The honest constraint is about coherence, and it is measurable:
   chroma near white. Judge a tint by its hue and its role, not its chroma.
 
 The mid-tone consequence, recorded because it drove the Freshwater assessment:
-Pearl can park mid-tones in `marineLayer` precisely because that accent is
+Pearl can park mid-tones in `urchin` precisely because that accent is
 near-neutral. Themes with a saturated accent (Freshwater, South Sea, Tahitian)
 have no such home, so their mid-tones must live in the neutral scales — and must
 be filed by **what value they are**, not by which mode consumes them.

@@ -80,7 +80,7 @@ export const freshwaterIce = {
  * while both claimed rung 500 despite sitting 2.6:1 apart.
  *
  * Both now sit at graphite's light end, ordered by value. Freshwater has no
- * third home for mid-tones the way Pearl parks them in `marineLayer` — that
+ * third home for mid-tones the way Pearl parks them in `urchin` — that
  * only works there because Pearl's accent measures 0.028 chroma and reads as
  * a tinted neutral; `glacier` peaks at 0.137 and could never carry muted text
  * (ADR-0010, "What a palette may be used for").
@@ -104,19 +104,33 @@ export const freshwaterGraphite = {
  * [derived] The accent hue — electric blue, spent only where the system
  * speaks (statuses, deltas, selection, the primary CTA). One scale reused
  * across both modes rather than five separately-named `ice*` primitives:
- * `100`/`600` are the near-white wash and near-black dusk used as
- * `accentSubtle` in light/dark respectively, `200`–`500` are the hue itself
- * at descending lightness. Steps happen to fall in strict lightness order
- * (unlike `freshwaterIce`/`freshwaterGraphite`, which only span one register
- * each) because this hue is genuinely used across the full range in both
- * modes.
+ * `100` is the near-white wash used as light mode's `accentSubtle`, and
+ * `200`–`600` are the hue itself at descending lightness. Steps fall in
+ * strict lightness order (unlike `freshwaterIce`/`freshwaterGraphite`, which
+ * only span one register each) because this hue is genuinely used across the
+ * full range in both modes.
+ *
+ * ## The deep end (2026-08-29)
+ * `400` was light mode's `accent` and measured 2.29:1 on `ice[100]` — fine as
+ * the border/focus signal `accent` is documented to be, and a failure the
+ * moment a component set body text in it. Light mode's text-bearing roles
+ * moved down: `500` was re-solved (`#0089b3` → `#007DA0`, it was itself only
+ * 3.95:1) and now carries `accent`, with a new `600` for `accentHover`. `400`
+ * keeps its dark-mode `accentHover` job, where a bright step on near-black is
+ * exactly right. Every step stays h193/s100 — this is a lightness move, not a
+ * re-hue.
+ *
+ * The deleted `600` mentioned in the dark theme below was a different color
+ * (`#062a33`, a near-neutral at 0.043 chroma); this one is the hue at full
+ * saturation.
  */
 export const freshwaterGlacier = {
   100: '#e9fbff', // wash — accentSubtle, light mode
   200: '#5fe1ff', // bright step — text on the solid-ink primary fill, light mode
   300: '#4dd8ff', // accent, dark mode
-  400: '#00b8e6', // accent, light mode
-  500: '#0089b3', // deep step — accentHover, light mode
+  400: '#00b8e6', // accentHover, dark mode
+  500: '#007DA0', // deep step — accent + focusRing, light mode
+  600: '#005E78', // deepest step — accentHover, light mode
 };
 
 const freshwaterScrim = {
@@ -204,12 +218,18 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     // selection), never as a CTA fill.
     primary: freshwaterGraphite[900],
     onPrimary: freshwaterIce[100],
-    accent: freshwaterGlacier[400],
-    accentHover: freshwaterGlacier[500],
+    // The deep end of glacier, not the bright end: these roles land as text on
+    // paper-white, where the electric `400` step measures 2.29:1. Measured on
+    // `ice[200]` (the harder of the two grounds): `accent` 4.53:1,
+    // `accentHover` 7.00:1. See `freshwaterGlacier` for why `400` stayed put.
+    accent: freshwaterGlacier[500],
+    accentHover: freshwaterGlacier[600],
     accentSubtle: freshwaterGlacier[100],
-    onAccent: freshwaterGraphite[900],
+    // Flips with `accent`: the deep step needs paper-white on it, not ink.
+    // Graphite on the new accent is 4.04:1; `ice[100]` is 4.65:1.
+    onAccent: freshwaterIce[100],
     onAccentSubtle: freshwaterGraphite[900],
-    focusRing: freshwaterGlacier[400],
+    focusRing: freshwaterGlacier[500],
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
     // sentiment hue at full strength reads as more visually prominent than
     // body text despite having a lower luminance-contrast ratio (saturation,
@@ -258,11 +278,13 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     onPrimary: freshwaterGraphite[900],
     accent: freshwaterGlacier[300],
     accentHover: freshwaterGlacier[400],
-    // A neutral, not a glacier step. The former `glacier[600]` (`#062a33`) was
-    // a near-neutral filed under the accent — 0.043 chroma against glacier's
-    // own 0.116–0.137 working range, and 1.06:1 against `graphite[700]`, i.e.
-    // the same value. It was deleted 2026-08-29 (ADR-0010, "What a palette may
-    // be used for"). `graphite[700]` sits one step above `surface`, so the
+    // A neutral, not a glacier step. The ORIGINAL `glacier[600]` (`#062a33` —
+    // not the deep blue now on that rung) was a near-neutral filed under the
+    // accent: 0.043 chroma against glacier's own 0.116–0.137 working range,
+    // and 1.06:1 against `graphite[700]`, i.e. the same value. It was deleted
+    // 2026-08-29 (ADR-0010, "What a palette may be used for"), and the rung
+    // was later reused for a genuinely chromatic step (see the palette).
+    // `graphite[700]` sits one step above `surface`, so the
     // region still reads as raised; what it no longer carries is a teal tint,
     // which this theme's own identity rule argues against anyway — ice-blue is
     // "spent only where the system speaks," and a background wash is decoration.

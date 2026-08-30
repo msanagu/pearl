@@ -1,0 +1,9 @@
+node_modules/
+dist/
+storybook-static/
+.vite/
+coverage/
+design/
+patches/
+pnpm-lock.yaml
+*.log

@@ -237,8 +237,12 @@ const tahitianText = {
  * Tahitian's overtone is one recipe with two role consumers: a restrained
  * color treatment for inline emphasis, and a moving screen-blend layer for
  * grayscale photographic plates.
+ *
+ * `tahitianExtensionClass` / `tahitianTreatments` split the same way Pearl's
+ * does — the class extends the contract, the object holds the treatments. See
+ * `pearl.css.ts`'s `luster` block.
  */
-export const [tahitianTreatmentClass, tahitianTreatments] = createTheme({
+export const [tahitianExtensionClass, tahitianTreatments] = createTheme({
   overtone: {
     // Text-clip gradient is mode-specific (see the split globalStyle rules
     // below) — this var is the DARK version, since dark is the flagship
@@ -392,7 +396,7 @@ export const tahitianDarkThemeClass = createTheme(vars, {
 });
 
 // PearlSphere's own styling reads `pearlTreatments.luster.*` — CSS vars only
-// defined under `pearlTreatmentClass`, which Tahitian never applies as an
+// defined under `pearlExtensionClass`, which Tahitian never applies as an
 // ancestor. Left alone, the sphere renders with empty background/shadow
 // vars and disappears against the near-black surface (not literally absent
 // from the DOM, just invisible). This is 12a's sphere verbatim

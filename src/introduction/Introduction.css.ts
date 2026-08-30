@@ -9,6 +9,24 @@ import { color, radius, space } from '@tokens';
 
 const CONTENT_MAX = 1440;
 
+/**
+ * Shared literal width for the decision index's ordinal column, used by both
+ * `indexOrdinal` (the summary row) and `indexDetail` (the expanded panel's
+ * left indent) so the two are guaranteed to agree — NOT `4ch` in both places
+ * independently, which is what shipped originally and produced a real,
+ * measured ~12px misalignment between a record's summary title and its own
+ * detail title. `ch` is font-relative, and the two elements sit in different
+ * font contexts: `indexOrdinal` inherits the ordinal's own small tracked
+ * caption face (measured ≈6.4px/ch in Pearl), while `indexDetail` is a plain
+ * wrapper with no font of its own, so its `4ch` resolved against whatever
+ * ambient body font it inherited instead (≈9.3px/ch) — same token, two
+ * different pixel values. A fixed rem, shared by reference, can't drift that
+ * way. `2rem` comfortably covers every current ordinal ("0001"–"0010", 4
+ * digits) across all four themes' caption/mono faces, with headroom for a
+ * wider tracked face than Pearl's own General Sans.
+ */
+const INDEX_ORDINAL_WIDTH = '2rem';
+
 export const page = style({
   maxWidth: CONTENT_MAX,
   width: '100%',
@@ -73,6 +91,32 @@ export const sectionStandfirst = style({
 });
 
 /**
+ * The premise card's internal layout — same asymmetric proportion as
+ * `sectionHead` (headline column wider than its partner, same `2xl` gap), so
+ * the two-column language stays consistent across the page. Deliberately a
+ * separate style rather than reusing `sectionHead`/`sectionStandfirst`
+ * directly: those pair a heading with ONE short standfirst line, close
+ * enough in height that bottom-aligning them (`alignItems: 'end'`) reads as
+ * one shared baseline. This card pairs the headline with two full paragraph
+ * beats — genuinely taller than the headline column — so bottom-aligning
+ * would shove the headline down into dead space above it. `start` instead:
+ * both columns share a top edge, which is the correct read when one side is
+ * reliably shorter than the other, not incidentally so.
+ */
+export const premiseGrid = style({
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)',
+  columnGap: space['2xl'],
+  rowGap: space.lg,
+  alignItems: 'start',
+  '@media': {
+    '(max-width: 860px)': {
+      gridTemplateColumns: 'minmax(0, 1fr)',
+    },
+  },
+});
+
+/**
  * Space between a section's opener and the content it introduces. Wider than
  * the opener's own internal rhythm so the standfirst stays attached to its
  * heading while the content below reads as a separate beat.
@@ -81,70 +125,6 @@ export const sectionBody = style({
   display: 'flex',
   flexDirection: 'column',
   gap: `calc(${space['2xl']} * 1.5)`,
-});
-
-/** Hero: wordmark + thesis beside the brand object; stacks on narrow screens. */
-export const heroGrid = style({
-  display: 'grid',
-  // `max-content` on the text column, not `1fr`: the lede is measure-capped,
-  // so a `1fr` track left it floating at ~400px inside a 1160px column with
-  // 800px of dead air before the sphere. Sizing the track to its content and
-  // pushing the art to the far edge makes that space deliberate negative
-  // space between two masses rather than a gap nothing fills.
-  gridTemplateColumns: 'minmax(0, max-content) auto',
-  justifyContent: 'space-between',
-  gap: space['2xl'],
-  alignItems: 'center',
-  // A title page, not a banner. The wordmark is the largest thing in the
-  // system; giving it room to sit in is what makes the scale read as
-  // deliberate rather than merely big.
-  // Capped: unbounded `vh` strands the wordmark in dead space on a tall
-  // window, which reads as a loading state rather than composure.
-  minHeight: 'min(78vh, 720px)',
-  paddingBottom: `calc(${space['2xl']} * 2)`,
-  '@media': {
-    '(max-width: 860px)': {
-      gridTemplateColumns: 'minmax(0, 1fr)',
-      justifyItems: 'start',
-    },
-  },
-});
-
-/**
- * The sphere is 168px of fixed artwork. Below the hero breakpoint it would
- * dominate a narrow column, so it drops out entirely rather than shrinking —
- * it is brand punctuation, not information.
- */
-export const heroArt = style({
-  // The sphere ships at 168px, which read as neither punctuation nor
-  // artwork — close enough to the wordmark's mass to compete with it, too
-  // small to hold the far edge of a wide canvas. Shrinking it made it a
-  // stray dot; committing it to a proper hero visual is what resolves the
-  // pairing. The wordmark still leads on TYPE, the sphere answers with
-  // area, and the space between them reads as composition rather than gap.
-  // Scaled from its own centre so the artwork keeps its proportions.
-  transform: 'scale(1.7)',
-  transformOrigin: 'center',
-  '@media': {
-    '(max-width: 860px)': { display: 'none' },
-  },
-});
-
-/**
- * Numbered principle cards. Fixed at two columns rather than `auto-fit`:
- * there are exactly four, and letting them flow to three across strands the
- * fourth alone on a second row. Two-up gives a 2×2 block and buys each card
- * enough width to keep its title on one line.
- */
-export const principleGrid = style({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  gap: space.xl,
-  '@media': {
-    '(max-width: 720px)': {
-      gridTemplateColumns: 'minmax(0, 1fr)',
-    },
-  },
 });
 
 /** Theme specimens — two wide columns that collapse to one. */
@@ -456,9 +436,17 @@ export const indexCaret = style({
 /**
  * The revealed panel. Indented to the title column so the disclosure reads
  * as belonging to the record above it rather than starting a new one.
+ *
+ * The gap term has to match `indexRow`'s real `columnGap` (`space.xl`, not
+ * `space.md`) — this used the wrong token, so the detail title sat 16px
+ * (`xl` − `md`) left of where the summary title actually starts, not a flex
+ * quirk. `indexRow` is a grid, not flex, and its layout was correct; this
+ * formula was the only thing computing the wrong offset. The ordinal-width
+ * term is `INDEX_ORDINAL_WIDTH`, not `4ch` — see that constant's own
+ * comment for the second, subtler bug this fixes alongside the gap token.
  */
 export const indexDetail = style({
-  paddingLeft: `calc(${space.lg} + 4ch + ${space.md})`,
+  paddingLeft: `calc(${space.lg} + ${INDEX_ORDINAL_WIDTH} + ${space.xl})`,
   paddingRight: space.xl,
   paddingBottom: space.lg,
   paddingTop: space.sm,
@@ -469,9 +457,14 @@ export const indexDetail = style({
   },
 });
 
-/** Fixed width so ordinals and titles align down the column. */
+/**
+ * Fixed width so ordinals and titles align down the column — `2rem`
+ * (`INDEX_ORDINAL_WIDTH`), not `4ch`. Same fix as `indexDetail`: a literal
+ * shared by reference can't resolve to two different pixel values the way
+ * `ch` did across these two elements' different font contexts.
+ */
 export const indexOrdinal = style({
-  minWidth: '4ch',
+  minWidth: INDEX_ORDINAL_WIDTH,
 });
 
 /** Right-aligned mono meta; wraps under the title on narrow screens. */

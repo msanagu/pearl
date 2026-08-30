@@ -19,8 +19,11 @@ import { sphereWrap, body as sphereBody, contact as sphereContact } from '@compo
  * §5 discards (that one was invented boilerplate with no source turn); 9c is
  * a real, distinctly-valued exploration frame (`champagne.800 · gold.700 ·
  * dusk.850 · 4.5s`) and resolves the doc's own open flag on this (§9,
- * "South Sea's `glow`"). See the override below, keyed to dark mode only —
- * light mode has no golden-hour equivalent and keeps Pearl's default sphere.
+ * "South Sea's `glow`"). See the override below. Light mode has no 9c frame
+ * of its own, but it cannot fall through to Pearl's sphere either — those
+ * gradients read `pearlTreatments`, CSS vars South Sea never applies — so it
+ * gets a shell-toned sphere in South Sea's own light register, same
+ * held-still-then-sweep behaviour.
  *
  * Type is roman + italic serif mixing with a hairline rule in the gap
  * (`southSea.roles.ts`'s `inlineEmphasis`). Uses Zodiak — the design
@@ -88,7 +91,13 @@ export const southSeaSand = {
   // 4.95:1 as `taupe` did before this consolidation (now 4.6:1 post hue-fix,
   // still clear of the 4.5:1 floor — see "Single-hue verification" above).
   500: '#CBBA9E', // hairlineStrong — borderStrong / shadow (light)
-  600: '#786A53', // taupe — text, subtle (light)
+  // Re-solved 2026-08-29: `#786A53` was measured against `sand[100]`
+  // (`background`, 4.6:1) only, but `textSubtle` lands on whatever surface
+  // it's set on — `Tag`'s neutral variant sits it on `surface` (`sand[200]`,
+  // one step darker), where it measured 4.3:1 and failed. Same shape of bug
+  // as `accentContrast.test.ts`'s "worse of the two grounds" rule; darkened
+  // to clear BOTH: 4.88:1 on `background`, 4.51:1 on `surface`.
+  600: '#746650', // taupe — text, subtle (light)
 };
 
 /**
@@ -103,7 +112,7 @@ export const southSeaSand = {
 // above) — only lightness/saturation vary step to step.
 export const southSeaDriftwood = {
   500: '#B8A18E', // fawn — text, subtle (dark)
-  600: '#5E4632', // umberStrong — borderStrong / shadow (dark)
+  600: '#5E4632', // umberStrong — borderStrong (dark)
   700: '#4A3626', // umber — border (dark)
   750: '#3B2C1F', // chocolate — text (LIGHT mode; see file header)
   800: '#382719', // umberSubtle — border, subtle (dark)
@@ -119,8 +128,9 @@ export const southSeaDriftwood = {
  * primitives.
  *
  * **Every step here carries conch's chroma.** At peak 0.115 this accent is far
- * too saturated to do neutral work (contrast Pearl's `marineLayer` at 0.028,
- * which legitimately doubles as muted text) — so neutral roles belong to
+ * too saturated to do neutral work — even Pearl's `urchin`, a chromatic ramp
+ * in its own right since its 2026-08-29 rework, tops out at 0.080 (its
+ * `accentHover` step; `textSubtle` sits at 0.058) — so neutral roles belong to
  * `sand`/`driftwood`, and any step that drifts toward neutral is a neutral
  * misfiled here. Two such steps were deleted 2026-08-29; see ADR-0010's
  * "What a palette may be used for":
@@ -138,14 +148,36 @@ export const southSeaDriftwood = {
  * Both now point at `driftwood` (see the dark theme below). The swapped pairs
  * were re-measured and hold: `sand[150]` on `driftwood[800]` is 11.95:1 (was
  * 12.27:1), `driftwood[900]` on `conch[300]` is 8.18:1 (was 8.69:1).
+ *
+ * ## Why `400`/`500` are so much darker than `300` (2026-08-29)
+ * `300` cannot be light mode's `accent`, and this is arithmetic rather than
+ * taste. It is a mode-invariant swatch doing four jobs at once — `primary`
+ * fill and `accent` in both modes — and the jobs pull in opposite directions:
+ *
+ * - 4.5:1 as light-mode text on `sand[200]` needs it at OKLCH L ≤ 0.526.
+ * - `onPrimary` (`driftwood[750]`) readable on it as a fill needs L ≥ 0.679.
+ *
+ * There is no value satisfying both, so `accent` splits from `primary` in
+ * light mode only: `300` keeps the fill (its `onPrimary` pair is untouched at
+ * 6.43:1), and `400`/`500` — re-solved from bright terracotta to deep burnt
+ * sienna — take `accent`/`accentHover`, the roles that land as text. The
+ * lightness gap between `300` and `400` is the direct cost of that split, and
+ * it is why saturation steps down with it (78 → 74 → 69 → 55 → 50): a deep
+ * step at `300`'s saturation reads as a different, hotter hue.
+ *
+ * These are NOT the `500`/`600` deleted above. Those were neutrals misfiled
+ * under an accent (0.043 chroma, 1.03:1 against a driftwood step); these carry
+ * conch's full chroma at 19°, and each is measured against the surface it is
+ * actually set on — see the light theme's role comments for the ratios.
  */
-// All four steps sit at a single 19° hue (see "Single-hue verification"
+// All five steps sit at a single 19° hue (see "Single-hue verification"
 // above) — only lightness/saturation vary step to step.
 export const southSeaConch = {
   100: '#FBE8DF', // conchMist — accentSubtle, light mode
   200: '#F0B79C', // conchBright — accentHover, dark mode
-  300: '#E8A484', // conch — accent / primary, both modes
-  400: '#D9865F', // conchDeep — accentHover, light mode
+  300: '#E8A484', // conch — primary (both modes) / accent (dark mode)
+  400: '#A0522F', // conchDeep — accent + focusRing, light mode
+  500: '#713E26', // conchEmber — accentHover, light mode
 };
 
 const southSeaScrim = {
@@ -165,14 +197,14 @@ export const southSeaSentiment = {
   // read as unambiguously green (the ~57° khaki read as tan/brown) without
   // going neon.
   seaMoss: { 100: '#e7edde', 200: '#c5d3b1', 300: '#a5bb86', 400: '#8aa762', 500: '#657c46', 600: '#506237', 700: '#3d4b2a', 800: '#202716' },
-  urchin: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
+  anemone: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
   shell: { 100: '#fdf3e2', 200: '#f2d59b', 300: '#f0cd7a', 400: '#e0a52a', 500: '#d9920b', 600: '#6e5316', 700: '#7a4d09', 800: '#28200f' },
   // `info`: the old scale was a saturated, undiluted blue (~221°, ~80% sat)
   // — the one hue in this family with no relationship to the warm ecru/
   // chocolate/conch palette, so it read as an import rather than a member of
   // the set. Re-hued to a muted steel-teal (~195°, ~35–40% sat): still
   // unambiguously "blue" against the other three warm hues, but grayed and
-  // warmed enough to sit in the same register as `urchin`/`shell`.
+  // warmed enough to sit in the same register as `anemone`/`shell`.
   pacific: { 100: '#e7efee', 200: '#c3d6d4', 300: '#a1bfbd', 400: '#6e9694', 500: '#4c7573', 600: '#395857', 700: '#2c4442', 800: '#16211f' },
 };
 
@@ -265,15 +297,24 @@ export const southSeaLightThemeClass = createTheme(vars, {
     borderSubtle: southSeaSand[300],
     borderInverse: southSeaDriftwood[700],
     shadow: southSeaSand[500],
-    // Conch is the one loud accent — reused for `primary` and `accent` rather
-    // than authoring a second CTA hue: the maison identity is "one small
-    // loud thing per view," not two.
+    // Conch is still the one loud hue — no second CTA color was authored, the
+    // maison identity is "one small loud thing per view." But `accent` and
+    // `primary` take different STEPS of it in light mode, because a fill and a
+    // text color have opposite contrast requirements against this ecru ground
+    // (see `southSeaConch`'s comment for the arithmetic). `300` stays the
+    // fill; `400`/`500` carry the roles that render as text.
+    //
+    // Measured on `sand[200]` (the harder of the two grounds — `surface` is
+    // darker than `background`): `accent` 4.52:1, `accentHover` 7.03:1.
     primary: southSeaConch[300],
     onPrimary: southSeaDriftwood[750],
-    accent: southSeaConch[300],
-    accentHover: southSeaConch[400],
+    accent: southSeaConch[400],
+    accentHover: southSeaConch[500],
     accentSubtle: southSeaConch[100],
-    onAccent: southSeaDriftwood[750],
+    // `sand[150]`, not `driftwood[750]`: `accent` is now a deep step, so the
+    // text set ON it has to come from the light register. Chocolate ink on the
+    // new accent measures 2.4:1; cream measures 4.7:1.
+    onAccent: southSeaSand[150],
     onAccentSubtle: southSeaDriftwood[750],
     focusRing: southSeaConch[400],
     // `icon` is toned down toward `textSubtle` via `color-mix` — the raw
@@ -282,7 +323,7 @@ export const southSeaLightThemeClass = createTheme(vars, {
     // not just lightness, drives perceived prominence); 65% keeps the hue
     // identifiable while quieting it below both `text` and plain body copy.
     positive: { surface: southSeaSentiment.seaMoss[100], border: southSeaSentiment.seaMoss[200], text: southSeaSentiment.seaMoss[700], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[500]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: southSeaSentiment.urchin[100], border: southSeaSentiment.urchin[200], text: southSeaSentiment.urchin[600], icon: `color-mix(in srgb, ${southSeaSentiment.urchin[500]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.anemone[100], border: southSeaSentiment.anemone[200], text: southSeaSentiment.anemone[600], icon: `color-mix(in srgb, ${southSeaSentiment.anemone[500]} 65%, ${vars.color.textSubtle})` },
     warn: { surface: southSeaSentiment.shell[100], border: southSeaSentiment.shell[200], text: southSeaSentiment.shell[700], icon: `color-mix(in srgb, ${southSeaSentiment.shell[500]} 65%, ${vars.color.textSubtle})` },
     info: { surface: southSeaSentiment.pacific[100], border: southSeaSentiment.pacific[200], text: southSeaSentiment.pacific[700], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[500]} 65%, ${vars.color.textSubtle})` },
   },
@@ -310,7 +351,19 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     borderStrong: southSeaDriftwood[600],
     borderSubtle: southSeaDriftwood[800],
     borderInverse: southSeaSand[400],
-    shadow: southSeaDriftwood[600],
+    // [derived] A shadow is occlusion: it must always DARKEN. `driftwood[600]`
+    // (`#5E4632`) was lighter than the `driftwood[900]` ground it fell on and
+    // carried 44 points of channel spread, so `Card`'s 12px-blur elevation
+    // painted a warm halo AROUND the card rather than a shadow under it —
+    // Impeccable's `dark-glow` detector caught exactly that, and it was right.
+    //
+    // A palette step can't fix it: every neutral this theme owns in dark mode
+    // is lighter than `background`, because `driftwood[900]` IS the darkest
+    // one. So this is a fixed value below the ramp, the same escape Pearl's
+    // and Freshwater's dark modes already take. It stays on driftwood's 27°
+    // hue — the occlusion is warm, it just finally darkens — and at 13 points
+    // of spread it reads as ink rather than as a colored light source.
+    shadow: 'rgba(18, 11, 5, 0.55)',
     // Conch stays the same hue across modes (11a/11b) — a mode-invariant
     // swatch, same model as Pearl's sentiment steps — brightened one notch
     // (`conch[200]`) only where it sits as hover feedback against the dark
@@ -331,7 +384,7 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     onAccentSubtle: southSeaSand[150],
     focusRing: southSeaConch[200],
     positive: { surface: southSeaSentiment.seaMoss[800], border: southSeaSentiment.seaMoss[600], text: southSeaSentiment.seaMoss[300], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[400]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: southSeaSentiment.urchin[800], border: southSeaSentiment.urchin[700], text: southSeaSentiment.urchin[300], icon: `color-mix(in srgb, ${southSeaSentiment.urchin[400]} 65%, ${vars.color.textSubtle})` },
+    negative: { surface: southSeaSentiment.anemone[800], border: southSeaSentiment.anemone[700], text: southSeaSentiment.anemone[300], icon: `color-mix(in srgb, ${southSeaSentiment.anemone[400]} 65%, ${vars.color.textSubtle})` },
     warn: { surface: southSeaSentiment.shell[800], border: southSeaSentiment.shell[600], text: southSeaSentiment.shell[300], icon: `color-mix(in srgb, ${southSeaSentiment.shell[400]} 65%, ${vars.color.textSubtle})` },
     info: { surface: southSeaSentiment.pacific[800], border: southSeaSentiment.pacific[600], text: southSeaSentiment.pacific[300], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[400]} 65%, ${vars.color.textSubtle})` },
   },
@@ -382,6 +435,49 @@ globalStyle(
     fontFamily: southSeaFonts.serifItalic,
     fontStyle: 'italic',
   },
+);
+
+// Compensating size bump for the face swap above (2026-08-29). `southSeaText`
+// declares these three steps at the same rem values as every other theme —
+// 12/16/20px — which is the shared 4px-grid parity `pearlText`'s comment
+// describes, and is still what `text.bodyMd.fontSize` reports to `Button` and
+// `Input`, which render `fontFamily.body` (General Sans) and were never
+// undersized to begin with.
+//
+// But once the rule above swaps `data-type-scale="bodySm/Md/Lg"` to Times
+// italic, that shared declared size stops meaning the same thing: Times' own
+// x-height sits around 0.448em, noticeably shorter than General Sans' — so a
+// "16px" Times paragraph reads closer to a 13–14px sans one. Rather than
+// inflate the shared token (and, with it, Button/Input's already-correct
+// size), each step is bumped 12.5% HERE, at the exact selector that already
+// owns the face swap responsible for the mismatch. Ratios between the three
+// steps are preserved (all ×1.125), so bodySm:bodyMd:bodyLg still scale
+// together exactly as `southSeaText` declares them.
+//
+// Line-heights are re-picked on the 4px grid at the new sizes rather than
+// scaled by the same 1.125 (which would land off-grid: 20×1.125=22.5px):
+// bodySm 20px (was 20 at 12px, ratio 1.6667→1.5385), bodyMd 28px (was 24 at
+// 16px, ratio 1.5→1.5556), bodyLg 40px (was 36 at 24px, ratio 1.5→1.4815).
+globalStyle(
+  [
+    `${southSeaLightThemeClass} [data-type-scale="bodySm"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="bodySm"]`,
+  ].join(', '),
+  { fontSize: '0.8125rem', lineHeight: '1.5385' }, // 13px / 20px 4px grid
+);
+globalStyle(
+  [
+    `${southSeaLightThemeClass} [data-type-scale="bodyMd"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="bodyMd"]`,
+  ].join(', '),
+  { fontSize: '1.125rem', lineHeight: '1.5556' }, // 18px / 28px 4px grid
+);
+globalStyle(
+  [
+    `${southSeaLightThemeClass} [data-type-scale="bodyLg"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="bodyLg"]`,
+  ].join(', '),
+  { fontSize: '1.6875rem', lineHeight: '1.4815' }, // 27px / 40px 4px grid
 );
 
 // Headings: Boska, sentence case, roman, Regular — NOT the uppercase poster
@@ -590,6 +686,14 @@ globalStyle(
     // The base recipe's own `:hover` rule (translateY lift + drop shadow)
     // outranks this file's plain resting `boxShadow: none` once `:hover`
     // matches — needs restating here, not just at rest.
+    //
+    // In light mode this mix now does real work: `primary` and `accent` used
+    // to be the same `conch[300]` swatch, so the "hover" fill was byte-for-byte
+    // the resting one and the only feedback was the recipe's transform. With
+    // `accent` split onto the deep `conch[400]`, 15% of it darkens the fill
+    // enough to read as a state change — and `onPrimary` on it rises above its
+    // resting 6.43:1 rather than falling. Dark mode still mixes conch with
+    // conch (both roles hold `300` there) and is unchanged.
     backgroundColor: `color-mix(in srgb, ${vars.color.primary} 85%, ${vars.color.accent})`,
     boxShadow: 'none',
     transform: 'none',
@@ -644,6 +748,60 @@ globalStyle(`${southSeaDarkThemeClass} .${sphereWrap}:hover .${sphereBody}`, {
 
 globalStyle(`${southSeaDarkThemeClass} .${sphereContact}`, {
   background: `radial-gradient(ellipse at center, rgba(28, 18, 10, 0.5), transparent 68%)`,
+});
+
+// Light mode's counterpart. Not a 9c value — 9c is a dark frame — but it is
+// required, not optional: `PearlSphere` reads `pearlTreatments.luster` for
+// every one of its gradients and shadows, and South Sea applies
+// `pearlExtensionClass` in neither mode. Left unstyled, light mode resolves
+// those vars to nothing, `background-image`/`box-shadow` parse as empty, and
+// the sphere vanishes on the ecru ground (present in the DOM, invisible) —
+// exactly the failure `tahitian.css.ts` documents for its own override.
+//
+// The nacre reads WHITE, not ecru. The first pass tinted the body toward
+// `sand[200]`/`sand[500]` — South Sea's own surface steps — which put most
+// of the face within a couple of percent of `sand[100]`, the ground it sits
+// on, and the sphere dissolved into the page. The value separation has to
+// come from the terminator and the contact shadow instead, leaving the body
+// free to run brighter than the background rather than darker. So: pure
+// white through the lit two-thirds, and only the last ~25% falls to warm
+// shadow, crossing the background value on its way down so the silhouette
+// stays crisp.
+//
+// Three layers, painted back to front by CSS's own order (sheen on top):
+// the 115deg specular band, a low-right `conch[100]` bloom for overtone, and
+// the white body. Conch stays a wash here — the flat `conch[300]` fill is
+// spent on the one loud thing per view, and this isn't it.
+const southSeaLightSheenBand = `linear-gradient(115deg, transparent 34%, rgba(255, 255, 255, 0.65) 45%, rgba(255, 255, 255, 0.95) 52%, rgba(255, 255, 255, 0.55) 58%, transparent 70%)`;
+const southSeaLightBloom = `radial-gradient(circle at 64% 76%, rgba(251, 232, 223, 0.6), transparent 54%)`;
+const southSeaLightBody = `radial-gradient(circle at 34% 27%, #FFFFFF 0%, #FFFFFF 28%, #FDFBF6 46%, #F7F0E5 63%, #EADCC6 82%, #D2BE9F 100%)`;
+
+// Own keyframe rather than reusing `southSeaSweep`: that one animates a
+// two-value `background-position` list, and CSS *cycles* a short list across
+// the layer count — against three layers its second value would land back on
+// the body and drag it along with the sheen. Three layers need three
+// positions, with `center, center` pinning the bloom and body.
+const southSeaLightSweep = keyframes({
+  '0%, 100%': { backgroundPosition: `${southSeaSheenFrom}, center, center` },
+  '50%': { backgroundPosition: `${southSeaSheenTo}, center, center` },
+});
+
+globalStyle(`${southSeaLightThemeClass} .${sphereBody}`, {
+  backgroundImage: `${southSeaLightSheenBand}, ${southSeaLightBloom}, ${southSeaLightBody}`,
+  backgroundPosition: `${southSeaSheenFrom}, center, center`,
+  // The drop shadow does the lifting the body no longer does, and the two
+  // insets keep a white sphere from going flat: a warm occlusion arc along
+  // the bottom edge, and a hard white crown up top for the wet specular.
+  boxShadow: `0 20px 44px rgba(120, 106, 83, 0.34), inset 0 -10px 26px rgba(120, 106, 83, 0.3), inset 5px 4px 16px rgba(255, 255, 255, 0.9)`,
+  animation: 'none',
+});
+
+globalStyle(`${southSeaLightThemeClass} .${sphereWrap}:hover .${sphereBody}`, {
+  animation: `${southSeaLightSweep} 4.5s ease-in-out infinite`,
+});
+
+globalStyle(`${southSeaLightThemeClass} .${sphereContact}`, {
+  background: `radial-gradient(ellipse at center, rgba(120, 106, 83, 0.42), transparent 68%)`,
 });
 
 // TEMP-DISABLED — candidate B for review, remove or keep.

@@ -68,8 +68,9 @@ If a design genuinely wants a text-only action — a tertiary "Cancel", an inlin
 variant with its edges removed. Give it link affordances (underline or accent
 color at rest) and, if it performs an action rather than navigating, keep it a
 `<button>` in the markup for keyboard and AT semantics while it wears link
-clothing deliberately. There is currently no `Link` component in the system; when
-one lands, it — not `Button` — owns the text-only look.
+clothing deliberately. `Link` — not `Button` — owns the text-only look: it is
+always an `<a>`, so a text-only action borrows its class onto a `<button>`
+rather than becoming a link in the markup.
 
 ## Hover is a state change, not the arrival of the control
 

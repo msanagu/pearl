@@ -8,9 +8,11 @@ import { Input } from '@components/Input';
 import { Field } from '@components/Field';
 import { Alert } from '@components/Alert';
 import { Tag } from '@components/Tag';
+import { Link } from '@components/Link';
 import { Text } from '@components/Text';
 import { Stack } from '@components/Stack';
 import { Row } from '@components/Row';
+import { color } from '@tokens';
 
 /**
  * Component audit — runs Impeccable's deterministic detectors against the REAL
@@ -37,6 +39,14 @@ function ComponentSampler() {
         <Button variant="secondary">Secondary</Button>
       </Row>
 
+      <Row gap="sm" wrap align="center">
+        <Tag variant="neutral">Neutral</Tag>
+        <Tag variant="positive">Active</Tag>
+        <Tag variant="negative">Deprecated</Tag>
+        <Tag variant="warn">Beta</Tag>
+        <Tag variant="info">New</Tag>
+      </Row>
+
       <Row gap="lg" wrap>
         <Card style={{ flex: '1 1 300px' }}>
           <Card.Header>
@@ -45,7 +55,9 @@ function ComponentSampler() {
             </Text>
           </Card.Header>
           <Card.Body>
-            <Text typeScale="bodyMd">Manage how your account appears to your team.</Text>
+            <Text typeScale="bodyMd">
+              Manage how your account appears to your team.
+            </Text>
           </Card.Body>
         </Card>
         <Card style={{ flex: '1 1 300px' }}>
@@ -56,18 +68,12 @@ function ComponentSampler() {
           </Card.Header>
           <Card.Body>
             <Field label="Work email" hint="We only use this for receipts.">
-              {(injected) => <Input placeholder="you@company.com" {...injected} />}
+              {(injected) => (
+                <Input placeholder="you@company.com" {...injected} />
+              )}
             </Field>
           </Card.Body>
         </Card>
-      </Row>
-
-      <Row gap="sm" wrap align="center">
-        <Tag variant="neutral">Neutral</Tag>
-        <Tag variant="positive">Active</Tag>
-        <Tag variant="negative">Deprecated</Tag>
-        <Tag variant="warn">Beta</Tag>
-        <Tag variant="info">New</Tag>
       </Row>
 
       <Stack gap="sm">
@@ -87,18 +93,37 @@ function ComponentSampler() {
 
       <Stack gap="xs">
         <Text typeScale="displaySm" as="h2">
-          Built to change
+          One contract, many themes
         </Text>
         <Text typeScale="headingMd" as="h3">
-          A durable structure
+          Same markup, different skin
         </Text>
         <Text typeScale="bodyLg">
-          Defaults stay quiet enough for information, then let the active theme surface in the
-          seams.
+          Every value comes from the theme contract — swap the theme files, and
+          the whole system reskins without touching a single component.
         </Text>
         <Text typeScale="bodySm" role="preheading">
           Foundations / 01
         </Text>
+      </Stack>
+
+      {/* Link is set in prose, not on its own line: it reads `color.accent` at
+          body size, and the detector that matters for it is contrast against
+          the surrounding text's own ground. Both states are rendered — the
+          audit samples resting styles, so `accentHover` is exercised by the
+          second one carrying it as its resting color. */}
+      <Stack gap="sm">
+        <Text as="p" typeScale="bodyMd" measure="md">
+          A button performs an action; a link takes you somewhere else. See{' '}
+          <Link href="#control-affordances">the control affordances note</Link>{' '}
+          for the full reasoning, plus a table that splits the two apart.
+        </Text>
+        <Row gap="lg" wrap align="center">
+          <Link href="#">Resting</Link>
+          <Link href="#" style={{ color: color.accentHover }}>
+            Hover
+          </Link>
+        </Row>
       </Stack>
     </Stack>
   );
