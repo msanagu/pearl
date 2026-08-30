@@ -4,14 +4,7 @@ import { tahitianTreatments, tahitianTypeTreatments } from './tahitian.css';
 export const tahitianDescription =
   'Poster-scale editorial energy: hard grid, condensed type, and iridescence reserved for the image plate and one word at a time.';
 
-/**
- * The nav wordmark — plain, no `role`. Overtone is reserved for one
- * emphasized word and image plates (`inlineEmphasis`/`imageOverlay`); the
- * brand mark itself stays undecorated white/near-black, matching 14a. Text
- * is hardcoded uppercase (not a CSS `text-transform`) — Tahitian's poster
- * register renders every wordmark in caps, same as the other three themes'
- * own name.
- */
+/** The nav wordmark — plain, no `role`; overtone stays reserved for `inlineEmphasis`/`imageOverlay`. */
 export const tahitianBrandWordmark = {
   text: 'TAHITIAN',
   role: undefined,

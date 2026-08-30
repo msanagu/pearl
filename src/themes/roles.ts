@@ -1,23 +1,8 @@
 /**
  * The role layer — which named job/context each of a theme's treatments
- * fulfills.
- *
- * Two catalogs, not one nested structure:
- * - **Treatments** (`src/themes/*.css.ts`, plus a theme's own small
- *   type-treatment catalog) are the *recipes* a theme owns — named,
- *   self-contained, no inherent notion of where they're used. Luster (a
- *   gradient-animation mechanism) is one; so is a specific fontFamily +
- *   fontStyle combination like "Serif Italic" — naming the latter is what
- *   makes it statable as a peer to Luster, not a claim that anything reuses
- *   it yet.
- * - **Roles** (this file) are the *jobs* that exist — `inlineEmphasis`,
- *   `cardHover`, `brandSphere` — each pointing at which treatment fulfills
- *   it. `Text`'s `role` prop only ever accepts the typography role names;
- *   `luster` and friends are never role keys, only values roles point at —
- *   that's what keeps `Roles.ts`'s membership honest against the real prop.
- *
- * Consumers: the planned MCP/RAG corpus (`project-brief.md`), the planned
- * no-raw-value lint rule, and generated documentation.
+ * fulfills. Treatments (`src/themes/*.css.ts`) are the recipes a theme owns;
+ * roles (this file) are the jobs that exist, each pointing at which
+ * treatment fulfills it. See ADR-0008 for how this feeds the manifest.
  */
 
 /**
@@ -51,13 +36,7 @@ export type Trigger =
   /** Appears on keyboard focus. */
   | 'focus';
 
-/**
- * Brand speaking vs. UI staying low-chroma — two tiers, not a spectrum.
- * `desaturated` names the actual visual property (see a role's guidance for
- * "already-desaturated stops"); not "chrome" (ADR-0007 already banned the
- * term) and not "quiet"/"subtle" — those describe prominence, a different
- * axis, and reusing either word here would blur the two.
- */
+/** Brand speaking (`brand`) vs. UI staying low-chroma (`desaturated`) — two tiers, not a spectrum. */
 export type Chroma = 'brand' | 'desaturated';
 
 /** A numeric ceiling/floor a treatment's own values must respect. */
@@ -67,15 +46,9 @@ export interface Limit {
 }
 
 /**
- * One role: the job/context a treatment is assigned to. `treatment` names
- * which entry in this theme's treatment catalog fulfills it — a theme types
- * this against its own real treatment names (see `pearl.roles.ts`), so a
- * typo or a treatment that doesn't exist fails to compile.
- *
- * Fields below are grouped by which kind of role uses them; nothing here
- * forces every role to fill every field, but a typography role has no
- * business setting `trigger`, and an effect role has no business setting
- * `tabularFigures`.
+ * One role: the job/context a treatment is assigned to. A theme types
+ * `treatment` against its own real treatment names, so a typo or a
+ * treatment that doesn't exist fails to compile.
  */
 export interface RoleSpec<TTreatment extends string = string> {
   /** Which treatment (in this theme's own catalog) fulfills this role. */

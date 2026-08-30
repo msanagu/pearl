@@ -24,14 +24,17 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./index.css": "./dist/index.css"
+    "./index.css": "./dist/index.css",
+    "./manifest.json": "./dist/manifest.json",
+    "./llms.txt": "./dist/llms.txt"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.build.json && node scripts/rewrite-dts-aliases.mjs",
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/rewrite-dts-aliases.mjs && node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
+    "generate:manifest": "node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -55,6 +58,7 @@
     "react-icons": "^5.7.0"
   },
   "devDependencies": {
+    "@babel/parser": "^8.0.4",
     "@storybook/addon-a11y": "^10.5.2",
     "@storybook/addon-docs": "^10.5.2",
     "@storybook/addon-vitest": "^10.5.2",
@@ -73,12 +77,14 @@
     "@vitest/coverage-v8": "^4.1.10",
     "axe-core": "^4.6.3",
     "csstype": "3.2.3",
+    "esbuild": "^0.28.2",
     "impeccable": "^3.3.1",
     "jest-axe": "^10.0.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.61.1",
     "prettier": "^3.9.6",
     "react": "^19.2.7",
+    "react-docgen": "^8.0.3",
     "react-dom": "^19.2.7",
     "storybook": "^10.5.2",
     "typescript": "^7.0.2",

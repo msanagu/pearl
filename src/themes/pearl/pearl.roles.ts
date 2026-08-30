@@ -1,10 +1,7 @@
 import type { ThemeRoles } from '@themes/roles';
 import { pearlFonts, pearlTreatments } from './pearl.css';
 
-/**
- * One-line disposition — not copywriting, how the theme feels. Feeds the
- * planned Theme/Overview docs page as the intro line.
- */
+/** One-line disposition — how the theme feels, not copywriting. */
 export const pearlDescription =
   'Comfortable, restrained premium. Reads like a well-set book page that happens to have buttons; an italic serif interjection is the only flourish.';
 
@@ -14,43 +11,21 @@ export const pearlBrandWordmark = {
   role: 'inlineEmphasis' as const,
 };
 
-/**
- * Pearl's own catalog of typography treatments — named recipes, same status
- * as `luster` in `pearlTreatments`, just simple enough to live as plain data
- * here instead of becoming real CSS custom properties. Exported: a role only
- * names *which* treatment it uses (`pearlRoles.inlineEmphasis.treatment ===
- * 'serifItalic'`) — resolving that name to the actual fontFamily/fontStyle
- * means looking it up here.
- */
+/** Pearl's own catalog of typography treatments — named recipes, same status as `luster`. */
 export const pearlTypeTreatments = {
   serifItalic: { fontFamily: pearlFonts.serif, fontStyle: 'italic' as const },
-  // Sentence case, body face — reads as a quiet label rather than a data
-  // readout. Replaces an earlier mono/upper/tracked treatment that made
-  // every preheading (including plain sentence-case labels like "Active
-  // sessions") look like console output; that idiom is Freshwater/Tahitian's
-  // now, not Pearl's.
   sansSentence: { fontFamily: pearlFonts.sans },
   monoTabular: { fontFamily: pearlFonts.mono, tabularFigures: true, letterSpacing: '-0.05em' },
 } satisfies Record<string, unknown>;
 
 type PearlTreatmentName = keyof typeof pearlTypeTreatments | keyof typeof pearlTreatments;
 
-/**
- * Pearl's role table — which treatment fulfills each named job/context.
- *
- * Never becomes CSS. Read by the planned MCP/RAG corpus, the planned
- * no-raw-value lint rule, and generated documentation. The three `luster`
- * roles below (`cardHover`, `brandSphere`, `hairlineRule`) replace what used
- * to be an anonymous `applications` array — same information, but each
- * context now has a real, addressable name instead of a position + comment.
- */
+/** Pearl's role table — which treatment fulfills each named job/context. Never becomes CSS. */
 export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
-  // --- Typography roles — Text's `role` prop accepts exactly these three ---
   inlineEmphasis: {
     treatment: 'serifItalic',
     intent: 'The face carrying rare emphasis — pull quotes, inline interjections.',
     scope: ['inline', 'wordmark'],
-    // No `size` — inline emphasis rides whatever variant it's set in.
   },
   preheading: {
     treatment: 'sansSentence',
@@ -62,7 +37,6 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     intent: 'The face carrying tabular data — table cells, counters, form values.',
   },
 
-  // --- Luster's roles — one treatment, three contexts ---
   brandSphere: {
     treatment: 'luster',
     intent: 'Nacre made literal — light moving across the brand object.',
@@ -71,12 +45,9 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     chroma: 'brand',
     forbid: ['type', 'control'],
     limits: {
-      /** Three hues maximum — replaces the handoff's "never rainbow" rule. */
       hues: { max: 3 },
     },
     limitsByChroma: {
-      /** The brand object reads at full declared intensity — the sphere's
-       * periwinkle stop sits exactly at this ceiling. */
       brand: { alpha: { max: 0.5 } },
     },
     guidance: [
