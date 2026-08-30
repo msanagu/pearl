@@ -15,11 +15,9 @@ const meta: Meta<typeof Alert> = {
   component: Alert,
   tags: ['autodocs'],
   args: {
-    // Neutral, `info`-appropriate default copy — this is what any story
-    // renders if it doesn't override heading/children/variant, so it must
-    // match the default `variant` ('info'). "Payment failed" lived here
-    // previously and leaked into Dismissible/WithoutHeading, which don't set
-    // a variant: both rendered error copy inside an info-styled alert.
+    // Default copy for any story that doesn't override it — must read as
+    // `info` to match the default `variant`, or stories that don't set a
+    // variant show mismatched copy.
     heading: 'New feature',
     children: 'You can now export reports as CSV.',
   },
@@ -29,19 +27,35 @@ export default meta;
 type Story = StoryObj<typeof Alert>;
 
 export const Positive: Story = {
-  args: { variant: 'positive', heading: 'Changes saved', children: 'Your profile has been updated.' },
+  args: {
+    variant: 'positive',
+    heading: 'Changes saved',
+    children: 'Your profile has been updated.',
+  },
 };
 
 export const Negative: Story = {
-  args: { variant: 'negative', heading: 'Payment failed', children: 'Your card was declined. Try a different payment method.' },
+  args: {
+    variant: 'negative',
+    heading: 'Payment failed',
+    children: 'Your card was declined. Try a different payment method.',
+  },
 };
 
 export const Warn: Story = {
-  args: { variant: 'warn', heading: 'Scheduled maintenance', children: 'The service will be unavailable Tuesday 2–4am.' },
+  args: {
+    variant: 'warn',
+    heading: 'Scheduled maintenance',
+    children: 'The service will be unavailable Tuesday 2–4am.',
+  },
 };
 
 export const Info: Story = {
-  args: { variant: 'info', heading: 'New feature', children: 'You can now export reports as CSV.' },
+  args: {
+    variant: 'info',
+    heading: 'New feature',
+    children: 'You can now export reports as CSV.',
+  },
 };
 
 export const WithoutHeading: Story = {
@@ -51,7 +65,7 @@ export const WithoutHeading: Story = {
 /**
  * A no-op `onDismiss` renders the button but visibly does nothing when
  * clicked — Alert never removes itself; that's the consumer's state to own
- * (composition over configuration, ADR-0002). Real local state here so the
+ * (composition over configuration). Real local state here so the
  * story demonstrates the actual contract, not just the button's presence.
  * Defined at module scope, not inline in `render` — a component defined
  * inside a render callback is a new identity every re-render, which remounts
@@ -73,10 +87,18 @@ export const Dismissible: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Stack gap="sm" style={{ maxWidth: 480 }}>
-      <Alert variant="positive" heading="Changes saved">Your profile has been updated.</Alert>
-      <Alert variant="negative" heading="Payment failed">Your card was declined.</Alert>
-      <Alert variant="warn" heading="Scheduled maintenance">Service will be unavailable Tuesday.</Alert>
-      <Alert variant="info" heading="New feature">Reports can now be exported as CSV.</Alert>
+      <Alert variant="positive" heading="Changes saved">
+        Your profile has been updated.
+      </Alert>
+      <Alert variant="negative" heading="Payment failed">
+        Your card was declined.
+      </Alert>
+      <Alert variant="warn" heading="Scheduled maintenance">
+        Service will be unavailable Tuesday.
+      </Alert>
+      <Alert variant="info" heading="New feature">
+        Reports can now be exported as CSV.
+      </Alert>
     </Stack>
   ),
 };

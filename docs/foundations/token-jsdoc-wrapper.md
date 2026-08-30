@@ -1,6 +1,7 @@
 # Getting JSDoc-on-Hover at Consumption Sites (Vanilla-Extract)
 
 ## The problem
+
 `vars` from `createThemeContract` is inferred structurally — hovering `vars.color.brandPrimary`
 inside a component shows its CSS-var type, not any JSDoc you wrote elsewhere.
 
@@ -64,7 +65,7 @@ import { colorVars, spaceVars } from '../tokens';
 
 export const button = style({
   backgroundColor: colorVars.brandPrimary, // hovering this shows the JSDoc ↑
-  padding: spaceVars.sm,                    // hovering this shows "8px..." ↑
+  padding: spaceVars.sm, // hovering this shows "8px..." ↑
 });
 ```
 

@@ -8,42 +8,18 @@ import * as css from './tokens.css';
  * (canon type + per-theme role treatments). Not a story file itself.
  */
 
-/**
- * Re-exported from `brand/brandWordmark.ts` — this file used to keep its
- * own literal copy of the same map, which is how Freshwater's wordmark
- * ended up defined in one and missing from the other. One source now.
- */
-export { brandWordmarkByTheme } from '@components/_brand/brandWordmark';
+// Re-exported so specimens and nav render from one source, not parallel copies.
+export { brandWordmarkByTheme } from '@components/_brand/WordMark/brandWordmark';
+export { WordMark } from '@components/_brand/WordMark/WordMark';
 
 /**
- * Re-exported, not reimplemented — this file used to define its own local
- * `Wordmark` that rendered `wordmark.text` as a plain `<Text>` heading,
- * "same markup as `HeroNav`" per its own comment, except it wasn't: it never
- * split `text` on `_` or colored the underscore, so Freshwater's
- * `FRESHWTR_OPS` rendered here with a plain-colored underscore while
- * `HeroNav`/`ThemeSpecimen` (which do use the real component) rendered
- * Freshwater's actual vibrant one — the exact kind of drift this whole
- * module's docstring already warns about for `brandWordmarkByTheme`.
- * `scale={2.8}` reproduces the old local component's `displayLg` size
- * (`7rem`) against `WordMark`'s own `headingMd`-relative base (`2.5rem`):
- * `7 / 2.5 = 2.8`.
- */
-export { WordMark } from '@components/_brand/WordMark';
-
-/**
- * Reads one or more computed CSS properties off the DOM node it's attached
- * to — or, when `selector` is given, off the first descendant matching it.
- * The selector form exists for components (like `Text`) that don't forward
- * `ref`: attach the returned ref to a wrapping element instead and let this
- * hook look inside for the actual styled node.
+ * Reads computed CSS properties off the attached node, or off the first
+ * descendant matching `selector` (for components like `Text` that don't
+ * forward `ref`).
  *
- * Re-reads whenever `deps` changes, not just on mount. A callback `ref`
- * alone only fires when the DOM NODE is attached/detached — switching the
- * Storybook theme toolbar swaps a CSS class on an ancestor, not the node
- * itself, so a ref-only read goes stale and keeps showing whichever
- * theme's computed style happened to be active at first mount. Pass the
- * active theme (or anything else the resolved value depends on) as `deps`
- * so this re-reads on every value that could change what's computed.
+ * Re-reads on `deps` change, not just mount — switching the Storybook theme
+ * swaps a class on an ancestor, not the node, so a ref-only read goes stale.
+ * Pass the active theme as `deps`.
  */
 export function useComputed<T extends HTMLElement>(
   props: string[],
@@ -61,7 +37,8 @@ export function useComputed<T extends HTMLElement>(
     if (!target) return;
     const computed = getComputedStyle(target);
     const next: Record<string, string> = {};
-    for (const prop of props) next[prop] = computed.getPropertyValue(prop).trim();
+    for (const prop of props)
+      next[prop] = computed.getPropertyValue(prop).trim();
     setValues(next);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `props` is a fresh array each render; `key` is the real dependency.
   }, [key, selector]);
@@ -80,11 +57,27 @@ export function useComputed<T extends HTMLElement>(
   return [ref, values] as const;
 }
 
-export function FamilySwatch({ name, cssVar, theme }: { name: string; cssVar: string; theme?: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['font-family'], undefined, [theme]);
+export function FamilySwatch({
+  name,
+  cssVar,
+  theme,
+}: {
+  name: string;
+  cssVar: string;
+  theme?: string;
+}) {
+  const [ref, resolved] = useComputed<HTMLDivElement>(
+    ['font-family'],
+    undefined,
+    [theme],
+  );
   return (
     <div className={css.cell}>
-      <span ref={ref} className={css.familySample} style={{ fontFamily: cssVar, color: color.text }}>
+      <span
+        ref={ref}
+        className={css.familySample}
+        style={{ fontFamily: cssVar, color: color.text }}
+      >
         Aa — quick brown fox
       </span>
       <span>{name}</span>
@@ -93,14 +86,30 @@ export function FamilySwatch({ name, cssVar, theme }: { name: string; cssVar: st
   );
 }
 
-export function WeightSwatch({ name, cssVar, theme }: { name: string; cssVar: string; theme?: string }) {
-  const [ref, resolved] = useComputed<HTMLDivElement>(['font-weight'], undefined, [theme]);
+export function WeightSwatch({
+  name,
+  cssVar,
+  theme,
+}: {
+  name: string;
+  cssVar: string;
+  theme?: string;
+}) {
+  const [ref, resolved] = useComputed<HTMLDivElement>(
+    ['font-weight'],
+    undefined,
+    [theme],
+  );
   return (
     <div className={css.cell}>
       <span
         ref={ref}
         className={css.weightSwatch}
-        style={{ fontWeight: cssVar, color: color.text, fontFamily: fontFamily.body }}
+        style={{
+          fontWeight: cssVar,
+          color: color.text,
+          fontFamily: fontFamily.body,
+        }}
       >
         Ag
       </span>
@@ -124,7 +133,12 @@ export function TypeSpecimen({
   theme,
 }: {
   name: string;
-  variant: { fontSize: string; lineHeight: string; fontWeight: string; letterSpacing: string };
+  variant: {
+    fontSize: string;
+    lineHeight: string;
+    fontWeight: string;
+    letterSpacing: string;
+  };
   theme?: string;
 }) {
   const [ref, resolved] = useComputed<HTMLSpanElement>(
@@ -148,8 +162,8 @@ export function TypeSpecimen({
         The quick brown fox jumps over the lazy dog
       </span>
       <span className={css.resolvedValue}>
-        {roundPx(resolved['font-size'])} / {roundPx(resolved['line-height'])} · weight{' '}
-        {resolved['font-weight']} · tracking {resolved['letter-spacing']}
+        {roundPx(resolved['font-size'])} / {roundPx(resolved['line-height'])} ·
+        weight {resolved['font-weight']} · tracking {resolved['letter-spacing']}
       </span>
     </div>
   );

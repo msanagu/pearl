@@ -1,15 +1,11 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: [
-    '../src/**/*.stories.@(ts|tsx)',
-    '../templates/**/*.stories.@(ts|tsx)',
-    '../experiments/**/*.stories.@(ts|tsx)',
-  ],
+  stories: ['../src/**/*.stories.@(ts|tsx)'],
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
-    '@storybook/addon-vitest'
+    '@storybook/addon-vitest',
   ],
   // Serves public/ at the site root (e.g. /fonts/boska/...) — Storybook does
   // not do this automatically, unlike a plain Vite app.

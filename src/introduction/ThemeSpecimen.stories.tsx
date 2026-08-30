@@ -22,6 +22,12 @@ export const Specimen: Story = {
   // than passed as args, so the page only has to vary one thing in the URL.
   render: (_args, context) => {
     const specimen = specimenFor(context.globals.theme);
-    return <ThemeSpecimen name={specimen.name} authored={specimen.authored} wordmark={specimen.wordmark} />;
+    return (
+      <ThemeSpecimen
+        name={specimen.name}
+        authored={specimen.authored}
+        wordmark={specimen.wordmark}
+      />
+    );
   },
 };

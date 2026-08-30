@@ -18,6 +18,14 @@
     "src/test",
     "src/foundations",
     // Build-time validation only (ADR-0010) — never part of the public API.
-    "src/validate"
+    "src/validate",
+    // Storybook-only internals (docs landing page, treatment demos) and page
+    // templates — neither is re-exported from src/index.ts, so emitting
+    // declarations for them just ships dead .d.ts files to consumers.
+    "src/introduction",
+    "src/templates",
+    // Build-time manifest generator input only (consumed by scripts/generate-manifest.mjs);
+    // not re-exported from src/index.ts and not part of the package's exports map.
+    "src/manifest"
   ]
 }

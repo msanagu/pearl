@@ -2,7 +2,7 @@ import type { CSSVarFunction } from '@vanilla-extract/private';
 import { vars } from './theme.css';
 
 /**
- * Documented, consumer-facing token layer (the semantic tier — ADR-0005).
+ * Documented, consumer-facing token layer (the semantic tier).
  *
  * These interfaces re-type `vars.*` with JSDoc so hovering `color.accent` at a
  * call site shows the guidance below. The typed assignment (`color: ColorTokens
@@ -14,7 +14,7 @@ import { vars } from './theme.css';
  * A sentiment role, keyed by valence — reusable beyond alerts (metrics, diffs…).
  * Application-named (not prominence-named): each field names *where* it applies
  * — `surface`/`border`/`text` map straight to their CSS property, `icon` is the
- * saturated mark color. (ADR-0006 — role-named vs. prominence-named tokens.)
+ * saturated mark color.
  */
 export interface SentimentTokens {
   /** Tinted background fill. */
@@ -51,7 +51,7 @@ export interface ColorTokens {
   /**
    * One step down in prominence — captions, metadata, helper text, timestamps.
    * `subtle` carries this exact meaning everywhere it appears (border, accent,
-   * text) — never a synonym like "muted" elsewhere. (ADR-0006)
+   * text) — never a synonym like "muted" elsewhere.
    */
   textSubtle: CSSVarFunction;
   /** Primary text on an inverse surface. */
@@ -67,7 +67,7 @@ export interface ColorTokens {
   /** Border/divider on an inverse surface. */
   borderInverse: CSSVarFunction;
   /** Elevation `box-shadow` color — not a border. Currently one rung; a
-   * `shadowSubtle`/`shadowStrong` ladder (ADR-0006) is a candidate once a
+   * `shadowSubtle`/`shadowStrong` ladder is a candidate once a
    * second elevation level is needed. */
   shadow: CSSVarFunction;
   /** Main call-to-action fill — Button's `primary` variant. Not assumed to
@@ -110,7 +110,7 @@ export interface RadiusTokens {
    * Deliberately NOT for rectangles. `full` on a rectangle is a pill, and this
    * system does not use pill shapes — a rectangular element takes
    * `radius.control`, or a radius derived from it, so it shares a corner with
-   * everything around it. `Tag` used to read this token and no longer does.
+   * everything around it.
    */
   full: CSSVarFunction;
   /**

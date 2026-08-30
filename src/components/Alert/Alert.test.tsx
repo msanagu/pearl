@@ -53,12 +53,18 @@ describe('Alert', () => {
   it('renders a dismiss button and calls onDismiss when clicked', async () => {
     const onDismiss = vi.fn();
     render(<Alert onDismiss={onDismiss}>Dismissible</Alert>);
-    await userEvent.click(screen.getByRole('button', { name: 'Dismiss notification' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Dismiss notification' }),
+    );
     expect(onDismiss).toHaveBeenCalledOnce();
   });
 
   it('merges a custom className', () => {
-    render(<Alert data-testid="alert" className="custom">content</Alert>);
+    render(
+      <Alert data-testid="alert" className="custom">
+        content
+      </Alert>,
+    );
     expect(screen.getByTestId('alert').className).toContain('custom');
   });
 });

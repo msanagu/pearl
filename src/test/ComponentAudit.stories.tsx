@@ -132,7 +132,12 @@ function ComponentSampler() {
 const meta: Meta<typeof ComponentSampler> = {
   title: 'Audit/Components',
   component: ComponentSampler,
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    // The `StoryAudit` findings panel is dev chrome — keep axe off it, the
+    // same way Impeccable skips it via `data-audit-overlay`.
+    a11y: { context: { exclude: ['[data-audit-overlay]'] } },
+  },
 };
 export default meta;
 

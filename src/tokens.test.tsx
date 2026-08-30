@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { color, space, text } from './tokens';
-import { tahitianLightThemeClass, tahitianDarkThemeClass } from './themes/tahitian/tahitian.css';
+import {
+  tahitianLightThemeClass,
+  tahitianDarkThemeClass,
+} from './themes/tahitian/tahitian.css';
 
 // Phase 1 smoke tests: prove the token layer resolves and the test harness
 // (Vitest + RTL + jsdom + jest-dom matchers) is wired end-to-end. Real
@@ -33,6 +36,8 @@ describe('test harness', () => {
         Click me
       </button>,
     );
-    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Click me' }),
+    ).toBeInTheDocument();
   });
 });

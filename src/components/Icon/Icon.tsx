@@ -35,11 +35,9 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
  * Renders `data-component="icon"` for the override contract (see
  * docs/foundations/override-patterns.md) and merges an optional `className`.
  *
- * There is no `weight` prop: `react-icons` encodes weight in the icon *name*
- * rather than as a prop, so a Phosphor weight that used to be
- * `<Icon icon={Heart} weight="duotone" />` is now `<Icon icon={PiHeartDuotone} />`.
- * That is a set-specific concept, and hoisting it into this component's API
- * would have made every non-Phosphor set carry a prop it cannot honor.
+ * There is no `weight` prop: `react-icons` encodes weight in the icon name
+ * (`PiHeartDuotone`, not `weight="duotone"`). That's set-specific, so hoisting
+ * it into this API would make every non-Phosphor set carry a prop it can't honor.
  */
 export const Icon = forwardRef<SVGSVGElement, IconProps>(
   ({ icon: iconComponent, size = 20, className, ...rest }, ref) => {

@@ -24,13 +24,13 @@ of that by hand and will always have edge cases the native element doesn't.
 These four terms get conflated easily, so they're pinned down here:
 
 - **`header`** — reserved for the actual HTML5 `<header>` element (or a component
-  rendering one via `as="header"`, e.g. `Stack`). It names the composed *area*, not
+  rendering one via `as="header"`, e.g. `Stack`). It names the composed _area_, not
   any single piece of text inside it.
 - **heading** — the canon type-scale step (`Text`'s `variant`, e.g. `headingLg`,
   `displayLg`) paired with the correct semantic level via `as` (`h1`–`h6`),
   independently of visual size — see "Applied across the system" above.
 - **preheading** — a `Text` `role` (`themes/roles.ts`'s `TypographyRole`), not
-  a variant. The short line *above* a heading (Pearl's "A design system for
+  a variant. The short line _above_ a heading (Pearl's "A design system for
   identities that refuse sameness" above its hero `h1`). Deliberately not called
   "eyebrow": the name should say what it relates to. Kept distinct from `label`
   even where a theme's treatment happens to match, because it always pairs with a
@@ -42,14 +42,15 @@ These four terms get conflated easily, so they're pinned down here:
   `header`, or `as="span"` when it sits inline.
 
   **Pass `typeScale` unless every theme you target sizes the role.** A role is a
-  *face*, and whether it also carries a size is each theme's choice: Pearl sets
+  _face_, and whether it also carries a size is each theme's choice: Pearl sets
   `text.caption` on `[data-role="preheading"]`, Tahitian now does too, and South
   Sea and Freshwater have no treatment at all. A role with no size opinion
   inherits the ambient scale — which for a preheading means rendering at body
   size directly above the heading it introduces, inverting the hierarchy. Being
   explicit costs nothing where the theme already agrees, and is the difference
   between right and broken where it does not.
-- **subheading** — not yet a role; reserved for a short line *below* a heading,
+
+- **subheading** — not yet a role; reserved for a short line _below_ a heading,
   same pattern as `preheading` when a theme needs one.
 
 A `header` composes these — `<header><Text role="preheading">…</Text><Text as="h1"

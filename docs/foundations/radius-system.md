@@ -1,9 +1,9 @@
 # Radius System
 
-**This is an experiment, not a settled design-system stance.** It shipped
-2026-08-28 as a live trial of concentric derivation — Pearl's default card
-radius grew from an authored 16px to a derived 36px as a direct consequence,
-which is a real, debatable identity change, not a neutral refactor. Treat
+**This is an experiment, not a settled design-system stance.** It's a live
+trial of concentric derivation — Pearl's default card radius grew from an
+authored 16px to a derived 36px as a direct consequence, which is a real,
+debatable identity change, not a neutral refactor. Treat
 every number and rule below as provisional until it has been judged in
 Storybook and lived with for a while, not as prior art to defend.
 
@@ -11,12 +11,12 @@ One authored corner per theme. Everything else is geometry.
 
 ## The contract
 
-| Entry | Kind | What it is |
-|---|---|---|
-| `radius.control` | length | **The theme's corner.** Buttons, inputs, tags. The only radius a theme authors. |
-| `radius.full` | length | Maximal rounding, for square-aspect elements only — where it produces a true circle. |
-| `radius.nesting` | `'1'` / `'0'` | **Policy, not a value.** Whether this theme derives surface radii concentrically. |
-| `radius.cornerShape` | keyword | How the corner is drawn — `round`, `squircle`, `bevel`… |
+| Entry                | Kind          | What it is                                                                           |
+| -------------------- | ------------- | ------------------------------------------------------------------------------------ |
+| `radius.control`     | length        | **The theme's corner.** Buttons, inputs, tags. The only radius a theme authors.      |
+| `radius.full`        | length        | Maximal rounding, for square-aspect elements only — where it produces a true circle. |
+| `radius.nesting`     | `'1'` / `'0'` | **Policy, not a value.** Whether this theme derives surface radii concentrically.    |
+| `radius.cornerShape` | keyword       | How the corner is drawn — `round`, `squircle`, `bevel`…                              |
 
 Only the first two are design tokens in the ordinary sense. The last two are
 **theme policy** that happens to be carried as CSS custom properties, because one
@@ -54,10 +54,10 @@ because that is what every nested Button, Input, and Tag uses.
 Resolved on Pearl (`control: 12px`):
 
 | Card padding | Derived radius |
-|---|---|
-| `md` (16px) | 28px |
-| `lg` (24px) | 36px |
-| `xl` (32px) | 44px |
+| ------------ | -------------- |
+| `md` (16px)  | 28px           |
+| `lg` (24px)  | 36px           |
+| `xl` (32px)  | 44px           |
 
 ## How hard-edged themes opt out
 
@@ -79,14 +79,14 @@ instead of one.
 ## Known limits
 
 - **Control-in-surface only.** Additive derivation is correct for a control
-  inside a surface. For a *surface inside a surface* it over-produces, and one
+  inside a surface. For a _surface inside a surface_ it over-produces, and one
   level deeper the arithmetic goes negative. Nothing nests padded surfaces today;
   the fix if that changes is a subtractive cascade, not a bigger formula.
 - **Small surfaces degenerate.** `Card` has no `sm` padding step: the derivation
   makes `radius - padding` a constant, so at an 8px padding the corner is 2.5x
   the gap it sits in and the card reads corner-first.
 - **`squircle` makes the offset approximate, and that is fine.** `outer = inner +
-  gap` is exact for circular arcs. CSS `squircle` is `superellipse(2)`
+gap` is exact for circular arcs. CSS `squircle` is `superellipse(2)`
   (exponent 4), which reaches further along the 45 degree diagonal by a factor of
   `sqrt(2) / 2^(1/4)` = 1.189 — so a 32px gap opens to about 38px through the
   turn. **Do not compensate for it.** Along the straight runs the gap is set by
@@ -108,7 +108,7 @@ slider thumbs, status marks. Not "things that happen to be square," and never
 rectangles: `full` on a rectangle is a pill, and this system does not use pill
 shapes.
 
-Everything that sits *inside* something else is a nested control and takes
+Everything that sits _inside_ something else is a nested control and takes
 `radius.control`, whatever its aspect ratio. `Tag` moved off `full` for that
 reason, and so did `XButton` — an icon-only close button lives inside an Alert,
 so it is a nested control like any other. At 24x24 a 12px `control` is already

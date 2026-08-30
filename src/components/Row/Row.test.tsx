@@ -23,7 +23,9 @@ describe('Row', () => {
   it('applies a direction class distinct from Stack (row vs column)', () => {
     render(<Row data-testid="row" />);
     render(<Stack data-testid="stack" />);
-    expect(screen.getByTestId('row').className).not.toBe(screen.getByTestId('stack').className);
+    expect(screen.getByTestId('row').className).not.toBe(
+      screen.getByTestId('stack').className,
+    );
   });
 
   it('merges a custom className', () => {

@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
-const src = (p: string) => fileURLToPath(new URL(`./src/${p}`, import.meta.url));
+const src = (p: string) =>
+  fileURLToPath(new URL(`./src/${p}`, import.meta.url));
 
 /**
  * Single source of truth for the `@`-prefixed path aliases, shared by the

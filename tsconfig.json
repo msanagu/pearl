@@ -37,5 +37,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "experiments", ".storybook", "aliases.ts", "vite.config.ts", "vitest.config.ts"]
+  "include": [
+    "src",
+    ".storybook",
+    "aliases.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }

@@ -32,6 +32,8 @@ describe('Input', () => {
 
   it('merges a custom className', () => {
     render(<Input aria-label="Styled" className="custom" />);
-    expect(screen.getByRole('textbox', { name: 'Styled' }).className).toContain('custom');
+    expect(screen.getByRole('textbox', { name: 'Styled' }).className).toContain(
+      'custom',
+    );
   });
 });

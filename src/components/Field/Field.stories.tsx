@@ -58,7 +58,9 @@ const ZIP_PATTERN = /^[0-9]{5}$/;
  */
 function ZipCodeField(args: { label: string }) {
   const [value, setValue] = useState('9021A');
-  const error = ZIP_PATTERN.test(value) ? undefined : 'Enter a 5-digit ZIP code.';
+  const error = ZIP_PATTERN.test(value)
+    ? undefined
+    : 'Enter a 5-digit ZIP code.';
 
   return (
     <div style={{ maxWidth: 340 }}>
@@ -94,7 +96,9 @@ export const WithHintAndError: Story = {
   render: (args) => (
     <div style={{ maxWidth: 340 }}>
       <Field {...args}>
-        {(props) => <Input type="email" defaultValue="not-an-email" {...props} />}
+        {(props) => (
+          <Input type="email" defaultValue="not-an-email" {...props} />
+        )}
       </Field>
     </div>
   ),

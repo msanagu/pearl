@@ -38,13 +38,15 @@ let specifiersRewritten = 0;
 for (const file of walk(DIST)) {
   const before = readFileSync(file, 'utf8');
   const after = before.replace(/(['"])(@[^'"]*)\1/g, (match, quote, spec) => {
-    const hit = ALIASES.find(
-      ([a]) => (a.endsWith('/') ? spec.startsWith(a) : spec === a),
+    const hit = ALIASES.find(([a]) =>
+      a.endsWith('/') ? spec.startsWith(a) : spec === a,
     );
     if (!hit) return match; // a real npm scoped package (@vanilla-extract/…)
     const [alias, distPrefix] = hit;
     const target = path.join(DIST, distPrefix + spec.slice(alias.length));
-    let rel = path.relative(path.dirname(file), target).replaceAll(path.sep, '/');
+    let rel = path
+      .relative(path.dirname(file), target)
+      .replaceAll(path.sep, '/');
     if (!rel.startsWith('.')) rel = `./${rel}`;
     specifiersRewritten++;
     return `${quote}${rel}${quote}`;

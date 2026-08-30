@@ -17,6 +17,7 @@ No component or claim in this system should reference "WCAG 3.0 compliance" — 
 standard does not yet exist in a citable, testable form.
 
 **What's conceptually different in 3.0** (tracked for awareness, not implemented against):
+
 - Moves from binary pass/fail (A/AA/AAA) to an outcomes/requirements-based model scored
   Bronze/Silver/Gold — Bronze is roughly equivalent to today's 2.2 AA.
 - Shifts scope from "pages" to **"views" and "processes"** — a view is whatever content
@@ -30,13 +31,13 @@ Meeting WCAG 2.2 AA now is explicitly the best preparation for WCAG 3.0 — a 2.
 conformant system is already broadly aligned with 3.0's foundational Bronze tier, so
 nothing built against the 2.2 baseline is wasted effort.
 
-## Practical framing for documentation/portfolio use
+## How to state the conformance target
 
 > "Built to WCAG 2.2 AA, with an eye toward WCAG 3.0's shift from page-level to
 > view/process-level conformance."
 
-This signals awareness of where the standard is heading without overclaiming
-compliance with something unfinished.
+Accurate about where the standard is heading without overclaiming compliance
+with something unfinished.
 
 ## Applied per-component (examples so far)
 

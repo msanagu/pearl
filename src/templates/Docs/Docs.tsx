@@ -10,17 +10,38 @@ import { navLink, scrollRegion } from './Docs.css';
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const HEADER_H = 61;
 const foundations = ['Color', 'Space', 'Typography'];
-const components = ['Alert', 'Button', 'Card', 'Field', 'Icon', 'Input', 'Row', 'Stack', 'Tag', 'Text'];
+const components = [
+  'Alert',
+  'Button',
+  'Card',
+  'Field',
+  'Icon',
+  'Input',
+  'Row',
+  'Stack',
+  'Tag',
+  'Text',
+];
 const onThisPage = ['Variants', 'Props', 'States', 'Accessiblity'];
 const props = [
   { name: 'variant', type: 'primary | secondary', default: 'primary' },
   { name: 'disabled', type: 'boolean', default: 'false' },
 ];
 
-function NavGroup({ heading, items, current }: { heading: string; items: string[]; current?: string }) {
+function NavGroup({
+  heading,
+  items,
+  current,
+}: {
+  heading: string;
+  items: string[];
+  current?: string;
+}) {
   return (
     <Stack gap="xs" style={{ marginBottom: space.xl }}>
-      <Text role="preheading" as="p" prominence="subtle">{heading}</Text>
+      <Text role="preheading" as="p" prominence="subtle">
+        {heading}
+      </Text>
       {items.map((item) => {
         const isCurrent = item === current;
         return (
@@ -50,16 +71,33 @@ function NavGroup({ heading, items, current }: { heading: string; items: string[
 }
 
 function PropsTable() {
-  const cell: CSSProperties = { padding: `${space.md} ${space.md} ${space.md} 0`, borderBottom: `1px solid ${color.border}` };
-  const mono: CSSProperties = { fontFamily: MONO, fontSize: 14, color: color.textSubtle };
+  const cell: CSSProperties = {
+    padding: `${space.md} ${space.md} ${space.md} 0`,
+    borderBottom: `1px solid ${color.border}`,
+  };
+  const mono: CSSProperties = {
+    fontFamily: MONO,
+    fontSize: 14,
+    color: color.textSubtle,
+  };
   return (
     <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <table
+        style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}
+      >
         <thead>
           <tr>
             {['Prop', 'Type', 'Default'].map((heading) => (
-              <th key={heading} style={{ ...cell, borderBottom: `1px solid ${color.borderStrong}` }}>
-                <Text role="preheading" as="span" prominence="subtle">{heading}</Text>
+              <th
+                key={heading}
+                style={{
+                  ...cell,
+                  borderBottom: `1px solid ${color.borderStrong}`,
+                }}
+              >
+                <Text role="preheading" as="span" prominence="subtle">
+                  {heading}
+                </Text>
               </th>
             ))}
           </tr>
@@ -67,9 +105,17 @@ function PropsTable() {
         <tbody>
           {props.map((prop) => (
             <tr key={prop.name}>
-              <td style={cell}><span style={{ ...mono, color: color.text, fontWeight: 600 }}>{prop.name}</span></td>
-              <td style={cell}><span style={mono}>{prop.type}</span></td>
-              <td style={cell}><span style={mono}>{prop.default}</span></td>
+              <td style={cell}>
+                <span style={{ ...mono, color: color.text, fontWeight: 600 }}>
+                  {prop.name}
+                </span>
+              </td>
+              <td style={cell}>
+                <span style={mono}>{prop.type}</span>
+              </td>
+              <td style={cell}>
+                <span style={mono}>{prop.default}</span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -82,12 +128,19 @@ function ButtonDocs(): ReactNode {
   return (
     <Stack gap="xl">
       <Stack gap="sm">
-        <Text role="preheading" as="p" prominence="subtle">Components / Button</Text>
-        <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>Button</Text>
+        <Text role="preheading" as="p" prominence="subtle">
+          Components / Button
+        </Text>
+        <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>
+          Button
+        </Text>
         <Text typeScale="bodyLg" as="p" prominence="subtle" measure="lg">
-          One component, two emphases. The primary carries a 1px inner
-          highlight and a paired shadow for{' '}
-          <Text as="span" role="inlineEmphasis">quiet depth</Text>.
+          One component, two emphases. The primary carries a 1px inner highlight
+          and a paired shadow for{' '}
+          <Text as="span" role="inlineEmphasis">
+            quiet depth
+          </Text>
+          .
         </Text>
       </Stack>
 
@@ -98,7 +151,14 @@ function ButtonDocs(): ReactNode {
       <div id="emphases">
         <Card padding="lg">
           <Stack gap="md">
-            <Text role="preheading" typeScale="caption" prominence="subtle" as="p">Variants</Text>
+            <Text
+              role="preheading"
+              typeScale="caption"
+              prominence="subtle"
+              as="p"
+            >
+              Variants
+            </Text>
             <Row gap="md" align="center" wrap>
               <Button variant="primary">Primary</Button>
               <Button variant="secondary">Secondary</Button>
@@ -136,7 +196,9 @@ function ButtonDocs(): ReactNode {
         </pre>
       </div>
 
-      <div id="props"><PropsTable /></div>
+      <div id="props">
+        <PropsTable />
+      </div>
     </Stack>
   );
 }
@@ -150,7 +212,13 @@ function ButtonDocs(): ReactNode {
 export function Docs() {
   const stickyTop = HEADER_H;
   return (
-    <Stack style={{ minHeight: '100vh', background: color.background, color: color.text }}>
+    <Stack
+      style={{
+        minHeight: '100vh',
+        background: color.background,
+        color: color.text,
+      }}
+    >
       <main
         style={{
           display: 'grid',
@@ -163,7 +231,10 @@ export function Docs() {
           alignItems: 'start',
         }}
       >
-        <aside style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }} aria-label="Documentation">
+        <aside
+          style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }}
+          aria-label="Documentation"
+        >
           <NavGroup heading="Foundations" items={foundations} />
           <NavGroup heading="Components" items={components} current="Button" />
         </aside>
@@ -172,12 +243,23 @@ export function Docs() {
           <ButtonDocs />
         </article>
 
-        <nav style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }} aria-label="On this page">
+        <nav
+          style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }}
+          aria-label="On this page"
+        >
           <Stack gap="sm">
-            <Text role="preheading" as="p" prominence="subtle">On this page</Text>
+            <Text role="preheading" as="p" prominence="subtle">
+              On this page
+            </Text>
             {onThisPage.map((item, index) => (
               <a key={item} href="#" className={navLink}>
-                <Text typeScale="bodySm" as="span" prominence={index === 0 ? 'default' : 'subtle'}>{item}</Text>
+                <Text
+                  typeScale="bodySm"
+                  as="span"
+                  prominence={index === 0 ? 'default' : 'subtle'}
+                >
+                  {item}
+                </Text>
               </a>
             ))}
           </Stack>

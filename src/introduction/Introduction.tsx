@@ -1,5 +1,7 @@
-import { Fragment, useEffect } from 'react';
-import type { ReactNode } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
+import { ReactLenis, useLenis } from 'lenis/react';
+import { useReducedMotion } from 'motion/react';
 import {
   PiCaretDown,
   PiCompassRose,
@@ -8,155 +10,139 @@ import {
   PiTextAa,
 } from 'react-icons/pi';
 import { Text } from '@components/Text/Text';
+import { Button } from '@components/Button/Button';
 import { Card } from '@components/Card/Card';
 import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
 import { Icon } from '@components/Icon/Icon';
+import { Link } from '@components/Link/Link';
 import { Hero } from '@/templates/Hero/Hero';
+import { SiteHeader } from '@/templates/SiteHeader/SiteHeader';
+import { Footer } from '@/templates/Footer/Footer';
+import { pearlFooterPlate } from '@/templates/Footer/footerPlate';
 import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import { color } from '@tokens';
 import { themeSpecimens, type ThemeKey } from './ThemeSpecimen';
 import { componentCount, themeCount, modesPerTheme } from './liveStats';
+import { AutoHideHeader } from './AutoHideHeader';
 import * as css from './Introduction.css';
 
-/* ------------------------------------------------------------------ *
- * Content — lifted from the docs it summarizes, not re-invented here.
- * Each block cites the file that owns the claim, so this page stays a
- * VIEW over the docs rather than a second source of truth that drifts.
- * ------------------------------------------------------------------ */
+/* Content is a view over the docs it summarises, not re-invented here. */
 
 /**
- * Mirrors `docs/decisions/` frontmatter — `id`, `title`, `status`, `date`,
- * and the leading `tag` as the record's subject. `subject` is the short read
- * the index sets at heading scale; `title` is the record's real, full title
- * carried underneath, so nothing is lost to the compression.
- *
- * Listed in numeric order, which is also the order the decisions were
- * recorded. ADR numbers are immutable identifiers assigned at recording
- * time, NOT at acceptance — so a proposed 0007 preceding an accepted 0009
- * is correct, and sorting by status instead would print the index out of
- * sequence. Status is per-row meta rather than a grouping.
+ * The "The Record" index. Mirrors `DECISIONS.md` (the canonical public digest):
+ * adopted conventions first, then the ones under evaluation, each block in the
+ * order it was recorded. Two entries consolidate a pair each.
  */
 const decisions: {
   id: string;
   subject: string;
   title: string;
   status: 'accepted' | 'proposed';
-  /** Full ISO date from the record's frontmatter — the log is about when. */
+  /** Month the convention was recorded — rendered as "July 2026". */
   date: string;
   /** The forcing problem — what made a decision necessary at all. */
   why: string;
   /** The cost the record accepts with its eyes open. */
   cost: string;
+  /** Optional pointer to where this one is being worked out in the open. */
+  link?: { label: string; href: string };
 }[] = [
   {
     id: '0001',
     subject: 'Styling engine',
-    title: 'Use vanilla-extract as the styling engine',
+    title: 'Zero-runtime styling, driven by a compile-checked theme contract',
     status: 'accepted',
-    date: '2026-07-17',
-    why: 'The reskinning promise needs a contract the compiler can prove is complete — a theme missing a token has to fail the build, not fail silently at runtime.',
-    cost: 'A hand-maintained token wrapper for hover docs, and a bet on a lower-momentum tool than the utility-CSS mainstream.',
+    date: '2026-07',
+    why: 'The reskinning promise needs a contract the compiler can prove is complete — a theme missing a token fails the build, not silently at runtime. vanilla-extract models that natively and is zero-runtime: plain compiled CSS, nothing generating styles in the browser the way CSS-in-JS does, and theme switching is just a class swap and a CSS-variable cascade. It also keeps styling out of the markup with predictable specificity, unlike utility CSS.',
+    cost: 'vanilla-extract doesn’t surface documented, filterable token autocomplete on its own — that needs a wrapper layer, hand-maintained today, with no generator producing it from the contract yet.',
   },
   {
     id: '0002',
     subject: 'Composition',
     title: 'Favor composition over configuration in component APIs',
     status: 'accepted',
-    date: '2026-07-17',
-    why: 'Boolean and enum props whose only job is to toggle rendered structure multiply without bound, and each one is a decision the consumer could have made themselves with children.',
-    cost: 'Call sites are longer than a configured kit, and the rule needs judgement: a prop is legitimate exactly when the root must broker a cross-part decision.',
+    date: '2026-07',
+    why: 'Every prop is permanent API surface — to document, test, keep stable, and support indefinitely — and configuration-first components accumulate them without bound, one per use case the author happened to foresee. Composition keeps that surface deliberately small: build UI from parts already in the system, not new props, so there is far less to maintain as it grows.',
+    cost: 'New props aren’t added on spec — composition is the first answer, and a prop earns its place only once repeated real use shows the component itself must make a decision that depends on its content. That restraint takes judgement, and call sites run a little longer than a kit that ships every prop up front.',
   },
   {
     id: '0003',
     subject: 'Override contract',
-    title:
-      'Downstream overrides via a data-part contract, not class-name imports',
+    title: 'A stable styling hook for feature teams — greppable, not guesswork',
     status: 'accepted',
-    date: '2026-07-17',
-    why: 'Generated class names are an implementation detail. If downstream code targets them, every internal rename becomes a breaking change nobody declared.',
-    cost: 'The specificity guarantee depends on vanilla-extract emitting unlayered single-class rules — an engine swap would need re-proving.',
+    date: '2026-07',
+    why: 'When a feature team needs to adjust a component from the outside, they target a stable data-part attribute — from one place per feature — instead of reaching for inline styles or the component’s internal class names, which are an implementation detail that breaks silently on refactor. And because every override goes through the same named, greppable hook, the same one recurring across teams is a readable signal that the system itself should grow a real variant or token.',
+    cost: 'Composition stays the default — an override is a costed exception, and the team that writes one owns keeping it correct when the component’s internals move.',
   },
   {
     id: '0004',
     subject: 'Dependency stance',
-    title:
-      'Adopt only headless third-party dependencies; build-from-scratch by default',
+    title: 'Prefer headless dependencies; build by default, adopt deliberately',
     status: 'accepted',
-    date: '2026-07-17',
-    why: 'Styled kits have to be wrestled back out of their own opinions, and the visual identity is the one thing this system cannot outsource.',
-    cost: 'More upfront work on behavior-heavy components, and a smaller pool of eligible libraries to choose from.',
+    date: '2026-07',
+    why: 'The visual identity and markup are the one thing this system can’t outsource, so the preference is headless dependencies — behavior, logic, and accessibility only, with rendering and styling left entirely to us — and building from scratch by default. The exception is a few genuinely heavy components, like a data grid or charts, where the feature surface is large enough that a more opinionated dependency can be worth the cost of overriding it for the robust functionality it brings out of the box.',
+    cost: 'More upfront work on everything built in-house, and where a heavier dependency is adopted, an ongoing cost to keep its styling bent to the system rather than the other way around.',
   },
   {
     id: '0005',
-    subject: 'Token tiers',
-    title: 'Two-tier token architecture — primitives and semantics',
+    subject: 'Token conventions',
+    title: 'A semantic token tier between components and the raw palette',
     status: 'accepted',
-    date: '2026-07-17',
-    why: 'One palette has to serve unrelated intents. Naming a value by its hue keeps it honest; naming it by its job lets a theme remap that job without renaming anything.',
-    cost: 'Tracing a rendered color takes two lookups instead of one, and each theme owns its own scales rather than sharing a global set.',
+    date: '2026-07',
+    why: 'Components never read a raw color or spacing value — they read semantic tokens (surface, border, text) that sit on their own tier and map onto the palette underneath. Keeping that layer separate is what lets the mapping be re-tuned or re-pointed per theme without touching a component. And because each semantic token is scoped to one job, the combinations that reach the screen are ones designed to go together — which is where accessible contrast comes from.',
+    cost: 'One more layer to author and hold in your head, and tracing a rendered value back to its raw hex takes two hops instead of one.',
   },
   {
     id: '0006',
-    subject: 'Token naming',
-    title:
-      'Token naming — one prominence ladder, application-named where roles span destinations',
-    status: 'accepted',
-    date: '2026-07-17',
-    why: 'Two naming schemes had started to drift — prominence in some groups, application in others — so the same idea was being spelled two ways.',
-    cost: 'Sentiment groups use `icon` rather than the more familiar `solid`, which needs explaining once before it reads as obvious.',
+    subject: 'Theme extensions',
+    title: 'Themes can add their own visual effects, not just their own values',
+    status: 'proposed',
+    date: '2026-07',
+    why: 'Each theme should be able to bring visual character the shared system doesn’t define — an iridescent sheen, a tinted photo overlay. The first attempt gave the contract one slot for “the theme’s effect” and forced every theme to fill it, so themes with none had one invented just to satisfy the structure.',
+    cost: 'There’s no single list of every theme’s effects — finding them means reading each theme. That’s deliberate: an effect belongs to the theme that defines it, not to a shared vocabulary.',
   },
   {
     id: '0007',
-    subject: 'Treatments & roles',
-    title: 'Two system tiers — treatments and roles',
+    subject: 'Machine-readable manifest',
+    title:
+      'A manifest for coding agents, with stories as the usage context it points at',
     status: 'proposed',
-    date: '2026-07-19',
-    why: 'A shared effect slot made “this theme has no effect” inexpressible, and the inexpressible state got filled with invented ones — two themes had an effect fabricated purely to satisfy the contract.',
-    cost: 'No single type enumerates every theme’s treatments, so discovering them means reading theme modules. They are deliberately not interchangeable.',
+    date: '2026-08',
+    why: 'The bet: guidance that ships as structured data — generated from the same source as the components, so it can’t drift — keeps a coding agent accurate without a retrieval layer bolted on afterward. The manifest carries the component contracts, token roles, and usage rules. Its usage examples are the Storybook stories: written once for the docs a person reads, and surfaced through the manifest for an agent — one set of examples, nothing duplicated.',
+    cost: 'Whether it actually makes an agent more accurate is being measured, not assumed — generation runs against a real package install are logged in the open as they happen. Separately, the emerging standards the shape’s structure leans on are still young enough to move.',
+    link: {
+      label: 'Open the playground',
+      href: 'https://msanagu.github.io/pearl-playground/',
+    },
   },
   {
     id: '0008',
-    subject: 'Machine-readable manifest',
-    title: 'DSDS-aligned machine-readable manifest',
+    subject: 'Color & contrast',
+    title:
+      'Color authored for perceptual consistency, accessibility enforced by measurement',
     status: 'proposed',
-    date: '2026-08-26',
-    why: 'An agent reasoning about this system needs structured facts, not prose it has to re-derive — and an external draft spec turned out to have named the same shapes independently.',
-    cost: 'The manifest is not built yet, and the spec it borrows vocabulary from is pre-1.0 and may still move under it.',
+    date: '2026-08',
+    why: 'OKLCH is the authoring space because it makes a palette perceptually consistent — across four themes, steps and hues that look evenly related actually are. Contrast is measured and enforced separately on the real foreground/background pairs, by math rather than by eye.',
+    cost: 'Sanctioned pairs have to be enumerated by hand and kept current. The measurement code is built; the sweep that walks every pair is not — so today this is a convention with its math ready, not yet a guarantee the build enforces.',
   },
   {
     id: '0009',
-    subject: 'JSDoc floor',
+    subject: 'Motion dependencies',
     title:
-      'JSDoc stays minimum-viable; stories are the usage reference, not @example',
-    status: 'accepted',
-    date: '2026-08-26',
-    why: 'A hand-written @example drifts from the real API the moment a prop changes, while a story is compiled against it and cannot.',
-    cost: 'It presumes every component has a story demonstrating the same usage — Row currently does not, so that one is owed.',
-  },
-  {
-    id: '0010',
-    subject: 'Color & contrast',
-    title:
-      'Author color in OKLCH, enforce contrast on pairs, declare the fewest steps that survive',
+      'A modern motion stack, tried on this landing page before the system commits to it',
     status: 'proposed',
-    date: '2026-08-29',
-    why: 'The accessibility guarantee lived in a comment covering one of four themes — and the widely-repeated claim that perceptual color spaces make contrast safe by construction was measured here and does not hold.',
-    cost: 'Sanctioned pairs must be enumerated by hand and kept current. The measurement module is built; the sweep that walks every pair is not, so today this is a decision with its math ready, not a guarantee in the build.',
+    date: '2026-09',
+    why: 'The dependency stance says build by default and adopt deliberately — but "deliberately" needs evidence, and animation is a place where a good library saves real work. So `motion` and `lenis` come in as devDependencies used only under `src/introduction/`: this page is the testbed. The build already keeps them out of the shipped package — nothing here is re-exported from `src/index.ts`, and the declaration build excludes the directory — so the experiment costs consumers nothing while it runs.',
+    cost: 'The boundary is convention, not enforced: a stray import from a component file would not fail the build, only review. And living with two animation approaches — these libraries here, hand-rolled transitions everywhere else — until the evaluation resolves one way or the other.',
   },
 ];
 
 const acceptedCount = decisions.filter((d) => d.status === 'accepted').length;
 const proposedCount = decisions.length - acceptedCount;
 
-/**
- * Display-only — `decision.date` itself stays the full ISO date straight
- * from each ADR's frontmatter (the real source of truth; other code may
- * eventually sort or diff on it), this only reformats it for the index row.
- * `Date.parse('YYYY-MM-DD')` reads as UTC midnight; formatting in the
- * `'UTC'` time zone keeps the displayed month from shifting a day backward
- * for any reader west of Greenwich, which local-time formatting would do.
- */
+// Format in UTC so the displayed month doesn't shift a day backward for
+// readers west of Greenwich.
 function formatMonthYear(isoDate: string): string {
   return new Date(isoDate).toLocaleDateString('en-US', {
     month: 'long',
@@ -165,36 +151,23 @@ function formatMonthYear(isoDate: string): string {
   });
 }
 
-// Each theme's canonical read: Tahitian is built around black-lip nacre and
-// wants its dark pair; Pearl is the inverse. Same defaults the toolbar uses.
-// Order is the display order; the mode comes from `themeSpecimens`.
+// Display order; the mode for each comes from `themeSpecimens`.
 const specimenOrder = ['pearl', 'tahitian', 'freshwater', 'southSea'] as const;
 
-// Counts a reviewer could check against the repo in a minute, so they have to
-// be right. Every value here is derived, not typed in — `Components` and
-// `Themes`/`Modes each` come from `liveStats.ts`, which reads the real
-// public export surface (`src/index.ts`) rather than a hand-maintained
-// number; `Decision records` derives from the array above. `Components`
-// used to be hardcoded `'10'` and had already gone stale by the time `Link`
-// shipped — the exact failure mode a page arguing that rules shouldn't drift
-// can least afford. The brand marks stay uncounted, since they aren't
-// exported and aren't themeable canon (ADR-0007) — `liveStats`'s component
-// detector only sees what's actually in the export barrel, so this is
-// automatic, not a manual exclusion to remember.
+// Every value here is derived, not typed in — `liveStats.ts` reads the real
+// public export surface (`src/index.ts`), and `Conventions` comes from the
+// array above. The brand marks stay uncounted: they aren't exported, so the
+// component detector never sees them.
 const stats = [
   { value: String(componentCount), label: 'Components' },
   { value: String(themeCount), label: 'Themes' },
   { value: String(modesPerTheme), label: 'Modes each' },
-  { value: String(decisions.length), label: 'Decision records' },
+  { value: String(decisions.length), label: 'Conventions' },
 ];
 
-/**
- * Destinations are ROOT-relative (`/?path=...`), not bare `?path=...`. These
- * cards render inside Storybook's preview iframe, where a relative query
- * string resolves against `iframe.html` and lands on the bare preview app
- * instead of the shell. Paired with `target="_top"` so the link replaces the
- * whole page rather than nesting Storybook inside its own preview pane.
- */
+// Root-relative (`/?path=...`), not bare — inside Storybook's preview iframe a
+// relative query string resolves against `iframe.html`. Paired with
+// `target="_top"` so the link replaces the whole page.
 const nextSteps = [
   {
     icon: PiSwatches,
@@ -211,7 +184,7 @@ const nextSteps = [
   {
     icon: PiCube,
     title: 'Components',
-    body: 'Ten components, each with props, states, and stories as the usage reference (ADR-0009).',
+    body: 'Every component, with its props, states, and the story that doubles as its usage reference.',
     href: '/?path=/docs/components-alert--docs',
   },
   {
@@ -222,9 +195,7 @@ const nextSteps = [
   },
 ];
 
-/* ------------------------------------------------------------------ *
- * Section scaffolding
- * ------------------------------------------------------------------ */
+/* Section scaffolding */
 
 const toKebabCase = (s: string) =>
   s
@@ -233,17 +204,28 @@ const toKebabCase = (s: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-/**
- * A section opener: accent tick, eyebrow, title, optional standfirst. Keeps
- * every section's vertical rhythm and heading level identical instead of
- * re-deciding it eight times down the page.
- */
+// The hero's primary CTA smooth-scrolls to the Conventions section;
+// `href="#conventions"` is the no-JS fallback (the id comes from `SectionHead`).
+// `lenis` is passed when the page's smooth-scroll layer is active so the jump
+// shares its easing; without it (reduced motion) this is a native smooth scroll.
+function scrollToConventions(
+  event: MouseEvent<HTMLAnchorElement>,
+  lenis: ReturnType<typeof useLenis>,
+) {
+  const anchor = document.getElementById('conventions');
+  if (!anchor) return;
+  event.preventDefault();
+  if (lenis) lenis.scrollTo(anchor, { offset: -16 });
+  else anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/** A section opener: accent tick, preheading, title, optional standfirst. */
 function SectionHead({
-  eyebrow,
+  preheading,
   title,
   standfirst,
 }: {
-  eyebrow: string;
+  preheading: string;
   title: string;
   standfirst?: ReactNode;
 }) {
@@ -252,19 +234,15 @@ function SectionHead({
       <div className={css.sectionHeadLead}>
         <div className={css.sectionTick} aria-hidden="true" />
         <Text
-          id={toKebabCase(eyebrow)}
+          id={toKebabCase(preheading)}
           role="preheading"
           as="p"
           typeScale="caption"
           prominence="subtle"
+          style={{ scrollMarginTop: '2.5rem' }} // breathing room when a CTA scrolls to this id
         >
-          {eyebrow}
+          {preheading}
         </Text>
-        {/* `displayLg` — the top of the scale, the same step the wordmark
-            takes. A section opener is a statement, and the jump from here to
-            `bodyMd` beside it is where the page gets its tension. `measure`
-            keeps it wrapping to two or three lines, which reads as a block of
-            type rather than a stray long line. */}
         <Text as="h2" typeScale="displayLg" measure="sm" style={{ margin: 0 }}>
           {title}
         </Text>
@@ -304,48 +282,73 @@ function ThemeSpecimenFrame({ theme }: { theme: ThemeKey }) {
   );
 }
 
-/* ------------------------------------------------------------------ *
- * Page
- * ------------------------------------------------------------------ */
+/* Page */
 
 /**
- * The system's front door — a high-level read of what Pearl is, the four
- * decisions that shape it, and where to go next.
- *
- * Composed entirely from shipped components (`Text`, `Card`, `Button`,
- * `Tag`, `Alert`, `Icon`, `Row`, `Stack`, `PearlSphere`), so the page is
- * itself a specimen of the thing it introduces. Where the system has no
- * component yet — page grid, the decision table — the markup is plain and
- * flagged, the same convention `Docs.tsx` and `Hero.tsx` follow.
+ * The system's front door. Composed entirely from shipped components, so the
+ * page is itself a specimen of the thing it introduces. Where the system has no
+ * component yet (page grid, the record index) the markup is plain and flagged.
  */
 export interface IntroductionProps {
   /**
-   * Class for a theme's photographic-plate treatment, applied to the decision
-   * index plate. Tahitian passes its `overtonePlate` (an animated iridescent
-   * screen-blend); themes without such a treatment pass nothing and the plate
-   * renders as a plain inverse surface — treatments are additive, never a
-   * dependency (ADR-0007 rule 3).
+   * A theme's photographic-plate treatment, applied to the record index plate.
+   * Optional — treatments are additive, never a dependency; a theme without one
+   * passes nothing and the plate renders as a plain inverse surface.
    */
   plateTreatment?: string;
   /**
-   * Class for a theme's effect treatment, applied ambiently to the stats
-   * card — a demo of a downstream team reusing an exported treatment
-   * (`luster`/`overtone`/`wash`) on a plain, non-interactive, non-imagery
-   * surface, not one of the contexts it ships on elsewhere (see
-   * `statsTreatments.css.ts`). South Sea has none and passes nothing.
+   * A theme's effect treatment, applied ambiently to the stats card — a demo of
+   * a downstream team reusing an exported treatment on a plain surface. South
+   * Sea has none and passes nothing.
    */
   statsTreatment?: string;
+  /**
+   * The footer plate photo — resolved per theme by the story, the same shape
+   * as `plateTreatment`. Defaults to Pearl's for a standalone render.
+   */
+  footerPlateSrc?: string;
+  footerPlateAlt?: string;
+  /**
+   * The page's theme switcher, rendered in the masthead's `actions` slot.
+   * Threaded in from the story (it drives Storybook's globals); the page
+   * renders fine without it.
+   */
+  themeControl?: ReactNode;
 }
 
-export function Introduction({
+/**
+ * Wraps the page in `lenis`'s smooth-scroll layer so `useLenis` works in the
+ * page and its sticky header. Landing-page-only experiment — `lenis` / `motion`
+ * are devDependencies scoped to `src/introduction/` (DECISIONS.md 0009). Under
+ * `prefers-reduced-motion` the layer is skipped and everything falls back to
+ * native scrolling.
+ */
+export function Introduction(props: IntroductionProps) {
+  const reduceMotion = useReducedMotion();
+  if (reduceMotion) return <IntroductionPage {...props} />;
+  return (
+    <ReactLenis root>
+      <IntroductionPage {...props} />
+    </ReactLenis>
+  );
+}
+
+function IntroductionPage({
   plateTreatment = '',
   statsTreatment = '',
+  footerPlateSrc = pearlFooterPlate.src,
+  footerPlateAlt = pearlFooterPlate.alt,
+  themeControl,
 }: IntroductionProps) {
+  const lenis = useLenis();
+  // Marks the hero's bottom edge for `AutoHideHeader` — while it's on screen the
+  // masthead rides in flow; past it, the masthead goes sticky and summon-on-scroll.
+  const heroSentinelRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    // Storybook renders this story inside a preview iframe, so a
-    // `#decision-log` in the top-level URL never triggers the browser's
-    // native anchor-scroll — that only happens within one document. Read
-    // the hash off whichever window actually has it and scroll manually.
+    // In Storybook's preview iframe a hash in the top-level URL never triggers
+    // the browser's native anchor-scroll. Read it off whichever window has it
+    // and scroll manually.
     let hash = window.location.hash;
     if (!hash) {
       try {
@@ -356,68 +359,50 @@ export function Introduction({
     }
     if (!hash) return;
     const id = decodeURIComponent(hash.slice(1));
-    document.getElementById(id)?.scrollIntoView();
-  }, []);
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { immediate: true });
+    else el.scrollIntoView();
+  }, [lenis]);
 
   return (
     <>
-      {/* ---------------- Hero ----------------
-          Rendered outside `page`'s max-width container, full-bleed, the same
-          way `Hero.tsx`'s own story does — this page doubles as a preview of
-          what a real landing page for the package would look like, so the
-          nav's border and the hero band should reach the viewport edge, not
-          sit padded inside the docs-page column with everything below it.
-          `ctaTarget="_top"` escapes the Storybook preview iframe, matching
-          how the "next steps" cards below do the same with `target="_top"`
-          rather than the old `window.top!.location.href` handler this
-          replaced — a native anchor attribute instead of a click handler
-          doing the same thing manually. */}
+      {/* Masthead + hero are full-bleed, outside `page`'s max-width container,
+          so their borders reach the viewport edge. `AutoHideHeader` gives the
+          masthead its sticky / summon-on-scroll behavior once the hero is past;
+          the sentinel below the hero is how it knows. */}
+      <AutoHideHeader heroSentinelRef={heroSentinelRef}>
+        <SiteHeader
+          // Pearl-only page — the wordmark comes straight from
+          // `pearlBrandWordmark` so there's no second hardcoded 'pearl'.
+          brandName={pearlBrandWordmark.text}
+          brandRole={pearlBrandWordmark.role}
+          actions={themeControl}
+        />
+      </AutoHideHeader>
+
+      {/* Primary CTA scrolls to Conventions; secondary jumps to the component
+          docs (`_top` escapes the preview iframe). The playground has its own
+          section below, not a hero CTA. */}
       <Hero
-        // This page is Pearl-only (no theme toolbar) and always says
-        // "pearl" — never the dynamic per-theme wordmark
-        // `templates/Hero.stories.tsx` resolves from the toolbar — so both
-        // text and role come from `pearlBrandWordmark` directly (one
-        // source, no second hardcoded 'pearl' that could drift from it):
-        // the real wordmark, `inlineEmphasis` included.
-        brandName={pearlBrandWordmark.text}
-        brandRole={pearlBrandWordmark.role}
-        primaryHref="#decision-log"
-        primaryLabel="Follow the journey"
+        primaryHref="#conventions"
+        primaryLabel="See how it's built"
+        onPrimaryClick={(e) => scrollToConventions(e, lenis)}
         secondaryHref="/?path=/docs/components-alert--docs"
         secondaryLabel="Browse components"
-        ctaTarget="_top"
+        secondaryTarget="_top"
       />
+      <div ref={heroSentinelRef} aria-hidden="true" style={{ height: 0 }} />
 
       <div className={css.page}>
         <div className={css.sectionFlow}>
-          {/* ---------------- Reskinning ----------------
-              "Show, then tell" — the opposite argument order from every
-              other section on this page (and from Hero directly above it,
-              which announces its claim first). Sitting right after Hero,
-              a second SectionHead-style "big claim, then explanation
-              beside it" block read as the same shape repeated rather than
-              a new idea. Flipping the order breaks that: the four live
-              theme specimens (the actual proof) come first, and the title
-              + standfirst follow as a caption explaining what the reader
-              just watched happen, not an announcement asking them to take
-              it on faith. Not using `SectionHead` here on purpose — its
-              two-column "title beside standfirst" shape was built for the
-              tell-first case; stacked single-column reads better once the
-              text's job is "here's what that was," not "here's what's
-              about to happen." */}
+          {/* Reskinning — show, then tell: the live theme specimens (the proof)
+              come first, the title and standfirst follow as a caption. Not
+              `SectionHead` — its title-beside-standfirst shape is for the
+              tell-first case. */}
           <section>
             <div className={css.sectionBody}>
               <Stack gap="sm">
-                {/* <div className={css.sectionTick} aria-hidden="true" /> */}
-                {/* <Text
-                  id="theming"
-                  role="preheading"
-                  as="p"
-                  typeScale="caption"
-                  prominence="subtle"
-                >
-                  Theming
-                </Text> */}
                 <Text
                   as="h2"
                   typeScale="displaySm"
@@ -450,53 +435,13 @@ export function Introduction({
             </div>
           </section>
 
-          {/* ---------------- The premise ----------------
-            Previously a full `SectionHead` (eyebrow + `displayLg` heading +
-            standfirst paragraph) sitting ABOVE a Card that then restated the
-            same idea in prose — three consecutive doses of "big statement,
-            then explain it," right under the Hero doing the exact same
-            thing. Collapsed into one Card: a small eyebrow (still the tick
-            motif every other section uses, just not blown up to a second
-            display headline immediately after the Hero's own), a modest
-            statement instead of a repeated giant one, and the body broken
-            into labeled beats — "The hypothesis" / "The testbed" — matching
-            the same preheading-label pattern the decision log's own detail
-            panel already uses for "Why" / "Accepted cost", so a reader can
-            scan the labels before committing to the prose under either one.
-            Copy tightened alongside the restructure, not just moved: the
-            standfirst's "built to be legible to a coding agent... reasoning
-            on the record" and the hypothesis paragraph were saying most of
-            the same thing twice — cut instead of both kept. */}
+          {/* The premise — one Card, headline beside two labelled beats
+              ("The shift" / "The testbed"), the same preheading-label pattern
+              the record's detail panel uses. */}
           <section>
             <div className={css.sectionBody}>
-              {/* `premiseGrid` (Introduction.css.ts) — the same asymmetric
-                two-column proportion `sectionHead` uses elsewhere on this
-                page, so the headline and its two beats stop stacking in one
-                narrow left column with the card's other ~60% sitting empty.
-                `alignItems: 'start'`, not `sectionHead`'s `'end'` — see the
-                style's own comment for why this pairing needs a shared top
-                edge instead of a shared bottom one. */}
               <Card padding="xl">
                 <div className={css.premiseGrid}>
-                  {/* THIRD rewrite of this headline's line-breaking — manually
-                      forcing break points (`<br />` plus non-breaking spaces
-                      to glue fragile word pairs) kept fixing one width and
-                      breaking another: gluing "experiment" to its dash fixed
-                      an orphaned dash, then gluing "finished" to "product."
-                      fixed an orphaned word at one width but, at a narrower
-                      one, blocked the ONLY legal break point left in that
-                      line — so the glued pair overflowed past the column
-                      edge into the column beside it instead of wrapping, a
-                      worse bug than either orphan.
-                      `textWrap: 'balance'` instead: no forced breaks, no
-                      glued pairs, natural text with the browser distributing
-                      it evenly across lines at whatever width the column
-                      actually is — which is what "needs to wrap earlier"
-                      asks for in general, not just at one measured width.
-                      "experiment" still carries its emphasis via role, and
-                      "not a finished product" is still PROJECT_BRIEF's own
-                      phrase ("a 2026 snapshot, not a finished product"), not
-                      new copy — only the line-breaking mechanism changed. */}
                   <Text
                     as="h2"
                     typeScale="displaySm"
@@ -518,7 +463,7 @@ export function Introduction({
                         typeScale="caption"
                         prominence="subtle"
                       >
-                        The hypothesis
+                        The shift
                       </Text>
                       <Text
                         as="p"
@@ -526,9 +471,11 @@ export function Introduction({
                         measure="lg"
                         style={{ margin: 0 }}
                       >
-                        A system structured for machine legibility from day one
-                        needs less retrieval scaffolding than one that bolts RAG
-                        onto human-only docs after the fact.
+                        AI is changing what a design system can be — foundations
+                        and component contracts as data an agent reads directly,
+                        documentation that can't drift from the code,
+                        conventions legible enough to build against without
+                        exhaustive onboarding or guesswork.
                       </Text>
                     </Stack>
 
@@ -547,9 +494,10 @@ export function Introduction({
                         measure="lg"
                         style={{ margin: 0 }}
                       >
-                        The component library proves the idea, not just ships
-                        it. Every decision records what was weighed, what it
-                        cost, and when it's worth revisiting.
+                        Pearl is where those possibilities get tried, met with
+                        curiosity. Exploration runs wide; adoption is deliberate
+                        and slow — an approach becomes convention only once
+                        building with it has shown it worth keeping.
                       </Text>
                     </Stack>
                   </Stack>
@@ -558,27 +506,16 @@ export function Introduction({
             </div>
           </section>
 
-          {/* ---------------- Decision log ---------------- */}
+          {/* Conventions */}
           <section>
             <div className={css.sectionBody}>
-              {/* Standfirst carried "This project is itself the
-                experiment..." — now redundant with the premise card above
-                (Stats → Reskinning → "Pearl is an experiment"), which
-                already makes that exact claim. Replaced with the "how to
-                read this log" guidance instead, previously its own `Alert`
-                (icon, colored box, dismiss button) sitting below the
-                heading. Demoted to plain standfirst prose, same as every
-                other section's standfirst on this page — the card chrome
-                was doing more visual work than the message warranted, and
-                a page arguing that decisions are "dated, not settled
-                doctrine" doesn't need to dress that fact up as a warning. */}
               <SectionHead
-                eyebrow="Decision log"
-                title="Every architectural call, with its status"
-                standfirst="Opinions here are dated on purpose — each record's frontmatter shows what looked right on the day it was written, not settled doctrine. Proposed means still under test; a reversal is the method working, not a failure."
+                preheading="Conventions"
+                title="How Pearl is built — and what's still being tested"
+                standfirst="The conventions the system commits to, and the ones still being evaluated. Adopted ones would take a real reason to reverse; the open ones are approaches taken up to find out whether they hold up — where reversing later is the method working, not a failure. Each is dated to when the thinking behind it was done."
               />
 
-              {/* GAP — no Table component; this framed index is plain markup. */}
+              {/* No Table component — this framed index is plain markup. */}
               <div className={css.indexPanel}>
                 <div className={css.indexRailTop}>
                   <div className={css.indexRailCell}>
@@ -588,7 +525,7 @@ export function Introduction({
                       typeScale="caption"
                       prominence="subtle"
                     >
-                      Decision log
+                      Convention
                     </Text>
                   </div>
                   <div
@@ -600,7 +537,7 @@ export function Introduction({
                       typeScale="caption"
                       prominence="subtle"
                     >
-                      ADR {decisions[0]?.id} —{' '}
+                      No. {decisions[0]?.id} —{' '}
                       {decisions[decisions.length - 1]?.id}
                     </Text>
                   </div>
@@ -617,15 +554,8 @@ export function Introduction({
                 </div>
 
                 <div className={css.indexBody}>
-                  {/* `Text` always writes its own color, so the inverse pair has
-                    to be set per element — a `color` on the plate alone would
-                    be overridden by the recipe and render ink-on-ink.
-
-                    `plateTreatment` is threaded in from the story rather than
-                    hardcoded: `overtonePlate` is Tahitian's own extension
-                    treatment, and a page must render correctly with zero
-                    treatments (ADR-0007 rule 3). Same pattern `Hero.stories`
-                    uses for the per-theme wordmark. */}
+                  {/* `plateTreatment` is threaded in from the story; the page
+                    must render correctly with none. */}
                   <div className={`${css.indexPlate} ${plateTreatment}`.trim()}>
                     <img
                       src="/images/iridescent.jpg"
@@ -645,13 +575,9 @@ export function Introduction({
                     {decisions.map((decision) => (
                       <details key={decision.id} className={css.indexRecord}>
                         <summary className={css.indexRow}>
-                          {/* `preheading`, not a bare caption. Both themes' role
-                            tables put standalone IDs and index numbers under
-                            this role — Tahitian's says so explicitly, citing
-                            the same reference this index is built from — and
-                            it resolves to each theme's mono face. Without the
-                            role the ordinal silently falls back to the body
-                            font and stops reading as an index. */}
+                          {/* `preheading` resolves to each theme's mono face —
+                            without the role the ordinal reads as body text, not
+                            an index number. */}
                           <Text
                             role="preheading"
                             as="span"
@@ -662,33 +588,25 @@ export function Introduction({
                             {decision.id}
                           </Text>
 
-                          {/* One line, like the reference. The record's full
-                            title used to sit here as a second line, which left
-                            every row a two-line block with the ordinal and meta
-                            stranded between the lines. It now leads the
-                            disclosure instead — the collapsed index stays a
-                            scannable column of names. */}
-                          <Text
-                            as="h3"
-                            typeScale="displaySm"
-                            className={css.indexTitle}
-                            style={{ margin: 0 }}
-                          >
-                            {decision.subject}
-                          </Text>
+                          <div className={css.indexTitleCell}>
+                            <Text
+                              as="h3"
+                              typeScale="displayLg"
+                              className={css.indexTitle}
+                              style={{ margin: 0 }}
+                            >
+                              {decision.subject}
+                            </Text>
+                          </div>
 
                           <Row
                             gap="sm"
                             align="center"
                             className={css.indexMeta}
                           >
-                            {/* Color marks the exception, not the default. Seven
-                              of nine records are accepted, so coloring those
-                              paints most of the column and signals nothing —
-                              they stay subtle. `proposed` is the state worth
-                              finding, and takes `accent`: the theme's own
-                              quiet signal color, which is what accent is for
-                              (ADR-0006) rather than a sentiment hue. */}
+                            {/* Colour marks the exception: most rows are
+                              adopted and stay subtle; the in-evaluation ones
+                              take `accent`. */}
                             <Text
                               role="preheading"
                               as="span"
@@ -704,8 +622,10 @@ export function Introduction({
                                   : undefined
                               }
                             >
-                              {decision.status} /{' '}
-                              {formatMonthYear(decision.date)}
+                              {decision.status === 'accepted'
+                                ? 'adopted'
+                                : 'in evaluation'}{' '}
+                              / {formatMonthYear(decision.date)}
                             </Text>
                             <Icon
                               icon={PiCaretDown}
@@ -760,6 +680,15 @@ export function Introduction({
                             >
                               {decision.cost}
                             </Text>
+                            {decision.link && (
+                              <Link
+                                href={decision.link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {decision.link.label} →
+                              </Link>
+                            )}
                           </Stack>
                         </Stack>
                       </details>
@@ -774,7 +703,7 @@ export function Introduction({
                     typeScale="caption"
                     prominence="subtle"
                   >
-                    {acceptedCount} accepted / {proposedCount} proposed
+                    {acceptedCount} adopted / {proposedCount} in evaluation
                   </Text>
                   <Text
                     role="preheading"
@@ -782,14 +711,101 @@ export function Introduction({
                     typeScale="caption"
                     prominence="subtle"
                   >
-                    docs / decisions
+                    the conventions
                   </Text>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* ---------------- Stats ---------------- */}
+          {/* Playground — the manifest convention shown working. The run is
+              written up in `docs/playground/`; regenerate the image
+              (`public/images/`) if the assistant's output changes materially. */}
+          <section>
+            <div className={css.sectionBody}>
+              <div className={css.playgroundHead}>
+                <div className={css.playgroundHeadLead}>
+                  <div className={css.sectionTick} aria-hidden="true" />
+                  <Text
+                    id="playground"
+                    role="preheading"
+                    as="p"
+                    typeScale="caption"
+                    prominence="subtle"
+                  >
+                    Playground
+                  </Text>
+                  <Text
+                    as="h2"
+                    typeScale="headingLg"
+                    measure="sm"
+                    style={{ margin: 0 }}
+                  >
+                    An agent builds with Pearl
+                  </Text>
+                  <div className={css.playgroundCta}>
+                    <a
+                      href="https://msanagu.github.io/pearl-playground/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button variant="primary">Open the playground →</Button>
+                    </a>
+                    <Text
+                      as="p"
+                      typeScale="bodySm"
+                      prominence="subtle"
+                      measure="md"
+                      className={css.playgroundNote}
+                    >
+                      Runs in your browser with your own Anthropic API key.
+                    </Text>
+                  </div>
+                </div>
+                <Text
+                  as="p"
+                  typeScale="bodyMd"
+                  prominence="subtle"
+                  measure="md"
+                  style={{ margin: 0 }}
+                >
+                  Pearl's manifest and llms.txt ship in the package, so any
+                  coding agent works from that context directly — no retrieval
+                  layer, no MCP server. The aim: build from real primitives,
+                  compose what's missing from them, and flag the gap rather than
+                  invent an API. The playground is one way to try it.
+                </Text>
+              </div>
+
+              <figure className={css.playgroundShot}>
+                <div className={css.playgroundFrame}>
+                  <img
+                    src="/images/pearl-playground-thread.png"
+                    alt="Pearl Playground: on the left, a coding agent's thread reasoning about the design system; on the right, a live-rendered notification settings panel with a success alert, three toggle rows, and Save changes / Reset buttons."
+                    className={css.playgroundImage}
+                  />
+                </div>
+                <figcaption className={css.playgroundCaption}>
+                  <Text
+                    as="p"
+                    typeScale="bodySm"
+                    prominence="subtle"
+                    measure="md"
+                    style={{ margin: 0 }}
+                  >
+                    One prompt — “a notification settings panel”. Pearl has no
+                    toggle component, so the agent surfaced that as a gap,
+                    composed a candidate from existing primitives using the
+                    system's own tokens, and flagged it for promotion into the
+                    system — rather than inventing an API that isn't there.
+                  </Text>
+                </figcaption>
+              </figure>
+            </div>
+          </section>
+
+          {/* Stats */}
           <section className={css.narrowContent} aria-label="What is shipped">
             <Card padding="xl" className={statsTreatment}>
               <Row justify="between" align="center" gap="lg" wrap>
@@ -818,10 +834,10 @@ export function Introduction({
             </Card>
           </section>
 
-          {/* ---------------- Next ---------------- */}
+          {/* Next */}
           <section>
             <div className={css.sectionBody}>
-              <SectionHead eyebrow="Start here" title="Where to go next" />
+              <SectionHead preheading="Start here" title="Where to go next" />
 
               <div className={css.nextGrid}>
                 {nextSteps.map((step) => (
@@ -856,6 +872,16 @@ export function Introduction({
           </section>
         </div>
       </div>
+
+      {/* Footer — full-bleed outside `page`, the way the hero is. The wordmark
+          is Pearl's own text; the plate photo is threaded in per theme by the
+          story, like `plateTreatment`. */}
+      <Footer
+        brandName={pearlBrandWordmark.text}
+        brandRole={pearlBrandWordmark.role}
+        plateImageSrc={footerPlateSrc}
+        plateImageAlt={footerPlateAlt}
+      />
     </>
   );
 }

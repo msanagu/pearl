@@ -1,47 +1,45 @@
 <!--
-  South Sea's serif (Zodiak) and sans (General Sans) — free via Fontshare,
-  not published on npm/@fontsource, so they're loaded by CDN link here
-  rather than self-hosted like the rest of the system's fonts. The design
-  bundle (design/Pearl Theme Contract.dc.html) requests both families in one
-  combined `f[]=...&f[]=...` query, but Fontshare's API has a real bug there:
-  any family after the first silently drops from the response (verified by
-  querying the same combo repeatedly — Zodiak alone and General Sans alone
-  each return their @font-face rules every time; combined, only the first
-  listed family survives). Two separate requests sidestep it.
+  Fontshare CDN faces — Zodiak, General Sans, Boska (South Sea), Switzer
+  (Tahitian), Gambetta (Pearl). Not on npm/@fontsource, so loaded here rather
+  than self-hosted like the rest of the system's fonts.
 
-  Fontshare also caps each request at 3 styles — a 4th silently breaks the
-  *entire* response with a generic "Access... temporarily restricted" error
-  (verified: general-sans@400,500,600,700 fails every time; any 3-weight
-  subset succeeds). General Sans is used at FIVE weights now — 300 (Field's
-  label/hint, a deliberate escape from `southSeaFontWeight`'s own
-  regular/medium/semibold/bold scale — see south-sea.css.ts) plus the
-  original four — so it's split 3+2 across two requests below.
+  Two Fontshare API constraints shape the requests below:
+  - Only the first `f[]` family in a request survives; the rest drop silently.
+    So one family per request.
+  - Each request caps at 3 styles; a 4th breaks the whole response. Families
+    with more weights are split across requests (General Sans 3+2, Switzer 3+1).
 
-  Zodiak's italic style also has its own Fontshare quirk: italic isn't a
-  separate `f[]` flag, it's requested as `weight + 1` (401, 701) — loaded
-  below even though South Sea's own roman/italic MIX ended up using Times
-  for the italic half, not Zodiak's (see `southSeaFonts.serifItalic`'s own
-  comment in south-sea.css.ts for why: the design reference's italic was
-  itself an accidental Times fallback, and that accident became the
-  intended voice). Zodiak's italic is still loaded and still genuinely
-  applies wherever `southSeaFonts.serif` + `font-style: italic` is used
-  directly — it just isn't this theme's default italic anymore.
-
-  Boska carries both headings and display scale steps (see
-  south-sea.css.ts) — Regular (400) only, no Light cut in use anywhere in
-  this theme, so a single-style request.
-
-  Switzer (Fontshare, free) is Tahitian's body face (tahitian.css.ts). Same
-  3-style-per-request cap applies — `tahitianFontWeight` uses all four
-  regular/medium/semibold/bold weights, split 3+1 across two requests below.
-
-  Gambetta (Fontshare, free) is Pearl's `serifItalic` treatment, italic only.
+  Zodiak italic is requested as `weight + 1` (401, 701) — Fontshare has no
+  separate italic flag. It still applies wherever `southSeaFonts.serif` +
+  `font-style: italic` is used, though South Sea's default italic is Times
+  (see `southSeaFonts.serifItalic` in south-sea.css.ts).
 -->
-<link rel="preconnect" href="https://api.fontshare.com">
-<link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,401,700,701&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@600,700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=boska@400&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=switzer@700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=gambetta@401&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link
+  href="https://api.fontshare.com/v2/css?f[]=zodiak@400,401,700,701&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=general-sans@600,700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=boska@400&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=switzer@700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://api.fontshare.com/v2/css?f[]=gambetta@401&display=swap"
+  rel="stylesheet"
+/>

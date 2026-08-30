@@ -3,9 +3,12 @@ import { expect } from 'storybook/test';
 import { runImpeccableAudit } from './impeccablePlay';
 import { StoryAudit } from './StoryAudit';
 import { Hero } from '@/templates/Hero/Hero';
+import { SiteHeader } from '@/templates/SiteHeader/SiteHeader';
 import { Docs } from '@/templates/Docs/Docs';
 import { Form } from '@/templates/Form/Form';
-import { brandWordmarkForTheme } from '@components/_brand/brandWordmark';
+import { Footer } from '@/templates/Footer/Footer';
+import { footerPlateForTheme } from '@/templates/Footer/footerPlate';
+import { brandWordmarkForTheme } from '@components/_brand/WordMark/brandWordmark';
 
 /**
  * Template audit — the composition-level counterpart to the component audit
@@ -22,7 +25,12 @@ import { brandWordmarkForTheme } from '@components/_brand/brandWordmark';
  */
 const meta: Meta = {
   title: 'Audit/Templates',
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    // The `StoryAudit` findings panel is dev chrome — keep axe off it, the
+    // same way Impeccable skips it via `data-audit-overlay`.
+    a11y: { context: { exclude: ['[data-audit-overlay]'] } },
+  },
 };
 export default meta;
 
@@ -34,20 +42,34 @@ const gate: NonNullable<Story['play']> = async ({ canvasElement }) => {
   expect(count, text).toBe(0);
 };
 
-export const HeroTemplate: Story = {
-  name: 'Hero',
+export const SiteHeaderTemplate: Story = {
+  name: 'SiteHeader',
   render: (_args, { globals }) => {
-    // Same theme → wordmark resolution as Templates/Hero, so the audited hero
-    // is the one the toolbar's theme actually ships (`pearl` vs `TAHITIAN`
-    // vs `south sea`), decoration included — a hardcoded wordmark would hide
-    // findings that only the decorated marks produce.
+    // Same theme → wordmark resolution as Templates/SiteHeader, so the audited
+    // masthead is the one the toolbar's theme actually ships (`pearl` vs
+    // `TAHITIAN` vs `south sea`), decoration included — a hardcoded wordmark
+    // would hide findings that only the decorated marks produce.
     const wordmark = brandWordmarkForTheme(globals.theme as string | undefined);
     return (
       <StoryAudit>
-        <Hero brandName={wordmark.text} brandRole={wordmark.role} />
+        <SiteHeader
+          brandName={wordmark.text}
+          brandRole={wordmark.role}
+          brandUnderscoreColor={wordmark.underscoreColor}
+        />
       </StoryAudit>
     );
   },
+  play: gate,
+};
+
+export const HeroTemplate: Story = {
+  name: 'Hero',
+  render: () => (
+    <StoryAudit>
+      <Hero />
+    </StoryAudit>
+  ),
   play: gate,
 };
 
@@ -70,5 +92,25 @@ export const FormTemplate: Story = {
       <Form />
     </StoryAudit>
   ),
+  play: gate,
+};
+
+export const FooterTemplate: Story = {
+  name: 'Footer',
+  render: (_args, { globals }) => {
+    const theme = globals.theme as string | undefined;
+    const wordmark = brandWordmarkForTheme(theme);
+    const plate = footerPlateForTheme(theme);
+    return (
+      <StoryAudit>
+        <Footer
+          brandName={wordmark.text}
+          brandRole={wordmark.role}
+          plateImageSrc={plate.src}
+          plateImageAlt={plate.alt}
+        />
+      </StoryAudit>
+    );
+  },
   play: gate,
 };

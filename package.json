@@ -1,6 +1,6 @@
 {
   "name": "@msanagu/pearl",
-  "version": "0.1.0",
+  "version": "0.3.2",
   "description": "A small, intentional, composition-first React design system styled with vanilla-extract.",
   "type": "module",
   "license": "MIT",
@@ -25,7 +25,12 @@
       "import": "./dist/index.js"
     },
     "./index.css": "./dist/index.css",
-    "./manifest.json": "./dist/manifest.json",
+    "./manifest/base.json": "./dist/manifest/base.json",
+    "./manifest/pearl.json": "./dist/manifest/pearl.json",
+    "./manifest/tahitian.json": "./dist/manifest/tahitian.json",
+    "./manifest/freshwater.json": "./dist/manifest/freshwater.json",
+    "./manifest/south-sea.json": "./dist/manifest/south-sea.json",
+    "./components/*": "./dist/components/*",
     "./llms.txt": "./dist/llms.txt"
   },
   "files": [
@@ -34,6 +39,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc -p tsconfig.build.json && node scripts/rewrite-dts-aliases.mjs && node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
+    "prepare": "pnpm build",
     "generate:manifest": "node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -81,6 +87,8 @@
     "impeccable": "^3.3.1",
     "jest-axe": "^10.0.0",
     "jsdom": "^29.1.1",
+    "lenis": "^1.3.26",
+    "motion": "^13.1.1",
     "playwright": "^1.61.1",
     "prettier": "^3.9.6",
     "react": "^19.2.7",

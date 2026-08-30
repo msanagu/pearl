@@ -5,7 +5,7 @@
 Every value below is authored in `rem`, not `px` — spacing scales with a user's
 browser/OS **base font-size** preference, not just page zoom (WCAG SC 1.4.4). Standard
 browser zoom (Ctrl/Cmd +) scales `px` and `rem` identically, since it zooms the whole
-rendered page; the two units only diverge when someone raises their *base* font size as
+rendered page; the two units only diverge when someone raises their _base_ font size as
 a persistent accessibility setting without zooming. `px`-pinned spacing (and control
 height) stays fixed while `rem`-based text grows around it, which is how you get
 overflowing buttons and cramped padding at larger base sizes. Same reasoning
@@ -16,19 +16,19 @@ useful for eyeballing sizes, not the authored unit.
 
 ## The scale
 
-| Token | Value | ≈px at 16px root | Typical use |
-|---|---|---|---|
-| `xs` | 0.25rem | 4px | icon-to-label gaps, tight chip/badge padding |
-| `sm` | 0.5rem | 8px | related inline elements, compact padding |
-| `md` | 1rem | 16px | default component padding, standard rhythm |
-| `lg` | 1.5rem | 24px | section spacing, card padding |
-| `xl` | 2rem | 32px | major layout gaps |
-| `2xl` | 3rem | 48px | page-section separation |
+| Token | Value   | ≈px at 16px root | Typical use                                  |
+| ----- | ------- | ---------------- | -------------------------------------------- |
+| `xs`  | 0.25rem | 4px              | icon-to-label gaps, tight chip/badge padding |
+| `sm`  | 0.5rem  | 8px              | related inline elements, compact padding     |
+| `md`  | 1rem    | 16px             | default component padding, standard rhythm   |
+| `lg`  | 1.5rem  | 24px             | section spacing, card padding                |
+| `xl`  | 2rem    | 32px             | major layout gaps                            |
+| `2xl` | 3rem    | 48px             | page-section separation                      |
 
 These are the values Pearl, Freshwater, and South Sea share. **The scale is
 per-theme, not global** — each theme owns its own density (see "Composed
 values" below for Tahitian's, and `theme.css.ts` on why non-color scales are
-authored per theme rather than shared). The *token names* and the "multiples of
+authored per theme rather than shared). The _token names_ and the "multiples of
 `sm`, `xs` for a named reason" rule are what is system-wide.
 
 ## Why "soft," not strict
@@ -41,7 +41,7 @@ there's a specific, named reason to drop to `xs`.**
 
 ## Composed values — `calc()` of tokens is on-system
 
-Internal design-system styles sometimes need a value that sits *between* two
+Internal design-system styles sometimes need a value that sits _between_ two
 steps. Composing it from scale tokens is **on-system and allowed**:
 
 ```ts
@@ -56,7 +56,7 @@ the scale; it is the `xs` half-step rule applied to a sum. The Tag example
 earns it because a pill's end-caps read boxy at `sm` and bloated at `md`, and
 that reasoning sits in the file next to the declaration.
 
-What is *not* on-system is the same number written as a literal:
+What is _not_ on-system is the same number written as a literal:
 
 ```ts
 paddingLeft: '12px',   // ✗ — off-system, even though it computes identically
@@ -67,10 +67,10 @@ paddingLeft: '12px',   // ✗ — off-system, even though it computes identicall
 Because the grid is defined in **token steps, not absolute pixels**, and each
 theme owns its own scale. Today:
 
-| Theme | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | Grid |
-|---|---|---|---|---|---|---|---|
-| Pearl / Freshwater / South Sea | 4 | 8 | 16 | 24 | 32 | 48 | 8px, 4px half-step |
-| Tahitian | 8 | 12 | 20 | 28 | 40 | 56 | 4px |
+| Theme                          | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | Grid               |
+| ------------------------------ | ---- | ---- | ---- | ---- | ---- | ----- | ------------------ |
+| Pearl / Freshwater / South Sea | 4    | 8    | 16   | 24   | 32   | 48    | 8px, 4px half-step |
+| Tahitian                       | 8    | 12   | 20   | 28   | 40   | 56    | 4px                |
 
 `calc(sm + xs)` is on-grid in **every** theme by construction — 12px in Pearl,
 20px in Tahitian, and correct in both. The literal `12px` is on-grid only in
@@ -94,7 +94,7 @@ The shipped example is the control-text inset in
 [Input.css.ts](../../src/components/Input/Input.css.ts):
 
 ```ts
-max(space.md, radius.control)
+max(space.md, radius.control);
 ```
 
 It crosses the **space** and **radius** scales, and mixes `rem` with `px`
@@ -150,9 +150,9 @@ for what shipped instead.
 type-level constraint, not a style convention: passing an arbitrary number is a
 compile-time error, not just a lint warning.
 
-That covers the *public* API. Internal `.css.ts` values have no such type gate,
-so the composed-value rule above is what the planned no-raw-values lint rule
-(OPEN_QUESTIONS #7) has to encode: **a `calc()` whose operands are all
+That covers the _public_ API. Internal `.css.ts` values have no such type gate,
+so the composed-value rule above is what a no-raw-values lint rule — a documented
+convention, not yet enforced — would have to encode: **a `calc()` whose operands are all
 `vars.*` references passes; a `calc()` containing any bare length literal
 fails.** Written that way the rule needs no allowlist of "blessed" composed
 values — legitimacy is checkable from the operands alone.
@@ -165,8 +165,8 @@ values — legitimacy is checkable from the operands alone.
   default) rather than a bespoke value, so nested components inherit consistent rhythm.
 - **Icon** — sizes land on the grid (16px, 20px, 24px, 32px) so icons align cleanly with
   text and other components regardless of context.
-- **Button** — height is the shared `controlHeight.md` token (ADR-0005's density lever),
-  not a value Button picks itself — the same token Input consumes, so the two land at an
+- **Button** — height is the shared `controlHeight.md` token (the semantic-tier
+  density lever), not a value Button picks itself — the same token Input consumes, so the two land at an
   identical height and align cleanly in the same row regardless of theme. Padding is
   still declared on Button (`paddingTop`/`paddingBottom: space.sm`), but with an explicit
   `height` and `box-sizing: border-box` it doesn't change the rendered box; it states the
@@ -176,7 +176,7 @@ values — legitimacy is checkable from the operands alone.
 
 ## Grouping: gap ratios, not gap values
 
-Where several elements stack, the *ratio* between gaps is what communicates
+Where several elements stack, the _ratio_ between gaps is what communicates
 structure — a uniform gap leaves equally-weighted lines with no visible grouping,
 however well-chosen the value is.
 
@@ -197,7 +197,7 @@ as a rendering inconsistency rather than a grouping.
 ## Relationship to typography
 
 Typography shares this same 8px soft grid — line-height, in px, lands on it exactly
-the way spacing does. But line-height is *authored* as a unitless multiplier, not a
+the way spacing does. But line-height is _authored_ as a unitless multiplier, not a
 fixed px value: WCAG SC 1.4.12 (Text Spacing) requires that a user's forced
 line-spacing override scale with font-size rather than collide with an author-fixed
 px number, which only a unitless ratio allows. Each theme picks the ratio that lands

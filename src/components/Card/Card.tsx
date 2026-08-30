@@ -3,12 +3,9 @@ import { clsx } from 'clsx';
 import { card, cardInteractive, cardHeader, cardBody } from './Card.css';
 
 /**
- * Interior padding — and, because the card's radius derives from it, its shape.
- * See `Card.css.ts`: `radius = radius.control + padding`, so a roomier card is
- * automatically a rounder one, staying concentric with the controls inside it.
- *
- * Steps run `md` -> `xl`; there is no `sm`, which is too tight to carry the
- * derived corner. See the `padding` variant in `Card.css.ts`.
+ * Interior padding — and, since the card's radius derives from it
+ * (`radius.control + padding`), its shape. Steps run `md` -> `xl`; no `sm`,
+ * which is too tight to carry the derived corner.
  */
 export type CardPadding = 'md' | 'lg' | 'xl';
 
@@ -22,21 +19,14 @@ export type CardProps =
   | ({ href?: undefined } & CardOwnProps & HTMLAttributes<HTMLDivElement>)
   | ({ href: string } & CardOwnProps & AnchorHTMLAttributes<HTMLAnchorElement>);
 
-// `Card.Header` / `Card.Body` are static-property namespacing, NOT a Context
-// compound component — there is no shared state, so none is used (ADR-0002).
-// Each subcomponent is independently simple
-// and renders the `data-component`/`data-part` override contract.
+// `Card.Header` / `Card.Body` are static-property namespacing, not a Context
+// compound component — no shared state.
 //
-// `href` makes the whole card a link — `data-interactive` is the only signal
-// this file gives about it. Card stays theme-unaware (ADR-0007 rule 3: components
-// render correctly with zero extension treatments); Pearl's own file is what
-// turns `data-interactive` into the luster hover glow, the same way `Text`
-// writes `data-role` without knowing what any theme does with it. A card with
-// no `href` is not interactive and never lusters, on any theme — luster signals
-// "this takes you somewhere," not "this is a card."
+// `href` makes the whole card a link and sets `data-interactive`. Card stays
+// theme-unaware; a theme file is what turns `data-interactive` into a hover
+// treatment. A card with no `href` is inert on every theme.
 function CardRoot({ children, className, href, padding, ...rest }: CardProps) {
-  // `padding` is consumed by the recipe, never spread onto the DOM node. An
-  // undefined value falls through to the recipe's own `defaultVariants`.
+  // Consumed by the recipe, never spread onto the DOM node.
   const rootClass = card({ padding });
 
   if (href !== undefined) {
@@ -63,7 +53,11 @@ function CardRoot({ children, className, href, padding, ...rest }: CardProps) {
   );
 }
 
-function CardHeader({ children, className, ...rest }: HTMLAttributes<HTMLDivElement>) {
+function CardHeader({
+  children,
+  className,
+  ...rest
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-component="card"
@@ -76,7 +70,11 @@ function CardHeader({ children, className, ...rest }: HTMLAttributes<HTMLDivElem
   );
 }
 
-function CardBody({ children, className, ...rest }: HTMLAttributes<HTMLDivElement>) {
+function CardBody({
+  children,
+  className,
+  ...rest
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-component="card"
@@ -90,21 +88,16 @@ function CardBody({ children, className, ...rest }: HTMLAttributes<HTMLDivElemen
 }
 
 /**
- * A surface container. Compose `Card.Header` and `Card.Body` for structure; the
- * root is just the surface/border/radius shell (layout via CSS, no Context).
- * Pass `href` to make the whole card a link — only then does it pick up hover
- * feedback (and, on Pearl, the luster glow); a non-link card stays inert.
+ * A surface container. Compose `Card.Header` / `Card.Body` for structure; the
+ * root is the surface/border/radius shell. Pass `href` to make the whole card a
+ * link — only then does it pick up hover feedback.
  *
- * `padding` sets the interior spacing AND the corner radius together — the
- * radius is derived as `radius.control + padding`, so the card stays concentric
- * with the controls nested inside it. Hard-edged themes opt out via
- * `radius.nesting` and stay square at every padding.
+ * `padding` sets interior spacing and corner radius together
+ * (`radius.control + padding`); hard-edged themes opt out via `radius.nesting`.
  *
  * **As a flex or grid item, give it a `min-width`.** Card sets `overflow:
- * hidden` (to clip media and backgrounds to the derived radius), and that
- * changes an item's automatic minimum size from `min-content` to zero — so a
- * card in a row will shrink past its own content and clip it rather than
- * refusing to. Nothing warns you; the content just disappears.
+ * hidden`, which drops an item's automatic minimum size to zero — without a
+ * floor it shrinks past its content and clips it, with no warning.
  */
 export const Card = Object.assign(CardRoot, {
   Header: CardHeader,

@@ -5,7 +5,10 @@ import { Card } from './Card';
 describe('Card', () => {
   it('renders the root with the override contract attribute', () => {
     render(<Card data-testid="card">content</Card>);
-    expect(screen.getByTestId('card')).toHaveAttribute('data-component', 'card');
+    expect(screen.getByTestId('card')).toHaveAttribute(
+      'data-component',
+      'card',
+    );
   });
 
   it('renders Header and Body with matching data-part attributes', () => {

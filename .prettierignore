@@ -7,3 +7,11 @@ design/
 patches/
 pnpm-lock.yaml
 *.log
+
+# Authored token/theme layer — the scale tables, sentiment maps, and variant
+# recipes here are formatted as tables on purpose, wider than Prettier's
+# printWidth. Everything else in src/ is Prettier-managed.
+src/theme.css.ts
+src/themes/
+src/components/Alert/Alert.css.ts
+src/components/Tag/Tag.css.ts

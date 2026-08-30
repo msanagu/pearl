@@ -1,27 +1,16 @@
 /**
  * Contrast math — measure a pair, or solve for the value that hits a target.
  *
- * Zero dependencies, by decision (ADR-0010). The two things this system
- * actually needs are small: measuring a pair is a dozen lines, and solving
- * "what value of this hue clears 4.5:1 against that background" is a binary
- * search. Adobe Leonardo does both and more, but it arrives with five
- * transitive dependencies and four unfixable prototype-pollution advisories in
- * `mout` (via `ciebase`/`ciecam02`) — a poor trade for arithmetic this size.
- * Leonardo remains useful as an occasional offline cross-check; it is
- * deliberately not a dependency here.
+ * Zero dependencies: measuring a pair is a dozen lines and solving "what value
+ * of this hue clears 4.5:1 against that background" is a binary search — not
+ * worth a library's transitive dependency and advisory surface.
  *
- * ## This module is not the rules
- * It provides measurement only. WHICH pairs must hold is data that lives
- * elsewhere (the sanctioned-pairs table); this file is what that data is
- * checked *with*. Keeping the two apart is what lets the same rules run from
- * Vitest, a Storybook panel, or a CLI without being rewritten (ADR-0010) —
- * so nothing here should ever import a theme.
+ * Measurement only. Which pairs must hold lives in the sanctioned-pairs table;
+ * this file is what that data is checked with, so nothing here imports a theme.
  *
- * ## Color space
- * WCAG contrast is defined on sRGB relative luminance, so measurement works in
- * sRGB. Solving works in OKLCH, because "hold hue and chroma, move lightness"
- * is only a meaningful operation in a perceptually uniform space — the whole
- * reason ADR-0010 makes OKLCH the authoring space while still emitting hex.
+ * Measurement works in sRGB (where WCAG contrast is defined); solving works in
+ * OKLCH, since "hold hue and chroma, move lightness" is only meaningful in a
+ * perceptually uniform space.
  */
 
 /** An `#RRGGBB` string. Shorthand (`#RGB`) is deliberately not accepted — theme values are always full-length. */
@@ -57,11 +46,10 @@ function toHex({ r, g, b }: Rgb): Hex {
 }
 
 /**
- * sRGB → linear. The threshold is `0.03928`, not the mathematically correct
- * `0.04045`, because that is the constant WCAG 2.x itself publishes and what
- * axe-core (and therefore Storybook's a11y addon, the tool this project is
- * already judged against) implements. The two disagree only in the eighth
- * decimal of luminance; matching the checker beats matching the spec errata.
+ * sRGB → linear. Threshold is `0.03928` (what WCAG 2.x publishes and axe-core
+ * implements), not the corrected `0.04045` — matching the checker this project
+ * is judged against beats matching the spec errata; they disagree only in the
+ * eighth decimal of luminance.
  */
 function linearize(c: number): number {
   return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
@@ -75,7 +63,7 @@ export function luminance(hex: Hex): number {
 
 /**
  * WCAG 2.x contrast ratio, 1–21. Order-independent: contrast is a property of
- * the pair, not of a foreground or a background (ADR-0010).
+ * the pair, not of a foreground or a background.
  */
 export function contrast(a: Hex, b: Hex): number {
   const la = luminance(a);
@@ -91,8 +79,7 @@ export function ratio(a: Hex, b: Hex): number {
 
 // ---- OKLCH ----
 //
-// Björn Ottosson's Oklab, plus the sRGB transfer functions. Written out rather
-// than pulled from a library for the reason in the file header.
+// Björn Ottosson's Oklab, plus the sRGB transfer functions.
 
 function encode(c: number): number {
   return c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
@@ -124,9 +111,15 @@ export function rgbToOklch(hex: Hex): Oklch {
   const lg = decode(g);
   const lb = decode(b);
 
-  const l_ = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
-  const m_ = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
-  const s_ = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+  const l_ = Math.cbrt(
+    0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb,
+  );
+  const m_ = Math.cbrt(
+    0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb,
+  );
+  const s_ = Math.cbrt(
+    0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb,
+  );
 
   const l = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
   const a = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
@@ -142,11 +135,9 @@ function inGamut({ r, g, b }: Rgb): boolean {
 }
 
 /**
- * Gamut-map by reducing chroma at fixed lightness and hue — the standard
- * approach, and the one that preserves the two properties a step ladder cares
- * about. Naively clipping RGB channels instead would shift both hue and
- * lightness, which would silently break the "one hue per palette" invariant the
- * themes are now verified against.
+ * Gamut-map by reducing chroma at fixed lightness and hue. Clipping RGB
+ * channels instead would shift hue and lightness, breaking the "one hue per
+ * palette" invariant.
  */
 export function toGamut(target: Oklch): Oklch {
   if (inGamut(oklchToRgb(target))) return target;
@@ -194,8 +185,7 @@ export type SolveResult = {
  * Find the value of `base`'s hue that hits `target` contrast against `against`,
  * by binary search over OKLCH lightness.
  *
- * This is the "solve" half of ADR-0010: it answers "what belongs on this rung?"
- * without a generator dependency, and without taking authorship away — the
+ * Answers "what belongs on this rung?" without a generator dependency. The
  * output is a starting value to review and adjust, not a committed artifact.
  *
  * Chroma is preserved where the gamut allows and reduced where it doesn't
@@ -206,7 +196,8 @@ export type SolveResult = {
  */
 export function solveForContrast(options: SolveOptions): SolveResult {
   const { against, target, direction = 'auto' } = options;
-  const base = typeof options.base === 'string' ? rgbToOklch(options.base) : options.base;
+  const base =
+    typeof options.base === 'string' ? rgbToOklch(options.base) : options.base;
 
   const at = (l: number) => oklchToHex({ ...base, l });
   const ratioAt = (l: number) => contrast(at(l), against);
@@ -264,9 +255,8 @@ export function solveForContrast(options: SolveOptions): SolveResult {
 // ---- Thresholds ----
 
 /**
- * WCAG 2.x minimums, named. Values are the standard's, not this project's
- * preference — a house margin (ADR-0010 discusses one) belongs in the rules
- * table, not baked into the vocabulary.
+ * WCAG 2.x minimums, named. Values are the standard's — a house margin belongs
+ * in the rules table, not baked into the vocabulary.
  */
 export const WCAG = {
   /** 1.4.3 — body text. */

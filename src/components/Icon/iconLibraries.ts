@@ -4,8 +4,7 @@
  * `react-icons` normalizes ~30 icon sets to one `IconType` signature, so they
  * are interchangeable at the code level. What that signature does not tell you
  * is what each set costs you in character, coverage, or association — which is
- * what `notes` records (ADR-0004: third-party dependencies are adopted
- * deliberately, with the reasoning written down).
+ * what `notes` records.
  *
  * Deliberately metadata-only — it imports no icon components, so referencing
  * it costs nothing at runtime and cannot defeat tree-shaking. Consumers still
@@ -132,7 +131,8 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     treatment: 'outline',
     weights: false,
     size: 600,
-    notes: "GitHub's set. Same developer-facing read as Codicons, slightly warmer.",
+    notes:
+      "GitHub's set. Same developer-facing read as Codicons, slightly warmer.",
   },
   {
     id: 'si',
@@ -147,6 +147,5 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
 ] as const;
 
 /** Every set above, keyed by its `react-icons` subpath. */
-export const ICON_LIBRARIES_BY_ID: Readonly<Record<string, IconLibrary>> = Object.fromEntries(
-  ICON_LIBRARIES.map((library) => [library.id, library]),
-);
+export const ICON_LIBRARIES_BY_ID: Readonly<Record<string, IconLibrary>> =
+  Object.fromEntries(ICON_LIBRARIES.map((library) => [library.id, library]));

@@ -13,7 +13,7 @@ import {
 } from 'react-icons/pi';
 import { Icon } from '@components/Icon/Icon';
 import { Text } from '@components/Text/Text';
-import { XButton } from '@components/_internal/XButton';
+import { XButton } from '@components/_internal/XButton/XButton';
 import { color } from '@tokens';
 import { alert, iconSlot, content } from './Alert.css';
 
@@ -78,7 +78,18 @@ const roleByVariant: Partial<Record<AlertVariant, 'alert'>> = {
 };
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
-  ({ variant = 'info', heading, icon, onDismiss, className, children, ...rest }, ref) => {
+  (
+    {
+      variant = 'info',
+      heading,
+      icon,
+      onDismiss,
+      className,
+      children,
+      ...rest
+    },
+    ref,
+  ) => {
     const IconComponent = icon ?? defaultIconByVariant[variant];
     const textColor = textColorByVariant[variant];
 
@@ -98,7 +109,13 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
 
         <div data-part="content" className={content}>
           {heading && (
-            <Text as="p" data-part="heading" typeScale="bodyMd" weight="semibold" style={{ color: textColor }}>
+            <Text
+              as="p"
+              data-part="heading"
+              typeScale="bodyMd"
+              weight="semibold"
+              style={{ color: textColor }}
+            >
               {heading}
             </Text>
           )}
@@ -109,7 +126,9 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
           )}
         </div>
 
-        {onDismiss && <XButton aria-label="Dismiss notification" onClick={onDismiss} />}
+        {onDismiss && (
+          <XButton aria-label="Dismiss notification" onClick={onDismiss} />
+        )}
       </div>
     );
   },

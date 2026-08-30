@@ -21,8 +21,14 @@ const meta: Meta<typeof Stack> = {
       options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       description: 'Gap between children — space-scale token names only.',
     },
-    align: { control: 'select', options: [undefined, 'start', 'center', 'end', 'stretch'] },
-    justify: { control: 'select', options: [undefined, 'start', 'center', 'end', 'between'] },
+    align: {
+      control: 'select',
+      options: [undefined, 'start', 'center', 'end', 'stretch'],
+    },
+    justify: {
+      control: 'select',
+      options: [undefined, 'start', 'center', 'end', 'between'],
+    },
   },
 };
 export default meta;

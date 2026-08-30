@@ -106,17 +106,15 @@ import { Row } from '@components/Row';
 import { Stack } from '@components/Stack';
 import { Text } from '@components/Text';
 
-/**
- * An icon paired with the name it is exported under. The name is not
- * cosmetic — the "Show code" panel below every story is generated from it, so
- * what the panel prints is the real import and the real `<Icon />` call rather
- * than a serialization of this file's own scaffolding.
- */
+/** An icon paired with its export name — the code panel is generated from it. */
 interface Entry {
   name: string;
   Component: IconType;
 }
-const entry = (name: string, Component: IconType): Entry => ({ name, Component });
+const entry = (name: string, Component: IconType): Entry => ({
+  name,
+  Component,
+});
 
 const iconMapping = {
   Heart: PiHeart,
@@ -128,16 +126,10 @@ const iconMapping = {
 };
 
 /**
- * Wraps any `react-icons` icon component. Renders `data-component="icon"` for
- * the override contract (see docs/foundations/override-patterns.md).
- *
- * Every set shares one `IconType` signature, so which set an icon comes from is
- * an import detail — swapping sets changes nothing here. The stories below
- * demonstrate that.
- *
- * There is no `weight` prop. `react-icons` encodes weight in the icon *name*,
- * so Phosphor's six weights are six exports (`PiHeartThin` … `PiHeartDuotone`)
- * rather than one component and a prop.
+ * Wraps any `react-icons` icon component and renders `data-component="icon"`
+ * for the override contract. Every set shares one `IconType` signature, so
+ * swapping sets is an import change and nothing more — the stories below show
+ * that. No `weight` prop: `react-icons` encodes weight in the icon name.
  */
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
@@ -150,10 +142,8 @@ const meta: Meta<typeof Icon> = {
     size: 32,
   },
   argTypes: {
-    // `icon` takes an icon *component*, which has no readable string form —
-    // without `mapping`, both the Controls addon and the "Show code" panel
-    // dump the raw function. Storing the key in args and resolving it only at
-    // render time keeps both readable.
+    // Store the key in args and resolve to a component at render time — an icon
+    // component has no readable string form for Controls or the code panel.
     icon: {
       control: 'select',
       options: Object.keys(iconMapping),
@@ -168,14 +158,12 @@ type Story = StoryObj<typeof Icon>;
 // ---- Source generation -----------------------------------------------------
 
 /**
- * Storybook's default "Show code" serializes the rendered element tree, which
- * for a `render`-function story means this file's helper components and lookup
- * tables — implementation detail, not usage. Every story below overrides it
- * with `docs.source.code`, built from real export names, so the panel answers
- * "how do I call this?" instead of "how is this story built?".
+ * Storybook's default "Show code" serializes the rendered tree — for a
+ * `render`-function story that's this file's scaffolding, not usage. Every
+ * story below overrides `docs.source.code` with the real import + call.
  */
 function sourceFor(importPath: string, names: string[], body: string): string {
-  return `import { Icon } from '@msanagu/design-system';\nimport { ${names.join(
+  return `import { Icon } from '@msanagu/pearl';\nimport { ${names.join(
     ', ',
   )} } from '${importPath}';\n\n${body}`;
 }
@@ -188,16 +176,20 @@ function staticSource(code: string) {
 // ---- Switching sets --------------------------------------------------------
 
 /**
- * The same eight concepts drawn by eight sets. Keys are semantic, values are
- * whatever each set happens to name that concept — the naming is *not*
- * consistent across sets (`PiMagnifyingGlass` vs `LuSearch` vs `RiSearchLine`),
- * which is precisely why a lookup like this is needed to swap sets as a unit.
- *
- * `null` means the set has no icon for that concept. Radix genuinely lacks a
- * shield, which is the concrete form of its registry note: a small set that
- * expects to be supplemented.
+ * The same eight concepts across eight sets. Naming isn't consistent between
+ * sets (`PiMagnifyingGlass` vs `LuSearch` vs `RiSearchLine`), which is why the
+ * lookup exists. `null` means the set has no icon for that concept.
  */
-const CONCEPTS = ['search', 'settings', 'heart', 'star', 'bell', 'shield', 'user', 'warning'] as const;
+const CONCEPTS = [
+  'search',
+  'settings',
+  'heart',
+  'star',
+  'bell',
+  'shield',
+  'user',
+  'warning',
+] as const;
 type Concept = (typeof CONCEPTS)[number];
 
 const SETS: Record<string, Record<Concept, Entry | null>> = {
@@ -288,7 +280,9 @@ const SET_IDS = Object.keys(SETS);
 function entriesOf(libraryId: string): Entry[] {
   const set = SETS[libraryId];
   if (!set) return [];
-  return CONCEPTS.map((concept) => set[concept]).filter((e): e is Entry => e !== null);
+  return CONCEPTS.map((concept) => set[concept]).filter(
+    (e): e is Entry => e !== null,
+  );
 }
 
 function ConceptRow({ libraryId, size }: { libraryId: string; size: number }) {
@@ -336,13 +330,8 @@ function setSource(libraryId: string, size: number): string {
 type SetStory = StoryObj<{ library: string; size: number }>;
 
 /**
- * Pick a set from the control and the whole icon vocabulary swaps at once.
- * Nothing about `Icon`, the `data-component` contract, or the surrounding
- * layout changes — only the import does. That's the property that makes icon
- * set a *theme decision* rather than a code decision.
- *
- * The code panel regenerates with the control, so it always shows the exact
- * import for the set currently on screen.
+ * Pick a set from the control and the whole icon vocabulary swaps — only the
+ * import changes. The code panel regenerates with it.
  */
 export const SwitchingSets: SetStory = {
   args: { library: 'pi', size: 28 },
@@ -354,8 +343,10 @@ export const SwitchingSets: SetStory = {
     docs: {
       source: {
         language: 'tsx',
-        transform: (_code: string, ctx: { args: { library: string; size: number } }) =>
-          setSource(ctx.args.library, ctx.args.size),
+        transform: (
+          _code: string,
+          ctx: { args: { library: string; size: number } },
+        ) => setSource(ctx.args.library, ctx.args.size),
       },
     },
   },
@@ -378,19 +369,20 @@ export const SwitchingSets: SetStory = {
 };
 
 /**
- * Every set at once, stacked, so the differences are comparable rather than
- * remembered. Stroke weight, corner treatment, and optical size vary far more
- * than the shared `IconType` signature suggests — which is the whole argument
- * for tagging them by aesthetic instead of picking by familiarity.
+ * Every set stacked, so stroke weight, corner treatment, and optical size are
+ * comparable side by side — they vary more than the shared signature suggests.
  */
 export const AllSetsCompared: StoryObj = {
   parameters: staticSource(
-    `import { Icon } from '@msanagu/design-system';\n` +
-      SET_IDS.map((id) => `import { ${entriesOf(id)[0]?.name ?? ''} } from 'react-icons/${id}';`).join(
-        '\n',
-      ) +
+    `import { Icon } from '@msanagu/pearl';\n` +
+      SET_IDS.map(
+        (id) =>
+          `import { ${entriesOf(id)[0]?.name ?? ''} } from 'react-icons/${id}';`,
+      ).join('\n') +
       `\n\n// One component, one contract, eight sets.\n` +
-      SET_IDS.map((id) => `<Icon icon={${entriesOf(id)[0]?.name ?? ''}} size={26} />`).join('\n'),
+      SET_IDS.map(
+        (id) => `<Icon icon={${entriesOf(id)[0]?.name ?? ''}} size={26} />`,
+      ).join('\n'),
   ),
   render: () => (
     <Stack gap="2xl">
@@ -439,8 +431,13 @@ export const SwitchingStyles: WeightStory = {
     docs: {
       source: {
         language: 'tsx',
-        transform: (_code: string, ctx: { args: { weight: string; size: number } }) => {
-          const found = PHOSPHOR_WEIGHTS.find((e) => e.name === ctx.args.weight) ?? DEFAULT_WEIGHT;
+        transform: (
+          _code: string,
+          ctx: { args: { weight: string; size: number } },
+        ) => {
+          const found =
+            PHOSPHOR_WEIGHTS.find((e) => e.name === ctx.args.weight) ??
+            DEFAULT_WEIGHT;
           return sourceFor(
             'react-icons/pi',
             [found.name],
@@ -451,7 +448,8 @@ export const SwitchingStyles: WeightStory = {
     },
   },
   render: ({ weight, size }) => {
-    const found = PHOSPHOR_WEIGHTS.find((e) => e.name === weight) ?? DEFAULT_WEIGHT;
+    const found =
+      PHOSPHOR_WEIGHTS.find((e) => e.name === weight) ?? DEFAULT_WEIGHT;
     return <Icon icon={found.Component} size={size} />;
   },
 };
@@ -462,7 +460,9 @@ export const AllStyles: StoryObj = {
     sourceFor(
       'react-icons/pi',
       PHOSPHOR_WEIGHTS.map((e) => e.name),
-      PHOSPHOR_WEIGHTS.map((e) => `<Icon icon={${e.name}} size={28} />`).join('\n'),
+      PHOSPHOR_WEIGHTS.map((e) => `<Icon icon={${e.name}} size={28} />`).join(
+        '\n',
+      ),
     ),
   ),
   render: () => (
@@ -479,7 +479,12 @@ export const AllStyles: StoryObj = {
   ),
 };
 
-const OUTLINE_FILLED: { label: string; path: string; outline: Entry[]; filled: Entry[] }[] = [
+const OUTLINE_FILLED: {
+  label: string;
+  path: string;
+  outline: Entry[];
+  filled: Entry[];
+}[] = [
   {
     label: 'Phosphor',
     path: 'react-icons/pi',
@@ -539,7 +544,7 @@ const OUTLINE_FILLED: { label: string; path: string; outline: Entry[]; filled: E
  */
 export const OutlineVersusFilled: StoryObj = {
   parameters: staticSource(
-    `import { Icon } from '@msanagu/design-system';\n` +
+    `import { Icon } from '@msanagu/pearl';\n` +
       OUTLINE_FILLED.map(
         (group) =>
           `import { ${group.outline[0]?.name}, ${group.filled[0]?.name} } from '${group.path}';`,

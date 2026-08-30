@@ -14,7 +14,8 @@ broker that — Alert's `heading` shifts where its icon sits, Field's `required`
 a static, visible `*` but marks it `aria-hidden` because the control's own
 `aria-required` already announces it — the mark stays purely visual, never suppressed.
 A bare boolean/enum with no such coupling is always compositional —
-that's the common case, not the whole test. See ADR-0002 for the worked examples.
+that's the common case, not the whole test. See the composition-over-configuration
+entry in [DECISIONS.md](../../DECISIONS.md) for the worked examples.
 
 ## Smart defaults, always escapable
 
@@ -50,7 +51,7 @@ tab is active) is a deliberate, bounded exception to "dumb outside its four wall
 a violation of it. The rule: **siblings within a component family may coordinate; a
 component must never reach outside its own family.** No component in this system uses
 Context today — `Card.Header`/`Card.Body` are static-property namespacing with no shared
-state (see ADR-0002) — so this exception is documented ahead of its first real use, not
+state — so this exception is documented ahead of its first real use, not
 retrofitted to one.
 
 **When to use compound components:** only when sub-parts need to genuinely coordinate
@@ -61,7 +62,7 @@ category; compound components are the exception, used sparingly and only where j
 
 ## Trade-off: duplication vs. the wrong abstraction
 
-DRY (avoiding repeated *data*) is not free — it often trades data duplication for logic
+DRY (avoiding repeated _data_) is not free — it often trades data duplication for logic
 complexity. Before unifying two things into one abstraction, ask: **is the thing being
 unified structurally guaranteed to stay simple, or just simple today?**
 
@@ -77,7 +78,7 @@ wrong abstraction is expensive to unwind once code has grown around it.
 
 ## The invariant themes may not override: controls look like controls at rest
 
-"Smart defaults, always escapable" is about *composition* — it does not license a
+"Smart defaults, always escapable" is about _composition_ — it does not license a
 theme to remove a control's affordance. Every interactive control that occupies a
 box renders a visible boundary in its resting state, in every theme and every
 mode. A theme chooses how quiet that boundary is; it does not choose whether

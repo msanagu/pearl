@@ -23,7 +23,9 @@ describe('Icon', () => {
 
   it('merges a custom className', () => {
     const { container } = render(<Icon icon={PiHeart} className="custom" />);
-    expect(container.querySelector('svg')?.getAttribute('class')).toContain('custom');
+    expect(container.querySelector('svg')?.getAttribute('class')).toContain(
+      'custom',
+    );
   });
 
   it('forwards ref to the underlying svg element', () => {
@@ -36,13 +38,18 @@ describe('Icon', () => {
   // set goes through unchanged, contract and all.
   it('accepts an icon from a different set', () => {
     const { container } = render(<Icon icon={LuHeart} />);
-    expect(container.querySelector('svg')).toHaveAttribute('data-component', 'icon');
+    expect(container.querySelector('svg')).toHaveAttribute(
+      'data-component',
+      'icon',
+    );
   });
 
   // Duotone is weight-as-a-name now, and Icon.css.ts recolors the two layers
   // by source order — so the two-path structure is load-bearing, not cosmetic.
   it('renders duotone icons as two stacked paths', () => {
     const { container } = render(<Icon icon={PiHeartDuotone} />);
-    expect(container.querySelectorAll('svg path').length).toBeGreaterThanOrEqual(2);
+    expect(
+      container.querySelectorAll('svg path').length,
+    ).toBeGreaterThanOrEqual(2);
   });
 });

@@ -41,9 +41,11 @@ function validate(values: FormValues): FormErrors {
   if (!values.fullName.trim()) errors.fullName = 'Enter your full name.';
 
   if (!values.email.trim()) errors.email = 'Enter an email address.';
-  else if (!emailPattern.test(values.email)) errors.email = 'Enter a valid email address.';
+  else if (!emailPattern.test(values.email))
+    errors.email = 'Enter a valid email address.';
 
-  if (!values.addressLine1.trim()) errors.addressLine1 = 'Enter a street address.';
+  if (!values.addressLine1.trim())
+    errors.addressLine1 = 'Enter a street address.';
   if (!values.city.trim()) errors.city = 'Enter a city.';
 
   if (!values.postalCode.trim()) errors.postalCode = 'Enter a postal code.';
@@ -89,21 +91,27 @@ export function Form() {
       gap="xl"
       onSubmit={handleSubmit}
       noValidate
-      style={{ maxWidth: 640, margin: '0 auto', padding: `${space['2xl']} ${space.xl}` }}
+      style={{
+        maxWidth: 640,
+        margin: '0 auto',
+        padding: `${space['2xl']} ${space.xl}`,
+      }}
     >
       <Stack gap="xs">
         <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>
           Shipping details
         </Text>
         <Text typeScale="bodyMd" prominence="subtle" as="p" measure="md">
-          Required fields are marked. Submitting with missing or invalid values surfaces
-          both an inline error on the field and a summary banner above the form.
+          Required fields are marked. Submitting with missing or invalid values
+          surfaces both an inline error on the field and a summary banner above
+          the form.
         </Text>
       </Stack>
 
       {errorCount > 0 && (
         <Alert variant="negative" heading="Fix the following before continuing">
-          {errorCount} {errorCount === 1 ? 'field needs' : 'fields need'} attention below.
+          {errorCount} {errorCount === 1 ? 'field needs' : 'fields need'}{' '}
+          attention below.
         </Alert>
       )}
       {status === 'success' && errorCount === 0 && (
@@ -130,7 +138,12 @@ export function Form() {
                 />
               )}
             </Field>
-            <Field label="Email" required error={errors.email} hint="We'll send order updates here.">
+            <Field
+              label="Email"
+              required
+              error={errors.email}
+              hint="We'll send order updates here."
+            >
               {(injected) => (
                 <Input
                   {...injected}
@@ -216,7 +229,10 @@ export function Form() {
           </Text>
         </Card.Header>
         <Card.Body>
-          <Field label="Referral code" hint="Optional — applies a discount at checkout.">
+          <Field
+            label="Referral code"
+            hint="Optional — applies a discount at checkout."
+          >
             {(injected) => (
               <Input
                 {...injected}
@@ -228,8 +244,20 @@ export function Form() {
         </Card.Body>
       </Card>
 
-      <Row gap="sm" justify="end" style={{ borderTop: `1px solid ${color.border}`, paddingTop: space.lg }}>
-        <Button type="button" variant="secondary" onClick={() => { setValues(initialValues); setErrors({}); setStatus('idle'); }}>
+      <Row
+        gap="sm"
+        justify="end"
+        style={{ borderTop: `1px solid ${color.border}`, paddingTop: space.lg }}
+      >
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => {
+            setValues(initialValues);
+            setErrors({});
+            setStatus('idle');
+          }}
+        >
           Reset
         </Button>
         <Button type="submit" variant="primary">

@@ -24,11 +24,10 @@ import { radius } from '@tokens';
  * ## Scope
  *
  * This is correct for a **control inside a surface**, which is the case the
- * system actually has. It is NOT correct for a surface inside a surface: nesting
- * an Alert in a Card, additive derivation over-produces, and one level deeper
- * the arithmetic goes negative. Nothing in the system nests padded surfaces
- * today; if that changes, the fix is a subtractive cascade, not a bigger
- * formula. See docs/TODO-concentric-radius.md.
+ * system actually has. It is NOT correct for a surface inside a surface:
+ * additive derivation over-produces, and one level deeper goes negative.
+ * Nothing nests padded surfaces today; if that changes, the fix is a
+ * subtractive cascade, not a bigger formula.
  *
  * ## Why this is not a token
  *

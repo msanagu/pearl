@@ -17,7 +17,10 @@ describe('contrast measurement', () => {
   });
 
   it('is order-independent — contrast belongs to the pair, not a role', () => {
-    expect(contrast('#3B2C1F', '#E8A484')).toBeCloseTo(contrast('#E8A484', '#3B2C1F'), 10);
+    expect(contrast('#3B2C1F', '#E8A484')).toBeCloseTo(
+      contrast('#E8A484', '#3B2C1F'),
+      10,
+    );
   });
 
   it('matches independently computed ratios for real theme pairs', () => {
@@ -43,7 +46,14 @@ describe('contrast measurement', () => {
 
 describe('OKLCH conversion', () => {
   it('round-trips a hex through OKLCH within one 8-bit step', () => {
-    for (const hex of ['#E8A484', '#F5EFE4', '#241A11', '#3B2C1F', '#0A9E6E', '#5A8CF0']) {
+    for (const hex of [
+      '#E8A484',
+      '#F5EFE4',
+      '#241A11',
+      '#3B2C1F',
+      '#0A9E6E',
+      '#5A8CF0',
+    ]) {
       expect(oklchToHex(rgbToOklch(hex))).toBe(hex);
     }
   });
@@ -99,13 +109,21 @@ describe('solveForContrast', () => {
   it('reports honestly when a target is unreachable', () => {
     // Nothing clears 21:1 against mid-grey — the maximum against #808080 is
     // well under it in both directions.
-    const r = solveForContrast({ base: '#E8A484', against: '#808080', target: 21 });
+    const r = solveForContrast({
+      base: '#E8A484',
+      against: '#808080',
+      target: 21,
+    });
     expect(r.reached).toBe(false);
     expect(r.ratio).toBeLessThan(21);
   });
 
   it('auto-direction finds a solution without being told which way to go', () => {
-    const r = solveForContrast({ base: '#E8A484', against: '#F5EFE4', target: 7 });
+    const r = solveForContrast({
+      base: '#E8A484',
+      against: '#F5EFE4',
+      target: 7,
+    });
     expect(r.reached).toBe(true);
     expect(r.ratio).toBeGreaterThanOrEqual(7);
   });

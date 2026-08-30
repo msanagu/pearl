@@ -1,24 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { alabaster, squidInk, urchin, squidInkAlpha, alabasterAlpha, pearlSentiment } from '@themes/pearl/pearl.css';
-import { tahitianPlatinum, tahitianCharcoal, tahitianPeacock, tahitianSeaglass, tahitianSentiment } from '@themes/tahitian/tahitian.css';
+import {
+  alabaster,
+  squidInk,
+  urchin,
+  squidInkAlpha,
+  alabasterAlpha,
+  pearlSentiment,
+} from '@themes/pearl/pearl.css';
+import {
+  tahitianPlatinum,
+  tahitianCharcoal,
+  tahitianPeacock,
+  tahitianSeaglass,
+  tahitianSentiment,
+} from '@themes/tahitian/tahitian.css';
 import {
   freshwaterIce,
   freshwaterGraphite,
   freshwaterGlacier,
   freshwaterSentiment,
 } from '@themes/freshwater/freshwater.css';
-import { southSeaSand, southSeaDriftwood, southSeaConch, southSeaSentiment } from '@themes/south-sea/south-sea.css';
+import {
+  southSeaSand,
+  southSeaDriftwood,
+  southSeaConch,
+  southSeaSentiment,
+} from '@themes/south-sea/south-sea.css';
 import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import { tahitianBrandWordmark } from '@themes/tahitian/tahitian.roles';
 import { freshwaterBrandWordmark } from '@themes/freshwater/freshwater.roles';
 import { southSeaBrandWordmark } from '@themes/south-sea/south-sea.roles';
-import { WordMark } from '@components/_brand/WordMark';
+import { WordMark } from '@components/_brand/WordMark/WordMark';
 import * as css from './primitives.css';
 
 /**
- * Foundations → Tokens/Primitives: the raw hex palette (ADR-0005's primitive
- * tier) for the ACTIVE theme, laid out like Tailwind's color docs — one row
+ * Foundations → Tokens/Primitives: the raw hex palette for the ACTIVE theme, laid out like Tailwind's color docs — one row
  * per hue, one swatch per step the hue actually defines. Reads the
  * Storybook toolbar's theme global and shows only that theme's section, the
  * same pattern Typography.stories.tsx uses for role treatments — not every
@@ -32,18 +49,13 @@ import * as css from './primitives.css';
  * string, they print as their derivation (`hue[step] @ N%`), since the
  * opacity is the meaningful fact, not the composited channel math.
  *
- * All four themes' neutrals are now numeric ramps (`Scale`) — Freshwater and
- * South Sea's used to be named hexes with no shared step number between
- * light and dark, but both were consolidated onto the same one-hue-per-
- * register pattern Pearl's `alabaster`/`squidInk` already used (2026-08-29).
+ * All four themes' neutrals are numeric ramps (`Scale`) on one hue per
+ * register, matching the pattern of Pearl's `alabaster` / `squidInk`.
  */
 
-// Pearl's palest steps (e.g. alabaster[100], `#FDFCFA`) sit within a few
-// lightness points of both the page background and the fixed theme border
-// token — nearly invisible. A border picked from the swatch's OWN lightness
-// (dark ring on light fills, light ring on dark fills) stays legible
-// regardless of how close the fill sits to the surrounding page, instead of
-// relying on one border color to work against every fill in the palette.
+// The palest steps sit within a few lightness points of the page background,
+// so a fixed border token is nearly invisible against them. Derive the ring
+// from each swatch's own lightness instead (dark on light fills, light on dark).
 function contrastBorder(hex: string): string {
   const n = parseInt(hex.replace('#', ''), 16);
   const r = (n >> 16) & 255;
@@ -53,7 +65,13 @@ function contrastBorder(hex: string): string {
   return luminance > 0.6 ? 'rgba(0, 0, 0, 0.35)' : 'rgba(255, 255, 255, 0.35)';
 }
 
-function Scale({ label, steps }: { label: string; steps: Record<number, string> }) {
+function Scale({
+  label,
+  steps,
+}: {
+  label: string;
+  steps: Record<number, string>;
+}) {
   const ordered = Object.keys(steps)
     .map(Number)
     .sort((a, b) => a - b);
@@ -66,7 +84,10 @@ function Scale({ label, steps }: { label: string; steps: Record<number, string> 
           const hex = steps[stepValue] as string;
           return (
             <div key={stepValue} className={css.step}>
-              <div className={css.stepSwatch} style={{ background: hex, borderColor: contrastBorder(hex) }} />
+              <div
+                className={css.stepSwatch}
+                style={{ background: hex, borderColor: contrastBorder(hex) }}
+              />
               <span className={css.stepNumber}>{stepValue}</span>
               <span className={css.stepHex}>{hex}</span>
             </div>
@@ -109,7 +130,10 @@ function AlphaScale({
         {ordered.map((pct) => (
           <div key={pct} className={css.step}>
             <div className={css.alphaSwatch} style={{ borderColor: border }}>
-              <div className={css.alphaSwatchFill} style={{ backgroundColor: steps[pct] }} />
+              <div
+                className={css.alphaSwatchFill}
+                style={{ backgroundColor: steps[pct] }}
+              />
             </div>
             <span className={css.stepHex}>@ {pct}%</span>
           </div>
@@ -119,7 +143,11 @@ function AlphaScale({
   );
 }
 
-function SentimentScales({ sentiment }: { sentiment: Record<string, Record<number, string>> }) {
+function SentimentScales({
+  sentiment,
+}: {
+  sentiment: Record<string, Record<number, string>>;
+}) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {Object.entries(sentiment).map(([hue, steps]) => (
@@ -133,7 +161,11 @@ function PearlSection() {
   return (
     <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <div className={css.themeTitle}>
-        <WordMark text={pearlBrandWordmark.text} role={pearlBrandWordmark.role} scale={1.4} />
+        <WordMark
+          text={pearlBrandWordmark.text}
+          role={pearlBrandWordmark.role}
+          scale={1.4}
+        />
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
@@ -145,8 +177,18 @@ function PearlSection() {
 
       <h3 className={css.groupTitle}>Alpha</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <AlphaScale label="squidInkAlpha" anchorLabel="squidInk[900]" anchorHex={squidInk[900]} steps={squidInkAlpha} />
-        <AlphaScale label="alabasterAlpha" anchorLabel="alabaster[300]" anchorHex={alabaster[300]} steps={alabasterAlpha} />
+        <AlphaScale
+          label="squidInkAlpha"
+          anchorLabel="squidInk[900]"
+          anchorHex={squidInk[900]}
+          steps={squidInkAlpha}
+        />
+        <AlphaScale
+          label="alabasterAlpha"
+          anchorLabel="alabaster[300]"
+          anchorHex={alabaster[300]}
+          steps={alabasterAlpha}
+        />
       </div>
 
       <h3 className={css.groupTitle}>Sentiment</h3>
@@ -157,9 +199,16 @@ function PearlSection() {
 
 function TahitianSection() {
   return (
-    <section className={`${css.themeSection} ${css.squareSwatches}`} style={{ borderBottom: 'none' }}>
+    <section
+      className={`${css.themeSection} ${css.squareSwatches}`}
+      style={{ borderBottom: 'none' }}
+    >
       <div className={css.themeTitle}>
-        <WordMark text={tahitianBrandWordmark.text} role={tahitianBrandWordmark.role} scale={1.4} />
+        <WordMark
+          text={tahitianBrandWordmark.text}
+          role={tahitianBrandWordmark.role}
+          scale={1.4}
+        />
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
@@ -184,7 +233,11 @@ function FreshwaterSection() {
   return (
     <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <div className={css.themeTitle}>
-        <WordMark text={freshwaterBrandWordmark.text} role={freshwaterBrandWordmark.role} scale={1.4} />
+        <WordMark
+          text={freshwaterBrandWordmark.text}
+          role={freshwaterBrandWordmark.role}
+          scale={1.4}
+        />
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
@@ -206,7 +259,7 @@ function SouthSeaSection() {
   return (
     <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <div className={css.themeTitle}>
-        <WordMark text={southSeaBrandWordmark.text} role={southSeaBrandWordmark.role} scale={1.4} />
+        <WordMark text={southSeaBrandWordmark.text} scale={1.4} />
       </div>
 
       <h3 className={css.groupTitle}>Neutral</h3>
@@ -252,7 +305,9 @@ const meta: Meta<typeof PrimitivesPreview> = {
   component: PrimitivesPreview,
   parameters: { layout: 'fullscreen' },
   decorators: [
-    (Story, context) => <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />,
+    (Story, context) => (
+      <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />
+    ),
   ],
 };
 export default meta;
@@ -260,4 +315,3 @@ export default meta;
 type Story = StoryObj<typeof PrimitivesPreview>;
 
 export const Overview: Story = {};
-

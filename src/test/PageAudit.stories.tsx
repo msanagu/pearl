@@ -5,7 +5,12 @@ import { StoryAudit } from './StoryAudit';
 import { Introduction } from '@/introduction/Introduction';
 import { overtonePlate } from '@themes/tahitian/tahitian.css';
 import { washPlate } from '@themes/freshwater/freshwater.css';
-import { statsPearl, statsTahitian, statsFreshwater } from '@/introduction/statsTreatments.css';
+import { footerPlateForTheme } from '@/templates/Footer/footerPlate';
+import {
+  statsPearl,
+  statsTahitian,
+  statsFreshwater,
+} from '@/introduction/statsTreatments.css';
 
 const statsTreatmentByTheme: Record<string, string> = {
   pearl: statsPearl,
@@ -29,7 +34,14 @@ const statsTreatmentByTheme: Record<string, string> = {
  */
 const meta: Meta = {
   title: 'Audit/Pages',
-  parameters: { layout: 'fullscreen', removePreviewPadding: true },
+  parameters: {
+    layout: 'fullscreen',
+    removePreviewPadding: true,
+    // The `StoryAudit` findings panel is dev chrome, not part of the audited
+    // page — keep axe and Impeccable off it (Impeccable already skips it via
+    // `data-audit-overlay`; this does the same for the a11y addon).
+    a11y: { context: { exclude: ['[data-audit-overlay]'] } },
+  },
 };
 export default meta;
 
@@ -51,11 +63,21 @@ export const IntroductionPage: Story = {
     // the decorated surfaces produce.
     const theme = globals.theme as string | undefined;
     const plateTreatment =
-      theme === 'tahitian' ? overtonePlate : theme === 'freshwater' ? washPlate : '';
+      theme === 'tahitian'
+        ? overtonePlate
+        : theme === 'freshwater'
+          ? washPlate
+          : '';
     const statsTreatment = statsTreatmentByTheme[theme as string] ?? '';
+    const footerPlate = footerPlateForTheme(theme);
     return (
       <StoryAudit>
-        <Introduction plateTreatment={plateTreatment} statsTreatment={statsTreatment} />
+        <Introduction
+          plateTreatment={plateTreatment}
+          statsTreatment={statsTreatment}
+          footerPlateSrc={footerPlate.src}
+          footerPlateAlt={footerPlate.alt}
+        />
       </StoryAudit>
     );
   },

@@ -70,8 +70,8 @@ export const Disabled: Story = {
 
 /**
  * Icon-plus-text composition, both orders, to prove the no-prop layout
- * contract (docs/OPEN_QUESTIONS.md #12) — Button lays out `children` via
- * flex + gap, so no `icon`/`iconPosition` prop is needed.
+ * contract — Button lays out `children` via flex + gap, so no
+ * `icon`/`iconPosition` prop is needed.
  */
 export const WithIcon: Story = {
   render: (args) => (

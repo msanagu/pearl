@@ -7,11 +7,12 @@ import { button } from './Button.css';
 type ButtonVariants = NonNullable<RecipeVariants<typeof button>>;
 
 export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
     ButtonVariants {
   /**
    * Visual style. `primary` for the main call-to-action per surface,
-  * `secondary` for supporting actions.
+   * `secondary` for supporting actions.
    * @default 'primary'
    */
   variant?: ButtonVariants['variant'];

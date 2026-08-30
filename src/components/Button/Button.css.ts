@@ -1,7 +1,15 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { color, controlHeight, radius, space, fontFamily, fontWeight, text } from '@tokens';
+import {
+  color,
+  controlHeight,
+  radius,
+  space,
+  fontFamily,
+  fontWeight,
+  text,
+} from '@tokens';
 
-// Height maps to the shared `controlHeight` density lever (ADR-0005) so an
+// Height maps to the shared `controlHeight` density lever so an
 // enterprise theme can tighten every control at once and an agency theme can
 // go airy — Button never hardcodes its own height scale.
 export const button = recipe({
@@ -74,7 +82,8 @@ export const button = recipe({
         // Pearl); `color.shadow` is the dedicated elevation token, not a
         // border color repurposed for elevation.
         boxShadow: `inset 0 1px 0 ${color.accentSubtle}, 0 8px 16px -8px ${color.shadow}`,
-        transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease',
+        transition:
+          'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease',
         selectors: {
           '&:not(:disabled):hover': {
             transform: 'translateY(-1px)',

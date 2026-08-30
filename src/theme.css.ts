@@ -1,70 +1,49 @@
 import { createThemeContract } from '@vanilla-extract/css';
-// Side-effect import — sets the 16px root the whole rem-based type scale
-// assumes. theme.css.ts is imported everywhere the contract is used, so this
-// guarantees the root rule ships wherever `vars` does.
+// Side-effect import — sets the 16px root the rem-based type scale assumes.
+// theme.css.ts is imported everywhere `vars` is used, so the root rule ships
+// wherever the contract does.
 import './globalStyles.css';
 
 /**
  * The theme contract — the single source of truth for *which* semantic tokens
- * exist. Leaves are `null`: this defines only the *shape*. Every concrete theme
- * (`src/themes/*.css.ts`) must fulfill this exact shape via `createTheme`, and
+ * exist. Leaves are `null`: this defines only the shape. Every concrete theme
+ * (`src/themes/*.css.ts`) must fulfil this exact shape via `createTheme`, and
  * TypeScript fails to compile if a theme omits or misnames a token.
  *
- * ## Tiering (ADR-0005)
- * Components consume this **semantic** layer only — role-named tokens, never raw
- * values. Each theme (`src/themes/*.css.ts`) now has a real primitive tier: a
- * module-scoped `*Primitives` object of raw, named hexes (e.g. `aubergine:
- * '#624C5D'`), which the `createTheme()` call maps onto these semantic roles.
- * Primitives are scoped per theme (not shared across Tahitian/Freshwater/South
- * Sea) and per mode within a theme — see any `themes/*.css.ts` file. Values are
- * still placeholders pending the Fable 5 visual-language pass; the tier
- * structure itself is final.
+ * Components consume this semantic layer only — role-named tokens, never raw
+ * values. Each theme has its own primitive tier (module-scoped `*` objects of
+ * named hexes) that the `createTheme` call maps onto these roles. Primitives
+ * and non-colour scales are per-theme, not shared via a global file — each
+ * theme owns its full identity, including density and type.
  *
- * Non-color scales (radius/space/controlHeight/fontWeight/fontFamily/text) are
- * likewise defined per theme, not shared via a global scales file — each theme
- * owns its full identity, including density and type, not just color.
- *
- * ## Color naming (ADR-0005 worked example)
- * Feedback/sentiment colors are keyed by *valence* (`positive`/`negative`/
- * `warn`/`info`), not by feature — so the same tokens serve an Alert's error
- * state, a metric's downward delta, and a diff's removed line.
+ * Feedback/sentiment colours are keyed by valence (`positive`/`negative`/
+ * `warn`/`info`), not feature — the same tokens serve an Alert's error state, a
+ * metric's downward delta, and a diff's removed line. See DECISIONS.md (token
+ * conventions).
  */
 export const vars = createThemeContract({
   color: {
-    // Surfaces — elevation is communicated via shadow, not a surface color
-    // ladder (no `surfaceRaised`). Revisit only if a dark theme proves shadow
-    // alone doesn't read (Material's dark-elevation precedent) — additive if so.
+    // Surfaces — elevation is communicated via shadow, not a surface-colour
+    // ladder (no `surfaceRaised`).
     background: null,
     surface: null,
     overlay: null,
-    // A subtle alpha wash — hover/focus backgrounds on ghost/icon-only controls
-    // (a dismiss button, an icon-only toggle) that must composite correctly
-    // over WHATEVER surface they sit on, not just `background`/`surface`. Not
-    // `accentSubtle`: that's a solid, theme-branded tint (fine for selected
-    // rows/active nav on a known surface), but most themes' accent is a fully
-    // saturated brand hue — an accent-anchored wash would read as neutral by
-    // accident in a desaturated theme and as a colored smear in a saturated
-    // one. Anchored on each mode's own neutral-ink extreme instead (see
-    // `pearl.css.ts`'s `inkAlpha`), same relationship `overlay` already has to
-    // that ink, just at a much lower alpha for a wash instead of a backdrop.
+    // A subtle alpha wash for hover/focus backgrounds on ghost / icon-only
+    // controls, which must composite correctly over whatever surface they sit
+    // on. Not `accentSubtle` — most themes' accent is a saturated brand hue, so
+    // an accent-anchored wash reads as neutral by accident in a desaturated
+    // theme and as a coloured smear in a saturated one. Anchored on each mode's
+    // own neutral-ink extreme instead.
     overlaySubtle: null,
-    // Inverse tokens: section-scoped "render as if the OTHER mode were
-    // active," without flipping the global mode — a dark band inside an
-    // otherwise-light page (or vice versa). Same pattern as Material 3's
-    // inverseSurface/inverseOnSurface/inversePrimary (used there for Snackbar).
-    //
-    // Mode (light/dark) is a separate, GLOBAL axis: each mode is a fully
-    // independent, completely authored token set — never derived from the
-    // other. Inverse tokens are the bridge between them: each mode's inverse
-    // fields should approximate the OTHER mode's real primary values (e.g.
-    // lightTheme.backgroundInverse ≈ darkTheme.background), authored only
-    // after both real modes exist — never the other way around (a mode must
-    // never be seeded FROM an inverse value).
+    // Inverse tokens: section-scoped "render as if the other mode were active"
+    // without flipping the global mode — a dark band inside a light page.
+    // Mode (light/dark) is a separate global axis; each mode is fully authored,
+    // never derived from the other. Inverse fields approximate the *other*
+    // mode's real primary values, authored only after both real modes exist.
     backgroundInverse: null,
     surfaceInverse: null,
-    // Text — two ranks. `subtle` always means "one step down in prominence,"
-    // the same meaning it carries in border/accent (ADR-0006). No third rung
-    // (`textFaint`) in v1 — added risk of contrast failure for little payoff.
+    // Text — two ranks. `subtle` always means "one step down in prominence",
+    // the same meaning it carries in border/accent. No third rung in v1.
     text: null,
     textSubtle: null,
     textInverse: null,
@@ -74,20 +53,15 @@ export const vars = createThemeContract({
     borderStrong: null,
     borderSubtle: null,
     borderInverse: null,
-    // Elevation — box-shadow color, distinct from border (see tokens.ts).
+    // Elevation — box-shadow colour, distinct from border (see tokens.ts).
     shadow: null,
-    // Primary — the main call-to-action fill (Button's `primary` variant).
-    // Added after authoring real theme values: all four themes turned out to
-    // need a CTA fill distinct from `accent` (an ink-primary theme's subtle
-    // accent must NOT double as its button color, or every subtle use — focus
-    // borders, underlines, hover states — goes loud too). Promoted once this
-    // pattern repeated across all four, not designed in advance.
+    // Primary — the main call-to-action fill. Kept distinct from `accent`: an
+    // ink-primary theme's subtle accent must not double as its button colour,
+    // or every subtle use (focus borders, underlines, hover) goes loud too.
     primary: null,
     onPrimary: null,
-    // Accent — a subtler signal color: focus borders, underlines, hover
-    // states, sentiment-adjacent emphasis. NOT assumed to be the button fill
-    // — an ink-primary theme (e.g. Pearl) keeps `accent` genuinely subtle and
-    // uses `primary` for its CTA fill instead.
+    // Accent — a subtler signal colour (focus borders, underlines, hover,
+    // sentiment-adjacent emphasis), not the button fill.
     accent: null,
     accentHover: null,
     accentSubtle: null,
@@ -95,52 +69,33 @@ export const vars = createThemeContract({
     onAccentSubtle: null,
     // Focus
     focusRing: null,
-    // Sentiment — each { surface, border, text, icon }. Application-named (not
-    // prominence-named like strong/subtle) because a sentiment role spans
-    // multiple destinations — surface/border/text map directly to their CSS
-    // property, `icon` is the saturated mark color (ADR-0006).
+    // Sentiment — each `{ surface, border, text, icon }`. Application-named (not
+    // prominence-named) because a sentiment role spans multiple destinations.
     positive: { surface: null, border: null, text: null, icon: null },
     negative: { surface: null, border: null, text: null, icon: null },
     warn: { surface: null, border: null, text: null, icon: null },
     info: { surface: null, border: null, text: null, icon: null },
   },
-  // Radius. `control` is the theme's ONE authored corner; `full` is the
-  // orthogonal maximal-rounding treatment for square-aspect elements (circles).
-  // There is deliberately no `surface`: a padded surface derives its radius from
-  // `control` plus its own padding (see foundations/concentricRadius.ts), so an
-  // authored value could only ever be right for one padding.
+  // Radius. `control` is the theme's one authored corner; `full` is the
+  // orthogonal maximal-rounding treatment for square-aspect elements. No
+  // `surface`: a padded surface derives its radius from `control` plus its own
+  // padding (see foundations/concentricRadius.ts).
   radius: {
     control: null,
     full: null,
-    // Concentric-nesting opt-out. A unitless `'1'` or `'0'`, multiplied into
-    // the padding term of a derived radius (`calc(control + nesting * pad)`).
-    //
-    // A boolean, deliberately smuggled in as a multiplier: it keeps ONE formula
-    // in the component with no per-theme branching. A hard-edged theme sets
-    // `'0'` and every derived radius collapses to its `control` (`0px`) —
-    // without it, `calc(0px + 24px)` would hand a square theme a 24px-rounded
-    // card, which is precisely backwards. See docs/TODO-concentric-radius.md.
+    // Concentric-nesting opt-out — a unitless `'1'` or `'0'` multiplied into the
+    // padding term of a derived radius (`calc(control + nesting * pad)`). A
+    // boolean smuggled in as a multiplier so one formula serves every theme with
+    // no per-theme branching.
     nesting: null,
-    // CSS Backgrounds & Borders 4 `corner-shape` — how the corner that
-    // `border-radius` carves is actually drawn (`round`, `squircle`, `bevel`,
-    // `notch`, `scoop`, `superellipse()`).
-    //
-    // In the contract rather than hardcoded per component because it MUST be
-    // uniform: a squircle button inside a round-cornered card no longer has
-    // arcs parallel to it, which defeats the concentric-radius rule above. One
-    // token means a theme states its corner language once and every surface
-    // and control obeys.
-    //
-    // Progressive enhancement, no fallback needed: browsers without support
-    // ignore the declaration and paint the plain `border-radius`. `round` is
-    // the initial value, so a theme opting out costs nothing.
-    //
-    // Inert at `border-radius: 0` — there is no corner box to reshape, so the
-    // hard-edged themes are unaffected whatever they set. Unlike `nesting`,
-    // which they genuinely depend on, this one only bites on rounded themes.
+    // CSS `corner-shape` — how the corner `border-radius` carves is drawn
+    // (`round`, `squircle`, `bevel`, `notch`, `scoop`, `superellipse()`). In the
+    // contract, not per component, because it must be uniform: a squircle button
+    // inside a round-cornered card defeats the concentric-radius rule.
+    // Progressive enhancement — unsupported browsers paint the plain
+    // `border-radius`; inert at `border-radius: 0`.
     cornerShape: null,
   },
-  // Spacing scale — t-shirt (kept deliberately; see naming/scale decision).
   space: {
     xs: null,
     sm: null,
@@ -149,18 +104,14 @@ export const vars = createThemeContract({
     xl: null,
     '2xl': null,
   },
-  // Control sizing (the density lever). Component `size` props map here, so an
-  // enterprise theme sets tight heights and an agency theme sets airy ones.
+  // Control sizing (the density lever). Component `size` props map here.
   controlHeight: {
     sm: null,
     md: null,
     lg: null,
     xl: null,
   },
-  // Font-family ROLES (semantic) — each maps to a primitive stack in the theme.
-  // Roles line up with the type-size groups: Text applies these by variant.
-  // (Primitive stacks — sans/serif/mono — are the values in scales.ts for now;
-  // named primitives arrive with the visual language.)
+  // Font-family roles (semantic) — each maps to a primitive stack in the theme.
   fontFamily: {
     display: null,
     heading: null,
@@ -173,23 +124,13 @@ export const vars = createThemeContract({
     semibold: null,
     bold: null,
   },
-  // Type scale: font-size / line-height / tracking triples per variant.
+  // Type scale: font-size / line-height / weight / tracking per variant.
   //
-  // `fontSize` is rem (assumes the 16px root set in globalStyles.css.ts — see
-  // WCAG SC 1.4.4 Resize Text). `lineHeight` is a UNITLESS multiplier, not a
-  // fixed px value — required by WCAG SC 1.4.12 Text Spacing so a user
-  // stylesheet forcing 1.5x line spacing scales with the text instead of
-  // colliding with an author-fixed px value. Each theme still authors it to
-  // land on the 8px soft grid (spacing-system.md) at the theme's own
-  // font-size — see docs/foundations/typography.md for the accessibility rationale and
-  // per-theme worked numbers.
-  //
-  // `letterSpacing` is per-variant rather than a standalone scale because
-  // tracking is a property of a type step, not an independent axis: display
-  // type is set tight, body is set at zero, and the correct value is a function
-  // of size. Label tracking (mono caps at .12–.2em in three of the four themes)
-  // is NOT here — `label` is not a shared role, so its tracking lives in each
-  // theme's own configuration (see src/themes/roles.ts).
+  // `fontSize` is rem (assumes the 16px root set in globalStyles.css.ts — WCAG
+  // SC 1.4.4). `lineHeight` is a unitless multiplier, not a fixed px value —
+  // WCAG SC 1.4.12, so a user stylesheet forcing 1.5x line spacing scales with
+  // the text rather than colliding with it. `letterSpacing` is per-variant, not
+  // a standalone scale, because the right value is a function of size.
   text: {
     caption: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     bodySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
@@ -200,11 +141,8 @@ export const vars = createThemeContract({
     headingLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     displaySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     displayLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
-    // The poster step. Added because `displayLg` topped out below what a
-    // title page needs — a wordmark set at it read as a heading rather than
-    // an identity. Every theme must author a real value: a theme that has no
-    // use for poster type still has to say what its largest voice IS, which
-    // is the point of a total contract (ADR-0005).
+    // The poster step — a theme with no use for poster type still has to say
+    // what its largest voice is, which is the point of a total contract.
     displayXl: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
   },
 });

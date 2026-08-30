@@ -22,7 +22,13 @@
 
 // --- Theme contract & themes ---
 export { vars } from './theme.css';
-export { pearlLightThemeClass, pearlDarkThemeClass, pearlExtensionClass, pearlTreatments, pearlFonts } from './themes/pearl/pearl.css';
+export {
+  pearlLightThemeClass,
+  pearlDarkThemeClass,
+  pearlExtensionClass,
+  pearlTreatments,
+  pearlFonts,
+} from './themes/pearl/pearl.css';
 export { pearlDescription, pearlRoles } from './themes/pearl/pearl.roles';
 export {
   tahitianLightThemeClass,
@@ -33,9 +39,18 @@ export {
   tahitianPearlColors,
   overtonePlate,
 } from './themes/tahitian/tahitian.css';
-export { tahitianDescription, tahitianRoles } from './themes/tahitian/tahitian.roles';
-export { freshwaterLightThemeClass, freshwaterDarkThemeClass } from './themes/freshwater/freshwater.css';
-export { southSeaLightThemeClass, southSeaDarkThemeClass } from './themes/south-sea/south-sea.css';
+export {
+  tahitianDescription,
+  tahitianRoles,
+} from './themes/tahitian/tahitian.roles';
+export {
+  freshwaterLightThemeClass,
+  freshwaterDarkThemeClass,
+} from './themes/freshwater/freshwater.css';
+export {
+  southSeaLightThemeClass,
+  southSeaDarkThemeClass,
+} from './themes/south-sea/south-sea.css';
 
 // --- Role layer (never becomes CSS) ---
 export type {

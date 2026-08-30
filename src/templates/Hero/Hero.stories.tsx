@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Hero } from './Hero';
+import { SiteHeader } from '@/templates/SiteHeader/SiteHeader';
 import heroSource from './Hero.tsx?raw';
 import { templateSource } from '@/templates/templateSource';
-import { brandWordmarkForTheme } from '@components/_brand/brandWordmark';
+import { brandWordmarkForTheme } from '@components/_brand/WordMark/brandWordmark';
 
 /**
- * The marketing hero, composed from existing primitives (`Text`, `Button`,
- * `Row`, `Stack`, `Icon`). The brand wordmark is the one piece that differs
- * per theme (text + whether `inlineEmphasis` decorates it) — driven here by
- * the Storybook toolbar's active theme, via each theme's own
- * `*BrandWordmark` in `*.roles.ts`. Freshwater's (`freshwater.roles.ts`) is
- * wordmark-only — it has no full role table yet, unlike the other three.
+ * The marketing hero — the pitch band and feature strip — composed from
+ * `Text`, `Button`, `Row`, and `Stack`. The masthead above it is its own
+ * template (`SiteHeader`); the story renders both so it reads as a real page
+ * top, with the per-theme wordmark driven by the toolbar's active theme.
  *
  * GAP — the sphere visual (`PearlSphere`) is still Pearl-only; Tahitian's
  * hero currently reuses it under its own palette rather than a poster-plate
@@ -23,15 +22,18 @@ const meta: Meta<typeof Hero> = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story, context) => {
-      const wordmark = brandWordmarkForTheme(context.globals.theme as string | undefined);
+      const wordmark = brandWordmarkForTheme(
+        context.globals.theme as string | undefined,
+      );
       return (
-        <Story
-          args={{
-            brandName: context.args.brandName ?? wordmark.text,
-            brandRole: context.args.brandRole ?? wordmark.role,
-            brandUnderscoreColor: context.args.brandUnderscoreColor ?? wordmark.underscoreColor,
-          }}
-        />
+        <>
+          <SiteHeader
+            brandName={wordmark.text}
+            brandRole={wordmark.role}
+            brandUnderscoreColor={wordmark.underscoreColor}
+          />
+          <Story />
+        </>
       );
     },
   ],

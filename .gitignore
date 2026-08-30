@@ -19,10 +19,15 @@ npm-debug.log*
 # Vanilla-extract / Vite caches
 .vite/
 
+# Local agent config
+.claude/
+
 # Claude Design handoffs — local-only source material (moodboards, exports,
 # scratch assets), not tracked in version control.
 design/
 
-# Private working notes and scratch spikes — journal, open-questions tracker,
-# dated ADRs, throwaway experiments. Kept local, not tracked in version control.
+# Private working notes and scratch spikes — the journal, the open-questions
+# tracker, the full dated ADRs, and throwaway experiments. Kept local; the
+# public digest of these decisions is DECISIONS.md.
 docs/process/
+experiments/

@@ -1,12 +1,12 @@
 # Naming Conventions
 
-| What | Casing | Example |
-|---|---|---|
-| Component name | PascalCase | `Button`, `ProgressBar` |
-| Prop name | camelCase | `variant`, `isDisabled` |
-| Prop *value* (string literal unions) | camelCase | `variant="headingLg"`, `name="chevronDown"` |
-| Token object keys | camelCase | `colorVars.brandPrimary` |
-| CSS custom property output | kebab-case (unavoidable — CSS syntax) | `--color-brand-primary` |
+| What                                 | Casing                                | Example                                     |
+| ------------------------------------ | ------------------------------------- | ------------------------------------------- |
+| Component name                       | PascalCase                            | `Button`, `ProgressBar`                     |
+| Prop name                            | camelCase                             | `variant`, `isDisabled`                     |
+| Prop _value_ (string literal unions) | camelCase                             | `variant="headingLg"`, `name="chevronDown"` |
+| Token object keys                    | camelCase                             | `colorVars.brandPrimary`                    |
+| CSS custom property output           | kebab-case (unavoidable — CSS syntax) | `--color-brand-primary`                     |
 
 ## Why prop values are camelCase, not kebab-case
 

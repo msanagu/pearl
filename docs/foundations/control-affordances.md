@@ -1,6 +1,6 @@
 # Control Affordances
 
-How a control announces that it *is* a control — before anyone touches it.
+How a control announces that it _is_ a control — before anyone touches it.
 
 ## The rule: a control carries its own boundary at rest
 
@@ -10,7 +10,7 @@ Fill it, border it, or both; but do not ship a control whose box only appears on
 `:hover`.
 
 This is a system-wide invariant, not a per-theme aesthetic call. A theme is free
-to decide *how* quiet that boundary is (Tahitian's secondary is a bare 1px
+to decide _how_ quiet that boundary is (Tahitian's secondary is a bare 1px
 neutral hairline on a transparent fill — about as quiet as it gets). It is not
 free to decide the boundary is absent.
 
@@ -33,7 +33,7 @@ until the button is hovered — at which point the real edge appears `space.lg`
 outside the column everything else is aligned to. The layout was never wrong; it
 was aligned to a proxy for the box instead of the box.
 
-The complaint this arrives as is *"I can't align this button"*, and it is
+The complaint this arrives as is _"I can't align this button"_, and it is
 accurate. There is genuinely nothing on screen to align to. A resting border
 fixes it outright: the padding is now legible, the optical edge and the layout
 edge are the same edge, and the decision "flush the box, or flush the text?"
@@ -51,17 +51,17 @@ of `<button>` in the markup changes what the pixels say.
 
 The cost isn't only that the button is mistaken for a link once. It's that the
 two affordances stop meaning anything **on the page as a whole**: once bare text
-is sometimes a button, the reader can no longer trust that the *actual* links are
+is sometimes a button, the reader can no longer trust that the _actual_ links are
 links, and starts hover-probing text to find out what is interactive. Both
 signals degrade together — this is why "just this one variant" is not a contained
 exception.
 
 Keep the split clean:
 
-| Affordance | Reads as | Signals |
-|---|---|---|
-| Bordered / filled box, at rest | Button | An action happens here, on this page |
-| Bare text (underline / accent color) | Link | Navigation — you will end up somewhere else |
+| Affordance                           | Reads as | Signals                                     |
+| ------------------------------------ | -------- | ------------------------------------------- |
+| Bordered / filled box, at rest       | Button   | An action happens here, on this page        |
+| Bare text (underline / accent color) | Link     | Navigation — you will end up somewhere else |
 
 If a design genuinely wants a text-only action — a tertiary "Cancel", an inline
 "Learn more" — that is a request for a **link-styled** element, not a button
@@ -87,7 +87,7 @@ existence under the cursor:
   label's value shift reads at a glance even where a 1px border's contrast
   doesn't.
 
-Either way, the resting boundary must be *visible*, not merely present.
+Either way, the resting boundary must be _visible_, not merely present.
 `color.border` over a near-black background can be under 1.4:1 — technically a
 border, functionally no edge at all, and it fails this rule exactly the way
 `transparent` does. Check the resting boundary against the surface it will
@@ -100,7 +100,7 @@ the usual answer in dark modes.
   the base recipe gives `secondary` a `1px solid ${color.border}` at rest, and
   `primary` a matching `1px solid transparent` so both variants share one border
   geometry and one height.
-- [`src/themes/tahitian.css.ts`](../../src/themes/tahitian.css.ts) — the theme
+- [`src/themes/tahitian/tahitian.css.ts`](../../src/themes/tahitian/tahitian.css.ts) — the theme
   that got this wrong first, and the worked example of fixing it. Its dark-mode
   `secondary` drops the base fill (a `color.surface` fill vanishes when the
   button sits on a `color.surface` panel) but keeps — and strengthens — the

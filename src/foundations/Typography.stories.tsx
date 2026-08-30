@@ -3,26 +3,38 @@ import type { ReactNode } from 'react';
 import { color, fontFamily, fontWeight, text } from '@tokens';
 import { Text } from '@components/Text/Text';
 import type { ThemeRoles } from '@themes/roles';
-import { pearlBrandWordmark, pearlDescription, pearlRoles } from '@themes/pearl/pearl.roles';
-import { tahitianDescription, tahitianRoles } from '@themes/tahitian/tahitian.roles';
-import { southSeaDescription, southSeaRoles } from '@themes/south-sea/south-sea.roles';
-import { FamilySwatch, TypeSpecimen, WeightSwatch, WordMark, brandWordmarkByTheme, useComputed } from './typeSpecimens';
+import {
+  pearlBrandWordmark,
+  pearlDescription,
+  pearlRoles,
+} from '@themes/pearl/pearl.roles';
+import {
+  tahitianDescription,
+  tahitianRoles,
+} from '@themes/tahitian/tahitian.roles';
+import {
+  southSeaDescription,
+  southSeaRoles,
+} from '@themes/south-sea/south-sea.roles';
+import {
+  FamilySwatch,
+  TypeSpecimen,
+  WeightSwatch,
+  WordMark,
+  brandWordmarkByTheme,
+  useComputed,
+} from './typeSpecimens';
 import * as css from './tokens.css';
 
 /**
- * Foundations → Typography: canon type (theme-agnostic, driven by the active
- * Storybook theme) plus the active theme's ROLE TREATMENTS — how it assigns
- * type primitives to jobs (emphasis, preheading, data digits). Role
- * assignment is a per-theme distinction, not a canon slot (docs/theme/
- * theme-revision-decisions.md §8), so this section reads the Storybook
- * toolbar's theme global and switches its role table to match, rather than
- * describing one theme regardless of what's selected.
+ * Foundations → Typography: canon type plus the active theme's role treatments
+ * — how it assigns type primitives to jobs (emphasis, preheading, data digits).
+ * Role assignment is per-theme, so this section reads the toolbar's theme
+ * global and switches its role table to match.
  *
- * Each role is rendered through the real `Text` `role` prop — never by
- * reading a treatment's shape in JS (a gradient like Tahitian's `overtone`
- * has nothing in common with a `fontFamily`/`fontStyle` pair like Pearl's
- * `serifItalic`) — so the resolved CSS is whatever the active theme's own
- * stylesheet actually declares, not a JS-side guess at it.
+ * Each role renders through the real `Text` `role` prop, never by reading a
+ * treatment's shape in JS, so the resolved CSS is whatever the active theme's
+ * stylesheet declares.
  */
 
 const themesWithRoles: Record<
@@ -30,8 +42,16 @@ const themesWithRoles: Record<
   { label: string; description: string; roles: ThemeRoles } | undefined
 > = {
   pearl: { label: 'Pearl', description: pearlDescription, roles: pearlRoles },
-  tahitian: { label: 'Tahitian', description: tahitianDescription, roles: tahitianRoles },
-  southSea: { label: 'South Sea', description: southSeaDescription, roles: southSeaRoles },
+  tahitian: {
+    label: 'Tahitian',
+    description: tahitianDescription,
+    roles: tahitianRoles,
+  },
+  southSea: {
+    label: 'South Sea',
+    description: southSeaDescription,
+    roles: southSeaRoles,
+  },
 };
 
 function ResolvedTag({ children }: { children: ReactNode }) {
@@ -46,18 +66,38 @@ function InlineEmphasisSpecimen({ theme }: { theme: string }) {
   );
   return (
     <div className={css.cell}>
-      <span ref={ref} style={{ fontFamily: fontFamily.body, fontSize: '22px', color: color.text }}>
-        The world is your <Text as="span" role="inlineEmphasis">oyster.</Text>
+      <span
+        ref={ref}
+        style={{
+          fontFamily: fontFamily.body,
+          fontSize: '22px',
+          color: color.text,
+        }}
+      >
+        The world is your{' '}
+        <Text as="span" role="inlineEmphasis">
+          oyster.
+        </Text>
       </span>
       <ResolvedTag>
         {resolved['font-family']}
-        {resolved['background-image'] && resolved['background-image'] !== 'none' ? ' · gradient' : ''}
+        {resolved['background-image'] && resolved['background-image'] !== 'none'
+          ? ' · gradient'
+          : ''}
       </ResolvedTag>
     </div>
   );
 }
 
-function PreheadingSpecimen({ label, sample, theme }: { label: string; sample: string; theme: string }) {
+function PreheadingSpecimen({
+  label,
+  sample,
+  theme,
+}: {
+  label: string;
+  sample: string;
+  theme: string;
+}) {
   const [ref, resolved] = useComputed<HTMLSpanElement>(
     ['font-family', 'text-transform', 'letter-spacing'],
     '[data-role="preheading"]',
@@ -70,7 +110,8 @@ function PreheadingSpecimen({ label, sample, theme }: { label: string; sample: s
       </Text>
       <span>{label}</span>
       <ResolvedTag>
-        {resolved['font-family']} · {resolved['text-transform']} · {resolved['letter-spacing']}
+        {resolved['font-family']} · {resolved['text-transform']} ·{' '}
+        {resolved['letter-spacing']}
       </ResolvedTag>
     </div>
   );
@@ -111,16 +152,36 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
 
         <h3 className={css.subsectionTitle}>Family</h3>
         <div className={css.row}>
-          <FamilySwatch name="display" cssVar={fontFamily.display} theme={theme} />
-          <FamilySwatch name="heading" cssVar={fontFamily.heading} theme={theme} />
+          <FamilySwatch
+            name="display"
+            cssVar={fontFamily.display}
+            theme={theme}
+          />
+          <FamilySwatch
+            name="heading"
+            cssVar={fontFamily.heading}
+            theme={theme}
+          />
           <FamilySwatch name="body" cssVar={fontFamily.body} theme={theme} />
         </div>
 
         <h3 className={css.subsectionTitle}>Weight</h3>
         <div className={css.row}>
-          <WeightSwatch name="regular" cssVar={fontWeight.regular} theme={theme} />
-          <WeightSwatch name="medium" cssVar={fontWeight.medium} theme={theme} />
-          <WeightSwatch name="semibold" cssVar={fontWeight.semibold} theme={theme} />
+          <WeightSwatch
+            name="regular"
+            cssVar={fontWeight.regular}
+            theme={theme}
+          />
+          <WeightSwatch
+            name="medium"
+            cssVar={fontWeight.medium}
+            theme={theme}
+          />
+          <WeightSwatch
+            name="semibold"
+            cssVar={fontWeight.semibold}
+            theme={theme}
+          />
           <WeightSwatch name="bold" cssVar={fontWeight.bold} theme={theme} />
         </div>
 
@@ -129,7 +190,12 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {Object.entries(text).map(([name, variant]) => (
-            <TypeSpecimen key={name} name={name} variant={variant} theme={theme} />
+            <TypeSpecimen
+              key={name}
+              name={name}
+              variant={variant}
+              theme={theme}
+            />
           ))}
         </div>
       </section>
@@ -138,7 +204,14 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
         <h2 className={css.sectionTitle}>
           Role treatments — {active?.label ?? theme}
         </h2>
-        <p style={{ fontFamily: fontFamily.body, fontSize: '13px', color: color.textSubtle, margin: 0 }}>
+        <p
+          style={{
+            fontFamily: fontFamily.body,
+            fontSize: '13px',
+            color: color.textSubtle,
+            margin: 0,
+          }}
+        >
           {active
             ? active.description
             : `${theme} has no role table yet — switch the toolbar's Theme to Pearl, Tahitian, or South Sea to see one.`}
@@ -157,9 +230,21 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
           <>
             <h3 className={css.subsectionTitle}>Preheading</h3>
             <div className={css.row}>
-              <PreheadingSpecimen label="nav / index" sample="Index" theme={theme} />
-              <PreheadingSpecimen label="caption" sample="01 / Nacre" theme={theme} />
-              <PreheadingSpecimen label="index row" sample="Selected — 2024/26" theme={theme} />
+              <PreheadingSpecimen
+                label="nav / index"
+                sample="Index"
+                theme={theme}
+              />
+              <PreheadingSpecimen
+                label="caption"
+                sample="01 / Nacre"
+                theme={theme}
+              />
+              <PreheadingSpecimen
+                label="index row"
+                sample="Selected — 2024/26"
+                theme={theme}
+              />
             </div>
           </>
         )}
@@ -180,7 +265,9 @@ const meta: Meta<typeof TypographyPreview> = {
   component: TypographyPreview,
   parameters: { layout: 'fullscreen' },
   decorators: [
-    (Story, context) => <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />,
+    (Story, context) => (
+      <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />
+    ),
   ],
 };
 export default meta;

@@ -100,16 +100,10 @@ export const stepNumber = style({
   fontSize: '11px',
 });
 
-// A fixed radius, deliberately decoupled from `radius.control`.
-//
-// The original reason is gone: `radius.control` used to be Pearl's 999px pill,
-// which on a 64×48 swatch painted a near-circle blob instead of a rectangular
-// color chip. Pearl is a 12px rounded rect as of 2026-08-28, so that hazard no
-// longer exists and this could now simply read `radius.control` — which would
-// also make `squareSwatches` below redundant, since hard-edged themes already
-// set `control: 0px`. Left as-is for now: it is a change to how every theme's
-// docs page renders, not a cleanup, and belongs with the radius refactor in
-// docs/TODO-concentric-radius.md rather than smuggled in beside it.
+// A fixed radius, decoupled from `radius.control` so a theme with a large
+// authored corner can't paint these color chips as near-circles. Could likely
+// track `radius.control` now that no theme uses a pill corner, but that's a
+// change to every theme's docs page — leave it with the radius work.
 export const stepSwatch = style({
   width: '64px',
   height: '48px',
@@ -189,9 +183,12 @@ export const namedSwatch = style({
 // remembering to opt in.
 export const squareSwatches = style({});
 
-globalStyle(`.${squareSwatches} .${stepSwatch}, .${squareSwatches} .${namedSwatch}`, {
-  borderRadius: 0,
-});
+globalStyle(
+  `.${squareSwatches} .${stepSwatch}, .${squareSwatches} .${namedSwatch}`,
+  {
+    borderRadius: 0,
+  },
+);
 
 export const modeColumns = style({
   display: 'flex',

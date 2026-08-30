@@ -8,7 +8,11 @@ independent of internal (hashed, unstable) class names:
 ```tsx
 function CardHeader({ children, className }: CardHeaderProps) {
   return (
-    <div data-component="card" data-part="header" className={clsx(cardHeader, className)}>
+    <div
+      data-component="card"
+      data-part="header"
+      className={clsx(cardHeader, className)}
+    >
       {children}
     </div>
   );
@@ -43,7 +47,7 @@ export const myFeature = style({
 <div className={myFeature}>
   <Card>
     <Card.Header>...</Card.Header> {/* no className needed */}
-    <Card.Body>...</Card.Body>     {/* no className needed */}
+    <Card.Body>...</Card.Body> {/* no className needed */}
   </Card>
 </div>
 ```
@@ -96,9 +100,9 @@ The practical rule:
 - **`globalStyle` rules do not.** Anything a theme expresses that way — font
   family, casing, tracking, per-variant borders — leaks into nested subtrees.
 
-So a page cannot render two themes side by side by nesting. Verified 2026-08-28
-against the introduction page's theme specimens, which now render each theme in
-its own frame instead. Real isolation is the only reliable answer today.
+So a page cannot render two themes side by side by nesting. The introduction
+page's theme specimens render each theme in its own frame instead. Real
+isolation is the only reliable answer today.
 
 **Possible fix, not adopted:** CSS `@scope` with a scope limit
 (`@scope (.themeClass) to ([data-theme-root])`) expresses exactly this boundary
@@ -111,7 +115,7 @@ product code rather than only in this system's own documentation.
 
 ## Secondary mechanism: `className` — for single-instance overrides only
 
-Data attributes target *categories* ("any card header"). When two instances of the
+Data attributes target _categories_ ("any card header"). When two instances of the
 same component exist and only one needs a tweak, attributes can't disambiguate —
 that's what `className` is for:
 
@@ -127,7 +131,7 @@ via `clsx`, as this narrow-purpose escape hatch — not as the primary override 
 
 - Use feature-level parent-scoped CSS mostly for **layout and spacing** between
   elements (gaps, alignment) — not for reaching into component internals.
-- When an override into a specific component/part *is* warranted, prefer the
+- When an override into a specific component/part _is_ warranted, prefer the
   `data-component`/`data-part` + `selectors` pattern above.
 - Reach for `className` only for genuine single-instance, one-off cases.
 
@@ -176,8 +180,35 @@ Consumers target stable attribute selectors from their own stylesheet instead:
 
 ```css
 /* ✅ ALLOWED — clean, versioned attribute targeting */
-[data-component="card"] [data-part="header"] {
+[data-component='card'] [data-part='header'] {
   background-color: var(--my-brand-bg);
   padding: 1.5rem;
 }
 ```
+
+## Flagging a gap — when a variant/pattern doesn't exist yet
+
+A consumer will sometimes need something the system doesn't document yet —
+a destructive/danger button treatment is the common case: Pearl only ships
+`primary`/`secondary`, and a delete-account action legitimately needs a third
+visual register the component API has no name for.
+
+That's expected, not a failure to work around quietly. Two rules:
+
+- **Extend through the real override contract, never inline `style={{...}}`.**
+  A one-off `style` prop on a single element is invisible to the rest of the
+  app and to the design system's own maintainers — it can't be found, audited,
+  or promoted later. Target `[data-component="button"][data-variant="primary"]`
+  (or whichever variant is closest) from a feature-scoped `style()` call, per
+  the `data-part` contract above, the same way any other override would be
+  written.
+- **Say so, out loud, in two places.** A code comment at the override site
+  (`// override: Pearl has no destructive Button variant — styling primary
+as danger here until one exists`) and a plain statement in whatever prose
+  accompanies the generated code. Both exist for the same reason: an override
+  like this is real, on-the-ground evidence that the system's variant set is
+  incomplete. If it's silent, that evidence is lost the moment the feature
+  ships instead of becoming a signal design-system maintainers can act on.
+
+This is the mechanism by which real usage — not speculative planning — is
+what's supposed to grow the token/variant surface over time.

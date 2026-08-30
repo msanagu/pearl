@@ -21,7 +21,11 @@ describe('Tag', () => {
   });
 
   it('merges a custom className', () => {
-    render(<Tag data-testid="tag" className="custom">content</Tag>);
+    render(
+      <Tag data-testid="tag" className="custom">
+        content
+      </Tag>,
+    );
     expect(screen.getByTestId('tag').className).toContain('custom');
   });
 });

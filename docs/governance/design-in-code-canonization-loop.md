@@ -9,7 +9,7 @@ systematically see how often feature teams are working around the design system,
 because that workaround happens in a place (application code) the DS team doesn't
 routinely observe.
 
-When everything — the design system itself *and* every feature team's usage and
+When everything — the design system itself _and_ every feature team's usage and
 overrides of it — lives in code, that gap becomes observable. Override usage is
 no longer a workaround happening in the dark; it's a Git-trackable signal.
 

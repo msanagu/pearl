@@ -41,11 +41,16 @@ export function StoryAudit({ children }: { children: ReactNode }) {
           <span
             style={{
               ...badge,
-              background: report == null ? '#9993' : clean ? '#15803d22' : '#c2410c22',
+              background:
+                report == null ? '#9993' : clean ? '#15803d22' : '#c2410c22',
               color: report == null ? '#666' : clean ? '#15803d' : '#c2410c',
             }}
           >
-            {report == null ? 'scanning…' : clean ? 'clean' : `${report.count} findings`}
+            {report == null
+              ? 'scanning…'
+              : clean
+                ? 'clean'
+                : `${report.count} findings`}
           </span>
         </header>
         {report && report.count > 0 && (
@@ -60,7 +65,11 @@ export function StoryAudit({ children }: { children: ReactNode }) {
             ))}
           </ul>
         )}
-        {clean && <p style={{ margin: 0, fontSize: 12, opacity: 0.7 }}>No anti-patterns detected.</p>}
+        {clean && (
+          <p style={{ margin: 0, fontSize: 12, opacity: 0.7 }}>
+            No anti-patterns detected.
+          </p>
+        )}
       </aside>
     </>
   );
@@ -95,6 +104,24 @@ const badge: CSSProperties = {
   padding: '2px 8px',
   borderRadius: 999,
 };
-const list: CSSProperties = { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 6 };
-const item: CSSProperties = { display: 'flex', flexDirection: 'column', gap: 2, fontSize: 12, borderTop: '1px solid #eee', paddingTop: 6 };
-const rule: CSSProperties = { fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 12, color: '#b91c1c' };
+const list: CSSProperties = {
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 6,
+};
+const item: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 2,
+  fontSize: 12,
+  borderTop: '1px solid #eee',
+  paddingTop: 6,
+};
+const rule: CSSProperties = {
+  fontFamily: 'ui-monospace, Menlo, monospace',
+  fontSize: 12,
+  color: '#b91c1c',
+};

@@ -8,7 +8,7 @@ import { Stack } from '@components/Stack/Stack';
 import { Tag } from '@components/Tag/Tag';
 import { color, space } from '@tokens';
 import { brandWordmarkByTheme } from '@/foundations/typeSpecimens';
-import { WordMark } from '@components/_brand/WordMark';
+import { WordMark } from '@components/_brand/WordMark/WordMark';
 
 /**
  * One theme's specimen — deliberately carries NO theme class of its own. It
@@ -25,20 +25,49 @@ import { WordMark } from '@components/_brand/WordMark';
  * correctly; `globalStyle` rules do not, so real isolation is the only
  * honest way to render two themes on one page.
  */
-type SpecimenWordmark = { text: string; role?: 'inlineEmphasis'; underscoreColor?: string };
+type SpecimenWordmark = {
+  text: string;
+  role?: 'inlineEmphasis';
+  underscoreColor?: string;
+};
 
 export const themeSpecimens = {
   // `brandWordmarkByTheme` is keyed by `string` (it's shared with call sites
   // that index it off an arbitrary Storybook toolbar value), so these
   // lookups are non-null asserted — the keys are the map's own literal
   // entries, not runtime input.
-  pearl: { name: 'Pearl', authored: true, mode: 'light', wordmark: brandWordmarkByTheme.pearl! },
-  tahitian: { name: 'Tahitian', authored: true, mode: 'dark', wordmark: brandWordmarkByTheme.tahitian! },
-  freshwater: { name: 'Freshwater', authored: true, mode: 'light', wordmark: brandWordmarkByTheme.freshwater! },
-  southSea: { name: 'South Sea', authored: true, mode: 'dark', wordmark: brandWordmarkByTheme.southSea! },
+  pearl: {
+    name: 'Pearl',
+    authored: true,
+    mode: 'light',
+    wordmark: brandWordmarkByTheme.pearl!,
+  },
+  tahitian: {
+    name: 'Tahitian',
+    authored: true,
+    mode: 'dark',
+    wordmark: brandWordmarkByTheme.tahitian!,
+  },
+  freshwater: {
+    name: 'Freshwater',
+    authored: true,
+    mode: 'light',
+    wordmark: brandWordmarkByTheme.freshwater!,
+  },
+  southSea: {
+    name: 'South Sea',
+    authored: true,
+    mode: 'dark',
+    wordmark: brandWordmarkByTheme.southSea!,
+  },
 } as const satisfies Record<
   string,
-  { name: string; authored: boolean; mode: 'light' | 'dark'; wordmark: SpecimenWordmark }
+  {
+    name: string;
+    authored: boolean;
+    mode: 'light' | 'dark';
+    wordmark: SpecimenWordmark;
+  }
 >;
 
 export type ThemeKey = keyof typeof themeSpecimens;
@@ -55,20 +84,40 @@ export interface ThemeSpecimenProps {
   wordmark: SpecimenWordmark;
 }
 
-export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimenProps) {
+export function ThemeSpecimen({
+  name,
+  authored = true,
+  wordmark,
+}: ThemeSpecimenProps) {
   return (
+    // `as="main"` + the `h1` below give each specimen iframe a landmark and a
+    // top-level heading of its own — it's a standalone document in that frame.
+    // `aria-label` is only load-bearing on the autodocs page, where every
+    // story's specimen renders inline rather than in its own iframe, so
+    // several `main`s land on one document and need distinguishing.
     <Stack
+      as="main"
+      aria-label={`${name} theme specimen`}
       gap="lg"
-      style={{ padding: space.lg, background: color.background, boxSizing: 'border-box' }}
+      style={{
+        padding: space.lg,
+        background: color.background,
+        boxSizing: 'border-box',
+      }}
     >
       <Stack gap="xs">
         <Row justify="between" align="center" gap="sm">
-          <Text as="h3" typeScale="headingSm" style={{ margin: 0 }}>
+          <Text as="h1" typeScale="headingSm" style={{ margin: 0 }}>
             {name}
           </Text>
           {!authored && <Tag variant="warn">WIP</Tag>}
         </Row>
-        <Text as="p" typeScale="bodySm" prominence="subtle" style={{ margin: 0 }}>
+        <Text
+          as="p"
+          typeScale="bodySm"
+          prominence="subtle"
+          style={{ margin: 0 }}
+        >
           Same markup, same token contract, extended as needed.
         </Text>
       </Stack>
@@ -80,16 +129,30 @@ export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimen
           still built from nothing but shipped primitives. */}
       <Card padding="lg">
         <Stack gap="lg">
-          {/* Every theme sets `borderStrong` — this rule isn't a Freshwater
-              one-off, even though it happens to also BE Freshwater's own
-              documented "heavy 2px rule under the header" geometry
-              (docs/theme/theme-revision-decisions.md §4). */}
-          <div style={{ paddingBottom: space.sm, borderBottom: `2px solid ${color.borderStrong}` }}>
-            <WordMark text={wordmark.text} role={wordmark.role} underscoreColor={wordmark.underscoreColor} scale={0.4} />
+          {/* Every theme sets `borderStrong`, so this rule isn't a Freshwater
+              one-off — though it also matches Freshwater's own header geometry. */}
+          <div
+            style={{
+              paddingBottom: space.sm,
+              borderBottom: `2px solid ${color.borderStrong}`,
+            }}
+          >
+            <WordMark
+              text={wordmark.text}
+              role={wordmark.role}
+              underscoreColor={wordmark.underscoreColor}
+              scale={0.4}
+            />
           </div>
           <Row justify="between" align="center" gap="sm">
             <Stack gap="sm">
-              <Text role="preheading" as="p" typeScale="caption" prominence="subtle" style={{ margin: 0 }}>
+              <Text
+                role="preheading"
+                as="p"
+                typeScale="caption"
+                prominence="subtle"
+                style={{ margin: 0 }}
+              >
                 Active sessions
               </Text>
             </Stack>
@@ -98,7 +161,11 @@ export function ThemeSpecimen({ name, authored = true, wordmark }: ThemeSpecimen
           <Text as="p" typeScale="displaySm" style={{ margin: 0 }}>
             1,284
           </Text>
-          <Text as="p" measure="md">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nunc nisl eget nunc.</Text>
+          <Text as="p" measure="md">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget
+            ultricies nunc nisl eget nunc.
+          </Text>
           <Field label="Email">
             {(injected) => <Input {...injected} placeholder="you@studio.co" />}
           </Field>

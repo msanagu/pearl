@@ -2,7 +2,7 @@
  * The role layer — which named job/context each of a theme's treatments
  * fulfills. Treatments (`src/themes/*.css.ts`) are the recipes a theme owns;
  * roles (this file) are the jobs that exist, each pointing at which
- * treatment fulfills it. See ADR-0008 for how this feeds the manifest.
+ * treatment fulfills it. See DECISIONS.md (the manifest).
  */
 
 /**
@@ -91,7 +91,7 @@ export interface RoleSpec<TTreatment extends string = string> {
    * confused for one another by a linter or a generator.
    */
   guidance?: string[];
-  /** Which exploration turn canonized this (see docs/theme/theme-revision-decisions.md). */
+  /** Which exploration turn canonized this. */
   source?: string;
 }
 
@@ -100,9 +100,9 @@ export type ThemeRoles<TTreatment extends string = string> = Record<string, Role
 
 /**
  * The closed set of typography role names — canon, not per-theme: every
- * theme fills these in with its own treatment (or reuses its body face,
- * an honest answer per ADR-0007 rule 1), but the three names themselves are
- * fixed. Kept here, not in a theme's own roles file, because `Text`'s `role`
- * prop enforces this same union regardless of which theme is active.
+ * theme fills these in with its own treatment (or honestly reuses its body
+ * face), but the three names themselves are fixed. Kept here, not in a theme's
+ * own roles file, because `Text`'s `role` prop enforces this same union
+ * regardless of which theme is active.
  */
 export type TypographyRole = 'inlineEmphasis' | 'preheading' | 'dataDigits';

@@ -2,10 +2,22 @@ import type { MapLeafNodes } from '@vanilla-extract/private';
 import { describe, expect, it } from 'vitest';
 
 import { vars } from '@/theme.css';
-import { freshwaterLightThemeClass, freshwaterDarkThemeClass } from '@themes/freshwater/freshwater.css';
-import { pearlLightThemeClass, pearlDarkThemeClass } from '@themes/pearl/pearl.css';
-import { southSeaLightThemeClass, southSeaDarkThemeClass } from '@themes/south-sea/south-sea.css';
-import { tahitianLightThemeClass, tahitianDarkThemeClass } from '@themes/tahitian/tahitian.css';
+import {
+  freshwaterLightThemeClass,
+  freshwaterDarkThemeClass,
+} from '@themes/freshwater/freshwater.css';
+import {
+  pearlLightThemeClass,
+  pearlDarkThemeClass,
+} from '@themes/pearl/pearl.css';
+import {
+  southSeaLightThemeClass,
+  southSeaDarkThemeClass,
+} from '@themes/south-sea/south-sea.css';
+import {
+  tahitianLightThemeClass,
+  tahitianDarkThemeClass,
+} from '@themes/tahitian/tahitian.css';
 
 /**
  * The shape `createTheme(vars, …)` demands: every leaf of the `vars` contract,
@@ -47,10 +59,13 @@ describe('theme registration (runtime)', () => {
     'south-sea / dark': southSeaDarkThemeClass,
   };
 
-  it.each(Object.entries(themes))('%s compiles to a class name', (_name, themeClass) => {
-    expect(typeof themeClass).toBe('string');
-    expect(themeClass.length).toBeGreaterThan(0);
-  });
+  it.each(Object.entries(themes))(
+    '%s compiles to a class name',
+    (_name, themeClass) => {
+      expect(typeof themeClass).toBe('string');
+      expect(themeClass.length).toBeGreaterThan(0);
+    },
+  );
 
   it('every theme class is distinct', () => {
     const values = Object.values(themes);

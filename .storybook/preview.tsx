@@ -5,49 +5,52 @@ import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
 import '@fontsource/space-grotesk/700.css';
-// Freshwater's mono (docs/theme/theme-revision-decisions.md §4) — data only:
-// ids, values, labels, timestamps. Zodiak/General Sans (South Sea) aren't on
-// @fontsource — loaded by CDN link in `preview-head.html` instead.
+// Freshwater's mono, used for data only: ids, values, labels. Zodiak/General
+// Sans (South Sea) aren't on @fontsource — loaded via `preview-head.html`.
 import '@fontsource/azeret-mono/400.css';
 import '@fontsource/azeret-mono/500.css';
 import '@fontsource/azeret-mono/600.css';
 import { vars } from '../src/theme.css';
-import { tahitianLightThemeClass, tahitianDarkThemeClass, tahitianExtensionClass } from '../src/themes/tahitian/tahitian.css';
-import { freshwaterLightThemeClass, freshwaterDarkThemeClass, freshwaterExtensionClass } from '../src/themes/freshwater/freshwater.css';
-import { southSeaLightThemeClass, southSeaDarkThemeClass } from '../src/themes/south-sea/south-sea.css';
-import { pearlLightThemeClass, pearlDarkThemeClass, pearlExtensionClass } from '../src/themes/pearl/pearl.css';
+import {
+  tahitianLightThemeClass,
+  tahitianDarkThemeClass,
+  tahitianExtensionClass,
+} from '../src/themes/tahitian/tahitian.css';
+import {
+  freshwaterLightThemeClass,
+  freshwaterDarkThemeClass,
+  freshwaterExtensionClass,
+} from '../src/themes/freshwater/freshwater.css';
+import {
+  southSeaLightThemeClass,
+  southSeaDarkThemeClass,
+} from '../src/themes/south-sea/south-sea.css';
+import {
+  pearlLightThemeClass,
+  pearlDarkThemeClass,
+  pearlExtensionClass,
+} from '../src/themes/pearl/pearl.css';
 
 type Mode = 'light' | 'dark';
 
 interface ThemeEntry {
-  /** The theme's own light/dark pair. Both are real, fully authored token
-   *  sets — never derived from each other (see theme.css.ts's mode note). */
+  /** The theme's light/dark pair — both fully authored, never derived from
+   *  each other (see theme.css.ts's mode note). */
   light: string;
   dark: string;
   /** The theme's extension class, if it declares one — the CSS vars its
-   *  `luster`/`overtone` gradients read (ADR-0007). Absent is the normal
-   *  case: a theme with no extension treatments simply omits it, rather
-   *  than being special-cased at the point of use. NEVER pair one theme's
-   *  extension class with another's theme class — Tahitian deliberately
-   *  does not apply Pearl's (see tahitian.css.ts's PearlSphere note). */
+   *  `luster`/`overtone` gradients read. Never pair one theme's extension
+   *  class with another's theme class. */
   extension?: string;
-  /** The mode this theme wants to be met in. Tahitian's palette is built
-   *  around black-lip nacre — its dark pair is the canonical read, and light
-   *  is the variant. Pearl is the inverse. Picking a theme in the toolbar
-   *  snaps the mode to this default; picking a mode afterwards still
-   *  overrides it freely. */
+  /** The mode this theme wants to be met in — Tahitian reads dark-first,
+   *  Pearl light-first. Picking a theme snaps the mode to this; picking a
+   *  mode afterwards still overrides freely. */
   defaultMode: Mode;
 }
 
-// One registry keyed by theme name — classes and mode default together, so a
-// theme is added or removed in exactly one place. Each of Pearl's named themes
-// ships a real light AND dark pair (docs/fable5-handoff-three-themes.md);
-// Tahitian/Freshwater/South Sea currently alias generic/placeholder values
-// pending that visual exploration, so only the *shape* here is final.
-//
-// Prefixed symbol names are load-bearing, not noise: `pearl*` always means
-// Pearl-the-theme (see src/index.ts's naming note), and the shared prefix is
-// what makes a mispairing visible on the line that builds the className below.
+// One registry keyed by theme name, so a theme is added or removed in one
+// place. The `pearl*` / `tahitian*` symbol prefixes are load-bearing — the
+// shared prefix is what makes a mispairing visible on the className line below.
 const themes: Record<string, ThemeEntry> = {
   pearl: {
     light: pearlLightThemeClass,
@@ -88,7 +91,15 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical', // Optional: sorts remaining items alphabetically
-        order: ['Introduction', 'Foundations', 'Brand', 'Components', 'Templates', 'Audit', "*"],
+        order: [
+          'Introduction',
+          'Foundations',
+          'Brand',
+          'Components',
+          'Templates',
+          'Audit',
+          '*',
+        ],
       },
     },
   },
@@ -136,7 +147,8 @@ const preview: Preview = {
       // deep link still win — this reacts to the toolbar, it doesn't preempt it.
       const previousTheme = useRef<string | null>(null);
       useEffect(() => {
-        const changed = previousTheme.current !== null && previousTheme.current !== theme;
+        const changed =
+          previousTheme.current !== null && previousTheme.current !== theme;
         previousTheme.current = theme;
         const preferred = themes[theme]?.defaultMode;
         if (changed && preferred && preferred !== mode) {
@@ -153,14 +165,15 @@ const preview: Preview = {
 
       // Every component reads only `vars.*` — nothing renders correctly without
       // a theme class as an ancestor. Applying it globally means stories never
-      // think about theming (roadmap.md's reskinning model).
+      // think about theming (the README's "Forking and reskinning" model).
       // Full-height only in the standalone Canvas tab. Inside autodocs, each
       // story is one block among many — forcing 100vh there just adds scroll.
       const minHeight = context.viewMode === 'docs' ? undefined : '100vh';
 
       // Stories that render full-bleed layouts (heroes, doc pages) opt out of
       // the default gutter with `parameters: { removePreviewPadding: true }`.
-      const removePreviewPadding = context.parameters.removePreviewPadding === true;
+      const removePreviewPadding =
+        context.parameters.removePreviewPadding === true;
 
       return (
         <div

@@ -9,10 +9,10 @@ to which persona.
 reviews and canonizes into the single source of truth → DS Consumer receives the
 result as a stable, versioned dependency. In a small team (or a solo project like
 this one), one person may hold all three roles — but modeling them separately
-matters for simulating how this functions at enterprise scale, and it mirrors
-real-world design-system org structures, where "the person who iterates on a
-component" and "the person with authority to approve what ships" are often
-genuinely different people or committees.
+matters for how a design system functions at scale, and it mirrors real-world
+design-system org structures, where "the person who iterates on a component" and
+"the person with authority to approve what ships" are often genuinely different
+people or committees.
 
 **These lines blur, deliberately, in smaller organizations.** A designer
 building feature work in code is routinely doing Consumer and Designer work in
@@ -22,7 +22,7 @@ sketching a new component or variant in their own feature-local code as they
 work out what's actually needed (Designer). That local sketch isn't a
 violation of the persona split; it's the Designer role happening in-place
 rather than as a separate, dedicated exercise. The distinction that still
-matters even here is *authority*, not *who*: a feature-local prototype stays a
+matters even here is _authority_, not _who_: a feature-local prototype stays a
 proposal — informal, uncanonized — until whoever holds Maintainer authority
 (even if it's the same person, later, in a more deliberate pass) reviews and
 promotes it into the shared system.
@@ -63,14 +63,15 @@ defines theme values.
 edits happen directly in the source.
 
 **How they customize:** by directly editing theme implementation files
-(`themes/*.css.ts`) against the shared token contract. See roadmap.md's
-"theme-only reskinning" section — this is the mechanism that serves this persona.
+(`themes/*.css.ts`) against the shared token contract. See the root README's
+"Forking and reskinning" section — this is the mechanism that serves this persona.
 No override system, no `data-part` targeting, no `className` passthrough needed —
-those mechanisms exist for the *other* persona, not this one.
+those mechanisms exist for the _other_ persona, not this one.
 
 **What they're responsible for:** enforcing that component code never hardcodes a
-raw value outside the theme layer (see roadmap.md's lint-rule requirement) — this
-is what keeps reskinning possible for every maintainer/fork downstream.
+raw value outside the theme layer (the root README notes the lint rule this
+needs, still unwritten) — this is what keeps reskinning possible for every
+maintainer/fork downstream.
 
 ## DS Consumer
 
@@ -84,6 +85,7 @@ modifying the installed source.
 
 **How they customize:** via the override system —
 see `foundations/override-patterns.md`:
+
 - `data-component` / `data-part` attributes + consolidated `selectors` blocks —
   primary mechanism, for category-wide targeting (any card header, any alert icon)
 - `className` passthrough — secondary mechanism, for single-instance overrides
@@ -124,7 +126,7 @@ an explicit, reviewed exception — something a team can point to and justify
 ("we needed X, composition/theming couldn't provide it, here's the override and
 here's who owns maintaining it") — not a routine styling tool. A one-off override
 isn't forbidden; it's a normal, expected release valve for a real use case the DS
-doesn't cover yet. The thing worth watching for is *convergence*: because every
+doesn't cover yet. The thing worth watching for is _convergence_: because every
 override targets a stable, greppable `data-component`/`data-part` selector, a
 lint rule or simple repo-scan could flag when the same selector/property gets
 overridden across multiple independent teams — not to block it, but to surface
@@ -132,24 +134,23 @@ it as a candidate the Maintainer should evaluate for promotion into a real,
 first-class variant or token. Treat that signal as a DS-evolution opportunity a
 human still decides on, not a queue that gets auto-resolved.
 
-## Why all three personas matter for this project's positioning
+## Why all three personas matter
 
-The **open-source / fork-and-reskin value proposition** (see roadmap.md) speaks to
-the **Maintainer** persona — someone bootstrapping their own design system from
-this one as a starting point.
+The **open-source / fork-and-reskin path** (see the root README's "Forking and
+reskinning" and "Build vs. adopt" sections) serves the
+**Maintainer** persona — someone bootstrapping their own design system from this
+one as a starting point.
 
-The **override-patterns.md system** (`data-part` + `selectors`) simulates the
-**Consumer** persona's real-world need — the enterprise scenario this project is
-partly built to demonstrate judgment about: many downstream feature teams, no
-shared repo access, needing a sanctioned way to customize without forking or
-waiting on the DS team.
+The **override-patterns.md system** (`data-part` + `selectors`) addresses the
+**Consumer** persona's real-world need — the enterprise scenario it models: many
+downstream feature teams, no shared repo access, needing a sanctioned way to
+customize without forking or waiting on the DS team.
 
 The **Designer** persona, and the override-convergence signal it can act on (see
 design-in-code-canonization-loop.md for one concept-stage idea of how that
-signal gets surfaced), is what makes this system's evolution a demonstrated
-*process* rather than a static artifact — showing not just what the design
-system is, but how it's meant to keep changing, and who is responsible for
-proposing vs. approving that change.
+signal gets surfaced), is what makes the system's evolution a _process_ rather
+than a static artifact — not just what the design system is, but how it's meant
+to keep changing, and who is responsible for proposing vs. approving that change.
 
 All three are real, all three are documented, and they are not in tension —
 they're answers to three different questions ("how do I make this mine," "how do
