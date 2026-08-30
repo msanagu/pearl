@@ -492,6 +492,15 @@ export const sectionTick = style({
   borderRadius: radius.full,
 });
 
+/** Stats section needs narrower width */
+export const narrowContent = style({
+  maxWidth: 1200,
+  margin: '0 auto',
+  width: '100%',
+  paddingLeft: space.xl,
+  paddingRight: space.xl,
+});
+
 /** Stat strip separators — vertical hairlines between the counts. */
 export const statDivider = style({
   width: 1,

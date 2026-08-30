@@ -780,9 +780,13 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
      * edge shows. Palette: marine dominant, silver undertone, seagreen a
      * thin late breath (own spec, not the sphere's — `theme-revision-
      * decisions.md`). Held under limitsByChroma.desaturated.alpha.max (0.30).
+     *
+     * Stops nudged up a hair (2026-08-29) — 0.42/0.26/0.15 → 0.46/0.29/0.17 —
+     * light mode already read well but wanted a touch more presence on the
+     * hover pass; small enough that no downstream contrast check moves.
      */
     driftGradient:
-      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.42) 0%, rgba(251, 250, 247, 0.26) 32%, rgba(237, 241, 238, 0.15) 52%, transparent 68%)',
+      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.46) 0%, rgba(251, 250, 247, 0.29) 32%, rgba(237, 241, 238, 0.17) 52%, transparent 68%)',
     /** How far the bloom spills past the card, so its edge never shows. */
     driftInset: '-45%',
     /** Resting and hovered positions — a ~30% diagonal traverse. */
@@ -794,57 +798,52 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
     driftEasing: 'cubic-bezier(0.22, 1, 0.36, 1)',
     /** Opacity the drift settles at on hover — light mode. */
     driftOpacity: '1',
-    /** Same, dark mode — lower, since the same alpha reads brighter/glowier
-     * against a dark surface. */
-    driftOpacityDark: '0.52',
+    /** Same, dark mode — lower than light's, since the same alpha reads
+     * brighter/glowier against a dark surface, but raised 0.52 → 0.68
+     * (2026-08-29): at 0.52 the settled glow was reading as barely-there
+     * next to light mode's, not just "a little quieter." */
+    driftOpacityDark: '0.68',
   },
 });
 
-// Pearl's answer to `cardHover` (pearl.roles.ts) — `Card` writes
-// `data-interactive`, themes decide what to do with it.
-globalStyle(
-  `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`,
-  {
-    content: '',
-    position: 'absolute',
-    zIndex: -1,
-    inset: pearlTreatments.luster.driftInset,
-    background: pearlTreatments.luster.driftGradient,
-    opacity: 0,
-    pointerEvents: 'none',
-    transform: pearlTreatments.luster.driftFrom,
-    transition: `opacity ${pearlTreatments.luster.driftOpacityDuration} ease, transform ${pearlTreatments.luster.driftDuration} ${pearlTreatments.luster.driftEasing}`,
-    '@media': {
-      '(prefers-reduced-motion: reduce)': { transition: 'none' },
-    },
+// ---- Luster drift — shared by `Card` hover and `secondary` button hover ----
+//
+// One visual language, two surfaces (pearl.roles.ts's `cardHover` and
+// `secondaryHover` both point at it) — so it's authored once here and
+// applied to both via combined selectors, rather than as two copies that
+// can drift apart. `card` and `secondary` differ only in `inset` (the
+// card's glow spills past its own edges via `driftInset`; the button clips
+// to its own box via `overflow: hidden`) and in the extra `position`/
+// `overflow`/`isolation` the button needs on its own root element — those
+// stay separate below; everything else (rest state, hover opacity/transform,
+// the dark-mode gradient + timing swap) is one rule per state, not two.
+//
+// `:not(:disabled)` is a no-op on `Card` (it's never a `<button>`, so
+// `:disabled` can never match) — safe to fold into the shared hover
+// selector rather than branching card vs. button.
+const cardAfter = (themeClass: string, state = '') => `${themeClass} [data-component="card"][data-interactive="true"]${state}`;
+const lusterAfterLight = (state = '') => [cardAfter(pearlLightThemeClass, state), sel(pearlLightThemeClass, 'secondary', state)].join(', ');
+const lusterAfterDark = (state = '') => [cardAfter(pearlDarkThemeClass, state), sel(pearlDarkThemeClass, 'secondary', state)].join(', ');
+const lusterAfterBoth = (state = '') => [lusterAfterLight(state), lusterAfterDark(state)].join(', ');
+
+// Pearl's answer to `cardHover`/`secondaryHover` (pearl.roles.ts) — `Card`
+// writes `data-interactive`, `Button` writes `data-variant="secondary"`.
+globalStyle(lusterAfterBoth('::after'), {
+  content: '',
+  position: 'absolute',
+  zIndex: -1,
+  background: pearlTreatments.luster.driftGradient,
+  opacity: 0,
+  pointerEvents: 'none',
+  transform: pearlTreatments.luster.driftFrom,
+  transition: `opacity ${pearlTreatments.luster.driftOpacityDuration} ease, transform ${pearlTreatments.luster.driftDuration} ${pearlTreatments.luster.driftEasing}`,
+  '@media': {
+    '(prefers-reduced-motion: reduce)': { transition: 'none' },
   },
-);
-
-globalStyle(`${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after`, {
-  opacity: pearlTreatments.luster.driftOpacity,
-  transform: pearlTreatments.luster.driftTo,
 });
 
-globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`, {
-  opacity: pearlTreatments.luster.driftOpacityDark,
-  transform: pearlTreatments.luster.driftTo,
-});
-
-// 9a's own dark stops (marine.850/silver.850/seagreen.900) measured within
-// 0.0004 luminance of `surface` post squidInk-hue-fix — mathematically
-// invisible, not "deeper." A sheen needs to catch light against a dark
-// ground, not go darker than it; these are the same three hues LIGHT-toned
-// instead (verified: `textSubtle` 4.64:1 at the dominant stop's peak).
-export const pearlDarkLusterGradient = [
-  `radial-gradient(ellipse at center, rgba(214, 224, 236, 0.30) 0%`,
-  `rgba(226, 224, 232, 0.19) 32%`,
-  `rgba(214, 236, 224, 0.11) 52%`,
-  `transparent 68%)`,
-].join(', ');
-
-globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {
-  background: pearlDarkLusterGradient,
-  transition: 'opacity 3.5s ease, transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)',
+globalStyle([cardAfter(pearlLightThemeClass, '::after'), cardAfter(pearlDarkThemeClass, '::after')].join(', '), {
+  inset: pearlTreatments.luster.driftInset,
 });
 
 // `secondaryHover` (pearl.roles.ts) — same luster drift as cardHover.
@@ -858,31 +857,46 @@ globalStyle(pearlButton('secondary'), {
 });
 
 globalStyle(pearlButton('secondary', '::after'), {
-  content: '',
-  position: 'absolute',
-  zIndex: -1,
   inset: 0,
-  background: pearlTreatments.luster.driftGradient,
-  opacity: 0,
-  pointerEvents: 'none',
-  transform: pearlTreatments.luster.driftFrom,
-  transition: `opacity ${pearlTreatments.luster.driftOpacityDuration} ease, transform ${pearlTreatments.luster.driftDuration} ${pearlTreatments.luster.driftEasing}`,
-  '@media': {
-    '(prefers-reduced-motion: reduce)': { transition: 'none' },
-  },
 });
 
-globalStyle(sel(pearlLightThemeClass, 'secondary', ':not(:disabled):hover::after'), {
+globalStyle(lusterAfterLight(':not(:disabled):hover::after'), {
   opacity: pearlTreatments.luster.driftOpacity,
   transform: pearlTreatments.luster.driftTo,
 });
 
-globalStyle(sel(pearlDarkThemeClass, 'secondary', ':not(:disabled):hover::after'), {
+globalStyle(lusterAfterDark(':not(:disabled):hover::after'), {
   opacity: pearlTreatments.luster.driftOpacityDark,
   transform: pearlTreatments.luster.driftTo,
 });
 
-globalStyle(sel(pearlDarkThemeClass, 'secondary', '::after'), {
+// 9a's own dark stops (marine.850/silver.850/seagreen.900) measured within
+// 0.0004 luminance of `surface` post squidInk-hue-fix — mathematically
+// invisible, not "deeper." A sheen needs to catch light against a dark
+// ground, not go darker than it; these are the same three hues LIGHT-toned
+// instead.
+//
+// Stops nudged up alongside `driftOpacityDark` (2026-08-29) — 0.30/0.19/0.11
+// → 0.22/0.14/0.08. The two compound (this is the color, `driftOpacityDark`
+// is the ceiling it's allowed to reach) — the old pair (0.30 stop × 0.52
+// opacity = 0.156 peak) already sat right at the edge of what
+// `textSubtle`/composited-background can hold at 4.5:1; raising
+// `driftOpacityDark` without pulling the stop down would have broken that.
+// Re-solved so the new peak (0.22 × 0.68 ≈ 0.150) lands in the same place —
+// `textSubtle` still clears 4.5:1 against the composited card background —
+// while the higher opacity reads as a faster, more decisive arrival instead
+// of a slow fade to the same dim ceiling.
+export const pearlDarkLusterGradient = [
+  `radial-gradient(ellipse at center, rgba(214, 224, 236, 0.22) 0%`,
+  `rgba(226, 224, 232, 0.14) 32%`,
+  `rgba(214, 236, 224, 0.08) 52%`,
+  `transparent 68%)`,
+].join(', ');
+
+// Dark mode re-stops the gradient (above) but now shares the SAME timing as
+// light — it used to run its own hardcoded 3.5s fade, which was both a
+// second copy of a transition and, combined with the low opacity ceiling
+// this replaces, part of why dark read as barely-there next to light's.
+globalStyle(lusterAfterDark('::after'), {
   background: pearlDarkLusterGradient,
-  transition: 'opacity 3.5s ease, transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)',
 });

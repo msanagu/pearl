@@ -337,7 +337,10 @@ export interface IntroductionProps {
   statsTreatment?: string;
 }
 
-export function Introduction({ plateTreatment = '', statsTreatment = '' }: IntroductionProps) {
+export function Introduction({
+  plateTreatment = '',
+  statsTreatment = '',
+}: IntroductionProps) {
   useEffect(() => {
     // Storybook renders this story inside a preview iframe, so a
     // `#decision-log` in the top-level URL never triggers the browser's
@@ -387,20 +390,63 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
 
       <div className={css.page}>
         <div className={css.sectionFlow}>
-          {/* ---------------- Reskinning ---------------- */}
+          {/* ---------------- Reskinning ----------------
+              "Show, then tell" — the opposite argument order from every
+              other section on this page (and from Hero directly above it,
+              which announces its claim first). Sitting right after Hero,
+              a second SectionHead-style "big claim, then explanation
+              beside it" block read as the same shape repeated rather than
+              a new idea. Flipping the order breaks that: the four live
+              theme specimens (the actual proof) come first, and the title
+              + standfirst follow as a caption explaining what the reader
+              just watched happen, not an announcement asking them to take
+              it on faith. Not using `SectionHead` here on purpose — its
+              two-column "title beside standfirst" shape was built for the
+              tell-first case; stacked single-column reads better once the
+              text's job is "here's what that was," not "here's what's
+              about to happen." */}
           <section>
             <div className={css.sectionBody}>
-              <SectionHead
-                eyebrow="Theming"
-                title="One contract, any number of themes"
-                standfirst="Every component reads only from the theme contract — never a hardcoded color, space, or type value. Swapping the theme files reskins the whole system with no component code touched."
-              />
+              <Stack gap="sm">
+                {/* <div className={css.sectionTick} aria-hidden="true" /> */}
+                {/* <Text
+                  id="theming"
+                  role="preheading"
+                  as="p"
+                  typeScale="caption"
+                  prominence="subtle"
+                >
+                  Theming
+                </Text> */}
+                <Text
+                  as="h2"
+                  typeScale="displaySm"
+                  measure="sm"
+                  style={{ margin: 0, textAlign: 'center' }}
+                >
+                  One contract, any number of themes
+                </Text>
+              </Stack>
 
               <div className={css.themeGrid}>
                 {specimenOrder.map((theme) => (
                   <ThemeSpecimenFrame key={theme} theme={theme} />
                 ))}
               </div>
+
+              <Stack gap="sm">
+                <Text
+                  as="p"
+                  typeScale="bodyMd"
+                  prominence="subtle"
+                  measure="sm"
+                  style={{ margin: 0 }}
+                >
+                  Every component reads only from the theme contract — never a
+                  hardcoded color, space, or type value. Swapping the theme
+                  files reskins the whole system with no component code touched.
+                </Text>
+              </Stack>
             </div>
           </section>
 
@@ -454,7 +500,8 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
                   <Text
                     as="h2"
                     typeScale="displaySm"
-                    style={{ margin: 0, textWrap: 'balance' }}
+                    measure="sm"
+                    style={{ margin: 0, maxWidth: '11ch' }}
                   >
                     Pearl is an{' '}
                     <Text as="span" role="inlineEmphasis">
@@ -497,7 +544,6 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
                       <Text
                         as="p"
                         typeScale="bodyMd"
-                        prominence="subtle"
                         measure="lg"
                         style={{ margin: 0 }}
                       >
@@ -658,7 +704,8 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
                                   : undefined
                               }
                             >
-                              {decision.status} / {formatMonthYear(decision.date)}
+                              {decision.status} /{' '}
+                              {formatMonthYear(decision.date)}
                             </Text>
                             <Icon
                               icon={PiCaretDown}
@@ -708,7 +755,6 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
                             <Text
                               as="p"
                               typeScale="bodyMd"
-                              prominence="subtle"
                               measure="lg"
                               style={{ margin: 0 }}
                             >
@@ -744,7 +790,7 @@ export function Introduction({ plateTreatment = '', statsTreatment = '' }: Intro
           </section>
 
           {/* ---------------- Stats ---------------- */}
-          <section aria-label="What is shipped">
+          <section className={css.narrowContent} aria-label="What is shipped">
             <Card padding="xl" className={statsTreatment}>
               <Row justify="between" align="center" gap="lg" wrap>
                 {stats.map((stat, index) => (
