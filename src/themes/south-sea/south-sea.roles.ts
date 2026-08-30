@@ -70,4 +70,10 @@ export const southSeaRoles: ThemeRoles<SouthSeaTreatmentName> = {
     treatment: 'sansBody',
     intent: 'No dedicated tabular face exists yet — honestly aliases to the body sans rather than fabricating a tabular treatment.',
   },
+  cardHover: {
+    treatment: 'serifItalic',
+    intent: 'A hovered card heading tips into the italic half of the roman/italic mix — no lit surface, just a register shift already native to this theme\'s type.',
+    on: 'type',
+    trigger: 'hover',
+  },
 };

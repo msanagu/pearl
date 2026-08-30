@@ -16,6 +16,7 @@ import { Hero } from '@/templates/Hero/Hero';
 import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import { color } from '@tokens';
 import { themeSpecimens, type ThemeKey } from './ThemeSpecimen';
+import { componentCount, themeCount, modesPerTheme } from './liveStats';
 import * as css from './Introduction.css';
 
 /* ------------------------------------------------------------------ *
@@ -170,17 +171,20 @@ function formatMonthYear(isoDate: string): string {
 const specimenOrder = ['pearl', 'tahitian', 'freshwater', 'southSea'] as const;
 
 // Counts a reviewer could check against the repo in a minute, so they have to
-// be right. `Decision records` derives from the array above rather than being
-// typed in — it was the number that had already gone stale (ADR-0010 shipped
-// while the page still said nine), and a page arguing that rules shouldn't
-// drift is the worst possible place to hand-maintain a count.
-// `Components` is the public export surface in `src/index.ts`, which is the
-// honest read of "what you get"; the brand marks are deliberately not counted,
-// since they aren't exported and aren't themeable canon (ADR-0007).
+// be right. Every value here is derived, not typed in — `Components` and
+// `Themes`/`Modes each` come from `liveStats.ts`, which reads the real
+// public export surface (`src/index.ts`) rather than a hand-maintained
+// number; `Decision records` derives from the array above. `Components`
+// used to be hardcoded `'10'` and had already gone stale by the time `Link`
+// shipped — the exact failure mode a page arguing that rules shouldn't drift
+// can least afford. The brand marks stay uncounted, since they aren't
+// exported and aren't themeable canon (ADR-0007) — `liveStats`'s component
+// detector only sees what's actually in the export barrel, so this is
+// automatic, not a manual exclusion to remember.
 const stats = [
-  { value: '10', label: 'Components' },
-  { value: '4', label: 'Themes' },
-  { value: '2', label: 'Modes each' },
+  { value: String(componentCount), label: 'Components' },
+  { value: String(themeCount), label: 'Themes' },
+  { value: String(modesPerTheme), label: 'Modes each' },
   { value: String(decisions.length), label: 'Decision records' },
 ];
 
@@ -449,33 +453,35 @@ export function Introduction({ plateTreatment = '' }: IntroductionProps) {
                 edge instead of a shared bottom one. */}
               <Card padding="xl">
                 <div className={css.premiseGrid}>
-                  {/* Two full clauses, not a mechanical mid-sentence break —
-                      "Pearl is an [experiment] —" was breaking right after a
-                      bare article ("an"), which strands a weak function word
-                      at the line's end, and jumping "experiment" alone to
-                      displayLg mid-sentence read as a type-scale collision,
-                      not deliberate emphasis. Both lines now end on a real
-                      word, uniform scale throughout, "experiment" carrying
-                      its emphasis via role only. "Not a finished product" is
-                      PROJECT_BRIEF's own phrase ("a 2026 snapshot, not a
-                      finished product"), not new copy.
-                      A non-breaking space (U+00A0) sits between
-                      "experiment" and the dash below — a plain space
-                      there let the browser wrap the dash onto its own
-                      orphaned line whenever "Pearl is an [emphasis]
-                      experiment" alone already filled the column
-                      (reproduced in both Pearl and Tahitian, at this
-                      card's real width). The non-breaking space glues the
-                      two together so they can never be split apart by the
-                      wrap. */}
-                  <Text as="h2" typeScale="displaySm" style={{ margin: 0 }}>
+                  {/* THIRD rewrite of this headline's line-breaking — manually
+                      forcing break points (`<br />` plus non-breaking spaces
+                      to glue fragile word pairs) kept fixing one width and
+                      breaking another: gluing "experiment" to its dash fixed
+                      an orphaned dash, then gluing "finished" to "product."
+                      fixed an orphaned word at one width but, at a narrower
+                      one, blocked the ONLY legal break point left in that
+                      line — so the glued pair overflowed past the column
+                      edge into the column beside it instead of wrapping, a
+                      worse bug than either orphan.
+                      `textWrap: 'balance'` instead: no forced breaks, no
+                      glued pairs, natural text with the browser distributing
+                      it evenly across lines at whatever width the column
+                      actually is — which is what "needs to wrap earlier"
+                      asks for in general, not just at one measured width.
+                      "experiment" still carries its emphasis via role, and
+                      "not a finished product" is still PROJECT_BRIEF's own
+                      phrase ("a 2026 snapshot, not a finished product"), not
+                      new copy — only the line-breaking mechanism changed. */}
+                  <Text
+                    as="h2"
+                    typeScale="displaySm"
+                    style={{ margin: 0, textWrap: 'balance' }}
+                  >
                     Pearl is an{' '}
                     <Text as="span" role="inlineEmphasis">
                       experiment
-                    </Text>
-                    {' —'}
-                    <br />
-                    not a finished product.
+                    </Text>{' '}
+                    — not a finished product.
                   </Text>
 
                   <Stack gap="md">

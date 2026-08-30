@@ -481,3 +481,44 @@ globalStyle(`${freshwaterDarkThemeClass} .${sphereContact}`, {
   left: 'calc(50% + 22px)',
   bottom: '-22px',
 });
+
+// `wash` — Freshwater's extension treatment (ADR-0007). Assigned to
+// `cardHover` in freshwater.roles.ts; see theme-revision-decisions.md §4.
+export const [freshwaterExtensionClass, freshwaterTreatments] = createTheme({
+  wash: {
+    angle: '90deg',
+    gradient: 'linear-gradient(90deg, #E9FBFF 0%, rgba(233, 251, 255, 0) 60%)',
+    gradientDark: 'linear-gradient(90deg, rgba(58, 61, 64, 0.55) 0%, rgba(58, 61, 64, 0) 60%)',
+    duration: '250ms',
+    easing: 'ease',
+    opacity: '1',
+  },
+});
+
+globalStyle(
+  `${freshwaterLightThemeClass} [data-component="card"][data-interactive="true"]::after, ${freshwaterDarkThemeClass} [data-component="card"][data-interactive="true"]::after`,
+  {
+    content: '',
+    position: 'absolute',
+    inset: 0,
+    zIndex: -1,
+    background: freshwaterTreatments.wash.gradient,
+    opacity: 0,
+    pointerEvents: 'none',
+    transition: `opacity ${freshwaterTreatments.wash.duration} ${freshwaterTreatments.wash.easing}`,
+    '@media': {
+      '(prefers-reduced-motion: reduce)': { transition: 'none' },
+    },
+  },
+);
+
+globalStyle(`${freshwaterDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {
+  background: freshwaterTreatments.wash.gradientDark,
+});
+
+globalStyle(
+  `${freshwaterLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after, ${freshwaterDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`,
+  {
+    opacity: freshwaterTreatments.wash.opacity,
+  },
+);

@@ -48,7 +48,7 @@ function ComponentSampler() {
       </Row>
 
       <Row gap="lg" wrap>
-        <Card style={{ flex: '1 1 300px' }}>
+        <Card href="#" style={{ flex: '1 1 300px' }}>
           <Card.Header>
             <Text typeScale="headingSm" as="h3">
               Profile

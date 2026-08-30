@@ -71,8 +71,8 @@ Unifying them is what produced the `=== 'tahitian'` escape hatch.
 |---|---|---|
 | Pearl | `luster` | The sphere, the hairline rule, card hover. Three surfaces, two motion behaviors — the mechanism's acceptance test |
 | Tahitian | `overtone` | Imagery plates only. Name comes straight from turns 3b/4a ("Overtone Plates") |
-| Freshwater | `wash` | Different in kind — stationary semantic tint, see §4 |
-| South Sea | `glow` | **Placeholder — subtle by definition.** A low-opacity warm halo on hover, dark mode only; no ambient state, no loop. Deliberately restrained pending refinement — South Sea's identity is type, space, and restraint, so `glow` must never compete with that |
+| Freshwater | `wash` | Originally a stationary semantic tint; also drives card hover as of 2026-08-29, see §4 |
+| South Sea | *(none)* | `glow` (a lit-surface hover halo) was proposed and struck 2026-08-29 — see §5. `cardHover` exists but is typographic, not a surface effect |
 
 ---
 
@@ -196,8 +196,8 @@ its loop — nothing on a card animates until hovered.
 
 That sentence states the accent budget better than the Theme Contract does.
 
-**The `wash` is not a luster.** It is a near-white, stationary, low-saturation
-tint used to mark *semantic* regions — never decoration:
+**The `wash` originates as a near-white, low-saturation tint** used to mark
+*semantic* regions:
 
 - attention stat cell (`2a:1310`): `linear-gradient(135deg,#E9FBFF,#F4FDFF 60%,#FFF)`
 - selected table row (`2a:1322`): `linear-gradient(90deg,#EAFBFF 0%,#FFFFFF 40%)`
@@ -206,6 +206,24 @@ Compare the contract's fabricated Freshwater luster —
 `#0089B3 → #5FE1FF → #0089B3`, saturated, animated, decorative. Opposite intent,
 same primitive. `wash` is the correct name; "watercolor" implies more pigment
 than 2a carries.
+
+**Update (2026-08-29): `wash` also drives `cardHover`.** The role table
+(`freshwater.roles.ts`) now points `cardHover` at `wash` — the same
+`90deg`/`#E9FBFF` gradient (faded to transparent rather than 2a's white stop,
+so it composites over an arbitrary card surface rather than only a
+paper-white row), appearing on hover instead of standing as a static
+semantic marker. This is a genuine extension of intent, not a
+reinterpretation of the source turns: 2a itself never puts `wash` on a card,
+and "never decoration" (the line above, in its original form) was written
+specifically to distinguish `wash` from a luster/glow-style hover effect.
+Card hover is exactly that kind of effect. The choice was made deliberately
+anyway, trading semantic-only purity for reusing an already-idiomatic
+mechanic; the answer to the open question below ("does `wash` belong to
+Freshwater alone") is now "yes, and it also covers hover, not only static
+regions." Dark mode is exempted from the ice-blue stop — it substitutes a
+neutral graphite tint — so the accent budget rule ("ice-blue only where the
+system speaks") still holds outside light mode. See
+`freshwaterTreatments.wash` in `freshwater.css.ts` for the implementation.
 
 **Geometry:** radius 0 throughout. Heavy `2px solid #0E0F10` rule under the
 header, `1px #E3E5E7` elsewhere. Solid-ink primary (`#0E0F10`, white text),
@@ -230,11 +248,19 @@ Flat warm ecru background, chocolate ink, roman + italic serif mixing with a hai
 rule in the gap, radius 0 throughout, slash-wrapped labels (`/ LABEL /` at
 `.2em`), conch `#E8A184` doing exactly one small loud thing per view.
 
-**No named effect.** Its identity is type, space, and restraint. The contract's
-champagne "luster" is fabricated — discard it.
+**No lit-surface effect.** Its identity is type, space, and restraint. The
+contract's champagne "luster" is fabricated — discard it; the placeholder
+`glow` slot in the table above never shipped either, same reasoning.
 
 Note the source render leaks a `lusterShim` debug label, further evidence of the
 slot being patched around.
+
+**Update (2026-08-29): `cardHover` ships as a typographic effect instead.**
+A hovered card heading swaps from roman Boska to the italic serif
+(`south-sea.roles.ts`'s `cardHover` role, pointed at the existing
+`serifItalic` treatment) — the same roman/italic mix the theme already uses
+for `inlineEmphasis`, just triggered by hover instead of authored per call
+site. No new surface, no light source.
 
 ---
 
@@ -339,8 +365,8 @@ padding ramp.
   record ([`docs/decisions/0007-treatments-and-roles.md`](../decisions/0007-treatments-and-roles.md),
   `proposed`) — theme-owned, theme-named effects, each requiring a written
   description of where/how it applies. Pending acceptance.
-- **South Sea's `glow`** ⚠️ — recorded in §1.1 but reverses an earlier "South Sea
-  has no effect." Needs confirmation or strike.
+- ~~**South Sea's `glow`**~~ struck 2026-08-29: no lit-surface effect shipped;
+  `cardHover` is a typographic roman/italic swap instead, see §5's "Update."
 - **Per-theme configuration schema** — the axis vocabulary, the path-addressing
   scheme, and the machine-checkable vs. advisory split. The theme-effects
   decision record names this layer but does not specify it. Candidate: a
@@ -348,8 +374,11 @@ padding ramp.
 - ~~**Prose field name**~~ — resolved: `mood`.
 - **Font licensing.** Six new families, all currently CDN-loaded in the
   prototypes; we self-host. Needs license verification and `.woff2` sourcing.
-- **Does `wash` belong to Freshwater alone,** or is a semantic-region tint
-  general enough to be a shared role?
+- ~~**Does `wash` belong to Freshwater alone**, or is a semantic-region tint
+  general enough to be a shared role?~~ resolved 2026-08-29: `wash` stays
+  Freshwater's own extension treatment (ADR-0007's "bespoke to your brand →
+  extension treatment, no fork" rule), now also assigned to `cardHover` — see
+  §4's update.
 
 ---
 

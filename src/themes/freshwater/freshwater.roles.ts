@@ -1,13 +1,18 @@
-/**
- * Freshwater has no full role table yet (`pearl.roles.ts`/`tahitian.roles.ts`/
- * `south-sea.roles.ts` each also carry `inlineEmphasis`/`preheading`/
- * `dataDigits` treatments — Freshwater's equivalents are still ad hoc
- * `globalStyle` rules in `freshwater.css.ts`, not yet promoted to named,
- * documented treatments here). This file exists early, wordmark-only, so
- * every consumer of `*BrandWordmark` (Hero, Typography/Tokens stories, the
- * Introduction theme specimens) can show the theme's real nav mark instead
- * of falling back to Pearl's.
- */
+import type { ThemeRoles } from '@themes/roles';
+import { freshwaterTreatments } from './freshwater.css';
+
+type FreshwaterTreatmentName = keyof typeof freshwaterTreatments;
+
+export const freshwaterRoles: ThemeRoles<FreshwaterTreatmentName> = {
+  cardHover: {
+    treatment: 'wash',
+    intent: 'A left-to-right ice-blue tint fading to transparent, on hover only.',
+    on: 'surface',
+    trigger: 'hover',
+    chroma: 'brand',
+    source: '2a',
+  },
+};
 
 /**
  * The nav wordmark — sourced from the theme's own 7a/7b exploration turns

@@ -36,9 +36,10 @@ import { vars } from '@/theme.css';
 // header. It's loaded via the same CDN link South Sea already pulls it from
 // (`.storybook/preview-head.html`) — no separate load, just named here so
 // Pearl's stack resolves to it instead of falling through to system-ui.
+// Gambetta (Fontshare, free) is loaded the same way, italic-only.
 export const pearlFonts = {
   sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
-  serif: "Georgia, 'Times New Roman', serif",
+  serif: "'Gambetta', Georgia, 'Times New Roman', serif",
   mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
 
@@ -149,14 +150,32 @@ export const squidInk = {
  * before this pass (1.92:1) — an existing gap in what "emphasis" border means
  * here, not a regression this ramp introduces (it's now 2.34:1, closer but
  * still short).
+ *
+ * ## Pulled back at the light end (2026-08-29)
+ * The even chroma ramp above (0.018 → 0.080, linear in `t`) reads as too
+ * saturated where it does UI-chrome work — `textSubtle` and section labels
+ * across the app suddenly read as visibly violet, not "text with a cool
+ * cast." Linear chroma against six equal steps means `100` sits at nearly a
+ * quarter of `700`'s saturation, which is loud for a step whose job is a
+ * background wash.
+ *
+ * Chroma now follows `0.008 + 0.072 · t^1.3` (`t` = rung index ÷ 6) instead of
+ * a straight line — an eased curve, not a lower ceiling: `700` is UNCHANGED
+ * at 0.080 (it's `accentHover`, already contrast-verified), and the curve
+ * only pulls in the steps below it, hardest at the light end (`100`: 0.018 →
+ * 0.008, roughly half; `300`: 0.038 → 0.025) and easing off by the time it
+ * reaches `500`/`600` (0.058 → 0.050, 0.068 → 0.065 — barely moved). Every
+ * contrast pairing above was re-checked against the new values and still
+ * holds: `500` 4.57:1/4.85:1, `200` (dark) 9.41:1/7.09:1, `400` (dark) 5.03:1/
+ * 3.79:1, `600` 6.59:1/7.00:1.
  */
 export const urchin = {
-  100: '#D8D5E2', // marine — accentSubtle (light) / accent + focusRing (dark)
-  200: '#BDB8CC', // lavenderPale — body copy, dark mode
-  300: '#A49DB7', // marineStrong — emphasis border, light mode
-  400: '#8B83A2', // marineStrong — emphasis border, dark mode / accentSubtle, dark
-  500: '#73698E', // slate — body copy, light mode
-  600: '#5C507A', // violet — accent + focusRing, light mode
+  100: '#D7D6DC', // marine — accentSubtle (light) / accent + focusRing (dark)
+  200: '#BCBAC5', // lavenderPale — body copy, dark mode
+  300: '#A39FB0', // marineStrong — emphasis border, light mode
+  400: '#8A849D', // marineStrong — emphasis border, dark mode / accentSubtle, dark
+  500: '#726A8A', // slate — body copy, light mode
+  600: '#5C5078', // violet — accent + focusRing, light mode
   700: '#463766', // violetDeep — accentHover, light mode
 };
 
@@ -472,6 +491,7 @@ globalStyle(
   {
     fontFamily: pearlFonts.mono,
     fontVariantNumeric: 'tabular-nums',
+    letterSpacing: '-0.05em',
   },
 );
 
@@ -517,7 +537,7 @@ const primaryCta = (state = '') => pearlButton('primary', state);
 /**
  * Press occlusion. Black, not `color.shadow`, for the reason recorded on the
  * dark theme's `shadow` token — an inset must DARKEN. Here that argument binds
- * in *both* modes: light mode's `shadow` (#A49DB7) is far lighter than the ink
+ * in *both* modes: light mode's `shadow` (#A39FB0) is far lighter than the ink
  * fill it would be painted inside, so it lightens the press instead of
  * deepening it. This is occlusion inside the control, unrelated to elevation
  * under it, so it is deliberately not a theme color slot.
@@ -679,7 +699,7 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
      * decisions.md`). Held under limitsByChroma.desaturated.alpha.max (0.30).
      */
     driftGradient:
-      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.30) 0%, rgba(251, 250, 247, 0.19) 32%, rgba(237, 241, 238, 0.11) 52%, transparent 68%)',
+      'radial-gradient(ellipse at center, rgba(215, 213, 223, 0.42) 0%, rgba(251, 250, 247, 0.26) 32%, rgba(237, 241, 238, 0.15) 52%, transparent 68%)',
     /** How far the bloom spills past the card, so its edge never shows. */
     driftInset: '-45%',
     /** Resting and hovered positions — a ~30% diagonal traverse. */
@@ -689,18 +709,16 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
     driftOpacityDuration: '700ms',
     driftDuration: '1000ms',
     driftEasing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-    /** Opacity the drift settles at on hover. [doc-site-poc.css.ts:316] */
-    driftOpacity: '0.72',
+    /** Opacity the drift settles at on hover — light mode. */
+    driftOpacity: '1',
+    /** Same, dark mode — lower, since the same alpha reads brighter/glowier
+     * against a dark surface. */
+    driftOpacityDark: '0.52',
   },
 });
 
-// `{ on: 'surface', trigger: 'hover' }` from pearl.roles.ts's `cardHover`
-// role — `Card` writes `data-interactive` without knowing what
-// any theme does with it (same mechanism as the role treatments above); this
-// is Pearl's answer. `zIndex: -1` on the glow (not `zIndex: 1` on the card's
-// real content) is what keeps header/body text readable — a negative-z
-// absolutely-positioned layer paints below its static in-flow siblings by
-// spec, so nothing else needs to opt in.
+// Pearl's answer to `cardHover` (pearl.roles.ts) — `Card` writes
+// `data-interactive`, themes decide what to do with it.
 globalStyle(
   `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`,
   {
@@ -719,28 +737,17 @@ globalStyle(
   },
 );
 
-globalStyle(
-  `${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after, ${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`,
-  {
-    opacity: pearlTreatments.luster.driftOpacity,
-    transform: pearlTreatments.luster.driftTo,
-  },
-);
+globalStyle(`${pearlLightThemeClass} [data-component="card"][data-interactive="true"]:hover::after`, {
+  opacity: pearlTreatments.luster.driftOpacity,
+  transform: pearlTreatments.luster.driftTo,
+});
 
-// ---- 9a: "Nacre, after dark — same token, deeper stops" ----
-//
-// Same `cardHover` mechanism above, re-stopped for dark mode: the header
-// comment on `pearlTreatments` already flagged "Dark-mode values are
-// [derived]; 4c only specifies light" — 9a is the source turn that actually
-// supplies them (`silver.850 · marine.850 · seagreen.900 · 3.5s`, vs light's
-// `driftDuration`/`driftOpacityDuration` pair of 1000ms/700ms). Same relative
-// dominance as light's own comment ("marine dominant, silver undertone,
-// seagreen a thin late breath") — just deeper steps, hence "same token."
-//
-// No named `silver`/`marine`/`seagreen` scale reaches an 850/900 step
-// anywhere else in this file (`urchin` tops out at 600) — these are
-// approximated to match 9a's labeled swatches (not legible to exact hex in
-// the reference capture), not read off an existing scale.
+globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]:hover::after`, {
+  opacity: pearlTreatments.luster.driftOpacityDark,
+  transform: pearlTreatments.luster.driftTo,
+});
+
+// 9a: deeper dark-mode stops for the same drift.
 globalStyle(`${pearlDarkThemeClass} [data-component="card"][data-interactive="true"]::after`, {
   background: [
     // marine.850 (#332F3D) — dominant, matching light mode's own ordering.

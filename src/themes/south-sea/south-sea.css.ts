@@ -533,6 +533,24 @@ globalStyle(
   },
 );
 
+// `cardHover` (south-sea.roles.ts) — a hovered card's heading tips into the
+// same italic treatment `inlineEmphasis` uses, rather than any lit surface.
+globalStyle(
+  [
+    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingSm"]`,
+    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingSm"]`,
+    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingMd"]`,
+    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingMd"]`,
+    `${southSeaLightThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingLg"]`,
+    `${southSeaDarkThemeClass} [data-component="card"][data-interactive="true"]:hover [data-type-scale="headingLg"]`,
+  ].join(', '),
+  {
+    fontFamily: southSeaFonts.serifItalic,
+    fontStyle: 'italic',
+    letterSpacing: '-0.02em',
+  },
+);
+
 // Display (all three steps, including the hero numerals like "1,284" that
 // ride `displaySm`) — Boska, uppercase, roman, Regular. One weight across
 // the whole Boska range now (no Light cut in use anywhere in this theme —

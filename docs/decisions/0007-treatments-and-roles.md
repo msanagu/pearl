@@ -36,7 +36,11 @@ grayscale photography at `blend: screen`, imagery only. Freshwater's proposed
 Sea's proposed `glow` were the handoff's placeholders for the same slot; as of
 2026-08-28 neither has shipped as an extension treatment (South Sea's role
 table states "No effect treatments" outright, and Freshwater has no roles
-file yet). This is itself evidence for the decision below: two of four themes
+file yet). **Update 2026-08-29: Freshwater's `wash` has since shipped**, with
+a `freshwater.roles.ts` role table assigning it to `cardHover` (see
+`docs/theme/theme-revision-decisions.md` §4) — the "as of 2026-08-28" snapshot
+below is left as written since it's what motivated the decision at the time.
+This is itself evidence for the decision below: two of four themes
 having nothing to fill the slot with is the "no effect" case rule 1 exists to
 make expressible, not a gap in this ADR's model. These are not four values of
 one slot; they differ structurally, not just in value.
@@ -325,8 +329,10 @@ that you meant it.**
 ## Revisit if
 
 - Three or more themes independently converge on the same mechanic with the same
-  semantics — the promotion trigger. `wash` is the near-term candidate: a
-  semantic-region tint may prove general beyond Freshwater.
+  semantics — the promotion trigger. `wash` was the near-term candidate for this;
+  it shipped 2026-08-29 as Freshwater's own extension treatment rather than a
+  shared role (see `theme-revision-decisions.md` §4's "Update"), so the
+  question is open again for whatever comes next.
 - **The canon audit finds existing slots that fail rule 1.** Canon was authored
   before this ADR and has not been re-examined against it. Candidates for
   demotion: the five `*Inverse` tokens (a specific section-inversion technique),

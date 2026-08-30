@@ -30,7 +30,7 @@ export const pearlTypeTreatments = {
   // sessions") look like console output; that idiom is Freshwater/Tahitian's
   // now, not Pearl's.
   sansSentence: { fontFamily: pearlFonts.sans },
-  monoTabular: { fontFamily: pearlFonts.mono, tabularFigures: true },
+  monoTabular: { fontFamily: pearlFonts.mono, tabularFigures: true, letterSpacing: '-0.05em' },
 } satisfies Record<string, unknown>;
 
 type PearlTreatmentName = keyof typeof pearlTypeTreatments | keyof typeof pearlTreatments;
