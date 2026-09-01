@@ -26,20 +26,31 @@ import { body as sphereBody } from '@components/_brand/PearlSphere/PearlSphere.c
 // ---- Primitives (raw, named hexes) ----
 
 export const tahitianPlatinum = {
-  100: '#FFFFFF', // raised surface / onAccent (light); reused as dark-mode text
-  200: '#F2F4F3', // page background (light)
-  300: '#E1E3DF', // border, subtle (light)
-  400: '#C9CDC8', // border (light)
-  500: '#A6ABA4', // border, strong (light); reused as dark-mode textSubtle
-  600: '#6B6E69', // text, subtle (light)
+  /** raised surface / onAccent (light); reused as dark-mode text */
+  100: '#FFFFFF',
+  /** page background (light) */
+  200: '#F2F4F3',
+  /** border, subtle (light) */
+  300: '#E1E3DF',
+  /** border (light) */
+  400: '#C9CDC8',
+  /** border, strong (light); reused as dark-mode textSubtle */
+  500: '#A6ABA4',
+  /** text, subtle (light) */
+  600: '#6B6E69',
 };
 
 export const tahitianCharcoal = {
-  700: '#45454B', // border, strong (dark)
-  800: '#2C2C30', // border (dark)
-  850: '#202024', // border, subtle (dark)
-  900: '#1A1A1D', // raised surface (dark)
-  950: '#0E0E10', // page background (dark); reused as light-mode text
+  /** border, strong (dark) */
+  700: '#45454B',
+  /** border (dark) */
+  800: '#2C2C30',
+  /** border, subtle (dark) */
+  850: '#202024',
+  /** raised surface (dark) */
+  900: '#1A1A1D',
+  /** page background (dark); reused as light-mode text */
+  950: '#0E0E10',
 };
 
 /**
@@ -48,9 +59,12 @@ export const tahitianCharcoal = {
  * `700` ≈ `charcoal[700]`.
  */
 export const tahitianPeacock = {
-  300: '#D9EFEB', // accentSubtle
-  600: '#0F7A66', // accent / primary / focusRing
-  700: '#0B5F50', // hover
+  /** accentSubtle */
+  300: '#D9EFEB',
+  /** accent / primary / focusRing */
+  600: '#0F7A66',
+  /** hover */
+  700: '#0B5F50',
 };
 
 /**
@@ -61,8 +75,10 @@ export const tahitianPeacock = {
  * peacock's 0.084).
  */
 export const tahitianSeaglass = {
-  300: '#86F6E0', // hover — lighter than base, since the ground is dark
-  400: '#6FE0CB', // base — accent / primary / focusRing
+  /** hover — lighter than base, since the ground is dark */
+  300: '#86F6E0',
+  /** base — accent / primary / focusRing */
+  400: '#6FE0CB',
 };
 
 export const tahitianScrim = {

@@ -77,6 +77,19 @@ the `tokens.ts` assignment line — either "missing property" or "excess propert
 you to update the JSDoc-annotated interface to match. The documentation can't quietly go
 stale relative to the actual token set; the compiler is the enforcement mechanism.
 
+## The other half: what a semantic token resolves to
+
+`tokens.ts` is theme-agnostic on purpose — `color.border` is one interface slot
+that resolves to a different primitive in every theme and mode, so there is no
+single value to name in its JSDoc. The forward mapping lives where it is
+authored: each theme's primitive ramps (`src/themes/*/*.css.ts`) carry a JSDoc
+line per step, so hovering `freshwaterIce[400]` at the `createTheme` call site
+shows `border / borrowed as borderInverse (dark)`. Between the two, a reader can
+go semantic → role (via `tokens.ts`) and role → primitive (via the theme file)
+without leaving the editor. A generated per-theme mapping — semantic slot to
+primitive, emitted into the manifest — is the eventual single source; not built
+yet.
+
 ## The real tradeoff, stated plainly
 
 This is a maintained wrapper layer, not a built-in vanilla-extract feature — every token

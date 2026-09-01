@@ -39,11 +39,16 @@ export const pearlFonts = {
 // - `urchin` — cool violet. Quiet work only (focus ring, tints, subtle text,
 //   accent); never a fill.
 export const alabaster = {
-  100: '#FDFCFA', // chalk — secondary control top-stop / onAccent
-  200: '#FBFAF7', // porcelain — raised surface
-  300: '#F5F3EF', // linen — page background
-  400: '#EAE7E0', // hairlineFaint — one step lighter than 500
-  500: '#DEDAD2', // hairline — default border
+  /** chalk — secondary control top-stop / onAccent */
+  100: '#FDFCFA',
+  /** porcelain — raised surface */
+  200: '#FBFAF7',
+  /** linen — page background */
+  300: '#F5F3EF',
+  /** hairlineFaint — one step lighter than 500 */
+  400: '#EAE7E0',
+  /** hairline — default border */
+  500: '#DEDAD2',
 };
 
 /**
@@ -54,9 +59,12 @@ export const alabaster = {
  * `background` without a hard jump.
  */
 export const squidInk = {
-  750: '#484550', // hairlineFaint — surfaceHover doubles as a faint border
-  850: '#323037', // raised surface
-  900: '#17161A', // ink — primary text (light) / page background (dark)
+  /** hairlineFaint — surfaceHover doubles as a faint border */
+  750: '#484550',
+  /** raised surface */
+  850: '#323037',
+  /** ink — primary text (light) / page background (dark) */
+  900: '#17161A',
 };
 
 /**
@@ -68,13 +76,20 @@ export const squidInk = {
  * step it actually uses, not assumed from prior values.
  */
 export const urchin = {
-  100: '#D7D6DE', // accentSubtle (light) / accent + focusRing (dark)
-  200: '#BCB9C8', // body copy, dark mode
-  300: '#A49DB5', // emphasis border, light mode
-  400: '#8B82A3', // emphasis border (dark) / accentSubtle (dark) / borderInverse (light)
-  500: '#746893', // body copy (light) / border (dark)
-  600: '#5E4C81', // accent + focusRing, light mode
-  700: '#483072', // accentHover, light mode
+  /** accentSubtle (light) / accent + focusRing (dark) */
+  100: '#D7D6DE',
+  /** body copy, dark mode */
+  200: '#BCB9C8',
+  /** emphasis border, light mode */
+  300: '#A49DB5',
+  /** emphasis border (dark) / accentSubtle (dark) / borderInverse (light) */
+  400: '#8B82A3',
+  /** body copy (light) / border (dark) */
+  500: '#746893',
+  /** accent + focusRing, light mode */
+  600: '#5E4C81',
+  /** accentHover, light mode */
+  700: '#483072',
 };
 
 /**

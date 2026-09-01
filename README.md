@@ -1,29 +1,44 @@
 # Pearl
 
-A composition-first React design system, built in the open. A token contract
+A composition-first React design system with a token contract
 that makes the whole system reskinnable, a sanctioned way for downstream teams
 to override it, accessibility that leans on the platform, and a structure a
 coding agent can read from the start rather than one retrofitted for it. Each
-convention was worked out in a dated design note, with the alternatives weighed.
+convention was worked out in a dated design note, with the alternatives weighed. Run `pnpm storybook` to browse the components.
 
 > **Status: work in progress.** A small set of primitives and two brand marks,
-> across four themes × light/dark. Pearl and Tahitian are the fully authored
-> themes; Freshwater and South Sea are still being finalized. A 2026 snapshot,
+> across four themes. A 2026 snapshot,
 > not a finished product.
 
-Run `pnpm storybook` to browse the components, or open the
-[Pearl Playground](https://msanagu.github.io/pearl-playground/) to describe an
-interface in plain language and watch a coding agent build it from Pearl.
+## Playground
 
-One premise runs through it: AI changes what a design system can be when the
-foundations are data an agent reads directly and the docs can't drift from the
-code. Pearl is a testbed for that — exploration runs wide, adoption stays slow.
+The [Pearl Playground](https://msanagu.github.io/pearl-playground/) goes further:
+describe an interface in plain language and watch a coding agent assemble it
+from Pearl.
+
+The Playground is a static site with no backend, so its assistant is
+bring-your-own-key. You paste an Anthropic API key; it's held only in your
+browser's local storage and never reaches a server of mine, requests go
+straight from your browser to Anthropic, and usage bills to your own account.
+The canvas works without a key — only the assistant is gated.
 
 ## The thesis
+
+AI changes what a design system can be when the
+foundations are data an agent reads directly and the docs can't drift from the
+code. Pearl is a testbed for that: aggressive exploration, conservative
+adoption.
 
 - **Composition over configuration.** A prop that only toggles _what renders_ is
   a smell; it should be a compositional slot. A prop is legitimate only when the
   component's root must make a decision that depends on that content.
+- **Built to take part in its own evolution.** Composing the primitives produces
+  UI the system never explicitly defined but that is still on-system — correct
+  tokens, accessibility, and visuals, with nothing reaching past the contract. A
+  composition that recurs across features is an evidenced candidate for promotion
+  to a first-class component: new design happens by composing what exists, and
+  the good patterns get canonized. The architecture is meant to keep surfacing
+  those candidates; the exact promotion mechanics are still being validated.
 - **A token/theme contract that actually enforces itself.** Every component
   references only theme tokens, never a raw value. Themes are separate artifacts
   the compiler checks against the contract — a theme missing a token fails to
@@ -63,41 +78,27 @@ Every component reskins with no component code touched; structure, composition
 patterns, and accessibility behavior stay as they are. TypeScript enforces
 completeness: a theme missing a required token fails to compile.
 
+The same mechanism covers running more than one theme inside a single company.
+Because swapping the theme layer costs no component changes, separate themes can
+carry separate jobs against one component set: a white-label palette per
+customer, a dedicated high-contrast theme, or a marketing surface tuned apart
+from the product UI. The themes Pearl ships are worked examples of one schema
+holding several identities.
+
 This holds only as long as no raw color, spacing, or type literal appears in a
 component `.css.ts` outside the theme layer. A missing token is a compile error;
 a hardcoded value is not, so catching one needs a lint rule. That rule isn't
 written yet, so treat the reskinning property as an intent backed by discipline
 rather than an enforced contract until it is.
 
-## Build vs. adopt
-
-Building from scratch is reserved for components where hand-building teaches the
-most and where Pearl's own concerns (composition, tokens, override contracts,
-accessibility) are the actual differentiator. Where the hard part is a solved,
-invisible-until-broken problem — positioning, virtualization, drag physics, or an
-exhaustively-worked accessibility pattern like focus traps and roving tabindex —
-a headless library is evaluated on its merits rather than ruled out.
-
-Nothing below is pre-committed to a dependency. Rendering, composition, styling,
-and the override contract stay custom regardless of what gets adopted for logic
-and behavior.
-
-| Component         | Complexity driver                                    | Headless candidate(s)            |
-| ----------------- | ---------------------------------------------------- | -------------------------------- |
-| Data grid         | sort/filter/selection logic; virtualization math     | TanStack Table, TanStack Virtual |
-| Dialog            | focus trap, escape handling, focus restoration       | Radix Primitives, Zag.js         |
-| Tooltip / Popover | viewport collision detection, flip/shift positioning | Floating UI                      |
-| Combobox / Select | keyboard nav, filtering, listbox ARIA                | Zag.js, Radix Primitives         |
-| Drag and drop     | pointer drag physics, keyboard-accessible DnD        | dnd-kit                          |
-
-Everything outside that list (layout primitives, Field, Alert, and the like) is
-built from scratch by default; adopting a dependency there would be
-over-engineering relative to the problem.
+## Components
 
 For what exists today and each component's props and slots, browse Storybook or
 the [Pearl Playground](https://msanagu.github.io/pearl-playground/). The manifest
 and `llms.txt` are generated from the code, so that list is never hand-maintained
-in prose.
+in prose. What's built from scratch versus adopted as a headless dependency
+follows the "Dependency stance" section of
+**[DECISIONS.md](./DECISIONS.md)**.
 
 ## Stack
 
@@ -129,10 +130,8 @@ Uses **pnpm**.
 - **[DECISIONS.md](./DECISIONS.md)** — the reasoning layer: the conventions
   Pearl is built on, adopted and under evaluation.
 - **[docs/foundations/](./docs/foundations)** — conventions: spacing, typography,
-  radius, markup and component philosophy, override patterns, accessibility.
-- **[docs/theme/](./docs/theme)** — the visual language brief and the name.
-- **[docs/governance/](./docs/governance)** — the three-persona audience model
-  (Designer / Maintainer / Consumer).
+  radius, markup and component philosophy, override patterns (and who they're
+  for), accessibility.
 
 ## License
 

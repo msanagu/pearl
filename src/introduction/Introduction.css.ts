@@ -76,21 +76,55 @@ export const sectionStandfirst = style({
   },
 });
 
-// The premise card's layout — same asymmetric proportion as `sectionHead`, but
-// `alignItems: 'start'` not `'end'`: this card's right column (two paragraph
-// beats) is reliably taller than the headline, so a shared top edge is the
-// right read.
-export const premiseGrid = style({
+// The premise card stacks — headline as a spanning statement, then the beats in
+// a row beneath it. Deliberately NOT the `sectionHead` shape (title beside a
+// narrow column): this section sits right above the Conventions opener, and two
+// asymmetric title-left/column-right blocks in a row read as one object twice.
+export const premiseCard = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: `calc(${space['2xl']} * 1.25)`,
+});
+
+// Right-aligned and pushed to the right edge — the one heading on this page that
+// isn't left-anchored. The beats span the full width beneath it, so the headline
+// reads as a caption to the row rather than a column title. Falls back to the
+// normal left anchor on narrow screens, where a ragged-left heading reads badly.
+export const premiseHeading = style({
+  margin: 0,
+  maxWidth: '20ch',
+  marginLeft: 'auto',
+  textAlign: 'right',
+  textWrap: 'balance',
+  '@media': {
+    '(max-width: 640px)': {
+      marginLeft: 0,
+      textAlign: 'left',
+    },
+  },
+});
+
+// Three labelled beats side by side — a different texture from the single
+// flowing standfirst the Conventions opener uses. Collapses to a stack, with a
+// hairline between beats standing in for the column gutters.
+export const premiseBeats = style({
   display: 'grid',
-  gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)',
-  columnGap: space['2xl'],
-  rowGap: space.lg,
-  alignItems: 'start',
+  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+  gap: space.xl,
   '@media': {
     '(max-width: 860px)': {
       gridTemplateColumns: 'minmax(0, 1fr)',
+      gap: space.lg,
     },
   },
+});
+
+export const premiseBeat = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.xs,
+  paddingTop: space.md,
+  borderTop: `1px solid ${color.border}`,
 });
 
 // Space between a section's opener and its content — wider than the opener's
@@ -117,6 +151,7 @@ export const themeGrid = style({
 // document — both selectors match a nested component at equal specificity and
 // source order (not proximity) breaks the tie. See `ThemeSpecimen.tsx`.
 export const themeSwatch = style({
+  position: 'relative', // the loading placeholder is stacked over the frame
   borderRadius: radius.control,
   cornerShape: radius.cornerShape,
   border: `1px solid ${color.border}`,
@@ -427,6 +462,19 @@ export const narrowContent = style({
   width: '100%',
   paddingLeft: space.xl,
   paddingRight: space.xl,
+});
+
+/** Stat strip — mirrors `Row`'s flex layout so `Stagger` can wrap the counts
+ * directly without an extra flex parent fighting its own children's spacing. */
+export const statsRow = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  gap: space.lg,
+  width: '100%',
+  minWidth: 0,
 });
 
 /** Stat strip separators — vertical hairlines between the counts. */

@@ -1,7 +1,12 @@
 import { Fragment, useEffect, useRef } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { ReactLenis, useLenis } from 'lenis/react';
-import { useReducedMotion } from 'motion/react';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'motion/react';
 import {
   PiCaretDown,
   PiCompassRose,
@@ -25,6 +30,14 @@ import { color } from '@tokens';
 import { themeSpecimens, type ThemeKey } from './ThemeSpecimen';
 import { componentCount, themeCount, modesPerTheme } from './liveStats';
 import { AutoHideHeader } from './AutoHideHeader';
+import {
+  CountUp,
+  DrawTick,
+  Reveal,
+  Stagger,
+  StaggerItem,
+  staggerItemVariants,
+} from './motion';
 import * as css from './Introduction.css';
 
 /* Content is a view over the docs it summarises, not re-invented here. */
@@ -126,16 +139,6 @@ const decisions: {
     why: 'OKLCH is the authoring space because it makes a palette perceptually consistent — across four themes, steps and hues that look evenly related actually are. Contrast is measured and enforced separately on the real foreground/background pairs, by math rather than by eye.',
     cost: 'Sanctioned pairs have to be enumerated by hand and kept current. The measurement code is built; the sweep that walks every pair is not — so today this is a convention with its math ready, not yet a guarantee the build enforces.',
   },
-  {
-    id: '0009',
-    subject: 'Motion dependencies',
-    title:
-      'A modern motion stack, tried on this landing page before the system commits to it',
-    status: 'proposed',
-    date: '2026-09',
-    why: 'The dependency stance says build by default and adopt deliberately — but "deliberately" needs evidence, and animation is a place where a good library saves real work. So `motion` and `lenis` come in as devDependencies used only under `src/introduction/`: this page is the testbed. The build already keeps them out of the shipped package — nothing here is re-exported from `src/index.ts`, and the declaration build excludes the directory — so the experiment costs consumers nothing while it runs.',
-    cost: 'The boundary is convention, not enforced: a stray import from a component file would not fail the build, only review. And living with two animation approaches — these libraries here, hand-rolled transitions everywhere else — until the evaluation resolves one way or the other.',
-  },
 ];
 
 const acceptedCount = decisions.filter((d) => d.status === 'accepted').length;
@@ -230,9 +233,9 @@ function SectionHead({
   standfirst?: ReactNode;
 }) {
   return (
-    <div className={css.sectionHead}>
-      <div className={css.sectionHeadLead}>
-        <div className={css.sectionTick} aria-hidden="true" />
+    <Stagger className={css.sectionHead} gap={0.13}>
+      <StaggerItem className={css.sectionHeadLead}>
+        <DrawTick className={css.sectionTick} />
         <Text
           id={toKebabCase(preheading)}
           role="preheading"
@@ -246,9 +249,9 @@ function SectionHead({
         <Text as="h2" typeScale="displayLg" measure="sm" style={{ margin: 0 }}>
           {title}
         </Text>
-      </div>
+      </StaggerItem>
       {standfirst && (
-        <div className={css.sectionStandfirst}>
+        <StaggerItem className={css.sectionStandfirst}>
           <Text
             as="p"
             typeScale="bodyMd"
@@ -258,9 +261,39 @@ function SectionHead({
           >
             {standfirst}
           </Text>
-        </div>
+        </StaggerItem>
       )}
-    </div>
+    </Stagger>
+  );
+}
+
+/**
+ * The hero's motion, applied from the page rather than inside the `Hero`
+ * template — the template stays motion-free and portable.
+ *
+ * Two moves: its headline, standfirst, and CTA row stagger into place on
+ * mount (via `Hero`'s `revealWrap` hook), and the whole band dims as it
+ * leaves so the sections below arrive on a clean ground. Deliberately no
+ * translate on the scroll pass — the hero's feature strip is bordered, and
+ * shifting or scaling it would open a visible seam against the section under it.
+ */
+function HeroStage({ children }: { children: ReactNode }) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.55]);
+
+  if (reduce) return <div>{children}</div>;
+  return (
+    // A MotionValue in `style` takes ownership of `opacity`, so the
+    // scroll-driven dim lives on its own layer — separate from the mount
+    // stagger `Hero` runs internally via `revealWrap`.
+    <motion.div ref={ref} style={{ opacity }}>
+      <Stagger gap={0.16}>{children}</Stagger>
+    </motion.div>
   );
 }
 
@@ -274,7 +307,10 @@ function ThemeSpecimenFrame({ theme }: { theme: ThemeKey }) {
     <div className={css.themeSwatch}>
       <iframe
         title={`${name} theme specimen`}
-        loading="lazy"
+        // Eager, not lazy: these sit high on the page and each one boots a full
+        // preview runtime, so deferring the start until they near the viewport
+        // is most of the wait you actually see.
+        loading="eager"
         className={css.themeFrame}
         src={`iframe.html?id=introduction-theme-specimen--specimen&viewMode=story&globals=theme:${theme};mode:${mode}`}
       />
@@ -319,7 +355,7 @@ export interface IntroductionProps {
 /**
  * Wraps the page in `lenis`'s smooth-scroll layer so `useLenis` works in the
  * page and its sticky header. Landing-page-only experiment — `lenis` / `motion`
- * are devDependencies scoped to `src/introduction/` (DECISIONS.md 0009). Under
+ * are devDependencies scoped to `src/introduction/`. Under
  * `prefers-reduced-motion` the layer is skipped and everything falls back to
  * native scrolling.
  */
@@ -341,6 +377,7 @@ function IntroductionPage({
   themeControl,
 }: IntroductionProps) {
   const lenis = useLenis();
+  const reduceMotion = useReducedMotion();
   // Marks the hero's bottom edge for `AutoHideHeader` — while it's on screen the
   // masthead rides in flow; past it, the masthead goes sticky and summon-on-scroll.
   const heroSentinelRef = useRef<HTMLDivElement>(null);
@@ -384,14 +421,19 @@ function IntroductionPage({
       {/* Primary CTA scrolls to Conventions; secondary jumps to the component
           docs (`_top` escapes the preview iframe). The playground has its own
           section below, not a hero CTA. */}
-      <Hero
-        primaryHref="#conventions"
-        primaryLabel="See how it's built"
-        onPrimaryClick={(e) => scrollToConventions(e, lenis)}
-        secondaryHref="/?path=/docs/components-alert--docs"
-        secondaryLabel="Browse components"
-        secondaryTarget="_top"
-      />
+      <HeroStage>
+        <Hero
+          primaryHref="#conventions"
+          primaryLabel="See how it's built"
+          onPrimaryClick={(e) => scrollToConventions(e, lenis)}
+          secondaryHref="/?path=/docs/components-alert--docs"
+          secondaryLabel="Browse components"
+          secondaryTarget="_top"
+          revealWrap={(key, node) => (
+            <StaggerItem key={key}>{node}</StaggerItem>
+          )}
+        />
+      </HeroStage>
       <div ref={heroSentinelRef} aria-hidden="true" style={{ height: 0 }} />
 
       <div className={css.page}>
@@ -402,107 +444,147 @@ function IntroductionPage({
               tell-first case. */}
           <section>
             <div className={css.sectionBody}>
-              <Stack gap="sm">
-                <Text
-                  as="h2"
-                  typeScale="displaySm"
-                  measure="sm"
-                  style={{ margin: 0, textAlign: 'center' }}
-                >
-                  One contract, any number of themes
-                </Text>
-              </Stack>
-
-              <div className={css.themeGrid}>
-                {specimenOrder.map((theme) => (
-                  <ThemeSpecimenFrame key={theme} theme={theme} />
-                ))}
-              </div>
-
-              <Stack gap="sm">
-                <Text
-                  as="p"
-                  typeScale="bodyMd"
-                  prominence="subtle"
-                  measure="sm"
-                  style={{ margin: 0 }}
-                >
-                  Every component reads only from the theme contract — never a
-                  hardcoded color, space, or type value. Swapping the theme
-                  files reskins the whole system with no component code touched.
-                </Text>
-              </Stack>
-            </div>
-          </section>
-
-          {/* The premise — one Card, headline beside two labelled beats
-              ("The shift" / "The testbed"), the same preheading-label pattern
-              the record's detail panel uses. */}
-          <section>
-            <div className={css.sectionBody}>
-              <Card padding="xl">
-                <div className={css.premiseGrid}>
+              <Reveal>
+                <Stack gap="sm">
                   <Text
                     as="h2"
                     typeScale="displaySm"
                     measure="sm"
-                    style={{ margin: 0, maxWidth: '11ch' }}
+                    style={{ margin: 0, textAlign: 'center' }}
                   >
-                    Pearl is an{' '}
-                    <Text as="span" role="inlineEmphasis">
-                      experiment
-                    </Text>{' '}
-                    — not a finished product.
+                    One contract, any number of themes
                   </Text>
+                </Stack>
+              </Reveal>
 
-                  <Stack gap="md">
-                    <Stack gap="xs">
-                      <Text
-                        role="preheading"
-                        as="p"
-                        typeScale="caption"
-                        prominence="subtle"
-                      >
-                        The shift
-                      </Text>
-                      <Text
-                        as="p"
-                        typeScale="bodyLg"
-                        measure="lg"
-                        style={{ margin: 0 }}
-                      >
-                        AI is changing what a design system can be — foundations
-                        and component contracts as data an agent reads directly,
-                        documentation that can't drift from the code,
-                        conventions legible enough to build against without
-                        exhaustive onboarding or guesswork.
-                      </Text>
-                    </Stack>
+              {/* The four specimens arrive in reading order — the claim above
+                  is "any number of themes", and seeing them resolve one after
+                  another is that sentence happening. */}
+              <Stagger className={css.themeGrid} gap={0.12}>
+                {specimenOrder.map((theme) => (
+                  <StaggerItem key={theme}>
+                    <ThemeSpecimenFrame theme={theme} />
+                  </StaggerItem>
+                ))}
+              </Stagger>
 
-                    <Stack gap="xs">
-                      <Text
-                        role="preheading"
-                        as="p"
-                        typeScale="caption"
-                        prominence="subtle"
-                      >
-                        The testbed
-                      </Text>
-                      <Text
-                        as="p"
-                        typeScale="bodyMd"
-                        measure="lg"
-                        style={{ margin: 0 }}
-                      >
-                        Pearl is where those possibilities get tried, met with
-                        curiosity. Exploration runs wide; adoption is deliberate
-                        and slow — an approach becomes convention only once
-                        building with it has shown it worth keeping.
-                      </Text>
-                    </Stack>
-                  </Stack>
-                </div>
-              </Card>
+              <Reveal>
+                <Stack gap="sm">
+                  <Text
+                    as="p"
+                    typeScale="bodyMd"
+                    prominence="subtle"
+                    measure="sm"
+                    style={{ margin: 0 }}
+                  >
+                    Every component reads only from the theme contract — never a
+                    hardcoded color, space, or type value. Swapping the theme
+                    files reskins the whole system with no component code
+                    touched.
+                  </Text>
+                </Stack>
+              </Reveal>
+            </div>
+          </section>
+
+          {/* The premise — one Card: a headline statement, then three labelled
+              beats in a row ("The shift" / "The testbed" / "The loop"), the
+              same preheading-label pattern the record's detail panel uses.
+              Stacked, not title-beside-column — that shape belongs to the
+              Conventions opener directly below, and two of it in a row reads as
+              one object twice. */}
+          <section>
+            <div className={css.sectionBody}>
+              <Reveal>
+                <Card padding="xl">
+                  <div className={css.premiseCard}>
+                    <Stagger gap={0.13}>
+                      <StaggerItem>
+                        <Text
+                          as="h2"
+                          typeScale="headingLg"
+                          className={css.premiseHeading}
+                        >
+                          Pearl is an{' '}
+                          <Text as="span" role="inlineEmphasis">
+                            experiment
+                          </Text>{' '}
+                          — not a finished product.
+                        </Text>
+                      </StaggerItem>
+
+                      <Stagger className={css.premiseBeats} gap={0.1}>
+                        <StaggerItem className={css.premiseBeat}>
+                          <Text
+                            role="preheading"
+                            as="p"
+                            typeScale="caption"
+                            prominence="subtle"
+                          >
+                            The Shift
+                          </Text>
+                          <Text
+                            as="p"
+                            typeScale="bodySm"
+                            style={{ margin: 0 }}
+                          >
+                            AI is changing what a design system can be.
+                            Foundations and component contracts become data an
+                            agent reads directly, documentation that can't
+                            drift from the code, conventions legible enough to
+                            build against without exhaustive onboarding or
+                            guesswork.
+                          </Text>
+                        </StaggerItem>
+
+                        <StaggerItem className={css.premiseBeat}>
+                          <Text
+                            role="preheading"
+                            as="p"
+                            typeScale="caption"
+                            prominence="subtle"
+                          >
+                            The Testbed
+                          </Text>
+                          <Text
+                            as="p"
+                            typeScale="bodySm"
+                            style={{ margin: 0 }}
+                          >
+                            Pearl is where those possibilities get tried, met
+                            with curiosity: aggressive exploration,
+                            conservative adoption. An approach becomes
+                            convention only once building with it has shown it
+                            worth keeping.
+                          </Text>
+                        </StaggerItem>
+
+                        <StaggerItem className={css.premiseBeat}>
+                          <Text
+                            role="preheading"
+                            as="p"
+                            typeScale="caption"
+                            prominence="subtle"
+                          >
+                            The Loop
+                          </Text>
+                          <Text
+                            as="p"
+                            typeScale="bodySm"
+                            style={{ margin: 0 }}
+                          >
+                            Pearl takes an active part in its own evolution.
+                            New design happens by composing primitives, not by
+                            escaping the system. A composition that keeps
+                            recurring is already an on-system candidate for
+                            promotion to a real component.
+                          </Text>
+                        </StaggerItem>
+                      </Stagger>
+                    </Stagger>
+                  </div>
+                </Card>
+              </Reveal>
             </div>
           </section>
 
@@ -571,9 +653,19 @@ function IntroductionPage({
                     </div>
                   </div>
 
-                  <div className={css.indexList}>
+                  {/* The record reveals itself line by line — the one place a
+                      stagger is doing real work, since the list *is* the
+                      section's argument. `motion.details` rather than a wrapper:
+                      the rows' hairline borders are keyed to sibling position. */}
+                  <Stagger className={css.indexList} gap={0.06}>
                     {decisions.map((decision) => (
-                      <details key={decision.id} className={css.indexRecord}>
+                      <motion.details
+                        key={decision.id}
+                        className={css.indexRecord}
+                        variants={
+                          reduceMotion ? undefined : staggerItemVariants
+                        }
+                      >
                         <summary className={css.indexRow}>
                           {/* `preheading` resolves to each theme's mono face —
                             without the role the ordinal reads as body text, not
@@ -691,9 +783,9 @@ function IntroductionPage({
                             )}
                           </Stack>
                         </Stack>
-                      </details>
+                      </motion.details>
                     ))}
-                  </div>
+                  </Stagger>
                 </div>
 
                 <div className={css.indexRailBottom}>
@@ -724,26 +816,28 @@ function IntroductionPage({
           <section>
             <div className={css.sectionBody}>
               <div className={css.playgroundHead}>
-                <div className={css.playgroundHeadLead}>
-                  <div className={css.sectionTick} aria-hidden="true" />
-                  <Text
-                    id="playground"
-                    role="preheading"
-                    as="p"
-                    typeScale="caption"
-                    prominence="subtle"
-                  >
-                    Playground
-                  </Text>
-                  <Text
-                    as="h2"
-                    typeScale="headingLg"
-                    measure="sm"
-                    style={{ margin: 0 }}
-                  >
-                    An agent builds with Pearl
-                  </Text>
-                  <div className={css.playgroundCta}>
+                <Stagger className={css.playgroundHeadLead} gap={0.13}>
+                  <StaggerItem>
+                    <DrawTick className={css.sectionTick} />
+                    <Text
+                      id="playground"
+                      role="preheading"
+                      as="p"
+                      typeScale="caption"
+                      prominence="subtle"
+                    >
+                      Playground
+                    </Text>
+                    <Text
+                      as="h2"
+                      typeScale="headingLg"
+                      measure="sm"
+                      style={{ margin: 0 }}
+                    >
+                      An agent builds with Pearl
+                    </Text>
+                  </StaggerItem>
+                  <StaggerItem className={css.playgroundCta}>
                     <a
                       href="https://msanagu.github.io/pearl-playground/"
                       target="_blank"
@@ -761,77 +855,93 @@ function IntroductionPage({
                     >
                       Runs in your browser with your own Anthropic API key.
                     </Text>
-                  </div>
-                </div>
-                <Text
-                  as="p"
-                  typeScale="bodyMd"
-                  prominence="subtle"
-                  measure="md"
-                  style={{ margin: 0 }}
-                >
-                  Pearl's manifest and llms.txt ship in the package, so any
-                  coding agent works from that context directly — no retrieval
-                  layer, no MCP server. The aim: build from real primitives,
-                  compose what's missing from them, and flag the gap rather than
-                  invent an API. The playground is one way to try it.
-                </Text>
-              </div>
-
-              <figure className={css.playgroundShot}>
-                <div className={css.playgroundFrame}>
-                  <img
-                    src="/images/pearl-playground-thread.png"
-                    alt="Pearl Playground: on the left, a coding agent's thread reasoning about the design system; on the right, a live-rendered notification settings panel with a success alert, three toggle rows, and Save changes / Reset buttons."
-                    className={css.playgroundImage}
-                  />
-                </div>
-                <figcaption className={css.playgroundCaption}>
+                  </StaggerItem>
+                </Stagger>
+                <Reveal delay={0.15}>
                   <Text
                     as="p"
-                    typeScale="bodySm"
+                    typeScale="bodyMd"
                     prominence="subtle"
                     measure="md"
                     style={{ margin: 0 }}
                   >
-                    One prompt — “a notification settings panel”. Pearl has no
-                    toggle component, so the agent surfaced that as a gap,
-                    composed a candidate from existing primitives using the
-                    system's own tokens, and flagged it for promotion into the
-                    system — rather than inventing an API that isn't there.
+                    Pearl's manifest and llms.txt ship in the package, so any
+                    coding agent works from that context directly — no
+                    retrieval layer, no MCP server. The aim: build from real
+                    primitives, compose what's missing from them, and flag the
+                    gap rather than invent an API. The playground is one way
+                    to try it.
                   </Text>
-                </figcaption>
-              </figure>
+                </Reveal>
+              </div>
+
+              {/* The screenshot is the section's evidence — it gets its own
+                  beat rather than arriving with the copy that introduces it. */}
+              <Reveal delay={0.15}>
+                <figure className={css.playgroundShot}>
+                  <div className={css.playgroundFrame}>
+                    <img
+                      src="/images/pearl-playground-thread.png"
+                      alt="Pearl Playground: on the left, a coding agent's thread reasoning about the design system; on the right, a live-rendered notification settings panel with a success alert, three toggle rows, and Save changes / Reset buttons."
+                      className={css.playgroundImage}
+                    />
+                  </div>
+                  <figcaption className={css.playgroundCaption}>
+                    <Text
+                      as="p"
+                      typeScale="bodySm"
+                      prominence="subtle"
+                      measure="md"
+                      style={{ margin: 0 }}
+                    >
+                      One prompt — “a notification settings panel”. Pearl has no
+                      toggle component, so the agent surfaced that as a gap,
+                      composed a candidate from existing primitives using the
+                      system's own tokens, and flagged it for promotion into the
+                      system — rather than inventing an API that isn't there.
+                    </Text>
+                  </figcaption>
+                </figure>
+              </Reveal>
             </div>
           </section>
 
-          {/* Stats */}
+          {/* Stats — every value is a real count off the export surface, so
+              they resolve rather than just appear. See `CountUp`. */}
           <section className={css.narrowContent} aria-label="What is shipped">
-            <Card padding="xl" className={statsTreatment}>
-              <Row justify="between" align="center" gap="lg" wrap>
-                {stats.map((stat, index) => (
-                  <Fragment key={stat.label}>
-                    {index > 0 && (
-                      <div className={css.statDivider} aria-hidden="true" />
-                    )}
-                    <Stack gap="md">
-                      <Text as="p" typeScale="displaySm" style={{ margin: 0 }}>
-                        {stat.value}
-                      </Text>
-                      <Text
-                        role="preheading"
-                        as="p"
-                        typeScale="caption"
-                        prominence="subtle"
-                        style={{ margin: 0 }}
-                      >
-                        {stat.label}
-                      </Text>
-                    </Stack>
-                  </Fragment>
-                ))}
-              </Row>
-            </Card>
+            <Reveal>
+              <Card padding="xl" className={statsTreatment}>
+                <Stagger className={css.statsRow} gap={0.12}>
+                  {stats.map((stat, index) => (
+                    <Fragment key={stat.label}>
+                      {index > 0 && (
+                        <div className={css.statDivider} aria-hidden="true" />
+                      )}
+                      <StaggerItem y={0}>
+                        <Stack gap="md">
+                          <Text
+                            as="p"
+                            typeScale="displaySm"
+                            style={{ margin: 0 }}
+                          >
+                            <CountUp value={stat.value} />
+                          </Text>
+                          <Text
+                            role="preheading"
+                            as="p"
+                            typeScale="caption"
+                            prominence="subtle"
+                            style={{ margin: 0 }}
+                          >
+                            {stat.label}
+                          </Text>
+                        </Stack>
+                      </StaggerItem>
+                    </Fragment>
+                  ))}
+                </Stagger>
+              </Card>
+            </Reveal>
           </section>
 
           {/* Next */}
@@ -839,35 +949,36 @@ function IntroductionPage({
             <div className={css.sectionBody}>
               <SectionHead preheading="Start here" title="Where to go next" />
 
-              <div className={css.nextGrid}>
+              <Stagger className={css.nextGrid} gap={0.08}>
                 {nextSteps.map((step) => (
-                  <Card
-                    key={step.title}
-                    href={step.href}
-                    padding="lg"
-                    target="_top"
-                  >
-                    <Stack gap="md">
-                      <Icon
-                        icon={step.icon}
-                        size={24}
-                        style={{ color: color.accent }}
-                      />
-                      <Text as="h3" typeScale="headingSm" style={{ margin: 0 }}>
-                        {step.title}
-                      </Text>
-                      <Text
-                        as="p"
-                        typeScale="bodySm"
-                        prominence="subtle"
-                        style={{ margin: 0 }}
-                      >
-                        {step.body}
-                      </Text>
-                    </Stack>
-                  </Card>
+                  <StaggerItem key={step.title}>
+                    <Card href={step.href} padding="lg" target="_top">
+                      <Stack gap="md">
+                        <Icon
+                          icon={step.icon}
+                          size={24}
+                          style={{ color: color.accent }}
+                        />
+                        <Text
+                          as="h3"
+                          typeScale="headingSm"
+                          style={{ margin: 0 }}
+                        >
+                          {step.title}
+                        </Text>
+                        <Text
+                          as="p"
+                          typeScale="bodySm"
+                          prominence="subtle"
+                          style={{ margin: 0 }}
+                        >
+                          {step.body}
+                        </Text>
+                      </Stack>
+                    </Card>
+                  </StaggerItem>
                 ))}
-              </div>
+              </Stagger>
             </div>
           </section>
         </div>
@@ -876,12 +987,14 @@ function IntroductionPage({
       {/* Footer — full-bleed outside `page`, the way the hero is. The wordmark
           is Pearl's own text; the plate photo is threaded in per theme by the
           story, like `plateTreatment`. */}
-      <Footer
-        brandName={pearlBrandWordmark.text}
-        brandRole={pearlBrandWordmark.role}
-        plateImageSrc={footerPlateSrc}
-        plateImageAlt={footerPlateAlt}
-      />
+      <Reveal>
+        <Footer
+          brandName={pearlBrandWordmark.text}
+          brandRole={pearlBrandWordmark.role}
+          plateImageSrc={footerPlateSrc}
+          plateImageAlt={footerPlateAlt}
+        />
+      </Reveal>
     </>
   );
 }

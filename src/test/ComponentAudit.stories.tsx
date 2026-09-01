@@ -8,6 +8,7 @@ import { Input } from '@components/Input';
 import { Field } from '@components/Field';
 import { Alert } from '@components/Alert';
 import { Tag } from '@components/Tag';
+import { Skeleton } from '@components/Skeleton';
 import { Link } from '@components/Link';
 import { Text } from '@components/Text';
 import { Stack } from '@components/Stack';
@@ -45,6 +46,17 @@ function ComponentSampler() {
         <Tag variant="negative">Deprecated</Tag>
         <Tag variant="warn">Beta</Tag>
         <Tag variant="info">New</Tag>
+      </Row>
+
+      {/* Placeholders composed the way a real one would be — a line pair, a
+          circle, and a sized block — so the wash is graded on the page ground. */}
+      <Row gap="md" align="center">
+        <Skeleton variant="circle" width={40} />
+        <Stack gap="xs" style={{ flex: 1 }}>
+          <Skeleton typeScale="bodyMd" width="55%" />
+          <Skeleton typeScale="caption" width="35%" />
+        </Stack>
+        <Skeleton variant="block" width={120} height={40} />
       </Row>
 
       <Row gap="lg" wrap>

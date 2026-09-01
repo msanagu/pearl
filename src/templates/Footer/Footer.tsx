@@ -75,7 +75,8 @@ export function Footer({
               as a response to friction: an irritant the organism adapts around,
               one layer at a time. A design system grows in much the same way,
               around the problems an organization keeps running into, shaped by
-              its culture. No two organisms are alike, so no two pearls are.
+              its culture. Just as no two organisms are alike, neither are any
+              two pearls.
             </Text>
             <div className={css.coda}>
               <Text
@@ -86,7 +87,7 @@ export function Footer({
                 style={{ margin: 0 }}
               >
                 This one’s a starting point — reskin it, tune the visual
-                treatments, shape it to your own culture.
+                treatments, shape it to your own needs.
               </Text>
               <Text
                 as="p"

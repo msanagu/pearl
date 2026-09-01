@@ -17,6 +17,21 @@ A bare boolean/enum with no such coupling is always compositional —
 that's the common case, not the whole test. See the composition-over-configuration
 entry in [DECISIONS.md](../../DECISIONS.md) for the worked examples.
 
+## Composition is also how new design happens
+
+Composition keeps a component's own API small — and it's also how work the
+library doesn't cover yet gets built without leaving the system. A feature that
+needs something unshipped composes it from primitives in its own code: still
+correct tokens, accessibility, and visuals, no override contract involved. That
+local composition is a proposal. If the same shape recurs across features, it's a
+concrete candidate for promotion to a first-class component — one that was fully
+on-system before anyone proposed canonizing it.
+
+How candidates get detected and promoted is still being worked out. That they
+should come from real, recurring composition rather than speculative planning is
+the settled part — and the reason the primitives are designed to combine cleanly
+in the first place.
+
 ## Smart defaults, always escapable
 
 Every component should work with minimal props out of the box, but nothing should be a

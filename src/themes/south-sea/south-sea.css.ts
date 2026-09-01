@@ -26,13 +26,20 @@ import { sphereWrap, body as sphereBody, contact as sphereContact } from '@compo
  * 600. Only spans its light end; the dark register is `southSeaDriftwood`.
  */
 export const southSeaSand = {
-  100: '#F5EFE4', // page background (light)
-  150: '#F3EADA', // text (dark mode) / textInverse (light mode) — its own step, a different contrast job
-  200: '#EFE6D6', // raised surface (light)
-  300: '#E9E0D0', // border, subtle (light)
-  400: '#DDD1BC', // border (light)
-  500: '#CBBA9E', // borderStrong / shadow (light) — 4.6:1 on sand[100]
-  600: '#746650', // text, subtle (light) — 4.88:1 on background, 4.51:1 on surface
+  /** page background (light) */
+  100: '#F5EFE4',
+  /** text (dark mode) / textInverse (light mode) — its own step, a different contrast job */
+  150: '#F3EADA',
+  /** raised surface (light) */
+  200: '#EFE6D6',
+  /** border, subtle (light) */
+  300: '#E9E0D0',
+  /** border (light) */
+  400: '#DDD1BC',
+  /** borderStrong / shadow (light) — 4.6:1 on sand[100] */
+  500: '#CBBA9E',
+  /** text, subtle (light) — 4.88:1 on background, 4.51:1 on surface */
+  600: '#746650',
 };
 
 /**
@@ -41,13 +48,20 @@ export const southSeaSand = {
  * a step tuned for a different background.
  */
 export const southSeaDriftwood = {
-  500: '#B8A18E', // text, subtle (dark)
-  600: '#5E4632', // borderStrong (dark)
-  700: '#4A3626', // border (dark)
-  750: '#3B2C1F', // text (light mode)
-  800: '#382719', // border, subtle (dark)
-  850: '#2E2116', // raised surface (dark)
-  900: '#241A11', // page background (dark)
+  /** text, subtle (dark) */
+  500: '#B8A18E',
+  /** borderStrong (dark) */
+  600: '#5E4632',
+  /** border (dark) */
+  700: '#4A3626',
+  /** text (light mode) */
+  750: '#3B2C1F',
+  /** border, subtle (dark) */
+  800: '#382719',
+  /** raised surface (dark) */
+  850: '#2E2116',
+  /** page background (dark) */
+  900: '#241A11',
 };
 
 /**
@@ -63,11 +77,16 @@ export const southSeaDriftwood = {
  * (deeper, less saturated) take the roles that land as text.
  */
 export const southSeaConch = {
-  100: '#FBE8DF', // accentSubtle, light mode
-  200: '#F0B79C', // accentHover, dark mode
-  300: '#E8A484', // primary (both modes) / accent (dark mode)
-  400: '#A0522F', // accent + focusRing, light mode
-  500: '#713E26', // accentHover, light mode
+  /** accentSubtle, light mode */
+  100: '#FBE8DF',
+  /** accentHover, dark mode */
+  200: '#F0B79C',
+  /** primary (both modes) / accent (dark mode) */
+  300: '#E8A484',
+  /** accent + focusRing, light mode */
+  400: '#A0522F',
+  /** accentHover, light mode */
+  500: '#713E26',
 };
 
 const southSeaScrim = {

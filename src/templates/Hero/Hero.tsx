@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { Text } from '@components/Text/Text';
 import { Button } from '@components/Button/Button';
 import { Row } from '@components/Row/Row';
@@ -23,7 +23,16 @@ export interface HeroProps {
   /** `target` for the secondary CTA — `'_blank'` (adds `rel="noopener
    * noreferrer"`) or `'_top'` to escape a Storybook preview iframe. */
   secondaryTarget?: string;
+  /**
+   * Wraps the headline, standfirst, and CTA row individually — the landing
+   * page uses this to stagger their reveal without importing a motion
+   * dependency into this template. Defaults to identity, so `Hero` renders
+   * statically (its own story, `TemplateAudit`) when the hook isn't passed.
+   */
+  revealWrap?: (key: 'heading' | 'body' | 'actions', node: ReactNode) => ReactNode;
 }
+
+const identityReveal = (_key: string, node: ReactNode) => node;
 
 /**
  * The capability strip. What may sit here: a capability the system gives a
@@ -84,6 +93,7 @@ export function Hero({
   secondaryHref = '#',
   secondaryLabel = 'Browse components',
   secondaryTarget,
+  revealWrap = identityReveal,
 }: HeroProps) {
   return (
     <Stack>
@@ -111,38 +121,49 @@ export function Hero({
           {/* Explicit breaks — one phrase per line. `text-wrap` can't be
               trusted to break a headline on meaning rather than line length,
               and the break needs to hold across four themes' faces. */}
-          <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
-            A design system
-            <br />
-            coding agents
-            <br />
-            get right
-          </Text>
-          <Text typeScale="bodyLg" prominence="subtle" as="p" measure="lg">
-            Components, tokens, and usage rules ship as machine-readable data in
-            the package. An agent builds on-system code from it directly — no
-            retrieval layer. All generated from source, so it's never out of
-            sync.
-          </Text>
-          <Row gap="sm">
-            <a
-              href={primaryHref}
-              onClick={onPrimaryClick}
-              style={{ textDecoration: 'none' }}
-            >
-              <Button variant="primary">{primaryLabel}</Button>
-            </a>
-            <a
-              href={secondaryHref}
-              target={secondaryTarget}
-              rel={
-                secondaryTarget === '_blank' ? 'noopener noreferrer' : undefined
-              }
-              style={{ textDecoration: 'none' }}
-            >
-              <Button variant="secondary">{secondaryLabel}</Button>
-            </a>
-          </Row>
+          {revealWrap(
+            'heading',
+            <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
+              A design system
+              <br />
+              coding agents
+              <br />
+              get right
+            </Text>,
+          )}
+          {revealWrap(
+            'body',
+            <Text typeScale="bodyLg" prominence="subtle" as="p" measure="lg">
+              Components, tokens, and usage rules ship as machine-readable data
+              in the package. An agent builds on-system code from it directly —
+              no retrieval layer. All generated from source, so it's never out
+              of sync.
+            </Text>,
+          )}
+          {revealWrap(
+            'actions',
+            <Row gap="sm">
+              <a
+                href={primaryHref}
+                onClick={onPrimaryClick}
+                style={{ textDecoration: 'none' }}
+              >
+                <Button variant="primary">{primaryLabel}</Button>
+              </a>
+              <a
+                href={secondaryHref}
+                target={secondaryTarget}
+                rel={
+                  secondaryTarget === '_blank'
+                    ? 'noopener noreferrer'
+                    : undefined
+                }
+                style={{ textDecoration: 'none' }}
+              >
+                <Button variant="secondary">{secondaryLabel}</Button>
+              </a>
+            </Row>,
+          )}
         </Stack>
 
         <div className={css.sphere}>

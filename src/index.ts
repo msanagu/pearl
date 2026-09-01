@@ -107,5 +107,11 @@ export { Alert } from './components/Alert';
 export type { AlertProps, AlertVariant } from './components/Alert';
 export { Tag } from './components/Tag';
 export type { TagProps, TagVariant } from './components/Tag';
+export { Skeleton } from './components/Skeleton';
+export type {
+  SkeletonProps,
+  SkeletonVariant,
+  SkeletonTypeScale,
+} from './components/Skeleton';
 export { Link } from './components/Link';
 export type { LinkProps } from './components/Link';

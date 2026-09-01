@@ -17,7 +17,8 @@ of that by hand and will always have edge cases the native element doesn't.
   be a label.
 - **Icon** — inline `<svg>`, not an icon font or background-image — accessible, scalable,
   and stylable via CSS natively.
-- **Stack / Row / Grid** — real CSS Flexbox/Grid on plain elements.
+- **Stack / Row** — real CSS Flexbox on plain elements; a **Grid** primitive is
+  planned on the same footing.
 
 ## Vocabulary: header, heading, preheading, subheading
 

@@ -159,8 +159,8 @@ values — legitimacy is checkable from the operands alone.
 
 ## Where this cascades into other component APIs
 
-- **Stack / Row / Grid** — `gap` typed against the scale. Grid may need independent
-  `columnGap` / `rowGap`, both still scale-token-typed.
+- **Stack / Row** — `gap` typed against the scale. A planned **Grid** may need
+  independent `columnGap` / `rowGap`, both still scale-token-typed.
 - **Card / Alert / Field** — internal padding defaults to a scale token (`md` by
   default) rather than a bespoke value, so nested components inherit consistent rhythm.
 - **Icon** — sizes land on the grid (16px, 20px, 24px, 32px) so icons align cleanly with

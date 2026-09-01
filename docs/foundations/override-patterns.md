@@ -1,5 +1,28 @@
 # Downstream Override Patterns
 
+## Composition first — override is the exception
+
+This contract exists for one situation: a feature team consumes Pearl as an
+installed dependency, can't fork or edit its source, and hits a case where a
+component needs adjusting from the outside. It is not the default way to build a
+feature. The default is:
+
+- Compose shipped components as-is, and use the layout primitives (`Stack`,
+  `Row`) for feature- and page-level layout. Correct tokens, visuals, and
+  accessibility come with them — nothing targets component internals.
+- When a feature needs something the library doesn't ship, build it by composing
+  primitives in feature-local code first. That stays fully on-system, and a
+  shape that recurs across features is a candidate for promotion to a real
+  component (see `component-philosophy.md`).
+
+An override sits on top of that as a costed, visible exception. Whoever writes
+one owns keeping it correct when the component's internals move: the contract
+guarantees the `data-*` names and nothing around them, and the system has no
+visibility into what got overridden downstream, so a renamed part or a retuned
+token can drift an override out of correctness with no compiler error. Treat
+each one as something a team can point to and justify — "we needed X,
+composition and theming couldn't provide it" — not a routine styling tool.
+
 ## Primary mechanism: `data-component` / `data-part` + consolidated `selectors`
 
 Every component and subcomponent renders with stable, deliberate data attributes —

@@ -52,7 +52,7 @@ export interface SiteHeaderProps {
  * Used as this template's story and as the introduction page's header — where
  * it is wrapped in that page's `AutoHideHeader` for sticky, summon-on-scroll
  * behavior. That motion layer is landing-page-only and lives in
- * `src/introduction/`, not here (DECISIONS.md 0009).
+ * `src/introduction/`, not here.
  *
  * Full-bleed: the caller places it edge to edge; `inner` re-applies the shared
  * content column so it lines up with the hero band and the page body.

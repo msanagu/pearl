@@ -28,10 +28,14 @@ export const freshwaterFonts = {
  * register is `freshwaterGraphite`.
  */
 export const freshwaterIce = {
-  100: '#fdfdfd', // page background (light) / borrowed as text + inverse surfaces (dark)
-  200: '#fafafa', // raised surface (light) / borrowed as surfaceInverse (dark)
-  300: '#eef0f1', // border, subtle
-  400: '#e3e5e7', // border / borrowed as borderInverse (dark)
+  /** page background (light) / borrowed as text + inverse surfaces (dark) */
+  100: '#fdfdfd',
+  /** raised surface (light) / borrowed as surfaceInverse (dark) */
+  200: '#fafafa',
+  /** border, subtle */
+  300: '#eef0f1',
+  /** border / borrowed as borderInverse (dark) */
+  400: '#e3e5e7',
 };
 
 /**
@@ -43,12 +47,18 @@ export const freshwaterIce = {
  * `glacier` peaks at 0.137 chroma and could never carry muted text).
  */
 export const freshwaterGraphite = {
-  500: '#9da1a6', // text, subtle (dark)
-  550: '#5b5b60', // text, subtle (light)
-  600: '#2b2d30', // border (dark) / borrowed as borderInverse (light)
-  700: '#202123', // border, subtle (dark) / accentSubtle (dark)
-  800: '#17181a', // raised surface (dark) / borrowed as surfaceInverse (light)
-  900: '#0e0f10', // page background (dark) / borrowed as text + backgroundInverse (light)
+  /** text, subtle (dark) */
+  500: '#9da1a6',
+  /** text, subtle (light) */
+  550: '#5b5b60',
+  /** border (dark) / borrowed as borderInverse (light) */
+  600: '#2b2d30',
+  /** border, subtle (dark) / accentSubtle (dark) */
+  700: '#202123',
+  /** raised surface (dark) / borrowed as surfaceInverse (light) */
+  800: '#17181a',
+  /** page background (dark) / borrowed as text + backgroundInverse (light) */
+  900: '#0e0f10',
 };
 
 /**
@@ -60,12 +70,18 @@ export const freshwaterGraphite = {
  * a failure as body text.
  */
 export const freshwaterGlacier = {
-  100: '#e9fbff', // accentSubtle, light mode
-  200: '#5fe1ff', // text on the solid-ink primary fill, light mode
-  300: '#4dd8ff', // accent, dark mode
-  400: '#00b8e6', // accentHover, dark mode
-  500: '#007DA0', // accent + focusRing, light mode
-  600: '#005E78', // accentHover, light mode
+  /** accentSubtle, light mode */
+  100: '#e9fbff',
+  /** text on the solid-ink primary fill, light mode */
+  200: '#5fe1ff',
+  /** accent, dark mode */
+  300: '#4dd8ff',
+  /** accentHover, dark mode */
+  400: '#00b8e6',
+  /** accent + focusRing, light mode */
+  500: '#007DA0',
+  /** accentHover, light mode */
+  600: '#005E78',
 };
 
 /**

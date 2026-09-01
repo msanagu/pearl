@@ -186,24 +186,3 @@ in Vitest or a Storybook panel or a CLI. And each theme declares only the color
 steps a real role consumes — color is the easiest place for a design system to
 sprawl into a thousand-swatch catalog nobody can hold in their head, so the
 reductive instinct is a first-class constraint.
-
-### Motion dependencies — tried on the landing page before the system commits
-
-**proposed · September 2026**
-
-The dependency stance is build-by-default, adopt-deliberately — and "deliberately"
-should mean "with evidence", not "reluctantly". Animation is a plausible place for
-a library to earn its keep, so `motion` and `lenis` enter as devDependencies used
-only under `src/introduction/`, powering the landing page's smooth scroll and its
-sticky auto-hiding header. That page is the testbed: if the ergonomics and bundle
-cost prove worth it here, the case for the system adopting a motion primitive gets
-made from real use; if not, it's a self-contained thing to pull.
-
-The build already isolates the experiment. Nothing under `src/introduction/` is
-re-exported from `src/index.ts`, and `tsconfig.build.json` excludes the directory
-from the declaration emit, so the libraries can't reach the published package —
-consumers pay nothing while the evaluation runs. The gap: the boundary is
-convention, not enforced. A stray `motion` import from a component file would pass
-the build and only be caught in review. And until this resolves, the codebase
-carries two motion approaches at once — these libraries on the landing page,
-hand-rolled transitions everywhere else.

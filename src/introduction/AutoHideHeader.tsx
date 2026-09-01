@@ -19,8 +19,8 @@ import * as css from './AutoHideHeader.css';
  *   theme-change. Leaving / blurring restarts the countdown.
  *
  * Landing-page only — `motion` and `lenis` are devDependencies scoped to
- * `src/introduction/` (DECISIONS.md 0009). Under `prefers-reduced-motion` the
- * summon / dismiss is dropped: it stays a plain sticky header throughout.
+ * `src/introduction/`. Under `prefers-reduced-motion` the summon / dismiss is
+ * dropped: it stays a plain sticky header throughout.
  */
 const IDLE_MS = 3000;
 
