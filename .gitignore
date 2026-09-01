@@ -22,3 +22,7 @@ npm-debug.log*
 # Claude Design handoffs — local-only source material (moodboards, exports,
 # scratch assets), not tracked in version control.
 design/
+
+# Private working notes and scratch spikes — journal, open-questions tracker,
+# dated ADRs, throwaway experiments. Kept local, not tracked in version control.
+docs/process/
