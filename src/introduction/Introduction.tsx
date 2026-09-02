@@ -358,6 +358,9 @@ function ThemeSpecimenFrame({ theme }: { theme: ThemeKey }) {
         loading="eager"
         className={css.themeFrame}
         src={`iframe.html?id=introduction-theme-specimen--specimen&viewMode=story&globals=theme:${theme};mode:${mode}`}
+        // Belt-and-suspenders alongside `themeFrame`'s `pointer-events: none`
+        // (see that comment) — legacy attribute, harmless where honored.
+        scrolling="no"
       />
     </div>
   );
@@ -965,7 +968,13 @@ function IntroductionPage({
                         <div className={css.statDivider} aria-hidden="true" />
                       )}
                       <StaggerItem y={0}>
-                        <Stack gap="md">
+                        {/* `textAlign: center` matters once `statsRow` switches
+                            to the narrow-viewport grid (see its comment): the
+                            item's own box is only as wide as its widest child
+                            (the label), so without this the shorter number
+                            hugs that box's left edge instead of centering
+                            over the label under it. */}
+                        <Stack gap="md" style={{ textAlign: 'center' }}>
                           <Text
                             as="p"
                             typeScale="displaySm"

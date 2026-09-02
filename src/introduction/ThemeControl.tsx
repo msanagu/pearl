@@ -1,3 +1,5 @@
+import { PiMoonBold, PiSunBold } from 'react-icons/pi';
+import { Icon } from '@components/Icon/Icon';
 import * as css from './ThemeControl.css';
 
 /**
@@ -18,16 +20,47 @@ const THEMES = [
   { value: 'southSea', label: 'South Sea' },
 ];
 
-const MODES = [
-  { value: 'light', label: 'Light' },
-  { value: 'dark', label: 'Dark' },
-];
-
 export interface ThemeControlProps {
   theme: string;
   mode: string;
   onThemeChange: (theme: string) => void;
   onModeChange: (mode: string) => void;
+}
+
+/**
+ * `ModeToggle` — a sun/moon icon button standing in for a two-option select.
+ *
+ * This is deliberately an Introduction-only extension, not a shipped
+ * component: no `IconButton` primitive exists yet in `src/components/`, and
+ * one earns its place from repeated real use (see decision 0002 in the
+ * Introduction page's own Conventions index), not built ahead of a second
+ * call site. It's kept self-contained on purpose — no Storybook globals, no
+ * page-specific state, just `mode`/`onModeChange` in, an icon `<button>` out —
+ * so promoting it later is a file move plus a generic name, not a rewrite.
+ *
+ * Icon shows the *current* mode (sun while light, moon while dark), the way a
+ * state indicator reads rather than a "switch to X" prompt; the accessible
+ * name carries the action instead (`aria-label`, `aria-pressed`).
+ */
+function ModeToggle({
+  mode,
+  onModeChange,
+}: {
+  mode: string;
+  onModeChange: (mode: string) => void;
+}) {
+  const isDark = mode === 'dark';
+  return (
+    <button
+      type="button"
+      className={css.modeToggle}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-pressed={isDark}
+      onClick={() => onModeChange(isDark ? 'light' : 'dark')}
+    >
+      <Icon icon={isDark ? PiMoonBold : PiSunBold} size={18} aria-hidden="true" />
+    </button>
+  );
 }
 
 export function ThemeControl({
@@ -50,18 +83,7 @@ export function ThemeControl({
           </option>
         ))}
       </select>
-      <select
-        className={css.select}
-        aria-label="Mode"
-        value={mode}
-        onChange={(e) => onModeChange(e.target.value)}
-      >
-        {MODES.map((m) => (
-          <option key={m.value} value={m.value}>
-            {m.label}
-          </option>
-        ))}
-      </select>
+      <ModeToggle mode={mode} onModeChange={onModeChange} />
     </div>
   );
 }

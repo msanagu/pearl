@@ -39,8 +39,8 @@ export interface SiteHeaderProps {
   brandRole?: 'inlineEmphasis';
   /** Literal colour for a `_` in `brandName` — see `WordMark.tsx`. */
   brandUnderscoreColor?: string;
-  /** Optional controls rendered left of the utility links — e.g. the
-   * introduction page's theme switcher. */
+  /** Optional controls rendered in the brand row, right-aligned opposite the
+   * wordmark — e.g. the introduction page's theme switcher. */
   actions?: ReactNode;
 }
 
@@ -68,23 +68,29 @@ export function SiteHeader({
   return (
     <header className={css.bar}>
       <div className={css.inner}>
-        <Row gap="sm" align="center" className={css.brand}>
-          {/* Stand-in for the hero's body sphere once that drops out (mobile). */}
-          <div className={css.navSphere}>
-            <PearlSphere />
-          </div>
-          <WordMark
-            text={brandName}
-            role={brandRole}
-            underscoreColor={brandUnderscoreColor}
-          />
-        </Row>
-        {/* Same two destinations as the footer rail, quieted for the header.
-            `wrap` plus `inner`'s phone-width `flexWrap` is what keeps this row
-            from forcing the bar into horizontal scroll once it can't share a
-            line with the brand mark. */}
-        <Row gap="lg" align="center" wrap>
+        {/* Brand + controls share one row that never wraps internally — the
+            theme switcher belongs next to the mark that names what it's
+            switching, not demoted to the links' row below. Only the two
+            external links (grouped so `wrap` treats them as one flex item —
+            split apart, GitHub could land on the controls' line while
+            Playground fell to a line of its own) drop to a second line, via
+            `inner`'s phone-width `flexWrap`, once the bar can't fit both
+            groups on one line. */}
+        <Row gap="lg" align="center" justify="between" className={css.brandRow}>
+          <Row gap="sm" align="center" className={css.brand}>
+            {/* Stand-in for the hero's body sphere once that drops out (mobile). */}
+            <div className={css.navSphere}>
+              <PearlSphere />
+            </div>
+            <WordMark
+              text={brandName}
+              role={brandRole}
+              underscoreColor={brandUnderscoreColor}
+            />
+          </Row>
           {actions}
+        </Row>
+        <Row gap="lg" align="center" className={css.links}>
           <NavLink href={githubHref}>GitHub</NavLink>
           <NavLink href={playgroundHref}>Playground</NavLink>
         </Row>

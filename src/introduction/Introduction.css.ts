@@ -32,6 +32,16 @@ export const page = style({
   // lighter: the `Footer` band closes the page and brings its own top padding.
   paddingTop: `calc(${space['2xl']} * 3)`,
   paddingBottom: `calc(${space['2xl']} * 1.5)`,
+  '@media': {
+    // `xl` (32px) a side reads fine as a page margin at desktop width, but on
+    // a narrow phone it eats a real slice of the viewport — every piece of
+    // content it bounds, including the theme specimen frames, is squeezed
+    // narrower than it needs to be and reflows taller as a result.
+    '(max-width: 640px)': {
+      paddingLeft: space.md,
+      paddingRight: space.md,
+    },
+  },
 });
 
 // Section rhythm — wider than a `Stack`'s `2xl`: at this heading scale, `2xl`
@@ -40,6 +50,14 @@ export const sectionFlow = style({
   display: 'flex',
   flexDirection: 'column',
   gap: `calc(${space['2xl']} * 4)`,
+  '@media': {
+    // The flat gap is tuned for the desktop reading rhythm; at narrow
+    // viewports it reads as excess air around any visually short section
+    // (the stats strip especially), not a deliberate pause.
+    '(max-width: 640px)': {
+      gap: `calc(${space['2xl']} * 2)`,
+    },
+  },
 });
 
 // Section opener as an asymmetric pair — title in the wide left column at
@@ -156,6 +174,22 @@ export const themeSwatch = style({
   cornerShape: radius.cornerShape,
   border: `1px solid ${color.border}`,
   overflow: 'hidden',
+  '@media': {
+    // Each specimen already has its own internal padding (see
+    // `ThemeSpecimen.tsx`'s `Stack` + `Card`) — at phone width, `page`'s
+    // padding around the frame plus that internal padding stacked a card
+    // inside a card, each losing more width to margins the same content
+    // could have used. Breaking the frame full-bleed (same `50vw` technique
+    // as `indexPanel`) means the outer page padding IS the specimen's
+    // padding, not a second layer on top of it.
+    '(max-width: 640px)': {
+      marginLeft: 'calc(50% - 50vw)',
+      marginRight: 'calc(50% - 50vw)',
+      borderRadius: 0,
+      borderLeft: 'none',
+      borderRight: 'none',
+    },
+  },
 });
 
 // Fixed height — an iframe can't auto-size to its content without a
@@ -166,6 +200,14 @@ export const themeFrame = style({
   width: '100%',
   height: 700,
   border: 'none',
+  // Each frame is a real document, so it can scroll independently of the
+  // page. A touch (or wheel) gesture that starts over one gets captured by
+  // *that* document instead of the outer page — `scrolling="no"` on the
+  // element doesn't stop this on mobile Safari, which ignores the attribute
+  // for touch. The frames are non-interactive demo content, so disabling
+  // pointer events entirely is safe and makes every gesture over a specimen
+  // fall through to the page underneath it.
+  pointerEvents: 'none',
 });
 
 /** Next-steps cards sit two-up, then one-up on narrow screens. */
@@ -458,11 +500,23 @@ export const sectionTick = style({
 
 /** Stats section needs narrower width */
 export const narrowContent = style({
+  // Without this, `width: 100%` (content-box by default) plus this element's
+  // own padding add up to *more* than 100% of the parent — it was overflowing
+  // its container by exactly `paddingLeft + paddingRight` and shifting right,
+  // which is what actually made the stats card look off-center; the grid
+  // layout below wasn't the cause.
+  boxSizing: 'border-box',
   maxWidth: 1200,
   margin: '0 auto',
   width: '100%',
   paddingLeft: space.xl,
   paddingRight: space.xl,
+  '@media': {
+    '(max-width: 640px)': {
+      paddingLeft: space.md,
+      paddingRight: space.md,
+    },
+  },
 });
 
 /** Stat strip — mirrors `Row`'s flex layout so `Stagger` can wrap the counts
@@ -476,6 +530,22 @@ export const statsRow = style({
   gap: space.lg,
   width: '100%',
   minWidth: 0,
+  '@media': {
+    // Matches `statDivider`'s breakpoint, where the dividers drop out. A flex
+    // row's `gap` is a minimum, not a cap — once the Card's own padding has
+    // already eaten into a phone-width viewport, `space-between` (or any
+    // extra gap) can push a wrapped pair wider than the Card and spill past
+    // its edge instead of centering. A 2-column grid can't do that: its
+    // tracks are capped to the container's width no matter what the content
+    // wants, so this both centers the pairs and guarantees no overflow.
+    '(max-width: 620px)': {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+      justifyItems: 'center',
+      columnGap: space.md,
+      rowGap: space.xl,
+    },
+  },
 });
 
 /** Stat strip separators — vertical hairlines between the counts. */

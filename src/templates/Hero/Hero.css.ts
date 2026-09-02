@@ -12,6 +12,14 @@ export const main = style({
   // own lines; the sphere holds its size. A wrapping row let a wide headline
   // push the sphere onto its own row below the content.
   flexWrap: 'nowrap',
+  // Asymmetric on purpose — a landing zone above the headline, tight below so
+  // the strip reads as its footnote. Composed from `2xl`. Lives here, not in
+  // `Hero.tsx`'s inline `style`, specifically so the `MOBILE` override below
+  // can win: an inline style always beats a stylesheet rule, media query or
+  // not, so a same-property inline value would silently block this override
+  // at every viewport.
+  paddingTop: `calc(${space['2xl']} * 3)`,
+  paddingBottom: space['2xl'],
   '@media': {
     [MOBILE]: {
       minHeight: 'auto',

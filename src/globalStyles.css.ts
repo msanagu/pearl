@@ -12,4 +12,17 @@ import { globalStyle } from '@vanilla-extract/css';
  */
 globalStyle('html', {
   fontSize: '16px',
+  // `clip`, not `hidden`: a full-bleed element (e.g. `indexPanel`'s
+  // `50vw` breakout) can make the page horizontally scrollable under Lenis on
+  // mobile (darkroomengineering/lenis#355) — a documented, unresolved upstream
+  // gotcha. `overflow: hidden` on html/body is the naive fix, but it opens a
+  // new scroll container that silently breaks `position: sticky` everywhere
+  // downstream (breaks AutoHideHeader) and, per lenis#419, can break Lenis's
+  // own scrolling outright. `clip` suppresses the same overflow without
+  // creating that container.
+  overflowX: 'clip',
+});
+
+globalStyle('body', {
+  overflowX: 'clip',
 });

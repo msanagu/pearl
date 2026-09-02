@@ -33,6 +33,12 @@ export const inner = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  // A floor under `justify-content`'s own gap — `brandRow`'s `flexGrow`
+  // (below) claims the bar's *entire* remaining width up to the links group,
+  // so without this there's nothing left for `space-between` to distribute
+  // and the switcher cluster ends up flush against GitHub with no breathing
+  // room between two visually distinct clusters.
+  columnGap: space.xl,
   '@media': {
     // A narrower gutter and a wrap allowance keep the link row from forcing
     // horizontal scroll once the wordmark and links can no longer share a line.
@@ -41,6 +47,47 @@ export const inner = style({
       flexWrap: 'wrap',
       rowGap: space.sm,
     },
+  },
+});
+
+// Brand mark + theme controls — kept in one row, deliberately never wrapped
+// internally (see `SiteHeader.tsx`'s comment): only the links row below drops
+// to a second line at `SMALL`. `flexGrow` gives the row itself the bar's full
+// available width (up to the links group), so its own `justify="between"`
+// (set in `SiteHeader.tsx`) has room to push the mark left and the switchers
+// right — flush against the links group, the same right-aligned edge `links`
+// itself uses — rather than just sitting shoulder-to-shoulder on `gap`.
+export const brandRow = style({
+  flexGrow: 1,
+  minWidth: 0,
+});
+
+// Tightens the row's own `gap` (a `Row` prop, so it's a same-specificity
+// recipe class) at `SMALL`, where it's sharing the bar with a stacked links
+// row and can use the room — a descendant selector outranks that single class
+// regardless of which one the bundler emits later.
+globalStyle(`${inner} .${brandRow}`, {
+  '@media': {
+    [SMALL]: { columnGap: space.md },
+  },
+});
+
+// The GitHub/Playground link pair — the only thing that wraps to its own
+// line at `SMALL` (via `inner`'s `flexWrap`), where it goes full-width and
+// left-aligned under the wordmark rather than trailing off under the
+// switchers on the opposite edge.
+export const links = style({
+  '@media': {
+    [SMALL]: {
+      width: '100%',
+      justifyContent: 'flex-start',
+    },
+  },
+});
+
+globalStyle(`${inner} .${links}`, {
+  '@media': {
+    [SMALL]: { columnGap: space.md },
   },
 });
 

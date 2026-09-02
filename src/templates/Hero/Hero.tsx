@@ -106,10 +106,8 @@ export function Hero({
           maxWidth: HERO_BAND_MAX_WIDTH,
           boxSizing: 'border-box',
           margin: '0 auto',
-          // Asymmetric on purpose — a landing zone above the headline, tight
-          // below so the strip reads as its footnote. Composed from `2xl`.
-          paddingTop: `calc(${space['2xl']} * 3)`,
-          paddingBottom: space['2xl'],
+          // Top/bottom padding lives in `css.main` instead — see its comment
+          // on why an inline value there would block its own `MOBILE` override.
           paddingLeft: space.xl,
           paddingRight: space.xl,
           width: '100%',
@@ -142,7 +140,11 @@ export function Hero({
           )}
           {revealWrap(
             'actions',
-            <Row gap="sm">
+            // `wrap`: at narrow widths the two buttons together are wider
+            // than the header column (which shrinks to fit — see `header`'s
+            // `min-width: 0`); unwrapped, the second button overflowed off
+            // the viewport edge instead of dropping to its own line.
+            <Row gap="sm" wrap>
               <a
                 href={primaryHref}
                 onClick={onPrimaryClick}
