@@ -1,0 +1,79 @@
+name: Deploy Storybook to Pages
+
+# Builds Storybook on every push to main and publishes it to GitHub Pages.
+# Inert until Pages is enabled on the repo (Settings → Pages → Source:
+# GitHub Actions) — private repos on the free plan can't enable Pages at
+# all, so this stays a no-op deploy target until the repo goes public.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy in flight at a time; a newer push should win rather than
+# queue behind an older one mid-flight.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        # Version resolved from package.json's "packageManager" field.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build-storybook
+
+      # GitHub Pages serves a project repo at /<repo>/, not /, but the
+      # source authors self-hosted assets (fonts, plate/footer images) with
+      # root-absolute paths (`/fonts/...`, `/images/...`) — correct for local
+      # dev and for a custom domain, wrong for this subpath. Same fix
+      # `resume`'s deploy already needed for the same reason: rewrite those
+      # references post-build rather than build-time, so nothing in the
+      # source has to know which host it'll be served from.
+      - name: Rewrite root-absolute asset paths for the /pearl/ subpath
+        run: |
+          find storybook-static -type f \( -name "*.js" -o -name "*.css" \) -print0 \
+            | xargs -0 perl -pi -e 's#(["'"'"'(])/(fonts|images)/#$1/pearl/$2/#g'
+
+      # Storybook's own index.html is the full manager UI (sidebar, toolbar,
+      # addon panels) — landing there is right for browsing components, but
+      # the front door should be the Introduction page rendered on its own,
+      # the way `iframe.html` (Storybook's bare preview frame, no chrome)
+      # shows it. Overwriting index.html with a redirect there, rather than
+      # renaming iframe.html to index.html, keeps the real manager UI intact
+      # and reachable — Introduction itself links onward into the system.
+      - name: Land on the Introduction story, not the Storybook manager
+        run: |
+          cat > storybook-static/index.html <<'HTML'
+          <!doctype html>
+          <meta charset="utf-8" />
+          <title>Pearl</title>
+          <meta http-equiv="refresh" content="0; url=./iframe.html?id=introduction--overview&viewMode=story" />
+          <link rel="canonical" href="./iframe.html?id=introduction--overview&viewMode=story" />
+          HTML
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
