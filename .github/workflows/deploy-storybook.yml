@@ -44,7 +44,7 @@ jobs:
       - name: Rewrite root-absolute asset paths for the /pearl/ subpath
         run: |
           find storybook-static -type f \( -name "*.js" -o -name "*.css" \) -print0 \
-            | xargs -0 perl -pi -e 's#(["'"'"'(])/(fonts|images)/#$1/pearl/$2/#g'
+            | xargs -0 perl -pi -e 's#(["'"'"'(`])/(fonts|images)/#$1/pearl/$2/#g'
 
       # Storybook's own index.html is the full manager UI (sidebar, toolbar,
       # addon panels) — landing there is right for browsing components, but
