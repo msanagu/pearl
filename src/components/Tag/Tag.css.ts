@@ -32,7 +32,7 @@ export const tag = recipe({
     // At body size it competes with the text it annotates; caption is the step
     // the scale already reserves for "below the reading floor" (see tokens.ts).
     fontSize: text.caption.fontSize,
-    lineHeight: text.caption.lineHeight,
+    lineHeight: 1,
     whiteSpace: 'nowrap',
   },
   variants: {
