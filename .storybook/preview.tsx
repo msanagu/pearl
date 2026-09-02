@@ -30,6 +30,8 @@ import {
   pearlDarkThemeClass,
   pearlExtensionClass,
 } from '../src/themes/pearl/pearl.css';
+import { ThemeIconProvider } from '../src/components/Icon/ThemeIconProvider';
+import type { ThemeName } from '../src/components/Icon/iconSets';
 
 type Mode = 'light' | 'dark';
 
@@ -176,19 +178,21 @@ const preview: Preview = {
         context.parameters.removePreviewPadding === true;
 
       return (
-        <div
-          className={`${themeClass} ${extensionClass}`.trim()}
-          style={{
-            background: vars.color.background,
-            color: vars.color.text,
-            fontFamily: vars.fontFamily.body,
-            minHeight,
-            padding: removePreviewPadding ? undefined : '2rem',
-            boxSizing: 'border-box',
-          }}
-        >
-          <Story />
-        </div>
+        <ThemeIconProvider theme={theme as ThemeName}>
+          <div
+            className={`${themeClass} ${extensionClass}`.trim()}
+            style={{
+              background: vars.color.background,
+              color: vars.color.text,
+              fontFamily: vars.fontFamily.body,
+              minHeight,
+              padding: removePreviewPadding ? undefined : '2rem',
+              boxSizing: 'border-box',
+            }}
+          >
+            <Story />
+          </div>
+        </ThemeIconProvider>
       );
     },
   ],

@@ -175,6 +175,7 @@ export const nextGrid = style({
   gap: space.lg,
 });
 
+
 /* The record index — a framed plate with chrome bars, an anchoring inverse
  * panel on the left, and the record list on the right. Hierarchy is carried by
  * scale contrast, not decoration; nothing forces uppercase, so each theme

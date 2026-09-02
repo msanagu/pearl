@@ -79,8 +79,11 @@ export function SiteHeader({
             underscoreColor={brandUnderscoreColor}
           />
         </Row>
-        {/* Same two destinations as the footer rail, quieted for the header. */}
-        <Row gap="lg" align="center">
+        {/* Same two destinations as the footer rail, quieted for the header.
+            `wrap` plus `inner`'s phone-width `flexWrap` is what keeps this row
+            from forcing the bar into horizontal scroll once it can't share a
+            line with the brand mark. */}
+        <Row gap="lg" align="center" wrap>
           {actions}
           <NavLink href={githubHref}>GitHub</NavLink>
           <NavLink href={playgroundHref}>Playground</NavLink>

@@ -3,6 +3,8 @@ import { render } from '@testing-library/react';
 import { createRef } from 'react';
 import { PiHeart, PiHeartDuotone } from 'react-icons/pi';
 import { LuHeart } from 'react-icons/lu';
+import { RiErrorWarningFill } from 'react-icons/ri';
+import { THEME_ICON_SETS } from './iconSets';
 import { Icon } from './Icon';
 
 describe('Icon', () => {
@@ -51,5 +53,9 @@ describe('Icon', () => {
     expect(
       container.querySelectorAll('svg path').length,
     ).toBeGreaterThanOrEqual(2);
+  });
+
+  it('keeps Tahitian in the same warning-symbol family as the other themes', () => {
+    expect(THEME_ICON_SETS.tahitian.warn).toBe(RiErrorWarningFill);
   });
 });

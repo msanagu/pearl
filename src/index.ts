@@ -103,6 +103,18 @@ export { Icon } from './components/Icon';
 export type { IconProps } from './components/Icon';
 export { ICON_LIBRARIES, ICON_LIBRARIES_BY_ID } from './components/Icon';
 export type { IconLibrary, IconTreatment } from './components/Icon';
+export {
+  THEME_ICON_SETS,
+  DEFAULT_THEME_ICON_SET,
+  ThemeIconProvider,
+  useThemeIconSet,
+  useThemeName,
+} from './components/Icon';
+export type {
+  ThemeIconSet,
+  ThemeName,
+  ThemeIconProviderProps,
+} from './components/Icon';
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertVariant } from './components/Alert';
 export { Tag } from './components/Tag';

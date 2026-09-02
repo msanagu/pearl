@@ -9,6 +9,10 @@ import {
 // sphere and this small nav-scale mark stands in beside the wordmark.
 const MOBILE = '(max-width: 1100px)';
 
+// Matches Introduction.css.ts's phone-width breakpoint — below it the bar
+// tightens its gutter and lets the link row wrap instead of overflowing.
+const SMALL = '(max-width: 640px)';
+
 // Matches `Introduction.css.ts`'s `CONTENT_MAX` and `Hero.css.ts`'s band width,
 // so the header, hero, and page body all share one column edge.
 const CONTENT_MAX_WIDTH = 1440;
@@ -29,6 +33,15 @@ export const inner = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  '@media': {
+    // A narrower gutter and a wrap allowance keep the link row from forcing
+    // horizontal scroll once the wordmark and links can no longer share a line.
+    [SMALL]: {
+      width: `calc(100% - ${space.lg} - ${space.lg})`,
+      flexWrap: 'wrap',
+      rowGap: space.sm,
+    },
+  },
 });
 
 export const brand = style({});

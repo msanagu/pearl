@@ -1,7 +1,8 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
-import { PiWarningCircleFill } from 'react-icons/pi';
+import type { IconType } from 'react-icons';
 import { Icon } from '@components/Icon/Icon';
+import { useThemeIconSet } from '@components/Icon/ThemeIconProvider';
 import {
   field,
   fieldMeta,
@@ -9,7 +10,7 @@ import {
   requiredMark,
   hint as hintClass,
   errorRow,
-  errorIcon,
+  errorIcon as errorIconClass,
   errorText,
 } from './Field.css';
 
@@ -39,6 +40,8 @@ export interface FieldProps {
   required?: boolean;
   hint?: string;
   error?: string;
+  /** Overrides the active theme's error icon for this Field only. */
+  errorIcon?: IconType;
   children: (injectedProps: FieldInjectedProps) => ReactNode;
 }
 
@@ -48,8 +51,17 @@ export interface FieldProps {
  * than `cloneElement`. Field never imports `Input`; any element
  * accepting `FieldInjectedProps` works.
  */
-export function Field({ label, required, hint, error, children }: FieldProps) {
+export function Field({
+  label,
+  required,
+  hint,
+  error,
+  errorIcon,
+  children,
+}: FieldProps) {
   const inputId = useId();
+  const { warn } = useThemeIconSet();
+  const ErrorIcon = errorIcon ?? warn;
   const hintId = hint ? `${inputId}-hint` : undefined;
   const errorId = error ? `${inputId}-error` : undefined;
 
@@ -98,9 +110,9 @@ export function Field({ label, required, hint, error, children }: FieldProps) {
           className={errorRow}
         >
           <Icon
-            icon={PiWarningCircleFill}
+            icon={ErrorIcon}
             size={14}
-            className={errorIcon}
+            className={errorIconClass}
             aria-hidden="true"
           />
           <span className={errorText}>{error}</span>

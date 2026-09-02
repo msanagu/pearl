@@ -1,8 +1,9 @@
 import { forwardRef } from 'react';
 import type { ButtonHTMLAttributes } from 'react';
+import type { IconType } from 'react-icons';
 import { clsx } from 'clsx';
-import { PiXBold } from 'react-icons/pi';
 import { Icon } from '@components/Icon/Icon';
+import { useThemeIconSet } from '@components/Icon/ThemeIconProvider';
 import { xButton } from './XButton.css';
 
 export interface XButtonProps extends Omit<
@@ -12,6 +13,8 @@ export interface XButtonProps extends Omit<
   /** Accessible name — always override per context (e.g. "Dismiss notification",
    * "Close", "Remove Storybook"). @default 'Close' */
   'aria-label'?: string;
+  /** Overrides the active theme's close icon for this XButton only. */
+  icon?: IconType;
 }
 
 /**
@@ -25,9 +28,10 @@ export interface XButtonProps extends Omit<
  */
 export const XButton = forwardRef<HTMLButtonElement, XButtonProps>(
   (
-    { className, 'aria-label': ariaLabel = 'Close', type = 'button', ...rest },
+    { className, 'aria-label': ariaLabel = 'Close', icon, type = 'button', ...rest },
     ref,
   ) => {
+    const { close } = useThemeIconSet();
     return (
       <button
         ref={ref}
@@ -36,7 +40,7 @@ export const XButton = forwardRef<HTMLButtonElement, XButtonProps>(
         className={clsx(xButton, className)}
         {...rest}
       >
-        <Icon icon={PiXBold} size={16} style={{ color: 'inherit' }} />
+        <Icon icon={icon ?? close} size={16} style={{ color: 'inherit' }} />
       </button>
     );
   },

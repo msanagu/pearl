@@ -2,16 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { WordMark } from './WordMark';
 import { brandWordmarkForTheme } from './brandWordmark';
 
-/**
- * The nav wordmark — text plus whether `inlineEmphasis` decorates it. Driven
- * here by the Storybook toolbar's active theme, via each theme's own
- * `*BrandWordmark` in `*.roles.ts` (`brandWordmark.ts`). Compare against
- * `Templates/SiteHeader`, which renders this same component.
- */
+/** The nav wordmark. Theme is driven by the Storybook toolbar; see `Templates/SiteHeader` for real usage. */
 const meta: Meta<typeof WordMark> = {
   title: 'Brand/Word Mark',
   component: WordMark,
   tags: ['autodocs'],
+  argTypes: {
+    scale: { table: { disable: true } },
+  },
   decorators: [
     (Story, context) => {
       const wordmark = brandWordmarkForTheme(

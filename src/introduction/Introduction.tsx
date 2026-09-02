@@ -7,19 +7,19 @@ import {
   useScroll,
   useTransform,
 } from 'motion/react';
-import {
-  PiCaretDown,
-  PiCompassRose,
-  PiCube,
-  PiSwatches,
-  PiTextAa,
-} from 'react-icons/pi';
+import type { IconType } from 'react-icons';
+import { PiCaretDown, PiCompassRose, PiCube, PiSwatches, PiTextAa } from 'react-icons/pi';
+import { RxColorWheel, RxCube, RxLayout, RxText } from 'react-icons/rx';
+import { TbCompass, TbCube, TbPalette, TbTypography } from 'react-icons/tb';
+import { RiBox3Fill, RiCompassFill, RiFontSize2, RiPaletteFill } from 'react-icons/ri';
 import { Text } from '@components/Text/Text';
 import { Button } from '@components/Button/Button';
 import { Card } from '@components/Card/Card';
 import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
 import { Icon } from '@components/Icon/Icon';
+import { useThemeName } from '@components/Icon/ThemeIconProvider';
+import type { ThemeName } from '@components/Icon/iconSets';
 import { Link } from '@components/Link/Link';
 import { Hero } from '@/templates/Hero/Hero';
 import { SiteHeader } from '@/templates/SiteHeader/SiteHeader';
@@ -171,32 +171,72 @@ const stats = [
 // Root-relative (`/?path=...`), not bare — inside Storybook's preview iframe a
 // relative query string resolves against `iframe.html`. Paired with
 // `target="_top"` so the link replaces the whole page.
-const nextSteps = [
+type NextStepConcept = 'tokens' | 'typography' | 'components' | 'templates';
+
+const nextSteps: {
+  concept: NextStepConcept;
+  title: string;
+  body: string;
+  href: string;
+}[] = [
   {
-    icon: PiSwatches,
+    concept: 'tokens',
     title: 'Tokens',
     body: 'The contract every theme fills — primitives, semantics, and the inverse bridge between modes.',
     href: '/?path=/story/foundations-tokens-primitives--overview',
   },
   {
-    icon: PiTextAa,
+    concept: 'typography',
     title: 'Typography',
     body: 'Size, face, element, and weight as four independent axes — plus the opt-in measure cap.',
     href: '/?path=/story/foundations-typography--overview',
   },
   {
-    icon: PiCube,
+    concept: 'components',
     title: 'Components',
     body: 'Every component, with its props, states, and the story that doubles as its usage reference.',
     href: '/?path=/docs/components-alert--docs',
   },
   {
-    icon: PiCompassRose,
+    concept: 'templates',
     title: 'Templates',
     body: 'Whole pages assembled from those components — where the composition claims get tested.',
     href: '/?path=/docs/templates-docs--docs',
   },
 ];
+
+/**
+ * "Start here" is decorative/editorial, not the Alert/Field/XButton sentiment
+ * vocabulary — so it isn't part of `iconSets.ts`. It still follows the same
+ * per-theme set choice (`useThemeName`) so the cards don't default to
+ * Phosphor under every other theme.
+ */
+const NEXT_STEP_ICONS: Record<ThemeName, Record<NextStepConcept, IconType>> = {
+  pearl: {
+    tokens: PiSwatches,
+    typography: PiTextAa,
+    components: PiCube,
+    templates: PiCompassRose,
+  },
+  southSea: {
+    tokens: RxColorWheel,
+    typography: RxText,
+    components: RxCube,
+    templates: RxLayout,
+  },
+  freshwater: {
+    tokens: TbPalette,
+    typography: TbTypography,
+    components: TbCube,
+    templates: TbCompass,
+  },
+  tahitian: {
+    tokens: RiPaletteFill,
+    typography: RiFontSize2,
+    components: RiBox3Fill,
+    templates: RiCompassFill,
+  },
+};
 
 /* Section scaffolding */
 
@@ -378,6 +418,7 @@ function IntroductionPage({
 }: IntroductionProps) {
   const lenis = useLenis();
   const reduceMotion = useReducedMotion();
+  const themeName = useThemeName();
   // Marks the hero's bottom edge for `AutoHideHeader` — while it's on screen the
   // masthead rides in flow; past it, the masthead goes sticky and summon-on-scroll.
   const heroSentinelRef = useRef<HTMLDivElement>(null);
@@ -499,88 +540,90 @@ function IntroductionPage({
                 <Card padding="xl">
                   <div className={css.premiseCard}>
                     <Stagger gap={0.13}>
-                      <StaggerItem>
-                        <Text
-                          as="h2"
-                          typeScale="headingLg"
-                          className={css.premiseHeading}
-                        >
-                          Pearl is an{' '}
-                          <Text as="span" role="inlineEmphasis">
-                            experiment
-                          </Text>{' '}
-                          — not a finished product.
-                        </Text>
-                      </StaggerItem>
-
-                      <Stagger className={css.premiseBeats} gap={0.1}>
-                        <StaggerItem className={css.premiseBeat}>
+                      <Stack gap="2xl">
+                        <StaggerItem>
                           <Text
-                            role="preheading"
-                            as="p"
-                            typeScale="caption"
-                            prominence="subtle"
+                            as="h2"
+                            typeScale="headingLg"
+                            className={css.premiseHeading}
                           >
-                            The Shift
-                          </Text>
-                          <Text
-                            as="p"
-                            typeScale="bodySm"
-                            style={{ margin: 0 }}
-                          >
-                            AI is changing what a design system can be.
-                            Foundations and component contracts become data an
-                            agent reads directly, documentation that can't
-                            drift from the code, conventions legible enough to
-                            build against without exhaustive onboarding or
-                            guesswork.
+                            Pearl is an{' '}
+                            <Text as="span" role="inlineEmphasis">
+                              experiment
+                            </Text>{' '}
+                            — not a finished product.
                           </Text>
                         </StaggerItem>
 
-                        <StaggerItem className={css.premiseBeat}>
-                          <Text
-                            role="preheading"
-                            as="p"
-                            typeScale="caption"
-                            prominence="subtle"
-                          >
-                            The Testbed
-                          </Text>
-                          <Text
-                            as="p"
-                            typeScale="bodySm"
-                            style={{ margin: 0 }}
-                          >
-                            Pearl is where those possibilities get tried, met
-                            with curiosity: aggressive exploration,
-                            conservative adoption. An approach becomes
-                            convention only once building with it has shown it
-                            worth keeping.
-                          </Text>
-                        </StaggerItem>
+                        <Stagger className={css.premiseBeats} gap={0.1}>
+                          <StaggerItem className={css.premiseBeat}>
+                            <Text
+                              role="preheading"
+                              as="p"
+                              typeScale="caption"
+                              prominence="subtle"
+                            >
+                              The Shift
+                            </Text>
+                            <Text
+                              as="p"
+                              typeScale="bodySm"
+                              style={{ margin: 0 }}
+                            >
+                              AI is changing what a design system can be.
+                              Foundations and component contracts become data an
+                              agent reads directly, documentation that can't
+                              drift from the code, conventions legible enough to
+                              build against without exhaustive onboarding or
+                              guesswork.
+                            </Text>
+                          </StaggerItem>
 
-                        <StaggerItem className={css.premiseBeat}>
-                          <Text
-                            role="preheading"
-                            as="p"
-                            typeScale="caption"
-                            prominence="subtle"
-                          >
-                            The Loop
-                          </Text>
-                          <Text
-                            as="p"
-                            typeScale="bodySm"
-                            style={{ margin: 0 }}
-                          >
-                            Pearl takes an active part in its own evolution.
-                            New design happens by composing primitives, not by
-                            escaping the system. A composition that keeps
-                            recurring is already an on-system candidate for
-                            promotion to a real component.
-                          </Text>
-                        </StaggerItem>
-                      </Stagger>
+                          <StaggerItem className={css.premiseBeat}>
+                            <Text
+                              role="preheading"
+                              as="p"
+                              typeScale="caption"
+                              prominence="subtle"
+                            >
+                              The Testbed
+                            </Text>
+                            <Text
+                              as="p"
+                              typeScale="bodySm"
+                              style={{ margin: 0 }}
+                            >
+                              Pearl is where those possibilities get tried, met
+                              with curiosity: aggressive exploration,
+                              conservative adoption. An approach becomes
+                              convention only once building with it has shown it
+                              worth keeping.
+                            </Text>
+                          </StaggerItem>
+
+                          <StaggerItem className={css.premiseBeat}>
+                            <Text
+                              role="preheading"
+                              as="p"
+                              typeScale="caption"
+                              prominence="subtle"
+                            >
+                              The Loop
+                            </Text>
+                            <Text
+                              as="p"
+                              typeScale="bodySm"
+                              style={{ margin: 0 }}
+                            >
+                              Pearl takes an active part in its own evolution.
+                              New design happens by composing primitives, not by
+                              escaping the system. A composition that keeps
+                              recurring is already an on-system candidate for
+                              promotion to a real component.
+                            </Text>
+                          </StaggerItem>
+                        </Stagger>
+                      </Stack>
                     </Stagger>
                   </div>
                 </Card>
@@ -866,11 +909,10 @@ function IntroductionPage({
                     style={{ margin: 0 }}
                   >
                     Pearl's manifest and llms.txt ship in the package, so any
-                    coding agent works from that context directly — no
-                    retrieval layer, no MCP server. The aim: build from real
-                    primitives, compose what's missing from them, and flag the
-                    gap rather than invent an API. The playground is one way
-                    to try it.
+                    coding agent works from that context directly — no retrieval
+                    layer, no MCP server. The aim: build from real primitives,
+                    compose what's missing from them, and flag the gap rather
+                    than invent an API. The playground is one way to try it.
                   </Text>
                 </Reveal>
               </div>
@@ -953,27 +995,29 @@ function IntroductionPage({
                 {nextSteps.map((step) => (
                   <StaggerItem key={step.title}>
                     <Card href={step.href} padding="lg" target="_top">
-                      <Stack gap="md">
+                      <Stack gap="xl">
                         <Icon
-                          icon={step.icon}
-                          size={24}
+                          icon={NEXT_STEP_ICONS[themeName][step.concept]}
+                          size={40}
                           style={{ color: color.accent }}
                         />
-                        <Text
-                          as="h3"
-                          typeScale="headingSm"
-                          style={{ margin: 0 }}
-                        >
-                          {step.title}
-                        </Text>
-                        <Text
-                          as="p"
-                          typeScale="bodySm"
-                          prominence="subtle"
-                          style={{ margin: 0 }}
-                        >
-                          {step.body}
-                        </Text>
+                        <Stack gap="xs">
+                          <Text
+                            as="h3"
+                            typeScale="headingSm"
+                            style={{ margin: 0 }}
+                          >
+                            {step.title}
+                          </Text>
+                          <Text
+                            as="p"
+                            typeScale="bodySm"
+                            prominence="subtle"
+                            style={{ margin: 0 }}
+                          >
+                            {step.body}
+                          </Text>
+                        </Stack>
                       </Stack>
                     </Card>
                   </StaggerItem>

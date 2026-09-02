@@ -11,8 +11,14 @@ import * as PublicApi from '@/index';
  * returns an object, not a function, so `typeof` alone would silently miss
  * every `forwardRef` component (Button, Icon, Tag, Alert, Input, Link).
  * `$$typeof === Symbol.for('react.forward_ref')` is how React stamps them.
+ *
+ * A bare `typeof value === 'function'` also matches hooks (`useThemeIconSet`)
+ * and context providers (`ThemeIconProvider`), which aren't shippable UI
+ * components — so those are excluded by name below.
  */
-function isComponentLike(value: unknown): boolean {
+function isComponentLike(name: string, value: unknown): boolean {
+  if (/^use[A-Z]/.test(name)) return false;
+  if (/Provider$/.test(name)) return false;
   if (typeof value === 'function') return true;
   if (typeof value === 'object' && value !== null) {
     return (
@@ -25,8 +31,8 @@ function isComponentLike(value: unknown): boolean {
 
 const publicApiEntries = Object.entries(PublicApi);
 
-export const componentCount = publicApiEntries.filter(([, value]) =>
-  isComponentLike(value),
+export const componentCount = publicApiEntries.filter(([name, value]) =>
+  isComponentLike(name, value),
 ).length;
 
 /**

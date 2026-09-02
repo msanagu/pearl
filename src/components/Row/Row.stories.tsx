@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Stack } from './Stack';
+import { Row } from './Row';
 import { color } from '@tokens';
 
 /**
- * `Stack` is a thin vertical preset over the shared flex primitive it shares
- * with `Row`. `gap` is typed to the space scale — a raw number is a compile
+ * `Row` is a thin horizontal preset over the shared flex primitive it shares
+ * with `Stack`. `gap` is typed to the space scale — a raw number is a compile
  * error, so layout spacing stays on-system.
  */
-const meta: Meta<typeof Stack> = {
-  title: 'Components/Stack',
-  component: Stack,
+const meta: Meta<typeof Row> = {
+  title: 'Components/Row',
+  component: Row,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -32,7 +32,7 @@ const meta: Meta<typeof Stack> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof Stack>;
+type Story = StoryObj<typeof Row>;
 
 const Box = ({ children }: { children: React.ReactNode }) => (
   <div
@@ -48,13 +48,23 @@ const Box = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-export const VerticalStack: Story = {
-  args: { gap: 'md' },
+export const HorizontalRow: Story = {
+  args: { gap: 'sm' },
   render: (args) => (
-    <Stack {...args}>
-      <Box>First</Box>
-      <Box>Second</Box>
-      <Box>Third</Box>
-    </Stack>
+    <Row {...args}>
+      <Box>One</Box>
+      <Box>Two</Box>
+      <Box>Three</Box>
+    </Row>
+  ),
+};
+
+/** Common form footer: right-aligned button row. */
+export const RowJustifyEnd: Story = {
+  render: () => (
+    <Row gap="sm" justify="end">
+      <Box>Cancel</Box>
+      <Box>Save</Box>
+    </Row>
   ),
 };

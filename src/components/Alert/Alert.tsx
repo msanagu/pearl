@@ -3,15 +3,9 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { IconType } from 'react-icons';
-// Fill-weight Phosphor: the mark is a solid shape carrying the sentiment color,
-// so it reads at small sizes against a tinted surface.
-import {
-  PiCheckCircleFill,
-  PiInfoFill,
-  PiWarningCircleFill,
-  PiXCircleFill,
-} from 'react-icons/pi';
 import { Icon } from '@components/Icon/Icon';
+import { useThemeIconSet } from '@components/Icon/ThemeIconProvider';
+import type { ThemeIconSet } from '@components/Icon/iconSets';
 import { Text } from '@components/Text/Text';
 import { XButton } from '@components/_internal/XButton/XButton';
 import { color } from '@tokens';
@@ -25,11 +19,14 @@ export type AlertVariant = NonNullable<AlertVariants['variant']>;
 // and not split across a separate "Notification" component: severity lives
 // entirely in `variant`, so an `info` or `positive` Alert is exactly as
 // first-class as a `negative` one.
-const defaultIconByVariant: Record<AlertVariant, IconType> = {
-  positive: PiCheckCircleFill,
-  negative: PiXCircleFill,
-  warn: PiWarningCircleFill,
-  info: PiInfoFill,
+//
+// The actual icon per variant comes from the active theme's icon set
+// (`useThemeIconSet`) — this just maps variant name to that set's field name.
+const iconKeyByVariant: Record<AlertVariant, keyof ThemeIconSet> = {
+  positive: 'positive',
+  negative: 'negative',
+  warn: 'warn',
+  info: 'info',
 };
 
 const iconColorByVariant: Record<AlertVariant, string> = {
@@ -90,7 +87,8 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     },
     ref,
   ) => {
-    const IconComponent = icon ?? defaultIconByVariant[variant];
+    const themeIconSet = useThemeIconSet();
+    const IconComponent = icon ?? themeIconSet[iconKeyByVariant[variant]];
     const textColor = textColorByVariant[variant];
 
     return (

@@ -14,6 +14,17 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  // Pre-bundles every story's deps at server start instead of discovering
+  // them lazily on first visit — avoids Vite's mid-session dep
+  // re-optimization full-reload, which the preview iframe often misses,
+  // leaving the docs page blank until a manual refresh.
+  async viteFinal(config) {
+    config.server ??= {};
+    config.server.warmup = {
+      clientFiles: ['./src/**/*.stories.@(ts|tsx)'],
+    };
+    return config;
+  },
 };
 
 export default config;

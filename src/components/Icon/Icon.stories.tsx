@@ -102,6 +102,8 @@ import {
 } from 'react-icons/bs';
 import { Icon } from './Icon';
 import { ICON_LIBRARIES_BY_ID } from './iconLibraries';
+import { THEME_ICON_SETS } from './iconSets';
+import type { ThemeName } from './iconSets';
 import { Row } from '@components/Row';
 import { Stack } from '@components/Stack';
 import { Text } from '@components/Text';
@@ -394,6 +396,85 @@ export const AllSetsCompared: StoryObj = {
           <ConceptRow libraryId={id} size={26} />
         </Stack>
       ))}
+    </Stack>
+  ),
+};
+
+// ---- Theme-level defaults ---------------------------------------------------
+
+const THEME_SET_LIBRARY: Record<ThemeName, string> = {
+  pearl: 'pi',
+  southSea: 'rx',
+  freshwater: 'tb',
+  tahitian: 'ri',
+};
+
+const THEME_LABELS: Record<ThemeName, string> = {
+  pearl: 'Pearl',
+  southSea: 'South Sea',
+  freshwater: 'Freshwater',
+  tahitian: 'Tahitian',
+};
+
+/**
+ * The icon *set* is a theme-level decision, not a per-component or per-usage
+ * one. Alert, Field, and XButton never hardcode a `react-icons` set for their
+ * own icons (error/warning/close, etc.) — they read the active theme's set
+ * via `useThemeIconSet()`, which `ThemeIconProvider` puts into context.
+ *
+ * The smart default is Phosphor (Pearl's set): a consumer who never renders
+ * `ThemeIconProvider` at all still gets exactly today's behavior, unchanged.
+ * Wrapping the app in `ThemeIconProvider` is what opts a theme into its own
+ * set — nothing breaks, and nothing is required, if it's left out.
+ *
+ * This only governs the small vocabulary those three components need
+ * (`positive`/`negative`/`warn`/`info`/`close`). Everything else stays a
+ * plain `icon` prop, chosen per usage, unaffected by theme — and each of
+ * these three still takes its own override for that one case that needs to
+ * diverge from the theme (`Alert`'s `icon`, `Field`'s `errorIcon`, `XButton`'s
+ * `icon`), without switching the whole theme's set.
+ */
+export const ThemeDefaults: StoryObj = {
+  parameters: staticSource(
+    `import { ThemeIconProvider } from '@msanagu/pearl';\n\n` +
+      `// Wrap the app once — Alert/Field/XButton pick up the right set from here.\n` +
+      `<ThemeIconProvider theme="tahitian">\n  <App />\n</ThemeIconProvider>`,
+  ),
+  render: () => (
+    <Stack gap="2xl">
+      <Text typeScale="bodySm" prominence="subtle" as="p" style={{ maxWidth: 560 }}>
+        Set choice lives at the theme level. No provider → Phosphor (Pearl's
+        set), which is today's behavior. Wrapping in{' '}
+        <code>ThemeIconProvider</code> opts a theme into its own set for
+        Alert/Field/XButton's internal icons only.
+      </Text>
+      {(Object.keys(THEME_SET_LIBRARY) as ThemeName[]).map((themeName) => {
+        const libraryId = THEME_SET_LIBRARY[themeName];
+        const set = THEME_ICON_SETS[themeName];
+        return (
+          <Stack key={themeName} gap="sm">
+            <Text typeScale="bodyMd" weight="semibold" as="span">
+              {THEME_LABELS[themeName]}
+            </Text>
+            <Text typeScale="caption" prominence="subtle" as="span">
+              {ICON_LIBRARIES_BY_ID[libraryId]?.label ?? libraryId} ·
+              react-icons/{libraryId}
+            </Text>
+            <Row gap="xl">
+              {(['positive', 'negative', 'warn', 'info', 'close'] as const).map(
+                (key) => (
+                  <Stack key={key} gap="xs" align="center" style={{ width: 72 }}>
+                    <Icon icon={set[key]} size={24} />
+                    <Text typeScale="caption" prominence="subtle" as="span">
+                      {key}
+                    </Text>
+                  </Stack>
+                ),
+              )}
+            </Row>
+          </Stack>
+        );
+      })}
     </Stack>
   ),
 };
