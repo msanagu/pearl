@@ -6,6 +6,7 @@ import { Hero } from '@/templates/Hero/Hero';
 import { SiteHeader } from '@/templates/SiteHeader/SiteHeader';
 import { Docs } from '@/templates/Docs/Docs';
 import { Form } from '@/templates/Form/Form';
+import { Dashboard } from '@/templates/Dashboard/Dashboard';
 import { Footer } from '@/templates/Footer/Footer';
 import { footerPlateForTheme } from '@/templates/Footer/footerPlate';
 import { brandWordmarkForTheme } from '@components/_brand/WordMark/brandWordmark';
@@ -90,6 +91,16 @@ export const FormTemplate: Story = {
   render: () => (
     <StoryAudit>
       <Form />
+    </StoryAudit>
+  ),
+  play: gate,
+};
+
+export const DashboardTemplate: Story = {
+  name: 'Dashboard',
+  render: () => (
+    <StoryAudit>
+      <Dashboard />
     </StoryAudit>
   ),
   play: gate,

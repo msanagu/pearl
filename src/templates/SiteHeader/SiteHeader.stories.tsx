@@ -15,7 +15,7 @@ import { brandWordmarkForTheme } from '@components/_brand/WordMark/brandWordmark
  * not live here.
  */
 const meta: Meta<typeof SiteHeader> = {
-  title: 'Templates/SiteHeader',
+  title: 'Templates/Site Header',
   component: SiteHeader,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

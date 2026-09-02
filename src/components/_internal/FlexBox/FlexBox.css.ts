@@ -17,6 +17,7 @@ export const flex = recipe({
       center: { alignItems: 'center' },
       end: { alignItems: 'flex-end' },
       stretch: { alignItems: 'stretch' },
+      baseline: { alignItems: 'baseline' },
     },
     justify: {
       start: { justifyContent: 'flex-start' },
