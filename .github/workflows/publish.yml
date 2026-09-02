@@ -1,0 +1,43 @@
+name: Publish package
+
+# Publishes @msanagu/pearl to GitHub Packages from THIS repo — which is the
+# point of it living here rather than being published from a laptop. A
+# package's repo link comes from package.json's `repository` field at publish
+# time, and its visibility follows the publishing repo, so publishing from
+# this public repo (rather than from the private archive, where earlier
+# versions came from) is what makes the package public and linked to a repo
+# people can actually open.
+#
+# Manual by default: version bumps are a deliberate act, not something that
+# should fire on every push. Tag pushes (v1.2.3) publish too, for when you'd
+# rather drive it from a tag.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          # Writes the .npmrc that points @msanagu at GitHub Packages and
+          # reads the token from NODE_AUTH_TOKEN below.
+          registry-url: https://npm.pkg.github.com
+          scope: '@msanagu'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      # `npm publish`, not `pnpm publish` — setup-node's generated .npmrc is
+      # what carries the auth, and npm reads it directly.
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
