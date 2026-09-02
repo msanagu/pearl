@@ -1,6 +1,6 @@
 {
   "name": "@msanagu/pearl",
-  "version": "0.4.2",
+  "version": "0.0.0-test",
   "description": "A small, intentional, composition-first React design system styled with vanilla-extract.",
   "type": "module",
   "license": "MIT",
@@ -8,9 +8,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/msanagu/pearl.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "sideEffects": [
     "*.css",
