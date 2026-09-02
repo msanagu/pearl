@@ -50,18 +50,18 @@ jobs:
       # addon panels) — landing there is right for browsing components, but
       # the front door should be the Introduction page rendered on its own,
       # the way `iframe.html` (Storybook's bare preview frame, no chrome)
-      # shows it. Overwriting index.html with a redirect there, rather than
-      # renaming iframe.html to index.html, keeps the real manager UI intact
-      # and reachable — Introduction itself links onward into the system.
-      - name: Land on the Introduction story, not the Storybook manager
+      # shows it. This can't just overwrite index.html with a redirect:
+      # index.html is what Storybook's manager itself serves at any `?path=`
+      # URL too (GitHub Pages has no server-side routing — the query string
+      # doesn't change which file gets served), so a wholesale overwrite
+      # would make every in-app "browse the manager" link redirect straight
+      # back to Introduction instead of ever reaching it. Injecting a
+      # conditional redirect instead — only fires on a bare visit (no query
+      # string at all), otherwise the real manager boots normally and reads
+      # `?path=`/`?id=` itself, same as it always has.
+      - name: Land on the Introduction story on a bare visit only
         run: |
-          cat > storybook-static/index.html <<'HTML'
-          <!doctype html>
-          <meta charset="utf-8" />
-          <title>Pearl</title>
-          <meta http-equiv="refresh" content="0; url=./iframe.html?id=introduction--overview&viewMode=story" />
-          <link rel="canonical" href="./iframe.html?id=introduction--overview&viewMode=story" />
-          HTML
+          perl -pi -e 's{(<head>)}{$1\n    <script>if(!location.search)location.replace("./iframe.html?id=introduction--overview&viewMode=story");</script>}' storybook-static/index.html
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

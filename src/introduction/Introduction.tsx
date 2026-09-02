@@ -168,8 +168,13 @@ const stats = [
   { value: String(decisions.length), label: 'Conventions' },
 ];
 
-// Root-relative (`/?path=...`), not bare — inside Storybook's preview iframe a
-// relative query string resolves against `iframe.html`. Paired with
+// Directory-relative (`./?path=...`), not bare and not root-absolute —
+// inside Storybook's preview iframe a bare query string resolves against
+// `iframe.html` itself (wrong file, no sidebar/manager chrome to interpret
+// `?path=`), while a root-absolute `/?path=...` breaks under any subpath
+// deploy (GitHub Pages serves a project repo at `/<repo>/`, not `/`). `./`
+// resolves to whatever directory `iframe.html` is actually served from —
+// the manager's `index.html` lives right there either way. Paired with
 // `target="_top"` so the link replaces the whole page.
 type NextStepConcept = 'tokens' | 'typography' | 'components' | 'templates';
 
@@ -183,25 +188,25 @@ const nextSteps: {
     concept: 'tokens',
     title: 'Tokens',
     body: 'The contract every theme fills — primitives, semantics, and the inverse bridge between modes.',
-    href: '/?path=/story/foundations-tokens-primitives--overview',
+    href: './?path=/story/foundations-tokens-primitives--overview',
   },
   {
     concept: 'typography',
     title: 'Typography',
     body: 'Size, face, element, and weight as four independent axes — plus the opt-in measure cap.',
-    href: '/?path=/story/foundations-typography--overview',
+    href: './?path=/story/foundations-typography--overview',
   },
   {
     concept: 'components',
     title: 'Components',
     body: 'Every component, with its props, states, and the story that doubles as its usage reference.',
-    href: '/?path=/docs/components-alert--docs',
+    href: './?path=/docs/components-alert--docs',
   },
   {
     concept: 'templates',
     title: 'Templates',
     body: 'Whole pages assembled from those components — where the composition claims get tested.',
-    href: '/?path=/docs/templates-docs--docs',
+    href: './?path=/docs/templates-docs--docs',
   },
 ];
 
@@ -467,7 +472,7 @@ function IntroductionPage({
           primaryHref="#conventions"
           primaryLabel="See how it's built"
           onPrimaryClick={(e) => scrollToConventions(e, lenis)}
-          secondaryHref="/?path=/docs/components-alert--docs"
+          secondaryHref="./?path=/docs/components-alert--docs"
           secondaryLabel="Browse components"
           secondaryTarget="_top"
           revealWrap={(key, node) => (
