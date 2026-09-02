@@ -6,6 +6,12 @@ import { color, space } from '@tokens';
 // the headline; below it, `SiteHeader` shows its own small mark instead.
 const MOBILE = '(max-width: 1100px)';
 
+// Narrower than `MOBILE` on purpose — matches `Introduction.css.ts`'s /
+// `SiteHeader.css.ts`'s phone-width breakpoint. `MOBILE` also covers tablets
+// and a resized desktop window; the reduced top padding below is a mobile
+// *portrait* correction and shouldn't fire that early.
+const NARROW = '(max-width: 640px)';
+
 export const main = style({
   minHeight: 520,
   // Never wrap: the header column takes the remaining width and re-flows its
@@ -14,7 +20,7 @@ export const main = style({
   flexWrap: 'nowrap',
   // Asymmetric on purpose — a landing zone above the headline, tight below so
   // the strip reads as its footnote. Composed from `2xl`. Lives here, not in
-  // `Hero.tsx`'s inline `style`, specifically so the `MOBILE` override below
+  // `Hero.tsx`'s inline `style`, specifically so the `NARROW` override below
   // can win: an inline style always beats a stylesheet rule, media query or
   // not, so a same-property inline value would silently block this override
   // at every viewport.
@@ -27,7 +33,12 @@ export const main = style({
       alignItems: 'stretch',
       justifyContent: 'center',
       gap: 24,
-      paddingTop: 24,
+    },
+    // The desktop top padding is a deliberate landing zone; it only reads as
+    // excess once the hero has also dropped to a single narrow column. `32`,
+    // not `24` — flush against the header felt tighter than intended.
+    [NARROW]: {
+      paddingTop: 32,
       paddingBottom: 24,
     },
   },
