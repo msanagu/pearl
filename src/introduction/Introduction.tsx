@@ -860,7 +860,7 @@ function IntroductionPage({
             <div className={css.sectionBody}>
               <div className={css.playgroundHead}>
                 <Stagger className={css.playgroundHeadLead} gap={0.13}>
-                  <StaggerItem>
+                  <StaggerItem className={css.sectionHeadLead}>
                     <DrawTick className={css.sectionTick} />
                     <Text
                       id="playground"
