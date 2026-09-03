@@ -10,6 +10,14 @@ convention was worked out in a dated design note, with the alternatives weighed.
 > across four themes. A 2026 snapshot,
 > not a finished product.
 
+## Installing
+
+Published under the `test` dist-tag while the API is still moving — not `latest`:
+
+```sh
+npm i @msanagu/pearl@test
+```
+
 ## Playground
 
 The [Pearl Playground](https://msanagu.github.io/pearl-playground/) goes further:
