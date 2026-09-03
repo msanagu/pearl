@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.build.json && node scripts/rewrite-dts-aliases.mjs && node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/rewrite-dts-aliases.mjs && node scripts/copy-fonts.mjs && node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
     "prepare": "pnpm build",
     "generate:manifest": "node scripts/generate-manifest.mjs && node scripts/generate-llms-txt.mjs",
     "typecheck": "tsc --noEmit",
