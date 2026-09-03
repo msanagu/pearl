@@ -693,6 +693,8 @@ function IntroductionPage({
                     <img
                       src="/images/iridescent.jpg"
                       alt=""
+                      width={736}
+                      height={1234}
                       className={css.indexPlateImage}
                     />
                     <div className={css.indexPlateContent}>
@@ -933,6 +935,8 @@ function IntroductionPage({
                     <img
                       src="/images/pearl-playground-thread.jpg"
                       alt="Pearl Playground: on the left, a coding agent's thread reasoning about the design system; on the right, a live-rendered notification settings panel with a success alert, three toggle rows, and Save changes / Reset buttons."
+                      width={1414}
+                      height={982}
                       className={css.playgroundImage}
                     />
                   </div>

@@ -212,9 +212,14 @@ const preview: Preview = {
       const removePreviewPadding =
         context.parameters.removePreviewPadding === true;
 
+      // `<main>` only in the standalone Canvas tab — an autodocs page
+      // renders many stories through this same decorator, and more than one
+      // `<main>` landmark on a page is itself an a11y violation.
+      const Container = context.viewMode === 'docs' ? 'div' : 'main';
+
       return (
         <ThemeIconProvider theme={theme as ThemeName}>
-          <div
+          <Container
             className={`${themeClass} ${extensionClass}`.trim()}
             style={{
               background: vars.color.background,
@@ -226,7 +231,7 @@ const preview: Preview = {
             }}
           >
             <Story />
-          </div>
+          </Container>
         </ThemeIconProvider>
       );
     },
