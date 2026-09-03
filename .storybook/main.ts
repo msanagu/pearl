@@ -2,8 +2,17 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],
+  // addon-a11y ships axe-core and runs a scan on every story view — useful
+  // in dev, but this Storybook build is deployed as the actual GitHub Pages
+  // site (see deploy-storybook.yml), so shipping and auto-running axe on
+  // every visitor's landing page costs real JS weight and main-thread time
+  // for a scan nobody's looking at. `storybook build` sets
+  // NODE_ENV=production; `storybook dev` doesn't, so this keeps the addon
+  // for local dev only.
   addons: [
-    '@storybook/addon-a11y',
+    ...(process.env.NODE_ENV === 'production'
+      ? []
+      : ['@storybook/addon-a11y']),
     '@storybook/addon-docs',
     '@storybook/addon-vitest',
   ],

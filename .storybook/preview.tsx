@@ -48,6 +48,28 @@ interface ThemeEntry {
    *  Pearl light-first. Picking a theme snaps the mode to this; picking a
    *  mode afterwards still overrides freely. */
   defaultMode: Mode;
+  /** Fontshare `f[]` requests for this theme's non-@fontsource faces, split
+   *  the same way preview-head.html's used to be (one family per request,
+   *  ≤3 styles each). Pearl's Gambetta is preloaded in preview-head.html
+   *  instead — omitted here since it's already on the page by the time any
+   *  theme picker runs. */
+  fontshareFamilies?: string[];
+}
+
+const loadedFontshareFamilies = new Set<string>();
+
+/** Injects a theme's Fontshare stylesheets on first use, not before —
+ *  they're otherwise render-blocking weight for themes nobody's viewing.
+ *  Keyed by request URL so switching themes back and forth never re-fetches. */
+function loadThemeFonts(entry: ThemeEntry) {
+  for (const family of entry.fontshareFamilies ?? []) {
+    if (loadedFontshareFamilies.has(family)) continue;
+    loadedFontshareFamilies.add(family);
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://api.fontshare.com/v2/css?f[]=${family}&display=swap`;
+    document.head.appendChild(link);
+  }
 }
 
 // One registry keyed by theme name, so a theme is added or removed in one
@@ -65,17 +87,24 @@ const themes: Record<string, ThemeEntry> = {
     dark: tahitianDarkThemeClass,
     extension: tahitianExtensionClass,
     defaultMode: 'dark',
+    fontshareFamilies: ['switzer@400,500,600', 'switzer@700'],
   },
   freshwater: {
     light: freshwaterLightThemeClass,
     dark: freshwaterDarkThemeClass,
     extension: freshwaterExtensionClass,
     defaultMode: 'light',
+    fontshareFamilies: [
+      'zodiak@400,401,700,701',
+      'general-sans@300,400,500',
+      'general-sans@600,700',
+    ],
   },
   southSea: {
     light: southSeaLightThemeClass,
     dark: southSeaDarkThemeClass,
     defaultMode: 'dark',
+    fontshareFamilies: ['boska@400'],
   },
 };
 
@@ -143,6 +172,12 @@ const preview: Preview = {
       const theme = (context.globals.theme as string) ?? 'pearl';
       const mode = (context.globals.mode as Mode) ?? 'light';
       const entry = themes[theme] ?? themes.pearl;
+
+      // Fires on every render, but loadThemeFonts is a no-op past the first
+      // call per family (see loadedFontshareFamilies) — cheaper than a
+      // useEffect keyed on `theme` and just as correct, since insertion order
+      // doesn't matter for stylesheets.
+      loadThemeFonts(entry);
 
       // Snap the mode to the incoming theme's default *on a theme switch only*.
       // The ref seeds on first render so `initialGlobals` and a `?globals=`

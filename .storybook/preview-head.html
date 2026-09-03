@@ -1,9 +1,9 @@
 <!--
-  Fontshare CDN faces — Zodiak, General Sans, Boska (South Sea), Switzer
-  (Tahitian), Gambetta (Pearl). Not on npm/@fontsource, so loaded here rather
-  than self-hosted like the rest of the system's fonts.
+  Fontshare CDN faces — Zodiak + General Sans (Freshwater), Boska (South
+  Sea), Switzer (Tahitian), Gambetta (Pearl). Not on npm/@fontsource, so
+  loaded here rather than self-hosted like the rest of the system's fonts.
 
-  Two Fontshare API constraints shape the requests below:
+  Two Fontshare API constraints shape each request below:
   - Only the first `f[]` family in a request survives; the rest drop silently.
     So one family per request.
   - Each request caps at 3 styles; a 4th breaks the whole response. Families
@@ -13,33 +13,17 @@
   separate italic flag. It still applies wherever `southSeaFonts.serif` +
   `font-style: italic` is used, though South Sea's default italic is Times
   (see `southSeaFonts.serifItalic` in south-sea.css.ts).
+
+  Only Pearl's face (Gambetta) is preloaded here: `initialGlobals` pins the
+  deployed site's default theme to Pearl (see preview.tsx), and this build is
+  the actual GitHub Pages landing page — blocking first paint on three
+  themes' worth of fonts nobody's viewing yet is wasted render-blocking
+  weight. The other themes' faces are injected on demand, only once their
+  theme is actually selected, by the `loadThemeFonts` decorator in
+  preview.tsx.
 -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://api.fontshare.com" />
-<link
-  href="https://api.fontshare.com/v2/css?f[]=zodiak@400,401,700,701&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://api.fontshare.com/v2/css?f[]=general-sans@600,700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://api.fontshare.com/v2/css?f[]=boska@400&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://api.fontshare.com/v2/css?f[]=switzer@700&display=swap"
-  rel="stylesheet"
-/>
 <link
   href="https://api.fontshare.com/v2/css?f[]=gambetta@401&display=swap"
   rel="stylesheet"
