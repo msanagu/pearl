@@ -129,7 +129,7 @@ export const pearlSentiment = {
  * inner smaller than outer. `full` stays a pill for Tag and XButton by
  * identity.
  */
-const pearlRadius = { control: '12px', full: '9999px', nesting: '1', cornerShape: 'squircle' };
+const pearlRadius = { control: '8px', full: '9999px', nesting: '1', cornerShape: 'squircle' };
 
 /**
  * `[authored]` `usage.density = comfortable` — the midpoint of the four themes.
