@@ -168,8 +168,12 @@ export function Hero({
           )}
         </Stack>
 
+        {/* The one sphere that reveals — blurs into focus on mount rather than
+            rendering painted. Its own CSS animation, not `revealWrap`: the
+            text stagger fades whole blocks, this is one element's own
+            entrance. */}
         <div className={css.sphere}>
-          <PearlSphere />
+          <PearlSphere reveal />
         </div>
       </Row>
 

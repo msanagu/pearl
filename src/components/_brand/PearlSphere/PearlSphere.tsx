@@ -9,7 +9,16 @@ import * as css from './PearlSphere.css';
  * themeable canon component, so unlike `Card` it has no obligation to render
  * meaningfully under any other theme.
  */
-export function PearlSphere() {
+export interface PearlSphereProps {
+  /**
+   * Play the mount reveal — the body blurs into focus instead of appearing
+   * painted. For the one place it's a first impression (the hero); everywhere
+   * else the sphere renders at rest. @default false
+   */
+  reveal?: boolean;
+}
+
+export function PearlSphere({ reveal = false }: PearlSphereProps = {}) {
   return (
     // `ai-color-palette` is allowlisted here, and only here. The detector reads
     // gradient stops without their alpha, so luster's `seaGreen`
@@ -18,7 +27,7 @@ export function PearlSphere() {
     // subtree and this one rule — every other finding still gates.
     <div className={css.sphereWrap} data-impeccable-allow="ai-color-palette">
       <div className={css.contact} aria-hidden="true" />
-      <div className={css.body} />
+      <div className={reveal ? `${css.body} ${css.revealBody}` : css.body} />
     </div>
   );
 }
