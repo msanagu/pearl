@@ -11,6 +11,9 @@ export default defineConfig({
   plugins: [react(), vanillaExtractPlugin()],
   resolve: { alias },
   build: {
+    // public/ is only for Storybook's static assets (see .storybook/main.ts
+    // staticDirs); the library build has no use for it.
+    copyPublicDir: false,
     lib: {
       entry: new URL('./src/index.ts', import.meta.url).pathname,
       formats: ['es'],
