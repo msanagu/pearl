@@ -31,3 +31,8 @@ design/
 # public digest of these decisions is DECISIONS.md.
 docs/process/
 experiments/
+
+# Compressed originals of unused public/images assets — kept locally in case
+# a future story wants them, but not shipped (nothing in src/ references
+# them). See the perf pass that moved them out of public/.
+/unused-images-archive/

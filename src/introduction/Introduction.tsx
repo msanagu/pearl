@@ -931,7 +931,7 @@ function IntroductionPage({
                 <figure className={css.playgroundShot}>
                   <div className={css.playgroundFrame}>
                     <img
-                      src="/images/pearl-playground-thread.png"
+                      src="/images/pearl-playground-thread.jpg"
                       alt="Pearl Playground: on the left, a coding agent's thread reasoning about the design system; on the right, a live-rendered notification settings panel with a success alert, three toggle rows, and Save changes / Reset buttons."
                       className={css.playgroundImage}
                     />
