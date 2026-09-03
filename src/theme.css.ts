@@ -35,23 +35,19 @@ export const vars = createThemeContract({
     // theme and as a coloured smear in a saturated one. Anchored on each mode's
     // own neutral-ink extreme instead.
     overlaySubtle: null,
-    // Inverse tokens: section-scoped "render as if the other mode were active"
-    // without flipping the global mode — a dark band inside a light page.
-    // Mode (light/dark) is a separate global axis; each mode is fully authored,
-    // never derived from the other. Inverse fields approximate the *other*
-    // mode's real primary values, authored only after both real modes exist.
-    backgroundInverse: null,
-    surfaceInverse: null,
     // Text — two ranks. `subtle` always means "one step down in prominence",
     // the same meaning it carries in border/accent. No third rung in v1.
     text: null,
     textSubtle: null,
-    textInverse: null,
-    textInverseSubtle: null,
+    // Default `Icon` color — own token, not `textSubtle`, so it can diverge.
+    icon: null,
     // Borders
     border: null,
     borderStrong: null,
     borderSubtle: null,
+    // No background/surface/text/textSubtle/icon "Inverse" fields — see
+    // foundations/inverseOverride.ts: a `[data-inverse]` boundary scopes
+    // these same tokens instead.
     borderInverse: null,
     // Elevation — box-shadow colour, distinct from border (see tokens.ts).
     shadow: null,

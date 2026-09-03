@@ -148,28 +148,20 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
         </div>
 
         <h3 className={css.subsectionTitle}>
-          Inverse — rendered in context, not as isolated swatches
+          Inverse — a `[data-inverse]` island, not isolated swatches
         </h3>
-        <div className={css.inversePanel}>
+        <div className={css.inversePanel} data-inverse>
           <div className={css.inverseCard}>
-            <span style={{ color: color.textInverse, fontWeight: 600 }}>
-              textInverse
+            <span style={{ fontWeight: 600 }}>text</span>
+            <span style={{ color: color.textSubtle, fontSize: '13px' }}>
+              textSubtle — everything in this section renders as if the other
+              mode were active, without flipping the global mode.
             </span>
-            <span style={{ color: color.textInverseSubtle, fontSize: '13px' }}>
-              textInverseSubtle — a section that renders as if the other mode
-              were active, without flipping the global mode.
-            </span>
-            <BorderSwatch
-              name="borderInverse"
-              cssVar={color.borderInverse}
-              captionColor={color.textInverseSubtle}
-            />
+            <BorderSwatch name="borderInverse" cssVar={color.borderInverse} />
           </div>
-          <span
-            className={css.subsectionTitle}
-            style={{ color: color.textInverseSubtle }}
-          >
-            panel: backgroundInverse · card: surfaceInverse
+          <span className={css.subsectionTitle}>
+            panel: background · card: surface — same tokens, scoped by
+            `[data-inverse]`
           </span>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { inverseOverride } from '@/foundations/inverseOverride';
 
 /**
  * Pearl — the flagship theme, and the one the docs site is pinned to.
@@ -39,15 +40,15 @@ export const pearlFonts = {
 // - `urchin` — cool violet. Quiet work only (focus ring, tints, subtle text,
 //   accent); never a fill.
 export const alabaster = {
-  /** chalk — secondary control top-stop / onAccent */
+  /** secondary control top-stop / onAccent */
   100: '#FDFCFA',
-  /** porcelain — raised surface */
+  /** raised surface */
   200: '#FBFAF7',
-  /** linen — page background */
+  /** page background */
   300: '#F5F3EF',
-  /** hairlineFaint — one step lighter than 500 */
+  /** one step lighter than 500 */
   400: '#EAE7E0',
-  /** hairline — default border */
+  /** default border */
   500: '#DEDAD2',
 };
 
@@ -59,11 +60,11 @@ export const alabaster = {
  * `background` without a hard jump.
  */
 export const squidInk = {
-  /** hairlineFaint — surfaceHover doubles as a faint border */
+  /** surfaceHover doubles as a faint border */
   750: '#484550',
   /** raised surface */
   850: '#323037',
-  /** ink — primary text (light) / page background (dark) */
+  /** primary text (light) / page background (dark) */
   900: '#17161A',
 };
 
@@ -177,19 +178,15 @@ export const pearlLightThemeClass = createTheme(vars, {
     surface: alabaster[200],
     overlay: squidInkAlpha[55],
     overlaySubtle: squidInkAlpha[10],
-    // References squidInk directly, so it can't drift from the dark theme.
-    backgroundInverse: squidInk[900],
-    surfaceInverse: squidInk[850],
 
     text: squidInk[900],
     textSubtle: urchin[500],
-    textInverse: alabaster[300], // moonlight — borrowed, see squidInk
-    textInverseSubtle: urchin[200],
+    icon: urchin[500],
 
     border: alabaster[500],
     borderStrong: urchin[300],
     borderSubtle: alabaster[400],
-    // Accent register, not a fourth gray. 3.61:1 vs `surfaceInverse`.
+    // Accent register, not a fourth gray. 3.61:1 vs the dark-mode surface.
     borderInverse: urchin[400],
     shadow: urchin[300],
 
@@ -207,14 +204,9 @@ export const pearlLightThemeClass = createTheme(vars, {
     accentSubtle: urchin[100],
     onAccent: alabaster[300],
     onAccentSubtle: squidInk[900],
-    /**
-     * `urchin[600]`, not `[100]` — the one place the "same hex in both modes"
-     * symmetry breaks. A focus ring is painted on the page, so ring-vs-
-     * background is the only contrast that matters; `urchin[100]` on linen is
-     * 1.3:1 (invisible), `urchin[600]` is 6.6:1. Dark mode keeps `urchin[100]`
-     * (12.5:1 on obsidian) — the step differs per mode so the *relationship* to
-     * the background stays constant.
-     */
+    // `urchin[600]`, not `[100]`: `urchin[100]` is 1.3:1 on light-mode
+    // background (invisible), `[600]` is 6.6:1. Dark mode keeps `[100]`
+    // (12.5:1 on dark-mode background) — same relationship, different step.
     focusRing: urchin[600],
 
     // `icon` is mixed toward `textSubtle` — the raw sentiment hue at full
@@ -242,13 +234,10 @@ export const pearlDarkThemeClass = createTheme(vars, {
     surface: squidInk[850],
     overlay: 'rgba(0, 0, 0, 0.62)', // pure black — a backdrop must always darken, and squidInk has no dark-appropriate pale step to flip to
     overlaySubtle: alabasterAlpha[10],
-    backgroundInverse: alabaster[300],
-    surfaceInverse: alabaster[200],
 
-    text: alabaster[300], // moonlight — borrowed, see squidInk
+    text: alabaster[300], // borrowed directly, not a squidInk step — see squidInk's own comment above
     textSubtle: urchin[200],
-    textInverse: squidInk[900],
-    textInverseSubtle: urchin[500],
+    icon: urchin[200],
 
     // Accent register, not a `squidInk` step. 3.55:1 vs `background`, one step
     // quieter than `borderStrong` so the two separate.
@@ -287,6 +276,23 @@ export const pearlDarkThemeClass = createTheme(vars, {
   fontWeight: pearlFontWeight,
   fontFamily: pearlFontFamily,
   text: pearlText,
+});
+
+// `[data-inverse]` scoped island — see inverseOverride.ts. Values mirror the
+// other mode's own background/surface/text/textSubtle/icon.
+inverseOverride(pearlLightThemeClass, {
+  background: squidInk[900],
+  surface: squidInk[850],
+  text: alabaster[300],
+  textSubtle: urchin[200],
+  icon: urchin[200],
+});
+inverseOverride(pearlDarkThemeClass, {
+  background: alabaster[300],
+  surface: alabaster[200],
+  text: squidInk[900],
+  textSubtle: urchin[500],
+  icon: urchin[500],
 });
 
 // ---- Role treatments (roles declared in pearl.roles.ts) ----

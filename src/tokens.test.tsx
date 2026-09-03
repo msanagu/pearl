@@ -13,7 +13,7 @@ import {
 describe('token layer', () => {
   it('exposes the documented token groups', () => {
     expect(color.accent).toBeTruthy();
-    expect(color.backgroundInverse).toBeTruthy();
+    expect(color.icon).toBeTruthy();
     expect(color.negative.icon).toBeTruthy();
     expect(space['2xl']).toBeTruthy();
     expect(text.headingLg.fontSize).toBeTruthy();

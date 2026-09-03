@@ -173,9 +173,9 @@ function ButtonDocs(): ReactNode {
           lozenge. `pre` (not a bare `code`) is what stops the snippet wrapping
           mid-attribute; long lines scroll rather than reflow. */}
       <div
+        data-inverse
         className={scrollRegion}
         style={{
-          background: color.backgroundInverse,
           borderRadius: radius.control,
           cornerShape: radius.cornerShape,
           padding: space.lg,
@@ -188,7 +188,6 @@ function ButtonDocs(): ReactNode {
               fontFamily: MONO,
               fontSize: text.bodySm.fontSize,
               lineHeight: text.bodySm.lineHeight,
-              color: color.textInverse,
             }}
           >
             {'<Button variant="secondary">Inspect tokens</Button>'}

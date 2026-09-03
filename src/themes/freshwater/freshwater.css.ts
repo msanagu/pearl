@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { inverseOverride } from '@/foundations/inverseOverride';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
 
@@ -30,7 +31,7 @@ export const freshwaterFonts = {
 export const freshwaterIce = {
   /** page background (light) / borrowed as text + inverse surfaces (dark) */
   100: '#fdfdfd',
-  /** raised surface (light) / borrowed as surfaceInverse (dark) */
+  /** raised surface (light) / borrowed as inverse surface (dark) */
   200: '#fafafa',
   /** border, subtle */
   300: '#eef0f1',
@@ -55,9 +56,9 @@ export const freshwaterGraphite = {
   600: '#2b2d30',
   /** border, subtle (dark) / accentSubtle (dark) */
   700: '#202123',
-  /** raised surface (dark) / borrowed as surfaceInverse (light) */
+  /** raised surface (dark) / borrowed as inverse surface (light) */
   800: '#17181a',
-  /** page background (dark) / borrowed as text + backgroundInverse (light) */
+  /** page background (dark) / borrowed as text + inverse background (light) */
   900: '#0e0f10',
 };
 
@@ -149,12 +150,9 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     surface: freshwaterIce[200],
     overlay: freshwaterScrim.light,
     overlaySubtle: 'rgba(14, 15, 16, 0.08)',
-    backgroundInverse: freshwaterGraphite[900],
-    surfaceInverse: freshwaterGraphite[800],
     text: freshwaterGraphite[900],
     textSubtle: freshwaterGraphite[550],
-    textInverse: freshwaterIce[100],
-    textInverseSubtle: freshwaterGraphite[500],
+    icon: freshwaterGraphite[550],
     border: freshwaterIce[400],
     borderStrong: freshwaterGraphite[900], // the heavy structural rule — full ink, not a lifted neutral
     borderSubtle: freshwaterIce[300],
@@ -194,12 +192,9 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     surface: freshwaterGraphite[800],
     overlay: freshwaterScrim.dark,
     overlaySubtle: 'rgba(255, 255, 255, 0.10)',
-    backgroundInverse: freshwaterIce[100],
-    surfaceInverse: freshwaterIce[200],
     text: freshwaterIce[100],
     textSubtle: freshwaterGraphite[500],
-    textInverse: freshwaterGraphite[900],
-    textInverseSubtle: freshwaterGraphite[550],
+    icon: freshwaterGraphite[500],
     border: freshwaterGraphite[600],
     borderStrong: freshwaterIce[100], // structural rule inverts — full paper-white
     borderSubtle: freshwaterGraphite[700],
@@ -228,6 +223,21 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
   fontWeight: freshwaterFontWeight,
   fontFamily: freshwaterFontFamily,
   text: freshwaterText,
+});
+
+inverseOverride(freshwaterLightThemeClass, {
+  background: freshwaterGraphite[900],
+  surface: freshwaterGraphite[800],
+  text: freshwaterIce[100],
+  textSubtle: freshwaterGraphite[500],
+  icon: freshwaterGraphite[500],
+});
+inverseOverride(freshwaterDarkThemeClass, {
+  background: freshwaterIce[100],
+  surface: freshwaterIce[200],
+  text: freshwaterGraphite[900],
+  textSubtle: freshwaterGraphite[550],
+  icon: freshwaterGraphite[550],
 });
 
 // Primary CTA — caps label in both modes (the console-readout register).

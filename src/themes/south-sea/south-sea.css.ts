@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, keyframes } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { inverseOverride } from '@/foundations/inverseOverride';
 import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '@components/Field/Field.css';
 import { sphereWrap, body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
 
@@ -28,7 +29,7 @@ import { sphereWrap, body as sphereBody, contact as sphereContact } from '@compo
 export const southSeaSand = {
   /** page background (light) */
   100: '#F5EFE4',
-  /** text (dark mode) / textInverse (light mode) — its own step, a different contrast job */
+  /** text (dark mode) / inverse text (light mode) — its own step, a different contrast job */
   150: '#F3EADA',
   /** raised surface (light) */
   200: '#EFE6D6',
@@ -154,12 +155,9 @@ export const southSeaLightThemeClass = createTheme(vars, {
     surface: southSeaSand[200],
     overlay: southSeaScrim.light,
     overlaySubtle: 'rgba(59, 42, 31, 0.08)',
-    backgroundInverse: southSeaDriftwood[900],
-    surfaceInverse: southSeaDriftwood[850],
     text: southSeaDriftwood[750],
     textSubtle: southSeaSand[600],
-    textInverse: southSeaSand[150],
-    textInverseSubtle: southSeaDriftwood[500],
+    icon: southSeaSand[600],
     border: southSeaSand[400],
     borderStrong: southSeaSand[500],
     borderSubtle: southSeaSand[300],
@@ -201,12 +199,9 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     surface: southSeaDriftwood[850],
     overlay: southSeaScrim.dark,
     overlaySubtle: 'rgba(255, 255, 255, 0.10)',
-    backgroundInverse: southSeaSand[100],
-    surfaceInverse: southSeaSand[200],
     text: southSeaSand[150],
     textSubtle: southSeaDriftwood[500],
-    textInverse: southSeaDriftwood[750],
-    textInverseSubtle: southSeaSand[600],
+    icon: southSeaDriftwood[500],
     border: southSeaDriftwood[700],
     borderStrong: southSeaDriftwood[600],
     borderSubtle: southSeaDriftwood[800],
@@ -237,6 +232,21 @@ export const southSeaDarkThemeClass = createTheme(vars, {
   fontWeight: southSeaFontWeight,
   fontFamily: southSeaFontFamily,
   text: southSeaText,
+});
+
+inverseOverride(southSeaLightThemeClass, {
+  background: southSeaDriftwood[900],
+  surface: southSeaDriftwood[850],
+  text: southSeaSand[150],
+  textSubtle: southSeaDriftwood[500],
+  icon: southSeaDriftwood[500],
+});
+inverseOverride(southSeaDarkThemeClass, {
+  background: southSeaSand[100],
+  surface: southSeaSand[200],
+  text: southSeaDriftwood[750],
+  textSubtle: southSeaSand[600],
+  icon: southSeaSand[600],
 });
 
 // ---- Role treatments (roles declared in south-sea.roles.ts) ----

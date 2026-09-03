@@ -42,10 +42,6 @@ export interface ColorTokens {
    * any surface underneath it, unlike a fixed solid token.
    */
   overlaySubtle: CSSVarFunction;
-  /** Dark editorial/background plane within the active theme, not a theme switch. */
-  backgroundInverse: CSSVarFunction;
-  /** Surface placed on `backgroundInverse`. */
-  surfaceInverse: CSSVarFunction;
   /** Primary text. */
   text: CSSVarFunction;
   /**
@@ -54,10 +50,8 @@ export interface ColorTokens {
    * text) — never a synonym like "muted" elsewhere.
    */
   textSubtle: CSSVarFunction;
-  /** Primary text on an inverse surface. */
-  textInverse: CSSVarFunction;
-  /** Secondary text on an inverse surface. */
-  textInverseSubtle: CSSVarFunction;
+  /** Default `Icon` color — own token, not `textSubtle`, so it can diverge. */
+  icon: CSSVarFunction;
   /** Default border / divider. */
   border: CSSVarFunction;
   /** Higher-contrast border — emphasis, active dividers. */

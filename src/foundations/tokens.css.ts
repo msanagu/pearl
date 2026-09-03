@@ -123,17 +123,15 @@ export const borderRule = style({
   borderTop: '2px solid',
 });
 
-// Inverse tokens mean nothing in isolation (textInverse on transparent tells
-// you nothing about legibility). Render them together, in context, on the
-// inverse background — the way a real "dark band inside a light page" section
-// would actually use them.
+// `[data-inverse]` demo — panel carries the `data-inverse` attribute in JSX,
+// which repaints its own background automatically (see inverseOverride.ts);
+// no explicit background needed here.
 export const inversePanel = style({
   display: 'flex',
   flexDirection: 'column',
   gap: space.md,
   padding: space.lg,
   borderRadius: concentricRadius(space.lg),
-  background: color.backgroundInverse,
 });
 
 export const inverseCard = style({
@@ -142,7 +140,7 @@ export const inverseCard = style({
   gap: space.xs,
   padding: space.md,
   borderRadius: radius.control,
-  background: color.surfaceInverse,
+  background: color.surface,
 });
 
 // Accent shown as it's actually consumed: a filled pill with onAccent text,

@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, keyframes, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { inverseOverride } from '@/foundations/inverseOverride';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody } from '@components/_brand/PearlSphere/PearlSphere.css';
 
@@ -243,13 +244,10 @@ export const tahitianLightThemeClass = createTheme(vars, {
     surface: tahitianPlatinum[100],
     overlay: tahitianScrim.light,
     overlaySubtle: 'rgba(0, 0, 0, 0.08)',
-    backgroundInverse: tahitianCharcoal[950],
-    surfaceInverse: tahitianCharcoal[900],
 
     text: tahitianCharcoal[950],
     textSubtle: tahitianPlatinum[600],
-    textInverse: tahitianPlatinum[100],
-    textInverseSubtle: tahitianPlatinum[500],
+    icon: tahitianPlatinum[600],
 
     border: tahitianPlatinum[400],
     borderStrong: tahitianPlatinum[500],
@@ -287,13 +285,10 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     surface: tahitianCharcoal[900],
     overlay: tahitianScrim.dark,
     overlaySubtle: 'rgba(255, 255, 255, 0.10)',
-    backgroundInverse: tahitianPlatinum[200],
-    surfaceInverse: tahitianPlatinum[100],
 
     text: tahitianPlatinum[100],
     textSubtle: tahitianPlatinum[500],
-    textInverse: tahitianCharcoal[950],
-    textInverseSubtle: tahitianPlatinum[600],
+    icon: tahitianPlatinum[500],
 
     border: tahitianCharcoal[800],
     borderStrong: tahitianCharcoal[700],
@@ -321,6 +316,21 @@ export const tahitianDarkThemeClass = createTheme(vars, {
   fontWeight: tahitianFontWeight,
   fontFamily: tahitianFontFamily,
   text: tahitianText,
+});
+
+inverseOverride(tahitianLightThemeClass, {
+  background: tahitianCharcoal[950],
+  surface: tahitianCharcoal[900],
+  text: tahitianPlatinum[100],
+  textSubtle: tahitianPlatinum[500],
+  icon: tahitianPlatinum[500],
+});
+inverseOverride(tahitianDarkThemeClass, {
+  background: tahitianPlatinum[200],
+  surface: tahitianPlatinum[100],
+  text: tahitianCharcoal[950],
+  textSubtle: tahitianPlatinum[600],
+  icon: tahitianPlatinum[600],
 });
 
 // `PearlSphere` reads `pearlTreatments.luster.*` — vars Tahitian never applies —
