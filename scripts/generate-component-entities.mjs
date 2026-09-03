@@ -14,22 +14,31 @@
 
 import { parse as docgenParse } from 'react-docgen';
 import { parse as babelParse } from '@babel/parser';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const COMPONENTS = [
-  'Stack',
-  'Row',
-  'Text',
-  'Button',
-  'Card',
-  'Field',
-  'Input',
-  'Alert',
-  'Tag',
-  'Link',
-  'Icon',
-];
+// Derived from src/components/ rather than hand-maintained: a directory
+// counts as a public component when it has a <Name>.tsx matching its own
+// name, which excludes the `_internal`/`_brand` (underscore-prefixed,
+// not public API) directories by construction.
+const COMPONENTS = readdirSync(
+  path.join(path.resolve(import.meta.dirname, '..'), 'src', 'components'),
+  { withFileTypes: true },
+)
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name)
+  .filter((name) =>
+    existsSync(
+      path.join(
+        path.resolve(import.meta.dirname, '..'),
+        'src',
+        'components',
+        name,
+        `${name}.tsx`,
+      ),
+    ),
+  )
+  .sort();
 const TOKEN_EXPORTS = [
   'color',
   'radius',
