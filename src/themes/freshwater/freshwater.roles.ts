@@ -28,7 +28,6 @@ export const freshwaterRoles: ThemeRoles<FreshwaterTreatmentName> = {
       brand: { alpha: { max: 0.5 } },
     },
     guidance: ['Dark mode peak stop, composited over `surface`: `textSubtle` sits at 4.65:1 at this ceiling vs 4.22:1 (fails AA) one alpha step up.'],
-    source: '2a',
   },
 };
 

@@ -54,7 +54,6 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
       'Luster is material, not typography — it lights a surface, never letterforms.',
       'The sphere loops; cards do not. A card that animates unprompted is off-theme.',
     ],
-    source: '4c',
   },
   hairlineRule: {
     treatment: 'luster',
@@ -69,7 +68,6 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
       'Never more than one lustered surface in view at rest — ambient luster belongs to the brand object and this rule; everything else waits for hover.',
       "This role's ceiling is not machine-checkable the way the card's is: the rule is painted in opaque hex, not a translucent overlay, so its restraint comes from choosing already-desaturated stops (silver/marine/seagreen pastels), not from an alpha value.",
     ],
-    source: '4c',
   },
   cardHover: {
     treatment: 'luster',
@@ -80,6 +78,5 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     limitsByChroma: {
       desaturated: { alpha: { max: 0.42 } },
     },
-    source: '4c',
   },
 };

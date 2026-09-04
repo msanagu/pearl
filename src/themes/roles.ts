@@ -91,8 +91,6 @@ export interface RoleSpec<TTreatment extends string = string> {
    * confused for one another by a linter or a generator.
    */
   guidance?: string[];
-  /** Which exploration turn canonized this. */
-  source?: string;
 }
 
 /** A theme's complete role table, keyed by role name. */

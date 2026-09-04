@@ -18,13 +18,11 @@ export const tahitianRoles: ThemeRoles<TahitianTreatmentName> = {
     intent: 'A single word can carry the overtone gradient as a poster-like emphasis.',
     scope: ['inline', 'headline'],
     forbid: ['surface', 'control'],
-    source: '14a',
   },
   preheading: {
     treatment: 'monoCapsTracked',
     intent: 'The short line above a heading, and standalone labels/IDs/metadata — index numbers, plate captions, filter labels.',
     size: 'caption',
-    source: '14b',
   },
   imageOverlay: {
     treatment: 'overtone',
@@ -38,12 +36,10 @@ export const tahitianRoles: ThemeRoles<TahitianTreatmentName> = {
       'The image stays grayscale underneath; overtone adds color without obscuring its texture.',
       'Use screen blending on photographic plates only. Do not turn the gradient into a flat surface fill.',
     ],
-    source: '14a',
   },
   fieldMeta: {
     treatment: 'monoCapsTracked',
     intent: 'Field labels use tracked IBM Plex Mono; labels, hints, and errors stay flush-left against square controls.',
     scope: ['field'],
-    source: '6c',
   },
 };

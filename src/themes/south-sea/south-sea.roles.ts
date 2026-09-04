@@ -29,13 +29,11 @@ export const southSeaRoles: ThemeRoles<SouthSeaTreatmentName> = {
     intent: 'Accent-colored text, undecorated — pull quotes, inline interjections, the hairline-gapped heading pairing. Not underlined on purpose, so it reads distinctly from `Link`.',
     scope: ['inline', 'heading'],
     guidance: ['Verified against both background and surface, both modes, as text color: light 4.90:1/4.53:1, dark 8.18:1/7.49:1.'],
-    source: '1g',
   },
   preheading: {
     treatment: 'slashLabel',
     intent: 'The `/ LABEL /` slash-wrapped caption — standalone labels/IDs/metadata.',
     size: 'caption',
-    source: '3c',
   },
   dataDigits: {
     treatment: 'sansBody',
