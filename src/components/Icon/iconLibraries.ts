@@ -11,7 +11,9 @@
  * import icons directly from their set (`react-icons/pi`, `react-icons/lu`),
  * which is the only import shape `react-icons` can tree-shake.
  *
- * The notes are authored judgments, not measured facts.
+ * The notes are authored judgments, not measured facts. `react-icons` itself
+ * is a choice, not a requirement — see README.md's "Icons aren't locked in
+ * either".
  */
 
 export type IconTreatment = 'outline' | 'filled' | 'both';

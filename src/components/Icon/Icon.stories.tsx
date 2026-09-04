@@ -2,26 +2,30 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { IconType } from 'react-icons';
 import {
   PiHeart,
-  PiHeartThin,
-  PiHeartLight,
-  PiHeartBold,
-  PiHeartFill,
-  PiHeartDuotone,
   PiBell,
   PiStar,
   PiUser,
+  PiBookmark,
+  PiBookmarkThin,
+  PiBookmarkLight,
+  PiBookmarkBold,
+  PiBookmarkFill,
   PiGear,
+  PiFlag,
+  PiFlagFill,
+  PiTag,
+  PiChat,
+  PiChatFill,
   PiMagnifyingGlass,
   PiShieldCheck,
   PiWarning,
-  PiSparkleDuotone,
-  PiShieldCheckDuotone,
-  PiBellRingingDuotone,
-  PiWarningDuotone,
-  PiCompassDuotone,
-  PiBellFill,
-  PiStarFill,
+  PiSparkle,
+  PiCompass,
   PiUserFill,
+  PiCheckCircleFill,
+  PiXCircleFill,
+  PiWarningCircleFill,
+  PiInfoFill,
 } from 'react-icons/pi';
 import {
   LuHeart,
@@ -52,10 +56,13 @@ import {
   RiSearchLine,
   RiShieldCheckLine,
   RiAlertLine,
-  RiHeartFill,
-  RiBellFill,
-  RiStarFill,
   RiUserFill,
+  RiBookmarkLine,
+  RiBookmarkFill,
+  RiFlagLine,
+  RiFlagFill,
+  RiChat1Line,
+  RiChat1Fill,
 } from 'react-icons/ri';
 import {
   RxHeart,
@@ -85,10 +92,6 @@ import {
   HiMagnifyingGlass,
   HiShieldCheck,
   HiExclamationTriangle,
-  HiOutlineHeart,
-  HiOutlineBell,
-  HiOutlineStar,
-  HiOutlineUser,
 } from 'react-icons/hi2';
 import {
   BsHeart,
@@ -107,6 +110,7 @@ import type { ThemeName } from './iconSets';
 import { Row } from '@components/Row';
 import { Stack } from '@components/Stack';
 import { Text } from '@components/Text';
+import { color, space, radius } from '@tokens';
 
 /** An icon paired with its export name — the code panel is generated from it. */
 interface Entry {
@@ -119,12 +123,11 @@ const entry = (name: string, Component: IconType): Entry => ({
 });
 
 const iconMapping = {
-  Heart: PiHeart,
-  Sparkle: PiSparkleDuotone,
-  ShieldCheck: PiShieldCheckDuotone,
-  BellRinging: PiBellRingingDuotone,
-  Warning: PiWarningDuotone,
-  Compass: PiCompassDuotone,
+  Search: PiMagnifyingGlass,
+  Sparkle: PiSparkle,
+  Compass: PiCompass,
+  Gear: PiGear,
+  Tag: PiTag,
 };
 
 /**
@@ -140,7 +143,7 @@ const meta: Meta<typeof Icon> = {
   args: {
     // Stored as the mapping key (see `argTypes.icon` below); cast because
     // `IconProps.icon` is typed as the resolved component, not the key.
-    icon: 'Heart' as unknown as IconType,
+    icon: 'Search' as unknown as IconType,
     size: 32,
   },
   argTypes: {
@@ -154,8 +157,6 @@ const meta: Meta<typeof Icon> = {
   },
 };
 export default meta;
-
-type Story = StoryObj<typeof Icon>;
 
 // ---- Source generation -----------------------------------------------------
 
@@ -383,7 +384,7 @@ export const AllSetsCompared: StoryObj = {
       ).join('\n') +
       `\n\n// One component, one contract, eight sets.\n` +
       SET_IDS.map(
-        (id) => `<Icon icon={${entriesOf(id)[0]?.name ?? ''}} size={26} />`,
+        (id) => `<Icon icon={${entriesOf(id)[0]?.name ?? ''}} size={24} />`,
       ).join('\n'),
   ),
   render: () => (
@@ -393,7 +394,7 @@ export const AllSetsCompared: StoryObj = {
           <Text typeScale="caption" weight="semibold" as="span">
             {ICON_LIBRARIES_BY_ID[id]?.label ?? id} · react-icons/{id}
           </Text>
-          <ConceptRow libraryId={id} size={26} />
+          <ConceptRow libraryId={id} size={24} />
         </Stack>
       ))}
     </Stack>
@@ -404,16 +405,16 @@ export const AllSetsCompared: StoryObj = {
 
 const THEME_SET_LIBRARY: Record<ThemeName, string> = {
   pearl: 'pi',
-  southSea: 'rx',
-  freshwater: 'tb',
   tahitian: 'ri',
+  freshwater: 'tb',
+  southSea: 'rx',
 };
 
 const THEME_LABELS: Record<ThemeName, string> = {
   pearl: 'Pearl',
-  southSea: 'South Sea',
-  freshwater: 'Freshwater',
   tahitian: 'Tahitian',
+  freshwater: 'Freshwater',
+  southSea: 'South Sea',
 };
 
 /**
@@ -442,7 +443,12 @@ export const ThemeDefaults: StoryObj = {
   ),
   render: () => (
     <Stack gap="2xl">
-      <Text typeScale="bodySm" prominence="subtle" as="p" style={{ maxWidth: 560 }}>
+      <Text
+        typeScale="bodySm"
+        prominence="subtle"
+        as="p"
+        style={{ maxWidth: 560 }}
+      >
         Set choice lives at the theme level. No provider → Phosphor (Pearl's
         set), which is today's behavior. Wrapping in{' '}
         <code>ThemeIconProvider</code> opts a theme into its own set for
@@ -463,7 +469,12 @@ export const ThemeDefaults: StoryObj = {
             <Row gap="xl">
               {(['positive', 'negative', 'warn', 'info', 'close'] as const).map(
                 (key) => (
-                  <Stack key={key} gap="xs" align="center" style={{ width: 72 }}>
+                  <Stack
+                    key={key}
+                    gap="xs"
+                    align="center"
+                    style={{ width: 72 }}
+                  >
                     <Icon icon={set[key]} size={24} />
                     <Text typeScale="caption" prominence="subtle" as="span">
                       {key}
@@ -479,17 +490,125 @@ export const ThemeDefaults: StoryObj = {
   ),
 };
 
+// ---- Tone -------------------------------------------------------------
+
+/** left-to-right: default (untoned) neutral, accent, then the four alert sentiments. */
+const TONE_ROW: { label: string; className: string | undefined; e: Entry }[] = [
+  {
+    label: 'default',
+    className: undefined,
+    e: entry('PiUserFill', PiUserFill),
+  },
+  {
+    label: 'accent',
+    className: Icon.tone.accent,
+    e: entry('PiMagnifyingGlass', PiMagnifyingGlass),
+  },
+  {
+    label: 'positive',
+    className: Icon.tone.positive,
+    e: entry('PiCheckCircleFill', PiCheckCircleFill),
+  },
+  {
+    label: 'negative',
+    className: Icon.tone.negative,
+    e: entry('PiXCircleFill', PiXCircleFill),
+  },
+  {
+    label: 'warn',
+    className: Icon.tone.warn,
+    e: entry('PiWarningCircleFill', PiWarningCircleFill),
+  },
+  {
+    label: 'info',
+    className: Icon.tone.info,
+    e: entry('PiInfoFill', PiInfoFill),
+  },
+];
+
+function ToneRow() {
+  return (
+    <Row gap="xl">
+      {TONE_ROW.map(({ label, className, e }) => (
+        <Stack key={label} gap="sm" align="center" style={{ width: 84 }}>
+          <Icon icon={e.Component} className={className} size={28} />
+          <Text typeScale="caption" prominence="subtle" as="span">
+            {label}
+          </Text>
+        </Stack>
+      ))}
+    </Row>
+  );
+}
+
+/**
+ * `Icon.tone.<name>` — real classes reachable off the one import, not a
+ * `color`/`tone` prop (a prop would still mean feeding a token value through
+ * JSX at every call site). Same static-property pattern as `Card.Header`.
+ * `accent` isn't a sentiment — it's `color.accent` — grouped here because it
+ * answers the same call-site need. `default` (no `className` at all) shows
+ * the untoned baseline: `color.icon`, inherited unless overridden.
+ *
+ * The second row proves tone survives a `[data-inverse]` boundary — every
+ * `Icon.tone` class references a token (`color.negative.icon`, etc.), and
+ * `inverseOverride.ts` only reassigns `icon`/`background`/`surface`/`text`/
+ * `textSubtle`, not the sentiment colors, so this is also the honest answer
+ * to whether sentiment tone flips correctly inside a container: it doesn't
+ * need to, and doesn't try to — same value in both rows, by design.
+ */
+export const Tone: StoryObj = {
+  parameters: staticSource(
+    `import { Icon } from '@msanagu/pearl';\n` +
+      `import { PiUserFill, PiMagnifyingGlass, PiCheckCircleFill, PiXCircleFill, PiWarningCircleFill, PiInfoFill } from 'react-icons/pi';\n\n` +
+      `<Icon icon={PiUserFill} size={28} />{/* default */}\n` +
+      `<Icon icon={PiMagnifyingGlass} className={Icon.tone.accent} size={28} />\n` +
+      `<Icon icon={PiCheckCircleFill} className={Icon.tone.positive} size={28} />\n` +
+      `<Icon icon={PiXCircleFill} className={Icon.tone.negative} size={28} />\n` +
+      `<Icon icon={PiWarningCircleFill} className={Icon.tone.warn} size={28} />\n` +
+      `<Icon icon={PiInfoFill} className={Icon.tone.info} size={28} />\n\n` +
+      `{/* Inside a [data-inverse] container — see foundations/inverseOverride.ts */}\n` +
+      `<div data-inverse style={{ background: color.background, padding: space.lg }}>\n` +
+      `  <Icon icon={PiUserFill} size={28} />{/* default */}\n` +
+      `  {/* ...same tone classes, unchanged */}\n` +
+      `</div>`,
+  ),
+  render: () => (
+    <Stack gap="2xl">
+      <Stack gap="sm">
+        <Text typeScale="caption" weight="semibold" as="span">
+          Normal context
+        </Text>
+        <ToneRow />
+      </Stack>
+      <Stack gap="sm">
+        <Text typeScale="caption" weight="semibold" as="span">
+          Inside a `[data-inverse]` container
+        </Text>
+        <div
+          data-inverse
+          style={{
+            background: color.background,
+            borderRadius: radius.control,
+            padding: space.lg,
+          }}
+        >
+          <ToneRow />
+        </div>
+      </Stack>
+    </Stack>
+  ),
+};
+
 // ---- Switching styles ------------------------------------------------------
 
-const DEFAULT_WEIGHT = entry('PiHeart', PiHeart);
+const DEFAULT_WEIGHT = entry('PiBookmark', PiBookmark);
 
 const PHOSPHOR_WEIGHTS: Entry[] = [
-  entry('PiHeartThin', PiHeartThin),
-  entry('PiHeartLight', PiHeartLight),
+  entry('PiBookmarkThin', PiBookmarkThin),
+  entry('PiBookmarkLight', PiBookmarkLight),
   DEFAULT_WEIGHT,
-  entry('PiHeartBold', PiHeartBold),
-  entry('PiHeartFill', PiHeartFill),
-  entry('PiHeartDuotone', PiHeartDuotone),
+  entry('PiBookmarkBold', PiBookmarkBold),
+  entry('PiBookmarkFill', PiBookmarkFill),
 ];
 
 type WeightStory = StoryObj<{ weight: string; size: number }>;
@@ -503,7 +622,7 @@ type WeightStory = StoryObj<{ weight: string; size: number }>;
  * The code panel is the honest version of that swap.
  */
 export const SwitchingStyles: WeightStory = {
-  args: { weight: 'PiHeart', size: 40 },
+  args: { weight: 'PiBookmark', size: 40 },
   argTypes: {
     weight: { control: 'radio', options: PHOSPHOR_WEIGHTS.map((e) => e.name) },
     size: { control: { type: 'range', min: 16, max: 64, step: 4 } },
@@ -570,15 +689,15 @@ const OUTLINE_FILLED: {
     label: 'Phosphor',
     path: 'react-icons/pi',
     outline: [
-      entry('PiHeart', PiHeart),
-      entry('PiBell', PiBell),
-      entry('PiStar', PiStar),
+      entry('PiChat', PiChat),
+      entry('PiBookmark', PiBookmark),
+      entry('PiFlag', PiFlag),
       entry('PiUser', PiUser),
     ],
     filled: [
-      entry('PiHeartFill', PiHeartFill),
-      entry('PiBellFill', PiBellFill),
-      entry('PiStarFill', PiStarFill),
+      entry('PiChatFill', PiChatFill),
+      entry('PiBookmarkFill', PiBookmarkFill),
+      entry('PiFlagFill', PiFlagFill),
       entry('PiUserFill', PiUserFill),
     ],
   },
@@ -586,32 +705,16 @@ const OUTLINE_FILLED: {
     label: 'Remix',
     path: 'react-icons/ri',
     outline: [
-      entry('RiHeartLine', RiHeartLine),
-      entry('RiBellLine', RiBellLine),
-      entry('RiStarLine', RiStarLine),
+      entry('RiChat1Line', RiChat1Line),
+      entry('RiBookmarkLine', RiBookmarkLine),
+      entry('RiFlagLine', RiFlagLine),
       entry('RiUserLine', RiUserLine),
     ],
     filled: [
-      entry('RiHeartFill', RiHeartFill),
-      entry('RiBellFill', RiBellFill),
-      entry('RiStarFill', RiStarFill),
+      entry('RiChat1Fill', RiChat1Fill),
+      entry('RiBookmarkFill', RiBookmarkFill),
+      entry('RiFlagFill', RiFlagFill),
       entry('RiUserFill', RiUserFill),
-    ],
-  },
-  {
-    label: 'Heroicons v2',
-    path: 'react-icons/hi2',
-    outline: [
-      entry('HiOutlineHeart', HiOutlineHeart),
-      entry('HiOutlineBell', HiOutlineBell),
-      entry('HiOutlineStar', HiOutlineStar),
-      entry('HiOutlineUser', HiOutlineUser),
-    ],
-    filled: [
-      entry('HiHeart', HiHeart),
-      entry('HiBell', HiBell),
-      entry('HiStar', HiStar),
-      entry('HiUser', HiUser),
     ],
   },
 ];
@@ -634,7 +737,7 @@ export const OutlineVersusFilled: StoryObj = {
       `// a per-set lookup rather than one shared suffix rule.\n` +
       OUTLINE_FILLED.map(
         (group) =>
-          `<Icon icon={selected ? ${group.filled[0]?.name} : ${group.outline[0]?.name}} size={26} />`,
+          `<Icon icon={selected ? ${group.filled[0]?.name} : ${group.outline[0]?.name}} size={24} />`,
       ).join('\n'),
   ),
   render: () => (
@@ -648,7 +751,7 @@ export const OutlineVersusFilled: StoryObj = {
             <Stack gap="xs" align="center">
               <Row gap="md">
                 {group.outline.map((e) => (
-                  <Icon key={e.name} icon={e.Component} size={26} />
+                  <Icon key={e.name} icon={e.Component} size={24} />
                 ))}
               </Row>
               <Text typeScale="caption" prominence="subtle" as="span">
@@ -658,7 +761,7 @@ export const OutlineVersusFilled: StoryObj = {
             <Stack gap="xs" align="center">
               <Row gap="md">
                 {group.filled.map((e) => (
-                  <Icon key={e.name} icon={e.Component} size={26} />
+                  <Icon key={e.name} icon={e.Component} size={24} />
                 ))}
               </Row>
               <Text typeScale="caption" prominence="subtle" as="span">
@@ -672,48 +775,3 @@ export const OutlineVersusFilled: StoryObj = {
   ),
 };
 
-// ---- Duotone ---------------------------------------------------------------
-
-const DUOTONE: Entry[] = [
-  entry('PiHeartDuotone', PiHeartDuotone),
-  entry('PiSparkleDuotone', PiSparkleDuotone),
-  entry('PiShieldCheckDuotone', PiShieldCheckDuotone),
-  entry('PiBellRingingDuotone', PiBellRingingDuotone),
-  entry('PiWarningDuotone', PiWarningDuotone),
-  entry('PiCompassDuotone', PiCompassDuotone),
-];
-
-export const Duotone: Story = {
-  args: { icon: 'Sparkle' as unknown as IconType },
-  parameters: {
-    docs: {
-      source: {
-        language: 'tsx',
-        transform: (_code: string, ctx: { args: Record<string, unknown> }) =>
-          sourceFor(
-            'react-icons/pi',
-            [`Pi${String(ctx.args.icon)}Duotone`],
-            `<Icon icon={Pi${String(ctx.args.icon)}Duotone} size={${String(ctx.args.size)}} />`,
-          ),
-      },
-    },
-  },
-};
-
-/** Accent (foreground) + alert (background) recolor, across a small set of icons. */
-export const DuotoneGallery: StoryObj = {
-  parameters: staticSource(
-    sourceFor(
-      'react-icons/pi',
-      DUOTONE.map((e) => e.name),
-      DUOTONE.map((e) => `<Icon icon={${e.name}} size={40} />`).join('\n'),
-    ),
-  ),
-  render: () => (
-    <Row gap="lg">
-      {DUOTONE.map((e) => (
-        <Icon key={e.name} icon={e.Component} size={40} />
-      ))}
-    </Row>
-  ),
-};

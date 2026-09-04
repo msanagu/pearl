@@ -1,4 +1,5 @@
 import { style, globalStyle } from '@vanilla-extract/css';
+import { color } from '@tokens';
 
 /**
  * Duotone icons (Phosphor's duotone set, `PiHeartDuotone` and friends from
@@ -18,14 +19,28 @@ import { style, globalStyle } from '@vanilla-extract/css';
  */
 export const icon = style({});
 
-// `color: inherit` lives in a `:where()` globalStyle, not directly on `icon`
-// itself, so it carries ZERO specificity. A plain single-class rule (e.g.
-// Field's `errorIcon`, which sets `color: color.negative.icon`) has real
-// specificity and so always wins regardless of which rule the bundler
-// happens to emit later — without `:where()`, two equal-specificity single-
-// class rules are decided by CSS source order, which is bundler output
-// order, not consumption order; that silently let this base rule win over
-// callers meaning to override it (see the fix that added this comment).
+// Zero specificity, so any real class (e.g. `negativeIcon`) always wins.
 globalStyle(`:where(.${icon})`, {
   color: 'inherit',
 });
+
+// Duotone two-layer split: background path fixed to a faint neutral, always;
+// foreground path uses `currentColor`, so a tone class (or inherited color)
+// recolors only the full-opacity layer. Single-path icons are unaffected —
+// `:first-child` and `:last-child` both match their one path, and
+// `currentColor` (declared last) wins.
+globalStyle(`.${icon} path:first-child`, {
+  fill: color.icon,
+});
+globalStyle(`.${icon} path:last-child`, {
+  fill: 'currentColor',
+});
+
+// Real classes, not a `color`/`tone` prop — see override-patterns.md.
+export const positiveIcon = style({ color: color.positive.icon });
+export const negativeIcon = style({ color: color.negative.icon });
+export const warnIcon = style({ color: color.warn.icon });
+export const infoIcon = style({ color: color.info.icon });
+
+// `accent` isn't a sentiment, but answers the same need.
+export const accentIcon = style({ color: color.accent });

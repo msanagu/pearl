@@ -8,19 +8,33 @@ import { THEME_ICON_SETS } from './iconSets';
 import { Icon } from './Icon';
 
 describe('Icon', () => {
-  it('renders the given icon with defaults', () => {
+  it('renders the given icon with defaults, sized in rem not px', () => {
     const { container } = render(<Icon icon={PiHeart} />);
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('data-component', 'icon');
-    expect(svg).toHaveAttribute('width', '20');
-    expect(svg).toHaveAttribute('height', '20');
+    expect(svg).toHaveAttribute('width', '1.25rem');
+    expect(svg).toHaveAttribute('height', '1.25rem');
   });
 
-  it('forwards a custom size', () => {
+  it('forwards a custom size, converted to rem', () => {
     const { container } = render(<Icon icon={PiHeart} size={32} />);
     const svg = container.querySelector('svg');
-    expect(svg).toHaveAttribute('width', '32');
-    expect(svg).toHaveAttribute('height', '32');
+    expect(svg).toHaveAttribute('width', '2rem');
+    expect(svg).toHaveAttribute('height', '2rem');
+  });
+
+  it('snaps an off-grid numeric size to the nearest 4px before converting', () => {
+    const { container } = render(<Icon icon={PiHeart} size={26} />);
+    const svg = container.querySelector('svg');
+    expect(svg).toHaveAttribute('width', '1.75rem'); // 26 -> 28px -> 1.75rem
+    expect(svg).toHaveAttribute('height', '1.75rem');
+  });
+
+  it('passes a string size through unchanged', () => {
+    const { container } = render(<Icon icon={PiHeart} size="1em" />);
+    const svg = container.querySelector('svg');
+    expect(svg).toHaveAttribute('width', '1em');
+    expect(svg).toHaveAttribute('height', '1em');
   });
 
   it('merges a custom className', () => {

@@ -2,7 +2,14 @@ import { forwardRef } from 'react';
 import type { ComponentType, Ref, SVGAttributes } from 'react';
 import { clsx } from 'clsx';
 import type { IconBaseProps, IconType } from 'react-icons';
-import { icon } from './Icon.css';
+import {
+  icon,
+  positiveIcon,
+  negativeIcon,
+  warnIcon,
+  infoIcon,
+  accentIcon,
+} from './Icon.css';
 
 /**
  * `IconType` is a plain function component — `react-icons` never calls
@@ -24,11 +31,28 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
    *
    * Every set shares the same `IconType` signature, so swapping sets is a
    * matter of changing the import. `iconLibraries.ts` has notes on the sets
-   * evaluated here.
+   * evaluated here. `react-icons` isn't required, either — any component
+   * shaped `(props) => ReactNode` works; see README.md's "Icons aren't
+   * locked in either".
    */
   icon: IconType;
-  /** Pixel size, forwarded to the underlying `<svg>`. @default 20 */
-  size?: number;
+  /**
+   * Icon size. A `number` is px, snapped to the nearest 4px grid step and
+   * rendered as its rem equivalent (16px root) — never raw px, so it scales
+   * with the user's base font-size like the rest of the system's type and
+   * spacing (see docs/foundations/spacing-system.md). A `string` is a raw
+   * CSS length, passed through unchanged.
+   * @default 20
+   */
+  size?: number | string;
+}
+
+const GRID_STEP = 4;
+const REM_ROOT = 16;
+
+/** Snaps px to the 4px grid, returns its rem string at a 16px root. */
+function toGridRem(px: number): string {
+  return `${(Math.round(px / GRID_STEP) * GRID_STEP) / REM_ROOT}rem`;
 }
 
 /**
@@ -39,13 +63,13 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
  * (`PiHeartDuotone`, not `weight="duotone"`). That's set-specific, so hoisting
  * it into this API would make every non-Phosphor set carry a prop it can't honor.
  */
-export const Icon = forwardRef<SVGSVGElement, IconProps>(
+const IconImpl = forwardRef<SVGSVGElement, IconProps>(
   ({ icon: iconComponent, size = 20, className, ...rest }, ref) => {
     const IconComponent = iconComponent as RefableIcon;
     return (
       <IconComponent
         ref={ref}
-        size={size}
+        size={typeof size === 'number' ? toGridRem(size) : size}
         data-component="icon"
         className={clsx(icon, className)}
         {...rest}
@@ -54,4 +78,15 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(
   },
 );
 
-Icon.displayName = 'Icon';
+IconImpl.displayName = 'Icon';
+
+// Static-property namespacing, like `Card.Header`/`Card.Body`.
+export const Icon = Object.assign(IconImpl, {
+  tone: {
+    positive: positiveIcon,
+    negative: negativeIcon,
+    warn: warnIcon,
+    info: infoIcon,
+    accent: accentIcon,
+  },
+});

@@ -99,6 +99,17 @@ a hardcoded value is not, so catching one needs a lint rule. That rule isn't
 written yet, so treat the reskinning property as an intent backed by discipline
 rather than an enforced contract until it is.
 
+### Icons aren't locked in either
+
+`react-icons` is a peer dependency, not a bundled one, chosen for the variety
+it gives *this* seed — around 30 sets behind one shared component signature,
+so a theme can pick its own default vocabulary (see `iconLibraries.ts`'s
+evaluation notes) — not because Pearl requires it specifically. `Icon`'s
+`icon` prop just needs a component shaped like `(props) => ReactNode`; a fork
+can hand it icons from any library, or swap `Icon` itself for something built
+on a custom set entirely. Same reskinning principle as the theme layer,
+applied one layer over.
+
 ## Components
 
 For what exists today and each component's props and slots, browse Storybook or
