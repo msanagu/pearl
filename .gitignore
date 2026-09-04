@@ -38,4 +38,4 @@ experiments/
 /unused-images-archive/
 
 # Hide portfolio related draft material
-src/templates/portfolio/
+src/portfolio/
