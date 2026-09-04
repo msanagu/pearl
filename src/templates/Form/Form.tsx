@@ -9,6 +9,7 @@ import { Alert } from '@components/Alert/Alert';
 import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
 import { color, space } from '@tokens';
+import { form as formClass } from './Form.css';
 
 interface FormValues {
   fullName: string;
@@ -88,13 +89,13 @@ export function Form() {
   return (
     <Stack
       as="form"
+      className={formClass}
       gap="xl"
       onSubmit={handleSubmit}
       noValidate
       style={{
         maxWidth: 640,
         margin: '0 auto',
-        padding: `${space['2xl']} ${space.xl}`,
       }}
     >
       <Stack gap="xs">
