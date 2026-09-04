@@ -81,6 +81,9 @@ const themes: Record<string, ThemeEntry> = {
     dark: pearlDarkThemeClass,
     extension: pearlExtensionClass,
     defaultMode: 'light',
+    // General Sans (body) — Gambetta (serif accent) is preloaded separately
+    // in preview-head.html since Pearl is the default theme.
+    fontshareFamilies: ['general-sans@300,400,500', 'general-sans@600,700'],
   },
   tahitian: {
     light: tahitianLightThemeClass,
@@ -94,17 +97,19 @@ const themes: Record<string, ThemeEntry> = {
     dark: freshwaterDarkThemeClass,
     extension: freshwaterExtensionClass,
     defaultMode: 'light',
-    fontshareFamilies: [
-      'zodiak@400,401,700,701',
-      'general-sans@300,400,500',
-      'general-sans@600,700',
-    ],
+    // No Fontshare faces: Space Grotesk (display/heading) and Azeret Mono
+    // (body/mono) are both self-hosted via @fontsource.
   },
   southSea: {
     light: southSeaLightThemeClass,
     dark: southSeaDarkThemeClass,
     defaultMode: 'dark',
-    fontshareFamilies: ['boska@400'],
+    fontshareFamilies: [
+      'zodiak@400,401,700,701',
+      'general-sans@300,400,500',
+      'general-sans@600,700',
+      'boska@400',
+    ],
   },
 };
 
