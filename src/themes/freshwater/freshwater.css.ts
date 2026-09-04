@@ -231,6 +231,15 @@ inverseOverride(freshwaterLightThemeClass, {
   text: freshwaterIce[100],
   textSubtle: freshwaterGraphite[500],
   icon: freshwaterGraphite[500],
+  accent: freshwaterGlacier[300],
+  accentHover: freshwaterGlacier[400],
+  accentSubtle: freshwaterGraphite[700],
+  onAccent: freshwaterGraphite[900],
+  onAccentSubtle: freshwaterIce[100],
+  positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})` },
 });
 inverseOverride(freshwaterDarkThemeClass, {
   background: freshwaterIce[100],
@@ -238,6 +247,15 @@ inverseOverride(freshwaterDarkThemeClass, {
   text: freshwaterGraphite[900],
   textSubtle: freshwaterGraphite[550],
   icon: freshwaterGraphite[550],
+  accent: freshwaterGlacier[500],
+  accentHover: freshwaterGlacier[600],
+  accentSubtle: freshwaterGlacier[100],
+  onAccent: freshwaterIce[100],
+  onAccentSubtle: freshwaterGraphite[900],
+  positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})` },
 });
 
 // Primary CTA — caps label in both modes (the console-readout register).

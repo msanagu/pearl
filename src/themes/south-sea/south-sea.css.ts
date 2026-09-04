@@ -240,6 +240,15 @@ inverseOverride(southSeaLightThemeClass, {
   text: southSeaSand[150],
   textSubtle: southSeaDriftwood[500],
   icon: southSeaDriftwood[500],
+  accent: southSeaConch[300],
+  accentHover: southSeaConch[200],
+  accentSubtle: southSeaDriftwood[800],
+  onAccent: southSeaDriftwood[900],
+  onAccentSubtle: southSeaSand[150],
+  positive: { surface: southSeaSentiment.seaMoss[800], border: southSeaSentiment.seaMoss[600], text: southSeaSentiment.seaMoss[300], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[400]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: southSeaSentiment.anemone[800], border: southSeaSentiment.anemone[700], text: southSeaSentiment.anemone[300], icon: `color-mix(in srgb, ${southSeaSentiment.anemone[400]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: southSeaSentiment.shell[800], border: southSeaSentiment.shell[600], text: southSeaSentiment.shell[300], icon: `color-mix(in srgb, ${southSeaSentiment.shell[400]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: southSeaSentiment.pacific[800], border: southSeaSentiment.pacific[600], text: southSeaSentiment.pacific[300], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[400]} 65%, ${vars.color.textSubtle})` },
 });
 inverseOverride(southSeaDarkThemeClass, {
   background: southSeaSand[100],
@@ -247,6 +256,15 @@ inverseOverride(southSeaDarkThemeClass, {
   text: southSeaDriftwood[750],
   textSubtle: southSeaSand[600],
   icon: southSeaSand[600],
+  accent: southSeaConch[400],
+  accentHover: southSeaConch[500],
+  accentSubtle: southSeaConch[100],
+  onAccent: southSeaSand[150],
+  onAccentSubtle: southSeaDriftwood[750],
+  positive: { surface: southSeaSentiment.seaMoss[100], border: southSeaSentiment.seaMoss[200], text: southSeaSentiment.seaMoss[700], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[500]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: southSeaSentiment.anemone[100], border: southSeaSentiment.anemone[200], text: southSeaSentiment.anemone[600], icon: `color-mix(in srgb, ${southSeaSentiment.anemone[500]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: southSeaSentiment.shell[100], border: southSeaSentiment.shell[200], text: southSeaSentiment.shell[700], icon: `color-mix(in srgb, ${southSeaSentiment.shell[500]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: southSeaSentiment.pacific[100], border: southSeaSentiment.pacific[200], text: southSeaSentiment.pacific[700], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[500]} 65%, ${vars.color.textSubtle})` },
 });
 
 // ---- Role treatments (roles declared in south-sea.roles.ts) ----

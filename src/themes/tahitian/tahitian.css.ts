@@ -324,6 +324,15 @@ inverseOverride(tahitianLightThemeClass, {
   text: tahitianPlatinum[100],
   textSubtle: tahitianPlatinum[500],
   icon: tahitianPlatinum[500],
+  accent: tahitianSeaglass[400],
+  accentHover: tahitianSeaglass[300],
+  accentSubtle: tahitianCharcoal[800],
+  onAccent: tahitianCharcoal[950],
+  onAccentSubtle: tahitianPlatinum[100],
+  positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: tahitianSentiment.dawn[800], border: tahitianSentiment.dawn[700], text: tahitianSentiment.dawn[200], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[400]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: tahitianSentiment.wave[800], border: tahitianSentiment.wave[700], text: tahitianSentiment.wave[300], icon: `color-mix(in srgb, ${tahitianSentiment.wave[400]} 65%, ${vars.color.textSubtle})` },
 });
 inverseOverride(tahitianDarkThemeClass, {
   background: tahitianPlatinum[200],
@@ -331,6 +340,15 @@ inverseOverride(tahitianDarkThemeClass, {
   text: tahitianCharcoal[950],
   textSubtle: tahitianPlatinum[600],
   icon: tahitianPlatinum[600],
+  accent: tahitianPeacock[600],
+  accentHover: tahitianPeacock[700],
+  accentSubtle: tahitianPeacock[300],
+  onAccent: tahitianPlatinum[100],
+  onAccentSubtle: tahitianCharcoal[950],
+  positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: tahitianSentiment.dawn[100], border: tahitianSentiment.dawn[300], text: tahitianSentiment.dawn[600], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[500]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})` },
 });
 
 // `PearlSphere` reads `pearlTreatments.luster.*` — vars Tahitian never applies —

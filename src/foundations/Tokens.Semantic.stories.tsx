@@ -148,7 +148,7 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
         </div>
 
         <h3 className={css.subsectionTitle}>
-          Inverse — a `[data-inverse]` island, not isolated swatches
+          Inverse — a `[data-inverse]` container, not isolated swatches
         </h3>
         <div className={css.inversePanel} data-inverse>
           <div className={css.inverseCard}>

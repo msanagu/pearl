@@ -278,7 +278,7 @@ export const pearlDarkThemeClass = createTheme(vars, {
   text: pearlText,
 });
 
-// `[data-inverse]` scoped island — see inverseOverride.ts. Values mirror the
+// `[data-inverse]` scoped container — see inverseOverride.ts. Values mirror the
 // other mode's own background/surface/text/textSubtle/icon.
 inverseOverride(pearlLightThemeClass, {
   background: squidInk[900],
@@ -286,6 +286,15 @@ inverseOverride(pearlLightThemeClass, {
   text: alabaster[300],
   textSubtle: urchin[200],
   icon: urchin[200],
+  accent: urchin[100],
+  accentHover: alabaster[100],
+  accentSubtle: urchin[400],
+  onAccent: squidInk[900],
+  onAccentSubtle: squidInk[900],
+  positive: { surface: pearlSentiment.algae[800], border: pearlSentiment.algae[600], text: pearlSentiment.algae[300], icon: `color-mix(in srgb, ${pearlSentiment.algae[400]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: pearlSentiment.coral[800], border: pearlSentiment.coral[600], text: pearlSentiment.coral[300], icon: `color-mix(in srgb, ${pearlSentiment.coral[400]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: pearlSentiment.sunlight[800], border: pearlSentiment.sunlight[600], text: pearlSentiment.sunlight[200], icon: `color-mix(in srgb, ${pearlSentiment.sunlight[400]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: pearlSentiment.tide[800], border: pearlSentiment.tide[600], text: pearlSentiment.tide[300], icon: `color-mix(in srgb, ${pearlSentiment.tide[400]} 65%, ${vars.color.textSubtle})` },
 });
 inverseOverride(pearlDarkThemeClass, {
   background: alabaster[300],
@@ -293,6 +302,15 @@ inverseOverride(pearlDarkThemeClass, {
   text: squidInk[900],
   textSubtle: urchin[500],
   icon: urchin[500],
+  accent: urchin[600],
+  accentHover: urchin[700],
+  accentSubtle: urchin[100],
+  onAccent: alabaster[300],
+  onAccentSubtle: squidInk[900],
+  positive: { surface: pearlSentiment.algae[100], border: pearlSentiment.algae[200], text: pearlSentiment.algae[700], icon: `color-mix(in srgb, ${pearlSentiment.algae[500]} 65%, ${vars.color.textSubtle})` },
+  negative: { surface: pearlSentiment.coral[100], border: pearlSentiment.coral[200], text: pearlSentiment.coral[700], icon: `color-mix(in srgb, ${pearlSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
+  warn: { surface: pearlSentiment.sunlight[100], border: pearlSentiment.sunlight[300], text: pearlSentiment.sunlight[700], icon: `color-mix(in srgb, ${pearlSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
+  info: { surface: pearlSentiment.tide[100], border: pearlSentiment.tide[200], text: pearlSentiment.tide[700], icon: `color-mix(in srgb, ${pearlSentiment.tide[500]} 65%, ${vars.color.textSubtle})` },
 });
 
 // ---- Role treatments (roles declared in pearl.roles.ts) ----

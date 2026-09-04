@@ -307,7 +307,7 @@ export const indexPlate = style({
   position: 'relative',
   isolation: 'isolate',
   overflow: 'hidden',
-  // The theme's own ground, not a `[data-inverse]` island: in a dark theme
+  // The theme's own ground, not a `[data-inverse]` container: in a dark theme
   // the inverse value is light, and a screen-blend overtone renders nothing
   // over near-white. The plate needs to stay dark wherever the theme is dark.
   background: color.background,
