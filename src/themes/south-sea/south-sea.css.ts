@@ -453,6 +453,18 @@ globalStyle(`${southSeaLightThemeClass} [data-role="preheading"], ${southSeaDark
   letterSpacing: '0.28em',
 });
 
+// Preheading *default* size only — gated on `:not([data-type-scale])` so an
+// explicit `typeScale` still wins. `Text` writes `data-type-scale` exactly
+// when the caller named a scale; without this, a bare `role="preheading"`
+// inherits its ambient size instead of caption, reading oversized.
+globalStyle(
+  `${southSeaLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${southSeaDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  {
+    fontSize: vars.text.caption.fontSize,
+    lineHeight: vars.text.caption.lineHeight,
+  },
+);
+
 // `dataDigits` aliases to the plain sans — no tabular mono face in this theme.
 globalStyle(`${southSeaLightThemeClass} [data-role="dataDigits"], ${southSeaDarkThemeClass} [data-role="dataDigits"]`, {
   fontFamily: southSeaFonts.sans,
