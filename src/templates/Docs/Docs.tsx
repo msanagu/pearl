@@ -5,7 +5,7 @@ import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
 import { color, radius, space, text } from '@tokens';
 import { Card } from '@components/Card/Card';
-import { navLink, scrollRegion } from './Docs.css';
+import { main, navLink, onThisPageRail, scrollRegion, sidebar } from './Docs.css';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const HEADER_H = 61;
@@ -131,16 +131,16 @@ function ButtonDocs(): ReactNode {
         <Text role="preheading" as="p" prominence="subtle">
           Components / Button
         </Text>
-        <Text typeScale="displaySm" as="h1" style={{ margin: 0 }}>
+        <Text typeScale="headingLg" as="h1" style={{ margin: 0 }}>
           Button
         </Text>
         <Text typeScale="bodyLg" as="p" prominence="subtle" measure="lg">
-          One component, two emphases. The primary carries a 1px inner highlight
-          and a paired shadow for{' '}
-          <Text as="span" role="inlineEmphasis">
-            quiet elevation
-          </Text>
-          .
+          One component, two emphases. Primary fills solid for the page's main
+          action; secondary stays{' '}
+          <Text as="span" role="inlineEmphasis" prominence="subtle">
+            outlined
+          </Text>{' '}
+          until it's needed.
         </Text>
       </Stack>
 
@@ -219,19 +219,19 @@ export function Docs() {
       }}
     >
       <main
+        className={main}
         style={{
           display: 'grid',
-          gridTemplateColumns: '240px minmax(0, 1fr) 200px',
           gap: space['2xl'],
           maxWidth: 1200,
           width: '100%',
           margin: '0 auto',
-          padding: `${space['2xl']} ${space.xl}`,
           alignItems: 'start',
         }}
       >
         <aside
-          style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }}
+          className={sidebar}
+          style={{ top: stickyTop, alignSelf: 'start' }}
           aria-label="Documentation"
         >
           <NavGroup heading="Foundations" items={foundations} />
@@ -243,7 +243,8 @@ export function Docs() {
         </article>
 
         <nav
-          style={{ position: 'sticky', top: stickyTop, alignSelf: 'start' }}
+          className={onThisPageRail}
+          style={{ top: stickyTop, alignSelf: 'start' }}
           aria-label="On this page"
         >
           <Stack gap="sm">
