@@ -119,13 +119,12 @@ async function loadRoles(theme) {
   return mod[rolesExportName];
 }
 
-/** Reshapes one `RoleSpec` entry into a `FoundationEntity` — see src/manifest/schema.ts. */
-function toFoundationEntity(theme, name, spec) {
+/** Reshapes one `RoleSpec` entry into a `TreatmentEntity` — see src/manifest/schema.ts. */
+function toTreatmentEntity(theme, name, spec) {
   const { treatment, intent, on, trigger, chroma, limits, guidance, source } =
     spec;
   return {
-    kind: 'Foundation',
-    id: `role.${theme}.${name}`,
+    id: `treatment.${theme}.${name}`,
     metadata: {
       name,
       theme,
@@ -136,11 +135,12 @@ function toFoundationEntity(theme, name, spec) {
       ...(chroma && { chroma }),
       ...(limits && { limits }),
     },
+    // Existing guidance prose is doc-only, not yet rewritten into
+    // do/dont/verification blocks — carried through as `do` for now.
     documentBlocks: (guidance ?? []).map((text) => ({
-      type: 'guidance',
+      type: 'do',
       text,
     })),
-    agentDocumentBlocks: [],
     ...(source && { internal: { source } }),
   };
 }
@@ -148,14 +148,14 @@ function toFoundationEntity(theme, name, spec) {
 const generatedAt = new Date().toISOString();
 const manifestVersion = '0.2.0'; // bumped: split manifest shape (base + per-theme), examples moved out of Component entities
 
-const foundationEntitiesByTheme = Object.fromEntries(
+const treatmentEntitiesByTheme = Object.fromEntries(
   THEMES.map((t) => [t, []]),
 );
 for (const theme of THEMES) {
   const roles = await loadRoles(theme);
   for (const [name, spec] of Object.entries(roles)) {
-    foundationEntitiesByTheme[theme].push(
-      toFoundationEntity(theme, name, spec),
+    treatmentEntitiesByTheme[theme].push(
+      toTreatmentEntity(theme, name, spec),
     );
   }
 }
@@ -174,7 +174,7 @@ const { inverseConventionDocumentBlocks } = await loadPlainModule(
 const { iconFlexibilityDocumentBlocks } = await loadPlainModule(
   path.join(ROOT, 'src', 'manifest', 'iconFlexibility.ts'),
 );
-const { sizingGridDocumentBlocks } = await loadPlainModule(
+const { sizingGridDocumentBlocks, sizingGridByTheme } = await loadPlainModule(
   path.join(ROOT, 'src', 'manifest', 'sizingGrid.ts'),
 );
 
@@ -182,45 +182,80 @@ const distDir = path.join(ROOT, 'dist');
 const manifestDir = path.join(distDir, 'manifest');
 mkdirSync(manifestDir, { recursive: true });
 
+// Rationale — DS-wide principles, not tied to one component/foundation/theme.
+const rationaleEntities = [
+  {
+    id: 'rationale.overrideContract',
+    metadata: { name: 'overrideContract' },
+    documentBlocks: overrideContractDocumentBlocks,
+  },
+];
+
+// Foundations — the constraint/mechanic itself, common ground across every
+// theme. Per-theme instantiations (the actual values) ship in each theme's
+// own file instead, as `ThemeFoundationEntity`s — see below.
+const foundationEntities = [
+  {
+    id: 'foundation.tokenSemantics',
+    metadata: { concept: 'tokenSemantics' },
+    documentBlocks: tokenSemanticsDocumentBlocks,
+  },
+  {
+    id: 'foundation.inverseConvention',
+    metadata: { concept: 'inverseConvention' },
+    documentBlocks: inverseConventionDocumentBlocks,
+  },
+  {
+    id: 'foundation.iconFlexibility',
+    metadata: { concept: 'iconFlexibility' },
+    documentBlocks: iconFlexibilityDocumentBlocks,
+  },
+  {
+    id: 'foundation.sizingGrid',
+    metadata: { concept: 'sizingGrid' },
+    documentBlocks: sizingGridDocumentBlocks,
+  },
+];
+
 const baseManifest = {
   manifestVersion,
   generatedFrom:
     'src/components/*/*.tsx, src/manifest/overrideContract.ts, src/manifest/tokenSemantics.ts, src/manifest/inverseConvention.ts, src/manifest/iconFlexibility.ts, src/manifest/sizingGrid.ts',
   generatedAt,
-  entities: componentEntities,
-  // Cross-cutting — applies to every component in every theme, so neither
-  // fits the per-theme Foundation or per-component Component shape; both
-  // ship as their own top-level fields instead. See
-  // docs/foundations/override-patterns.md and src/tokens.ts's
-  // `SentimentTokens` JSDoc for the human-facing versions these mirror.
-  overrideContract: { documentBlocks: overrideContractDocumentBlocks },
-  tokenSemantics: { documentBlocks: tokenSemanticsDocumentBlocks },
-  inverseConvention: { documentBlocks: inverseConventionDocumentBlocks },
-  iconFlexibility: { documentBlocks: iconFlexibilityDocumentBlocks },
-  sizingGrid: { documentBlocks: sizingGridDocumentBlocks },
+  rationale: rationaleEntities,
+  components: componentEntities,
+  foundations: foundationEntities,
 };
 writeFileSync(
   path.join(manifestDir, 'base.json'),
   JSON.stringify(baseManifest, null, 2) + '\n',
 );
 console.log(
-  `Wrote ${componentEntities.length} entities to dist/manifest/base.json`,
+  `Wrote ${componentEntities.length} components to dist/manifest/base.json`,
 );
 
 for (const theme of THEMES) {
+  const themeFoundations = [
+    {
+      id: `foundation.${theme}.sizingGrid`,
+      metadata: { concept: 'sizingGrid', theme },
+      documentBlocks: sizingGridByTheme[theme],
+    },
+  ];
   const themeManifest = {
     manifestVersion,
-    generatedFrom: `src/themes/${theme}/${theme}.roles.ts`,
+    generatedFrom: `src/themes/${theme}/${theme}.roles.ts, src/manifest/sizingGrid.ts`,
     generatedAt,
     theme,
-    entities: foundationEntitiesByTheme[theme],
+    foundations: themeFoundations,
+    treatments: treatmentEntitiesByTheme[theme],
   };
   writeFileSync(
     path.join(manifestDir, `${theme}.json`),
     JSON.stringify(themeManifest, null, 2) + '\n',
   );
   console.log(
-    `Wrote ${foundationEntitiesByTheme[theme].length} entities to dist/manifest/${theme}.json`,
+    `Wrote ${themeManifest.foundations.length} foundation(s) and ${themeManifest.treatments.length} treatments to dist/manifest/${theme}.json`,
   );
 }
 

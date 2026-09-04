@@ -28,10 +28,10 @@ const themeLines = THEMES.map((theme) => {
   const m = JSON.parse(
     readFileSync(path.join(distDir, 'manifest', `${theme}.json`), 'utf8'),
   );
-  return `- [manifest/${theme}.json](./manifest/${theme}.json): ${m.entities.length} role/treatment entities for the **${theme}** theme only. Read this ONE theme file — not the others — for whichever theme is actually active in the consuming app; the other three themes' role tables are irrelevant to a single generation and deliberately not bundled in with it.`;
+  return `- [manifest/${theme}.json](./manifest/${theme}.json): ${m.foundations.length} foundation(s) (per-theme values for a base.json concept) and ${m.treatments.length} role/treatment entities for the **${theme}** theme only. Read this ONE theme file — not the others — for whichever theme is actually active in the consuming app; the other three themes' role tables are irrelevant to a single generation and deliberately not bundled in with it.`;
 }).join('\n');
 
-const componentLines = baseManifest.entities
+const componentLines = baseManifest.components
   .map((e) => {
     const examplesPath = e.metadata.examplesPath;
     const exampleNote = examplesPath
@@ -50,7 +50,7 @@ const content = `# ${pkg.name}
 The manifest is split by scope so a single generation task never has to load
 data for a theme it isn't using or a component it isn't touching:
 
-- [manifest/base.json](./manifest/base.json): ${baseManifest.entities.length} theme-agnostic Component entities (props/types only — real usage examples live in each component's own file below, not embedded here). Also carries five cross-cutting fields, all worth reading before generating anything: \`overrideContract\` — the real mechanism for extending past a component's documented variants (data-attribute targeting, never inline styles), and the expectation that doing so gets flagged, not shipped silently. \`tokenSemantics\` — what each sentiment-color sub-field (\`surface\`/\`border\`/\`text\`/\`icon\`) is actually for; \`icon\` in particular is deliberately desaturated for glyph use, not a general-purpose strong fill color. \`inverseConvention\` — \`mode\` (light/dark) and \`inverse\` (\`[data-inverse]\`) are different, orthogonal axes: an inverse container always renders as if the theme's *other* mode were active there, without flipping the global mode, and most tokens auto-flip inside it except \`border\`/\`borderStrong\`/\`borderSubtle\` (use \`color.borderInverse\` explicitly for those). \`iconFlexibility\` — \`Icon\`'s \`icon\` prop accepts any \`react-icons\` \`IconType\`; Pearl ships no default set and enforces no weight/style convention, so check the actual set imported before assuming an outline/filled suffix pattern. \`sizingGrid\` — Pearl's 8px soft grid (4px named half-step) governs spacing, radius, typography, and any raw pixel size a component exposes (e.g. \`Icon.size\`); where a prop can't be type-restricted to a closed token set, always pick a multiple of 4, preferring a multiple of 8 without a specific named reason not to.
+- [manifest/base.json](./manifest/base.json): ${baseManifest.components.length} theme-agnostic Component entities (props/types only — real usage examples live in each component's own file below, not embedded here). Also carries \`rationale\` (${baseManifest.rationale.length} DS-wide principle(s), not tied to one component/foundation/theme — e.g. \`overrideContract\`: the real mechanism for extending past a component's documented variants is data-attribute targeting, never inline styles, and the expectation that doing so gets flagged, not shipped silently) and \`foundations\` (${baseManifest.foundations.length} theme-agnostic mechanic(s) — \`tokenSemantics\`: what each sentiment-color sub-field \`surface\`/\`border\`/\`text\`/\`icon\` is actually for, \`icon\` in particular is deliberately desaturated for glyph use, not a general-purpose strong fill color; \`inverseConvention\`: \`mode\` (light/dark) and \`inverse\` (\`[data-inverse]\`) are different, orthogonal axes, most tokens auto-flip inside an inverse container except \`border\`/\`borderStrong\`/\`borderSubtle\` (use \`color.borderInverse\` explicitly for those); \`iconFlexibility\`: \`Icon\`'s \`icon\` prop accepts any \`react-icons\` \`IconType\`, check the actual set imported before assuming an outline/filled suffix pattern; \`sizingGrid\`: the soft-grid mechanic itself — read the active theme's own \`<theme>.json\` \`foundations\` entry for its real increment values, they differ by theme). Every entry's real content lives in its own \`documentBlocks\` (do/dont/verification) — read those, this summary is just a map of what's there.
 ${themeLines}
 
 ### Component examples — fetch only the ones you're using
@@ -59,7 +59,7 @@ ${componentLines}
 
 ### Schema
 
-Structured facts in \`metadata\`, human-facing rationale in \`documentBlocks\`, agent-only do/don't/verification notes in \`agentDocumentBlocks\`. See the repo's ADR-0008 for the full schema rationale.
+Structured facts in \`metadata\`, do/dont/verification notes in \`documentBlocks\`. No separate human-facing channel — this manifest's only real consumer is an agent. See the repo's ADR-0008 for the full schema rationale.
 
 ## \`dist/components/_internal/\` and \`dist/components/_brand/\` — present in \`dist\`, not public API
 

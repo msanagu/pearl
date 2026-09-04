@@ -1,22 +1,26 @@
 /**
- * The manifest's own type layer. Borrows the `kind` discriminator and the
- * `metadata` / `documentBlocks` split from emerging design-system schema work
- * as a reference; this schema is independently defined. See DECISIONS.md.
+ * The manifest's own type layer. See docs/process/plans/manifest-reshape.md
+ * for why this shape replaced the earlier `kind`-discriminated one.
  *
- * `metadata` holds short generator-derived facts, `documentBlocks` long-form
- * prose for a human, `agentDocumentBlocks` a parallel agent-only channel
- * (do/don't/verification notes) — kept separate so the two can't interleave.
+ * `metadata` holds short generator-derived facts, `documentBlocks` the
+ * long-form content — do/dont/verification notes for the agent consuming
+ * this manifest. There is no separate human-facing channel: the manifest's
+ * only real consumer is an agent, not a human reader.
  */
 
-/** A block of human-facing long-form content. */
+/** A block of do/dont/verification guidance. No 'example' type here —
+ * examples are sourced only from `.stories.tsx`, into the per-component
+ * `<Name>.examples.json` file, never hand-authored alongside an entity. */
 export interface DocumentBlock {
-  type: 'rationale' | 'guidance' | 'example';
+  type: 'do' | 'dont' | 'verification';
   text: string;
 }
 
-/** A block meant only for a coding agent consuming this manifest. */
-export interface AgentDocumentBlock {
-  type: 'do' | 'dont' | 'verification';
+/** One example block, as shipped in a component's own `.examples.json` file
+ * (`ComponentExamplesFile`, below) — kept as a distinct type from
+ * `DocumentBlock` since an entity's own `documentBlocks` can never hold one. */
+export interface ExampleBlock {
+  type: 'example';
   text: string;
 }
 
@@ -34,30 +38,7 @@ interface ManifestEntityBase {
   /** Stable, generator-derived identifier — never hand-assigned. */
   id: string;
   documentBlocks: DocumentBlock[];
-  agentDocumentBlocks: AgentDocumentBlock[];
   internal?: InternalProvenance;
-}
-
-/**
- * A role/treatment assignment — this project's `Foundation` entity. `metadata`
- * is a reshape of `RoleSpec` (`src/themes/roles.ts`), not a copy of resolved
- * values — the manifest points at the same names components/tokens use.
- */
-export interface FoundationEntity extends ManifestEntityBase {
-  kind: 'Foundation';
-  metadata: {
-    /** Role name, e.g. `'cardHover'`. */
-    name: string;
-    /** Which theme this role assignment belongs to, e.g. `'pearl'`. */
-    theme: string;
-    /** Which treatment (in the theme's own catalog) fulfills this role. */
-    treatment: string;
-    intent?: string;
-    surface?: string;
-    trigger?: string;
-    chroma?: string;
-    limits?: Record<string, { max?: number; min?: number }>;
-  };
 }
 
 /** One prop of a component's real, extracted API — never hand-typed. The
@@ -84,7 +65,6 @@ export interface ComponentProp {
  * component's example bodies.
  */
 export interface ComponentEntity extends ManifestEntityBase {
-  kind: 'Component';
   metadata: {
     /** Component name, e.g. `'Card'`. */
     name: string;
@@ -94,71 +74,95 @@ export interface ComponentEntity extends ManifestEntityBase {
   };
 }
 
-/** Union of every entity kind the manifest can contain. Widen deliberately. */
-export type ManifestEntity = FoundationEntity | ComponentEntity;
+/**
+ * The constraint/mechanic itself, common ground across every theme — e.g.
+ * the 8px soft grid's rules (which sizes get snapped, why `xs` is a named
+ * half-step), not any one theme's actual increment values. `base.json` only;
+ * see `ThemeFoundationEntity` for the per-theme values half of the same
+ * concept.
+ */
+export interface FoundationEntity extends ManifestEntityBase {
+  metadata: {
+    /** Namespace tying this to its `ThemeFoundationEntity` counterparts, e.g. `'sizingGrid'`. */
+    concept: string;
+  };
+}
+
+/**
+ * One theme's instantiation of a `FoundationEntity` concept — the actual
+ * values (e.g. tahitian's `xs`:8px/`sm`:12px scale). `<theme>.json` only.
+ */
+export interface ThemeFoundationEntity extends ManifestEntityBase {
+  metadata: {
+    /** Same concept namespace as the base `FoundationEntity` this instantiates. */
+    concept: string;
+    theme: string;
+  };
+}
+
+/**
+ * A role/treatment assignment — renamed from the old `kind: 'Foundation'`
+ * entity, which conflated this with the foundation concept above. `metadata`
+ * is a reshape of `RoleSpec` (`src/themes/roles.ts`), not a copy of resolved
+ * values — the manifest points at the same names components/tokens use.
+ * `<theme>.json` only.
+ */
+export interface TreatmentEntity extends ManifestEntityBase {
+  metadata: {
+    /** Role name, e.g. `'cardHover'`. */
+    name: string;
+    /** Which theme this role assignment belongs to, e.g. `'pearl'`. */
+    theme: string;
+    /** Which treatment (in the theme's own catalog) fulfills this role. */
+    treatment: string;
+    intent?: string;
+    surface?: string;
+    trigger?: string;
+    chroma?: string;
+    limits?: Record<string, { max?: number; min?: number }>;
+  };
+}
+
+/**
+ * A DS-wide principle, not tied to any one component/foundation/theme — e.g.
+ * the override contract's composition-over-configuration stance. `base.json`
+ * only, one flat array (no per-theme split: a rationale is either true
+ * everywhere or it isn't a rationale).
+ */
+export interface RationaleEntity extends ManifestEntityBase {
+  metadata: {
+    name: string;
+  };
+}
 
 /**
  * The base manifest's shape (`dist/manifest/base.json`) — theme-agnostic
- * Component entities only. Per-theme Foundation entities ship in their own
- * file instead (`ThemeManifest`, below); a single flat `Manifest` combining
- * both no longer exists as a build output — see generate-manifest.mjs.
+ * content only. Per-theme content ships in its own file instead
+ * (`ThemeManifest`, below); a single flat `Manifest` combining both no
+ * longer exists as a build output — see generate-manifest.mjs.
  */
 export interface BaseManifest {
   manifestVersion: string;
   /** Which source file(s) this was generated from — for provenance, not consumption. */
   generatedFrom: string;
   generatedAt: string;
-  entities: ComponentEntity[];
-  /**
-   * The override contract (see docs/foundations/override-patterns.md) — how
-   * to extend a component past its documented API (data-attribute targeting,
-   * never inline styles) and the expectation that doing so gets flagged, in
-   * a code comment and in prose, as real signal for what the system should
-   * grow to cover. Cross-cutting (every component, every theme), so it's a
-   * top-level field rather than a Foundation or Component entity.
-   */
-  overrideContract: { documentBlocks: DocumentBlock[] };
-  /**
-   * What each sentiment-token sub-field (`surface`/`border`/`text`/`icon`)
-   * is actually for (see `SentimentTokens` JSDoc in `src/tokens.ts`) — without
-   * this, nothing stops a consumer reaching for `icon` (deliberately
-   * desaturated, meant for glyphs) as if it were a general-purpose strong
-   * fill color. Cross-cutting for the same reason `overrideContract` is.
-   */
-  tokenSemantics: { documentBlocks: DocumentBlock[] };
-  /**
-   * The `mode` (light/dark) vs. `inverse` (`[data-inverse]`) distinction (see
-   * `inverseOverride` JSDoc in `src/foundations/inverseOverride.ts`) — two
-   * orthogonal axes a consumer has no way to tell apart from the component
-   * entities alone. Cross-cutting for the same reason `overrideContract` is.
-   */
-  inverseConvention: { documentBlocks: DocumentBlock[] };
-  /**
-   * `Icon`'s bring-your-own-set contract (see `iconFlexibility.ts`) — that
-   * `icon` accepts any `react-icons` `IconType`, not a name from a closed
-   * Pearl-owned enum. Cross-cutting for the same reason `overrideContract` is.
-   */
-  iconFlexibility: { documentBlocks: DocumentBlock[] };
-  /**
-   * The 8px soft grid (see `sizingGrid.ts` and
-   * docs/foundations/spacing-system.md) — governs spacing, radius,
-   * typography, and any raw pixel size a component exposes. Cross-cutting
-   * for the same reason `overrideContract` is.
-   */
-  sizingGrid: { documentBlocks: DocumentBlock[] };
+  rationale: RationaleEntity[];
+  components: ComponentEntity[];
+  foundations: FoundationEntity[];
 }
 
-/** One theme's manifest shape (`dist/manifest/<theme>.json`) — that theme's Foundation entities only. */
+/** One theme's manifest shape (`dist/manifest/<theme>.json`). */
 export interface ThemeManifest {
   manifestVersion: string;
   generatedFrom: string;
   generatedAt: string;
   theme: string;
-  entities: FoundationEntity[];
+  foundations: ThemeFoundationEntity[];
+  treatments: TreatmentEntity[];
 }
 
 /** One component's examples file shape (`dist/components/<Name>/<Name>.examples.json`). */
 export interface ComponentExamplesFile {
   component: string;
-  examples: DocumentBlock[];
+  examples: ExampleBlock[];
 }

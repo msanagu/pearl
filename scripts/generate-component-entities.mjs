@@ -201,7 +201,6 @@ export function generateComponentEntities() {
       : [];
 
     entities.push({
-      kind: 'Component',
       id: `component.${name}`,
       metadata: {
         name,
@@ -211,7 +210,6 @@ export function generateComponentEntities() {
         }),
       },
       documentBlocks: [],
-      agentDocumentBlocks: [],
     });
   }
 
