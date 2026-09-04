@@ -36,3 +36,6 @@ experiments/
 # a future story wants them, but not shipped (nothing in src/ references
 # them). See the perf pass that moved them out of public/.
 /unused-images-archive/
+
+# Hide portfolio related draft material
+src/templates/portfolio/
