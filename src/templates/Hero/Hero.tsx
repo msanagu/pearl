@@ -121,13 +121,18 @@ export function Hero({
               and the break needs to hold across four themes' faces. */}
           {revealWrap(
             'heading',
-            <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
-              A design system
-              <br />
-              coding agents
-              <br />
-              get right
-            </Text>,
+            <Stack gap="sm">
+              <Text role="preheading" as="p" typeScale="caption" prominence="subtle">
+                An active experiment
+              </Text>
+              <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
+                A design system
+                <br />
+                coding agents
+                <br />
+                get right
+              </Text>
+            </Stack>,
           )}
           {revealWrap(
             'body',
