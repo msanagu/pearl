@@ -163,8 +163,9 @@ values — legitimacy is checkable from the operands alone.
   independent `columnGap` / `rowGap`, both still scale-token-typed.
 - **Card / Alert / Field** — internal padding defaults to a scale token (`md` by
   default) rather than a bespoke value, so nested components inherit consistent rhythm.
-- **Icon** — sizes land on the grid (16px, 20px, 24px, 32px) so icons align cleanly with
-  text and other components regardless of context.
+- **Icon** — `size` snaps to the nearest 4px and renders as rem, never raw px. Paired with
+  text: size the icon to that text's line-height (already grid-aligned), not its
+  font-size, with an `sm` (8px) gap between them.
 - **Button** — height is the shared `controlHeight.md` token (the semantic-tier
   density lever), not a value Button picks itself — the same token Input consumes, so the two land at an
   identical height and align cleanly in the same row regardless of theme. Padding is
