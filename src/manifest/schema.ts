@@ -96,7 +96,6 @@ export interface ThemeFoundationEntity extends ManifestEntityBase {
   metadata: {
     /** Same concept namespace as the base `FoundationEntity` this instantiates. */
     concept: string;
-    theme: string;
   };
 }
 
@@ -111,8 +110,6 @@ export interface TreatmentEntity extends ManifestEntityBase {
   metadata: {
     /** Role name, e.g. `'cardHover'`. */
     role: string;
-    /** Which theme this role assignment belongs to, e.g. `'pearl'`. */
-    theme: string;
     /** Which treatment (in the theme's own catalog) fulfills this role. */
     treatment: string;
     intent?: string;

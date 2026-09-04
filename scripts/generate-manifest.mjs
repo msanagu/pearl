@@ -127,7 +127,6 @@ function toTreatmentEntity(theme, name, spec) {
     id: `treatment.${theme}.${name}`,
     metadata: {
       role: name,
-      theme,
       treatment,
       ...(intent && { intent }),
       ...(on && { surface: on }),
@@ -238,7 +237,7 @@ for (const theme of THEMES) {
   const themeFoundations = [
     {
       id: `foundation.${theme}.sizingGrid`,
-      metadata: { concept: 'sizingGrid', theme },
+      metadata: { concept: 'sizingGrid' },
       documentBlocks: sizingGridByTheme[theme],
     },
   ];
