@@ -42,13 +42,13 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     intent: 'Nacre made literal — light moving across the brand object.',
     on: 'brandObject',
     trigger: 'ambient',
-    chroma: 'brand',
+    chroma: 'maximum',
     forbid: ['type', 'control'],
     limits: {
       hues: { max: 3 },
     },
     limitsByChroma: {
-      brand: { alpha: { max: 0.5 } },
+      maximum: { alpha: { max: 0.5 } },
     },
     guidance: [
       'Luster is material, not typography — it lights a surface, never letterforms.',
@@ -60,9 +60,9 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     intent: 'The one other surface allowed to carry ambient luster, at a lower ceiling than the brand object.',
     on: 'border',
     trigger: 'ambient',
-    chroma: 'desaturated',
+    chroma: 'low',
     limitsByChroma: {
-      desaturated: { alpha: { max: 0.42 } },
+      low: { alpha: { max: 0.42 } },
     },
     guidance: [
       'Never more than one lustered surface in view at rest — ambient luster belongs to the brand object and this rule; everything else waits for hover.',
@@ -74,9 +74,9 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     intent: 'A single quiet drift pass on hover — never ambient, never louder than the two roles above.',
     on: 'surface',
     trigger: 'hover',
-    chroma: 'desaturated',
+    chroma: 'low',
     limitsByChroma: {
-      desaturated: { alpha: { max: 0.42 } },
+      low: { alpha: { max: 0.42 } },
     },
   },
 };

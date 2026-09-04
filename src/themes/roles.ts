@@ -36,8 +36,14 @@ export type Trigger =
   /** Appears on keyboard focus. */
   | 'focus';
 
-/** Brand speaking (`brand`) vs. UI staying low-chroma (`desaturated`) — two tiers, not a spectrum. */
-export type Chroma = 'brand' | 'desaturated';
+/**
+ * Saturation ceiling a role may read at. Three named steps, not a spectrum —
+ * `'moderate'` is reserved headroom, no role uses it yet: every role today
+ * is either `'maximum'` (the treatment's own hues at full intensity) or
+ * `'low'` (color derived from neutral primitives at a lower ceiling, see
+ * `limitsByChroma`).
+ */
+export type Chroma = 'low' | 'moderate' | 'maximum';
 
 /** A numeric ceiling/floor a treatment's own values must respect. */
 export interface Limit {
@@ -69,12 +75,7 @@ export interface RoleSpec<TTreatment extends string = string> {
   // --- Effect-role fields ---
   on?: Surface;
   trigger?: Trigger;
-  /**
-   * How saturated this role may read — `brand` uses the treatment's own
-   * hues at full intensity; `desaturated` derives color from existing
-   * neutral primitives at a lower ceiling (`limitsByChroma`). Omit where it
-   * doesn't apply.
-   */
+  /** How saturated this role may read — see `Chroma`. Omit where it doesn't apply. */
   chroma?: Chroma;
   /** Explicit prohibitions, checkable against the closed `Surface` set. */
   forbid?: Surface[];

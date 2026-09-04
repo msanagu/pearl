@@ -29,7 +29,7 @@ export const tahitianRoles: ThemeRoles<TahitianTreatmentName> = {
     intent: 'Moving peacock, blue, aubergine, and rose light over grayscale photography in an editorial plate.',
     on: 'imagery',
     trigger: 'ambient',
-    chroma: 'brand',
+    chroma: 'maximum',
     forbid: ['type', 'control', 'surface'],
     limits: { hues: { max: 3 }, alpha: { max: 0.48 } },
     guidance: [

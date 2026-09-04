@@ -23,9 +23,9 @@ export const freshwaterRoles: ThemeRoles<FreshwaterTreatmentName> = {
     intent: 'A left-to-right ice-blue tint fading to transparent, on hover only.',
     on: 'surface',
     trigger: 'hover',
-    chroma: 'brand',
+    chroma: 'maximum',
     limitsByChroma: {
-      brand: { alpha: { max: 0.5 } },
+      maximum: { alpha: { max: 0.5 } },
     },
     guidance: ['Dark mode peak stop, composited over `surface`: `textSubtle` sits at 4.65:1 at this ceiling vs 4.22:1 (fails AA) one alpha step up.'],
   },
