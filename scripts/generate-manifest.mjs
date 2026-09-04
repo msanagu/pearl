@@ -168,6 +168,15 @@ const { overrideContractDocumentBlocks } = await loadPlainModule(
 const { tokenSemanticsDocumentBlocks } = await loadPlainModule(
   path.join(ROOT, 'src', 'manifest', 'tokenSemantics.ts'),
 );
+const { inverseConventionDocumentBlocks } = await loadPlainModule(
+  path.join(ROOT, 'src', 'manifest', 'inverseConvention.ts'),
+);
+const { iconFlexibilityDocumentBlocks } = await loadPlainModule(
+  path.join(ROOT, 'src', 'manifest', 'iconFlexibility.ts'),
+);
+const { sizingGridDocumentBlocks } = await loadPlainModule(
+  path.join(ROOT, 'src', 'manifest', 'sizingGrid.ts'),
+);
 
 const distDir = path.join(ROOT, 'dist');
 const manifestDir = path.join(distDir, 'manifest');
@@ -176,7 +185,7 @@ mkdirSync(manifestDir, { recursive: true });
 const baseManifest = {
   manifestVersion,
   generatedFrom:
-    'src/components/*/*.tsx, src/manifest/overrideContract.ts, src/manifest/tokenSemantics.ts',
+    'src/components/*/*.tsx, src/manifest/overrideContract.ts, src/manifest/tokenSemantics.ts, src/manifest/inverseConvention.ts, src/manifest/iconFlexibility.ts, src/manifest/sizingGrid.ts',
   generatedAt,
   entities: componentEntities,
   // Cross-cutting — applies to every component in every theme, so neither
@@ -186,6 +195,9 @@ const baseManifest = {
   // `SentimentTokens` JSDoc for the human-facing versions these mirror.
   overrideContract: { documentBlocks: overrideContractDocumentBlocks },
   tokenSemantics: { documentBlocks: tokenSemanticsDocumentBlocks },
+  inverseConvention: { documentBlocks: inverseConventionDocumentBlocks },
+  iconFlexibility: { documentBlocks: iconFlexibilityDocumentBlocks },
+  sizingGrid: { documentBlocks: sizingGridDocumentBlocks },
 };
 writeFileSync(
   path.join(manifestDir, 'base.json'),

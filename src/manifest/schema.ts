@@ -126,6 +126,26 @@ export interface BaseManifest {
    * fill color. Cross-cutting for the same reason `overrideContract` is.
    */
   tokenSemantics: { documentBlocks: DocumentBlock[] };
+  /**
+   * The `mode` (light/dark) vs. `inverse` (`[data-inverse]`) distinction (see
+   * `inverseOverride` JSDoc in `src/foundations/inverseOverride.ts`) — two
+   * orthogonal axes a consumer has no way to tell apart from the component
+   * entities alone. Cross-cutting for the same reason `overrideContract` is.
+   */
+  inverseConvention: { documentBlocks: DocumentBlock[] };
+  /**
+   * `Icon`'s bring-your-own-set contract (see `iconFlexibility.ts`) — that
+   * `icon` accepts any `react-icons` `IconType`, not a name from a closed
+   * Pearl-owned enum. Cross-cutting for the same reason `overrideContract` is.
+   */
+  iconFlexibility: { documentBlocks: DocumentBlock[] };
+  /**
+   * The 8px soft grid (see `sizingGrid.ts` and
+   * docs/foundations/spacing-system.md) — governs spacing, radius,
+   * typography, and any raw pixel size a component exposes. Cross-cutting
+   * for the same reason `overrideContract` is.
+   */
+  sizingGrid: { documentBlocks: DocumentBlock[] };
 }
 
 /** One theme's manifest shape (`dist/manifest/<theme>.json`) — that theme's Foundation entities only. */
