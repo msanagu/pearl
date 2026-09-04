@@ -37,11 +37,16 @@ export type Trigger =
   | 'focus';
 
 /**
- * Saturation ceiling a role may read at. Three named steps, not a spectrum —
- * `'moderate'` is reserved headroom, no role uses it yet: every role today
- * is either `'maximum'` (the treatment's own hues at full intensity) or
- * `'low'` (color derived from neutral primitives at a lower ceiling, see
- * `limitsByChroma`).
+ * Saturation/colorfulness ceiling a role may read at — ranks on one ordered
+ * scale, the same axis-pattern `Text`'s `prominence` prop uses for
+ * value/contrast-against-background (`theme.css.ts`'s "two ranks ... no
+ * third rung in v1" comment). Not a `tier` in the primitive→semantic token
+ * sense (two separate collections, one indexing into the other) — chroma
+ * and prominence each name one axis's own ranks, not a lookup between two
+ * collections. `'moderate'` is reserved headroom, no role uses it yet:
+ * every role today is either `'maximum'` (the treatment's own hues at full
+ * intensity) or `'low'` (color derived from neutral primitives at a lower
+ * ceiling, see `limitsByChroma`).
  */
 export type Chroma = 'low' | 'moderate' | 'maximum';
 
