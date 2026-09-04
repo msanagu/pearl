@@ -1,4 +1,5 @@
 import type { MouseEvent, ReactNode } from 'react';
+import { clsx } from 'clsx';
 import { Text } from '@components/Text/Text';
 import { Button } from '@components/Button/Button';
 import { Row } from '@components/Row/Row';
@@ -72,12 +73,6 @@ const stats = [
 // — Hero is that page's top section, so they share one column width.
 const HERO_CONTENT_MAX_WIDTH = 1440;
 const HERO_BAND_MAX_WIDTH = `calc(${HERO_CONTENT_MAX_WIDTH}px + ${space.xl} + ${space.xl})`;
-const heroContentStyle = {
-  maxWidth: HERO_CONTENT_MAX_WIDTH,
-  width: `calc(100% - ${space.xl} - ${space.xl})`,
-  boxSizing: 'border-box',
-  margin: '0 auto',
-} as const;
 
 /**
  * The Pearl hero — one positioning statement, used as this template's story and
@@ -106,10 +101,8 @@ export function Hero({
           maxWidth: HERO_BAND_MAX_WIDTH,
           boxSizing: 'border-box',
           margin: '0 auto',
-          // Top/bottom padding lives in `css.main` instead — see its comment
-          // on why an inline value there would block its own `MOBILE` override.
-          paddingLeft: space.xl,
-          paddingRight: space.xl,
+          // Padding (all sides) lives in `css.main` instead — see its comment
+          // on why an inline value there would block its own `NARROW` override.
           width: '100%',
         }}
       >
@@ -149,7 +142,7 @@ export function Hero({
             // than the header column (which shrinks to fit — see `header`'s
             // `min-width: 0`); unwrapped, the second button overflowed off
             // the viewport edge instead of dropping to its own line.
-            <Row gap="sm" wrap>
+            <Row className={css.actions} gap="sm" wrap>
               <a
                 href={primaryHref}
                 onClick={onPrimaryClick}
@@ -186,9 +179,10 @@ export function Hero({
         {/* No Grid component — this strip needs an intrinsic `auto-fit` grid
             (see Hero.css.ts), so the container is vanilla. */}
         <div
-          className={css.features}
+          className={clsx(css.features, css.content)}
           style={{
-            ...heroContentStyle,
+            maxWidth: HERO_CONTENT_MAX_WIDTH,
+            margin: '0 auto',
             borderTop: `1px solid ${color.border}`,
             borderBottom: `1px solid ${color.border}`,
           }}

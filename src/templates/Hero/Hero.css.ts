@@ -1,5 +1,6 @@
-import { style } from '@vanilla-extract/css';
-import { color, space } from '@tokens';
+import { style, globalStyle } from '@vanilla-extract/css';
+import { color, space, text } from '@tokens';
+import { measure } from '@components/Text/Text.css';
 
 // One breakpoint switches the whole hero to a column and drops the body sphere.
 // Above it the row never wraps (see `main`), so the sphere is only ever beside
@@ -11,6 +12,13 @@ const MOBILE = '(max-width: 1100px)';
 // and a resized desktop window; the reduced top padding below is a mobile
 // *portrait* correction and shouldn't fire that early.
 const NARROW = '(max-width: 640px)';
+
+// The two CTAs together are ~380px at their natural content width — anything
+// at or above this still has room to spare and reads deliberately narrow, not
+// cramped, side by side. Its own (tighter) breakpoint rather than reusing
+// `NARROW`: a ~600px width already has 200px+ to give each button, so forcing
+// the stacked/stretched treatment at `NARROW` kicked in a breakpoint early.
+const BUTTONS_NARROW = '(max-width: 480px)';
 
 export const main = style({
   minHeight: 520,
@@ -26,6 +34,11 @@ export const main = style({
   // at every viewport.
   paddingTop: `calc(${space['2xl']} * 3)`,
   paddingBottom: space['2xl'],
+  // Horizontal gutter — lives here rather than as an inline value on `Hero`'s
+  // `Row` specifically so `NARROW`'s override below can win; an inline style
+  // always beats a stylesheet rule regardless of media query.
+  paddingLeft: space.xl,
+  paddingRight: space.xl,
   '@media': {
     [MOBILE]: {
       minHeight: 'auto',
@@ -40,7 +53,50 @@ export const main = style({
     [NARROW]: {
       paddingTop: 32,
       paddingBottom: 24,
+      // `xl` (32px) a side is a real slice of a phone viewport — matches
+      // Introduction.css.ts's / Docs.css.ts's own `NARROW` gutter reduction.
+      paddingLeft: space.md,
+      paddingRight: space.md,
     },
+  },
+});
+
+// The feature strip's own content column — separate from `main`'s inline
+// `maxWidth`/`margin` (a fixed constant, no override needed) but sharing its
+// `NARROW` gutter reduction. Without this the strip kept its `xl` gutter while
+// `main` above it dropped to `md`, so the two bands' left edges stopped
+// lining up on a phone.
+export const content = style({
+  width: `calc(100% - ${space.xl} - ${space.xl})`,
+  boxSizing: 'border-box',
+  '@media': {
+    [NARROW]: {
+      width: `calc(100% - ${space.md} - ${space.md})`,
+    },
+  },
+});
+
+// The primary/secondary CTA pair. Above `BUTTONS_NARROW`, `wrap` (set on the
+// `Row` itself) drops the second button to its own line once the pair
+// together outgrows the header column. At `BUTTONS_NARROW` that leaves two
+// shrink-to-content buttons of different widths stacked with a ragged right
+// edge — switching to a column stretches both to the same width instead.
+export const actions = style({
+  '@media': {
+    [BUTTONS_NARROW]: {
+      flexDirection: 'column',
+      alignItems: 'stretch',
+    },
+  },
+});
+
+// `a` is blockified automatically as a flex item, so `alignItems: stretch`
+// above already stretches it full-width; the `<button>` inside is a plain
+// block child of that anchor, not a flex item itself, so it still needs its
+// own width set explicitly.
+globalStyle(`${actions} > a > [data-component="button"]`, {
+  '@media': {
+    [BUTTONS_NARROW]: { width: '100%' },
   },
 });
 
@@ -112,6 +168,29 @@ export const feature = style({
         '&:nth-child(4n+1)': { borderLeft: 'none' },
         '&:not(:nth-child(4n+1))': { borderLeft: `1px solid ${color.border}` },
       },
+    },
+  },
+});
+
+// The description's `measure="sm"` + `bodySm` (Hero.tsx) are sized for a
+// *grid cell* — at TWO_COLUMNS+ the cell can run wider than a comfortable
+// reading line, so both keep it compact. Below TWO_COLUMNS there's no grid:
+// one column IS the phone's own reading width, nothing beside it competing
+// for space, so the same cap just strands the copy in a narrow strip with
+// dead air to its right and reads small against all that unused room.
+// `[data-measure="sm"]` (Text's own attribute hook, not its recipe class) is
+// what wins here — one class + one attribute outranks the recipe's single
+// class regardless of stylesheet order, the same trick the theme files use
+// for their own default-size overrides.
+globalStyle(`${feature} [data-measure="sm"]`, {
+  maxWidth: 'none',
+  fontSize: text.bodyMd.fontSize,
+  lineHeight: text.bodyMd.lineHeight,
+  '@media': {
+    [TWO_COLUMNS]: {
+      maxWidth: measure.sm,
+      fontSize: text.bodySm.fontSize,
+      lineHeight: text.bodySm.lineHeight,
     },
   },
 });
