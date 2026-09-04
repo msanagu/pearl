@@ -49,10 +49,11 @@ export const hint = style({
 //
 // Split in three: `errorRow` is the `role="alert"` container (icon + message,
 // so both are announced as one description — see aria-describedby wiring in
-// Field.tsx), `errorIcon` and `errorText` style the two children. `alignItems:
-// center` assumes a short, single-line message, matching every error string
-// in this system today; a message that wraps would want `flex-start` instead
-// so the icon sits at cap-height of the first line, not centered on the block.
+// Field.tsx), `errorIconLayout` and `errorText` style the two children.
+// `alignItems: center` assumes a short, single-line message, matching every
+// error string in this system today; a message that wraps would want
+// `flex-start` instead so the icon sits at cap-height of the first line, not
+// centered on the block.
 export const errorRow = style({
   display: 'flex',
   alignItems: 'center',
@@ -64,9 +65,10 @@ export const errorRow = style({
 // so a field error and an Alert read as the same visual vocabulary. aria-hidden
 // in Field.tsx: the icon carries no text a screen reader could read, and the
 // row's own role="alert" is what gets announced.
-export const errorIcon = style({
+//
+// Layout only — color is Icon.css's `negativeIcon`.
+export const errorIconLayout = style({
   flexShrink: 0,
-  color: color.negative.icon,
 });
 
 export const errorText = style({

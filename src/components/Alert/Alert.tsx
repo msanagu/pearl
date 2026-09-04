@@ -6,6 +6,12 @@ import type { IconType } from 'react-icons';
 import { Icon } from '@components/Icon/Icon';
 import { useThemeIconSet } from '@components/Icon/ThemeIconProvider';
 import type { ThemeIconSet } from '@components/Icon/iconSets';
+import {
+  positiveIcon,
+  negativeIcon,
+  warnIcon,
+  infoIcon,
+} from '@components/Icon/Icon.css';
 import { Text } from '@components/Text/Text';
 import { XButton } from '@components/_internal/XButton/XButton';
 import { color } from '@tokens';
@@ -29,11 +35,11 @@ const iconKeyByVariant: Record<AlertVariant, keyof ThemeIconSet> = {
   info: 'info',
 };
 
-const iconColorByVariant: Record<AlertVariant, string> = {
-  positive: color.positive.icon,
-  negative: color.negative.icon,
-  warn: color.warn.icon,
-  info: color.info.icon,
+const iconClassByVariant: Record<AlertVariant, string> = {
+  positive: positiveIcon,
+  negative: negativeIcon,
+  warn: warnIcon,
+  info: infoIcon,
 };
 
 const textColorByVariant: Record<AlertVariant, string> = {
@@ -101,8 +107,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
       >
         <Icon
           icon={IconComponent}
-          className={iconSlot}
-          style={{ color: iconColorByVariant[variant] }}
+          className={clsx(iconSlot, iconClassByVariant[variant])}
         />
 
         <div data-part="content" className={content}>

@@ -1,8 +1,10 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
+import { clsx } from 'clsx';
 import type { IconType } from 'react-icons';
 import { Icon } from '@components/Icon/Icon';
 import { useThemeIconSet } from '@components/Icon/ThemeIconProvider';
+import { negativeIcon } from '@components/Icon/Icon.css';
 import {
   field,
   fieldMeta,
@@ -10,7 +12,7 @@ import {
   requiredMark,
   hint as hintClass,
   errorRow,
-  errorIcon as errorIconClass,
+  errorIconLayout,
   errorText,
 } from './Field.css';
 
@@ -112,7 +114,7 @@ export function Field({
           <Icon
             icon={ErrorIcon}
             size={14}
-            className={errorIconClass}
+            className={clsx(negativeIcon, errorIconLayout)}
             aria-hidden="true"
           />
           <span className={errorText}>{error}</span>
