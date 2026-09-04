@@ -1,5 +1,5 @@
-import { style } from '@vanilla-extract/css';
-import { color, radius, space } from '@tokens';
+import { style, globalStyle } from '@vanilla-extract/css';
+import { color, radius, space, text } from '@tokens';
 
 // Layout-only module — every colour/space/type value is a token, so the page
 // survives a theme swap untouched. Raw numbers here are structural (grid
@@ -143,6 +143,23 @@ export const premiseBeat = style({
   gap: space.xs,
   paddingTop: space.md,
   borderTop: `1px solid ${color.border}`,
+});
+
+// The beat body copy (`bodySm`, Introduction.tsx) is sized for a *column* —
+// three narrow ones side by side above 860px. Below that `premiseBeats`
+// collapses to one column spanning the whole card, so the same cramped size
+// just reads small against all the width it now has. Bumped only where the
+// grid is actually stacked; the class attribute (0,2,0) outranks `Text`'s own
+// recipe class (0,1,0) regardless of stylesheet order.
+globalStyle(`${premiseBeat} [data-type-scale="bodySm"]`, {
+  fontSize: text.bodyMd.fontSize,
+  lineHeight: text.bodyMd.lineHeight,
+  '@media': {
+    '(min-width: 861px)': {
+      fontSize: text.bodySm.fontSize,
+      lineHeight: text.bodySm.lineHeight,
+    },
+  },
 });
 
 // Space between a section's opener and its content — wider than the opener's
