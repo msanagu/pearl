@@ -49,6 +49,13 @@ export const leftCol = style({
       paddingRight: space.xl,
       gap: `calc(${space['2xl']} * 1.25)`,
     },
+    // Matches Introduction.css.ts's / Docs.css.ts's / Hero.css.ts's phone-width
+    // gutter reduction — the 860px step above never touches `paddingLeft`, so
+    // without this it stays at `xl` (32px) all the way down to phone width.
+    '(max-width: 640px)': {
+      paddingLeft: space.md,
+      paddingRight: space.md,
+    },
   },
 });
 
