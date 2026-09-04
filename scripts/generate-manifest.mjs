@@ -126,7 +126,7 @@ function toTreatmentEntity(theme, name, spec) {
   return {
     id: `treatment.${theme}.${name}`,
     metadata: {
-      name,
+      role: name,
       theme,
       treatment,
       ...(intent && { intent }),

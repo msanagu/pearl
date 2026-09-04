@@ -110,7 +110,7 @@ export interface ThemeFoundationEntity extends ManifestEntityBase {
 export interface TreatmentEntity extends ManifestEntityBase {
   metadata: {
     /** Role name, e.g. `'cardHover'`. */
-    name: string;
+    role: string;
     /** Which theme this role assignment belongs to, e.g. `'pearl'`. */
     theme: string;
     /** Which treatment (in the theme's own catalog) fulfills this role. */
