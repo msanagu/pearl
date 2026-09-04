@@ -24,21 +24,10 @@ export interface ExampleBlock {
   text: string;
 }
 
-/**
- * Traceability worth keeping in source but not meaningful to a consumer of the
- * published manifest. Generators populate it; the publish step drops it rather
- * than emitting it into `metadata`.
- */
-export interface InternalProvenance {
-  /** Which exploration turn or decision record produced this entity. */
-  source?: string;
-}
-
 interface ManifestEntityBase {
   /** Stable, generator-derived identifier — never hand-assigned. */
   id: string;
   documentBlocks: DocumentBlock[];
-  internal?: InternalProvenance;
 }
 
 /** One prop of a component's real, extracted API — never hand-typed. The
@@ -110,8 +99,8 @@ export interface TreatmentEntity extends ManifestEntityBase {
   metadata: {
     /** Role name, e.g. `'cardHover'`. */
     role: string;
-    /** Which treatment (in the theme's own catalog) fulfills this role. */
-    treatment: string;
+    /** Which treatment (in the theme's own catalog) fulfills this role, e.g. `'wash'`. */
+    name: string;
     intent?: string;
     surface?: string;
     trigger?: string;

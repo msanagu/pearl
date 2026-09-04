@@ -121,13 +121,12 @@ async function loadRoles(theme) {
 
 /** Reshapes one `RoleSpec` entry into a `TreatmentEntity` — see src/manifest/schema.ts. */
 function toTreatmentEntity(theme, name, spec) {
-  const { treatment, intent, on, trigger, chroma, limits, guidance, source } =
-    spec;
+  const { treatment, intent, on, trigger, chroma, limits, guidance } = spec;
   return {
     id: `treatment.${theme}.${name}`,
     metadata: {
       role: name,
-      treatment,
+      name: treatment,
       ...(intent && { intent }),
       ...(on && { surface: on }),
       ...(trigger && { trigger }),
@@ -140,7 +139,6 @@ function toTreatmentEntity(theme, name, spec) {
       type: 'do',
       text,
     })),
-    ...(source && { internal: { source } }),
   };
 }
 
