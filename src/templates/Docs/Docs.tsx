@@ -138,7 +138,7 @@ function ButtonDocs(): ReactNode {
           One component, two emphases. The primary carries a 1px inner highlight
           and a paired shadow for{' '}
           <Text as="span" role="inlineEmphasis">
-            quiet depth
+            quiet elevation
           </Text>
           .
         </Text>
