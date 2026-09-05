@@ -19,11 +19,12 @@ export type CardProps =
   | ({ href?: undefined } & CardOwnProps & HTMLAttributes<HTMLDivElement>)
   | ({ href: string } & CardOwnProps & AnchorHTMLAttributes<HTMLAnchorElement>);
 
-// Card.Header / Card.Body are static-property namespacing, not a Context
-// compound component — no shared state.
-//
-// `href` makes the whole card a link and sets data-interactive. Card stays
-// theme-unaware; a theme file turns data-interactive into a hover treatment.
+/**
+ * A padded surface, root + `Card.Header`/`Card.Body` static-property
+ * namespacing (no shared Context state). Pass `href` to make the whole card
+ * a link — Card stays theme-unaware; a theme file turns the resulting
+ * `data-interactive` into a hover treatment.
+ */
 function CardRoot({ children, className, href, padding, ...rest }: CardProps) {
   // Consumed by the recipe, never spread onto the DOM node.
   const rootClass = card({ padding });

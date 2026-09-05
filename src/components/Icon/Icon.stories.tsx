@@ -155,6 +155,53 @@ const meta: Meta<typeof Icon> = {
       mapping: iconMapping,
     },
   },
+  parameters: {
+    manifest: {
+      sections: [
+        {
+          kind: 'guidelines',
+          for: 'agent',
+          items: [
+            {
+              level: 'must',
+              statement:
+                "Accept any react-icons IconType via Icon's icon prop — Phosphor, Remix, Heroicons v2, Lucide, Tabler, or whatever set the consumer already uses. Pearl ships no default set; the choice belongs to the consumer.",
+            },
+            {
+              level: 'must',
+              statement:
+                'Switch between outline and filled yourself via a matched-pair import (selected ? PiHeartFill : PiHeart) — check the actual set imported before assuming a suffix convention: …/…Fill (Phosphor), …Line/…Fill (Remix), HiOutline…/Hi… (Heroicons v2).',
+            },
+            {
+              level: 'must-not',
+              statement:
+                'Don\'t look for a weight="outline" prop on Icon — outline vs. filled is a matched-pair import, not a Pearl prop.',
+            },
+            {
+              level: 'must-not',
+              statement:
+                "Don't look for an Icon weight prop for axes like Phosphor's thin/light/regular/bold/duotone either — react-icons already encodes weight in the component name; it's the consumer's own import choice.",
+            },
+            {
+              level: 'must',
+              statement:
+                'Trust Icon.css.ts to auto-recolor two-layer duotone icons (a faint background path plus a full-opacity foreground path) independently.',
+            },
+            {
+              level: 'must-not',
+              statement:
+                "Don't hand-roll duotone recoloring for a set that already gets this for free from Icon.css.ts.",
+            },
+            {
+              level: 'must',
+              statement:
+                'Pass aria-label (or title) when the icon is the only content conveying meaning (e.g. an icon-only button), or aria-hidden="true" when it\'s purely decorative next to its own visible text label. Both are ordinary SVGAttributes passed straight through — Icon does not default either one.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 };
 export default meta;
 
@@ -566,7 +613,7 @@ export const Tone: StoryObj = {
       `<Icon icon={PiXCircleFill} className={Icon.tone.negative} size={28} />\n` +
       `<Icon icon={PiWarningCircleFill} className={Icon.tone.warn} size={28} />\n` +
       `<Icon icon={PiInfoFill} className={Icon.tone.info} size={28} />\n\n` +
-      `{/* Inside a [data-inverse] container — see foundations/inverseOverride.ts */}\n` +
+      `{/* Inside a [data-inverse] container — see foundations/color/inverse.ts */}\n` +
       `<div data-inverse style={{ background: color.background, padding: space.lg }}>\n` +
       `  <Icon icon={PiUserFill} size={28} />{/* default */}\n` +
       `  {/* ...same tone classes, unchanged */}\n` +

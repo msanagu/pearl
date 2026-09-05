@@ -62,6 +62,12 @@ function toGridRem(px: number): string {
  * There is no `weight` prop: `react-icons` encodes weight in the icon name
  * (`PiHeartDuotone`, not `weight="duotone"`). That's set-specific, so hoisting
  * it into this API would make every non-Phosphor set carry a prop it can't honor.
+ *
+ * No default accessible name, and none is inferred: pass `aria-label` (or
+ * `title`) when the icon is the only content conveying meaning (e.g. an
+ * icon-only button), or `aria-hidden="true"` when it's purely decorative
+ * next to its own visible text label. Both are ordinary `SVGAttributes`
+ * passed straight through — Icon does not default either one.
  */
 const IconImpl = forwardRef<SVGSVGElement, IconProps>(
   ({ icon: iconComponent, size = 20, className, ...rest }, ref) => {

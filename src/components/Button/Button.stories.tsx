@@ -45,8 +45,7 @@ export const Primary: Story = {
  * `secondary` carries a visible border in its **resting** state — in every
  * theme and every mode — not only on hover.
  *
- * Two reasons, both documented in
- * docs/foundations/control-affordances.md:
+ * Two reasons:
  *
  * 1. **It makes the button alignable.** The box is wider than the label by
  *    its horizontal padding. With no resting edge that padding is invisible,

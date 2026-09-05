@@ -126,9 +126,7 @@ function ComponentSampler() {
           second one carrying it as its resting color. */}
       <Stack gap="sm">
         <Text as="p" typeScale="bodyMd" measure="md">
-          A button performs an action; a link takes you somewhere else. See{' '}
-          <Link href="#control-affordances">the control affordances note</Link>{' '}
-          for the full reasoning, plus a table that splits the two apart.
+          A button performs an action; a link takes you somewhere else.
         </Text>
         <Row gap="lg" wrap align="center">
           <Link href="#">Resting</Link>

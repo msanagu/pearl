@@ -8,8 +8,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 /**
- * Navigation — bare text with an underline, per the affordance split in
- * `docs/foundations/control-affordances.md`: a bordered or filled box reads as
+ * Navigation — bare text with an underline: a bordered or filled box reads as
  * an action on this page, underlined text reads as "you will end up somewhere
  * else". This is the component that owns the text-only look, not a borderless
  * `Button` variant.

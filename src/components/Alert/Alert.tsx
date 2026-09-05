@@ -59,11 +59,6 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-/**
- * Inline, persistent feedback — form errors, page-level status, confirmations.
- * For low-priority messages fine to miss, use `Toast` (renders this same
- * component in a portal with auto-dismiss), not a different visual component.
- */
 // negative/warn interrupt assistive tech on mount: role="alert" (assertive
 // live region). positive/info are static, non-urgent, carry no role.
 // role="status" (polite) is skipped — it's for content that changes in place
@@ -73,6 +68,11 @@ const roleByVariant: Partial<Record<AlertVariant, 'alert'>> = {
   warn: 'alert',
 };
 
+/**
+ * Inline, persistent feedback — form errors, page-level status, confirmations.
+ * For low-priority messages fine to miss, use `Toast` (renders this same
+ * component in a portal with auto-dismiss), not a different visual component.
+ */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   (
     {

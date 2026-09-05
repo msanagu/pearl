@@ -1,9 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { color } from '@tokens';
 
-// Deliberately not a recipe: a Link has one look per
-// docs/foundations/control-affordances.md — bare text with an underline —
-// no variant axis until a real second case turns up.
+// Deliberately not a recipe: a Link has one look — bare text with an
+// underline — no variant axis until a real second case turns up.
 export const link = style({
   // accent, not primary — primary is the CTA fill and would make every
   // inline link shout at Button volume.
