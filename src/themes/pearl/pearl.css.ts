@@ -88,6 +88,13 @@ export const urchin = {
   700: '#483072',
 };
 
+// textSubtle/icon: urchin[500] at full chroma reads too violet at mid-luminance
+// (chroma peaks perceptually there). Mix toward neutral gray drops chroma ~40%
+// (.067 -> .041), holding luminance so contrast stays put (4.6:1 on background).
+// Raw gray literal — Pearl has no neutral-gray token, and every named neutral
+// (squidInk, alabaster) carries its own hue.
+const urchinMuted = `color-mix(in srgb, ${urchin[500]} 60%, #6E6E6E)`;
+
 /**
  * [authored] Alpha palettes — neutral steps re-rendered at partial opacity,
  * keyed by percent, composited over whatever's underneath. Two anchors:
@@ -174,8 +181,8 @@ export const pearlLightThemeClass = createTheme(vars, {
     overlaySubtle: squidInkAlpha[10],
 
     text: squidInk[900],
-    textSubtle: urchin[500],
-    icon: urchin[500],
+    textSubtle: urchinMuted,
+    icon: urchinMuted,
 
     border: alabaster[500],
     borderStrong: urchin[300],
@@ -301,8 +308,8 @@ inverseOverride(pearlDarkThemeClass, {
   overlay: squidInkAlpha[55],
   overlaySubtle: squidInkAlpha[10],
   text: squidInk[900],
-  textSubtle: urchin[500],
-  icon: urchin[500],
+  textSubtle: urchinMuted,
+  icon: urchinMuted,
   border: alabaster[500],
   borderStrong: urchin[300],
   borderSubtle: alabaster[400],
