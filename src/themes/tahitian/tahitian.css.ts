@@ -436,8 +436,6 @@ globalStyle(
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
     fontSize: tahitianText.bodySm.fontSize,
-    paddingTop: tahitianSpace.lg, // airier than a standard CTA — still theme tokens
-    paddingBottom: tahitianSpace.lg,
   },
 );
 

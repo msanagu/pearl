@@ -148,7 +148,7 @@ const meta: Meta<typeof SpaceScale> = {
           kind: 'section',
           for: 'agent',
           title: 'Enforcement, and where this cascades',
-          body: "No type gate on internal .css.ts values — the composed-value rule (every operand a token) is what a no-raw-values lint would encode: a calc() of all vars.* references passes, any bare length literal fails.\n\nWhere it shows up: Stack/Row type gap against the scale; Card/Alert/Field default padding to a scale token (md); Button's min-height is controlHeight.md plus an optional per-theme buttonBleed, clamped back to controlHeight.md inside a form so it lands at Input's height in that row; Progress Bar (not yet built) is where xs earns its keep.",
+          body: "No type gate on internal .css.ts values — the composed-value rule (every operand a token) is what a no-raw-values lint would encode: a calc() of all vars.* references passes, any bare length literal fails.\n\nWhere it shows up: Stack/Row type gap against the scale; Card/Alert/Field default padding to a scale token (md); Button's height is controlHeight.md, the same token Input uses, so the two align in a row regardless of theme; Progress Bar (not yet built) is where xs earns its keep.",
         },
       ],
     },

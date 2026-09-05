@@ -28,7 +28,6 @@ const meta: Meta<typeof FormsPattern> = {
         { rel: 'composes', to: 'component.Alert' },
         { rel: 'relates-to', to: 'foundation.space' },
         { rel: 'relates-to', to: 'foundation.radius' },
-        { rel: 'see-also', to: 'component.Button#row-alignment' },
       ],
       sections: [
         {
@@ -55,7 +54,7 @@ const meta: Meta<typeof FormsPattern> = {
             {
               level: 'must',
               statement:
-                "Controls sharing a row — an Input beside a Button, or two Inputs — render at the same height automatically: Input is controlHeight.md, and a global rule clamps any Button inside a <form> to the same, cancelling a theme's buttonBleed. Never set height or vertical padding on a control to adjust a row; a theme needing denser in-form controls moves controlHeight.",
+                'Controls sharing a row — an Input beside a Button, or two Inputs — render at the same height automatically: Input and Button are both controlHeight.md. Never set height or vertical padding on a control to adjust a row; a theme needing denser controls moves controlHeight.',
             },
             {
               level: 'must',
