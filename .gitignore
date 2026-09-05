@@ -39,3 +39,5 @@ experiments/
 
 # Hide portfolio related draft material
 src/portfolio/
+
+CLAUDE.md
