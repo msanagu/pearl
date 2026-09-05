@@ -255,10 +255,10 @@ export const tahitianLightThemeClass = createTheme(vars, {
 
     // icon mixed toward textSubtle — full-strength sentiment hue reads more
     // prominent than body text despite lower contrast.
-    positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: tahitianSentiment.dawn[100], border: tahitianSentiment.dawn[300], text: tahitianSentiment.dawn[600], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[500]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.kelp[400], onFill: tahitianSentiment.kelp[800] },
+    negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.reef[400], onFill: tahitianSentiment.reef[800] },
+    warn: { surface: tahitianSentiment.dawn[100], border: tahitianSentiment.dawn[300], text: tahitianSentiment.dawn[600], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.dawn[400], onFill: tahitianSentiment.dawn[800] },
+    info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.wave[400], onFill: tahitianSentiment.wave[800] },
   },
   radius: tahitianRadius,
   space: tahitianSpace,
@@ -294,10 +294,10 @@ export const tahitianDarkThemeClass = createTheme(vars, {
     onAccentSubtle: tahitianPlatinum[100],
     focusRing: tahitianSeaglass[400],
 
-    positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: tahitianSentiment.dawn[800], border: tahitianSentiment.dawn[700], text: tahitianSentiment.dawn[200], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[400]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: tahitianSentiment.wave[800], border: tahitianSentiment.wave[700], text: tahitianSentiment.wave[300], icon: `color-mix(in srgb, ${tahitianSentiment.wave[400]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.kelp[600], onFill: tahitianSentiment.kelp[100] },
+    negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.reef[600], onFill: tahitianSentiment.reef[100] },
+    warn: { surface: tahitianSentiment.dawn[800], border: tahitianSentiment.dawn[700], text: tahitianSentiment.dawn[200], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.dawn[600], onFill: tahitianSentiment.dawn[100] },
+    info: { surface: tahitianSentiment.wave[800], border: tahitianSentiment.wave[700], text: tahitianSentiment.wave[300], icon: `color-mix(in srgb, ${tahitianSentiment.wave[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.wave[600], onFill: tahitianSentiment.wave[100] },
   },
   radius: tahitianRadius,
   space: tahitianSpace,
@@ -310,34 +310,54 @@ export const tahitianDarkThemeClass = createTheme(vars, {
 inverseOverride(tahitianLightThemeClass, {
   background: tahitianCharcoal[950],
   surface: tahitianCharcoal[900],
+  overlay: tahitianScrim.dark,
+  overlaySubtle: 'rgba(255, 255, 255, 0.10)',
   text: tahitianPlatinum[100],
   textSubtle: tahitianPlatinum[500],
   icon: tahitianPlatinum[500],
+  border: tahitianCharcoal[800],
+  borderStrong: tahitianCharcoal[700],
+  borderSubtle: tahitianCharcoal[850],
+  borderInverse: tahitianPlatinum[400],
+  shadow: tahitianCharcoal[700],
+  primary: tahitianSeaglass[400],
+  onPrimary: tahitianCharcoal[950],
   accent: tahitianSeaglass[400],
   accentHover: tahitianSeaglass[300],
   accentSubtle: tahitianCharcoal[800],
   onAccent: tahitianCharcoal[950],
   onAccentSubtle: tahitianPlatinum[100],
-  positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})` },
-  negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})` },
-  warn: { surface: tahitianSentiment.dawn[800], border: tahitianSentiment.dawn[700], text: tahitianSentiment.dawn[200], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[400]} 65%, ${vars.color.textSubtle})` },
-  info: { surface: tahitianSentiment.wave[800], border: tahitianSentiment.wave[700], text: tahitianSentiment.wave[300], icon: `color-mix(in srgb, ${tahitianSentiment.wave[400]} 65%, ${vars.color.textSubtle})` },
+  focusRing: tahitianSeaglass[400],
+  positive: { surface: tahitianSentiment.kelp[800], border: tahitianSentiment.kelp[600], text: tahitianSentiment.kelp[200], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.kelp[600], onFill: tahitianSentiment.kelp[100] },
+  negative: { surface: tahitianSentiment.reef[800], border: tahitianSentiment.reef[600], text: tahitianSentiment.reef[300], icon: `color-mix(in srgb, ${tahitianSentiment.reef[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.reef[600], onFill: tahitianSentiment.reef[100] },
+  warn: { surface: tahitianSentiment.dawn[800], border: tahitianSentiment.dawn[700], text: tahitianSentiment.dawn[200], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.dawn[600], onFill: tahitianSentiment.dawn[100] },
+  info: { surface: tahitianSentiment.wave[800], border: tahitianSentiment.wave[700], text: tahitianSentiment.wave[300], icon: `color-mix(in srgb, ${tahitianSentiment.wave[400]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.wave[600], onFill: tahitianSentiment.wave[100] },
 });
 inverseOverride(tahitianDarkThemeClass, {
   background: tahitianPlatinum[200],
   surface: tahitianPlatinum[100],
+  overlay: tahitianScrim.light,
+  overlaySubtle: 'rgba(0, 0, 0, 0.08)',
   text: tahitianCharcoal[950],
   textSubtle: tahitianPlatinum[600],
   icon: tahitianPlatinum[600],
+  border: tahitianPlatinum[400],
+  borderStrong: tahitianPlatinum[500],
+  borderSubtle: tahitianPlatinum[300],
+  borderInverse: tahitianCharcoal[800],
+  shadow: tahitianPlatinum[500],
+  primary: tahitianPeacock[600],
+  onPrimary: tahitianPlatinum[100],
   accent: tahitianPeacock[600],
   accentHover: tahitianPeacock[700],
   accentSubtle: tahitianPeacock[300],
   onAccent: tahitianPlatinum[100],
   onAccentSubtle: tahitianCharcoal[950],
-  positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})` },
-  negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})` },
-  warn: { surface: tahitianSentiment.dawn[100], border: tahitianSentiment.dawn[300], text: tahitianSentiment.dawn[600], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[500]} 65%, ${vars.color.textSubtle})` },
-  info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})` },
+  focusRing: tahitianPeacock[600],
+  positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.kelp[400], onFill: tahitianSentiment.kelp[800] },
+  negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.reef[400], onFill: tahitianSentiment.reef[800] },
+  warn: { surface: tahitianSentiment.dawn[100], border: tahitianSentiment.dawn[300], text: tahitianSentiment.dawn[600], icon: `color-mix(in srgb, ${tahitianSentiment.dawn[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.dawn[400], onFill: tahitianSentiment.dawn[800] },
+  info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})`, fill: tahitianSentiment.wave[400], onFill: tahitianSentiment.wave[800] },
 });
 
 // PearlSphere reads pearlTreatments.luster.* — vars Tahitian never applies —
@@ -464,6 +484,34 @@ globalStyle(`${tahitianLightThemeClass} [data-component="button"][data-variant="
 globalStyle(
   `${tahitianLightThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
   { background: vars.color.accentHover, boxShadow: 'none', transform: 'none' },
+);
+
+// [data-inverse] renders as the other mode — primary borrows that mode's fill
+// shape (accent/onAccent already flip; only the wash-vs-fill choice is
+// hardcoded per mode). Light-in-inverse takes the dark wash, and vice versa.
+globalStyle(
+  `${tahitianLightThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]`,
+  {
+    background: `color-mix(in srgb, ${vars.color.accent} 8%, transparent)`,
+    color: vars.color.accent,
+    border: `1px solid ${vars.color.accent}`,
+  },
+);
+globalStyle(
+  `${tahitianLightThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
+  { background: `color-mix(in srgb, ${vars.color.accent} 22%, transparent)` },
+);
+globalStyle(
+  `${tahitianDarkThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]`,
+  {
+    background: `color-mix(in srgb, ${vars.color.accent} 92%, transparent)`,
+    color: vars.color.onAccent,
+    border: '1px solid transparent',
+  },
+);
+globalStyle(
+  `${tahitianDarkThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
+  { background: vars.color.accentHover },
 );
 
 // Secondary reads quieter than primary — subtle text against the bordered,

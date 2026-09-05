@@ -104,10 +104,10 @@ export const freshwaterLightThemeClass = createTheme(vars, {
     onAccent: freshwaterIce[100],
     onAccentSubtle: freshwaterGraphite[900],
     focusRing: freshwaterGlacier[500],
-    positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.spring[400], onFill: freshwaterSentiment.spring[800] },
+    negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.canyon[400], onFill: freshwaterSentiment.canyon[800] },
+    warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.sulphur[400], onFill: freshwaterSentiment.sulphur[800] },
+    info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.pool[400], onFill: freshwaterSentiment.pool[800] },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -141,10 +141,10 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
     onAccent: freshwaterGraphite[900],
     onAccentSubtle: freshwaterIce[100],
     focusRing: freshwaterGlacier[300],
-    positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})` },
-    negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})` },
-    warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})` },
-    info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})` },
+    positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.spring[600], onFill: freshwaterSentiment.spring[100] },
+    negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.canyon[600], onFill: freshwaterSentiment.canyon[100] },
+    warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.sulphur[600], onFill: freshwaterSentiment.sulphur[100] },
+    info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.pool[600], onFill: freshwaterSentiment.pool[100] },
   },
   radius: freshwaterRadius,
   space: freshwaterSpace,
@@ -157,34 +157,54 @@ export const freshwaterDarkThemeClass = createTheme(vars, {
 inverseOverride(freshwaterLightThemeClass, {
   background: freshwaterGraphite[900],
   surface: freshwaterGraphite[800],
+  overlay: freshwaterScrim.dark,
+  overlaySubtle: 'rgba(255, 255, 255, 0.10)',
   text: freshwaterIce[100],
   textSubtle: freshwaterGraphite[500],
   icon: freshwaterGraphite[500],
+  border: freshwaterGraphite[600],
+  borderStrong: freshwaterIce[100],
+  borderSubtle: freshwaterGraphite[700],
+  borderInverse: freshwaterIce[400],
+  shadow: 'rgba(0, 0, 0, 0.55)',
+  primary: freshwaterIce[100],
+  onPrimary: freshwaterGraphite[900],
   accent: freshwaterGlacier[300],
   accentHover: freshwaterGlacier[400],
   accentSubtle: freshwaterGraphite[700],
   onAccent: freshwaterGraphite[900],
   onAccentSubtle: freshwaterIce[100],
-  positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})` },
-  negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})` },
-  warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})` },
-  info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})` },
+  focusRing: freshwaterGlacier[300],
+  positive: { surface: freshwaterSentiment.spring[800], border: freshwaterSentiment.spring[600], text: freshwaterSentiment.spring[300], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.spring[600], onFill: freshwaterSentiment.spring[100] },
+  negative: { surface: freshwaterSentiment.canyon[800], border: freshwaterSentiment.canyon[700], text: freshwaterSentiment.canyon[300], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.canyon[600], onFill: freshwaterSentiment.canyon[100] },
+  warn: { surface: freshwaterSentiment.sulphur[800], border: freshwaterSentiment.sulphur[600], text: freshwaterSentiment.sulphur[300], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.sulphur[600], onFill: freshwaterSentiment.sulphur[100] },
+  info: { surface: freshwaterSentiment.pool[800], border: freshwaterSentiment.pool[600], text: freshwaterSentiment.pool[300], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[400]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.pool[600], onFill: freshwaterSentiment.pool[100] },
 });
 inverseOverride(freshwaterDarkThemeClass, {
   background: freshwaterIce[100],
   surface: freshwaterIce[200],
+  overlay: freshwaterScrim.light,
+  overlaySubtle: 'rgba(14, 15, 16, 0.08)',
   text: freshwaterGraphite[900],
   textSubtle: freshwaterGraphite[550],
   icon: freshwaterGraphite[550],
+  border: freshwaterIce[400],
+  borderStrong: freshwaterGraphite[900],
+  borderSubtle: freshwaterIce[300],
+  borderInverse: freshwaterGraphite[600],
+  shadow: freshwaterIce[400],
+  primary: freshwaterGraphite[900],
+  onPrimary: freshwaterIce[100],
   accent: freshwaterGlacier[500],
   accentHover: freshwaterGlacier[600],
   accentSubtle: freshwaterGlacier[100],
   onAccent: freshwaterIce[100],
   onAccentSubtle: freshwaterGraphite[900],
-  positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})` },
-  negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})` },
-  warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})` },
-  info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})` },
+  focusRing: freshwaterGlacier[500],
+  positive: { surface: freshwaterSentiment.spring[100], border: freshwaterSentiment.spring[200], text: freshwaterSentiment.spring[700], icon: `color-mix(in srgb, ${freshwaterSentiment.spring[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.spring[400], onFill: freshwaterSentiment.spring[800] },
+  negative: { surface: freshwaterSentiment.canyon[100], border: freshwaterSentiment.canyon[200], text: freshwaterSentiment.canyon[600], icon: `color-mix(in srgb, ${freshwaterSentiment.canyon[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.canyon[400], onFill: freshwaterSentiment.canyon[800] },
+  warn: { surface: freshwaterSentiment.sulphur[100], border: freshwaterSentiment.sulphur[200], text: freshwaterSentiment.sulphur[700], icon: `color-mix(in srgb, ${freshwaterSentiment.sulphur[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.sulphur[400], onFill: freshwaterSentiment.sulphur[800] },
+  info: { surface: freshwaterSentiment.pool[100], border: freshwaterSentiment.pool[200], text: freshwaterSentiment.pool[700], icon: `color-mix(in srgb, ${freshwaterSentiment.pool[500]} 65%, ${vars.color.textSubtle})`, fill: freshwaterSentiment.pool[400], onFill: freshwaterSentiment.pool[800] },
 });
 
 // Primary CTA — caps label in both modes (the console-readout register).
@@ -221,6 +241,27 @@ globalStyle(`${freshwaterDarkThemeClass} [data-component="button"][data-variant=
   boxShadow: 'none',
   transform: 'none',
 });
+
+// [data-inverse] renders as the other mode — primary borrows that mode's
+// treatment (the fill is hardcoded per mode, so the token flip can't do it).
+globalStyle(`${freshwaterLightThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]`, {
+  backgroundColor: freshwaterGlacier[300],
+  color: freshwaterGraphite[900],
+  border: `1px solid ${freshwaterGraphite[900]}`,
+});
+globalStyle(
+  `${freshwaterLightThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
+  { backgroundColor: freshwaterIce[100] },
+);
+globalStyle(`${freshwaterDarkThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]`, {
+  backgroundColor: vars.color.primary,
+  color: freshwaterGlacier[200],
+  border: '1px solid transparent',
+});
+globalStyle(
+  `${freshwaterDarkThemeClass} [data-inverse] [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
+  { backgroundColor: `color-mix(in srgb, ${vars.color.primary} 85%, ${vars.color.accent})` },
+);
 
 // Resting border upgraded from color.border to color.text — the hairline reads too quiet.
 globalStyle(

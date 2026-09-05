@@ -12,9 +12,10 @@ import { vars } from './theme.css';
 
 /**
  * A sentiment role, keyed by valence — reusable beyond alerts (metrics, diffs…).
- * Application-named (not prominence-named): each field names *where* it applies
- * — `surface`/`border`/`text` map straight to their CSS property, `icon` is the
- * saturated mark color.
+ * Application-named (not prominence-named): each field names *where* it applies.
+ * Two intensities: `surface`/`border`/`text`/`icon` are the tinted, Alert-level
+ * treatment; `fill`/`onFill` are the one solid, high-emphasis pair — a filled
+ * status badge, a destructive primary button.
  */
 export interface SentimentTokens {
   /** Tinted background fill. */
@@ -23,8 +24,12 @@ export interface SentimentTokens {
   border: CSSVarFunction;
   /** Accessible content text on `surface`. */
   text: CSSVarFunction;
-  /** Saturated icon/mark color. */
+  /** Saturated icon/mark color — on `surface`, not on `fill` (that's `onFill`). */
   icon: CSSVarFunction;
+  /** Solid, saturated background — the high-emphasis treatment. Pair with `onFill`. */
+  fill: CSSVarFunction;
+  /** Accessible content on `fill` (text and icons). */
+  onFill: CSSVarFunction;
 }
 
 export interface ColorTokens {
@@ -58,7 +63,7 @@ export interface ColorTokens {
   borderStrong: CSSVarFunction;
   /** Faint border — subtle separation. */
   borderSubtle: CSSVarFunction;
-  /** Border/divider on an inverse surface. */
+  /** @deprecated Redundant — `border` now flips inside `[data-inverse]` too. Use `color.border`. */
   borderInverse: CSSVarFunction;
   /** Elevation `box-shadow` color — not a border. Currently one rung; a
    * `shadowSubtle`/`shadowStrong` ladder is a candidate once a

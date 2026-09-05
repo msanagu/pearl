@@ -120,6 +120,15 @@ mapping and every metric in the product follows. Naming stays deliberately
 small — one word per step of prominence, no synonyms — so learning one group
 teaches the rest.
 
+**Addendum · September 2026 — sentiment `fill` / `onFill`.** Each sentiment
+carries two intensities: the tinted set (`surface` / `border` / `text` /
+`icon`, Alert-level) and one solid pair, `fill` / `onFill`, for a filled status
+badge or a destructive primary button. `fill` is ramp step 400 in light mode /
+600 in dark, `onFill` its contrast partner (800 / 100) — checked as a pair in
+`sentimentFillContrast.test.ts`. Exactly one solid weight: a design needing two
+flags the gap, it doesn't invent a second fill. This closes the gap the old
+`tokenSemantics` guidance only warned about (substituting `icon` for a fill).
+
 ---
 
 ## Under evaluation

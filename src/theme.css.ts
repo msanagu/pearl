@@ -45,9 +45,10 @@ export const vars = createThemeContract({
     border: null,
     borderStrong: null,
     borderSubtle: null,
-    // No background/surface/text/textSubtle/icon "Inverse" fields — see
-    // foundations/color/inverse.ts: a `[data-inverse]` boundary scopes
-    // these same tokens instead.
+    // No "Inverse" fields for the other roles — see foundations/color/inverse.ts:
+    // a `[data-inverse]` boundary flips the whole colour contract locally.
+    // borderInverse predates that and is now redundant (plain `border` flips
+    // inside `[data-inverse]` too); kept only until a deprecation pass.
     borderInverse: null,
     // Elevation — box-shadow colour, distinct from border (see tokens.ts).
     shadow: null,
@@ -65,12 +66,14 @@ export const vars = createThemeContract({
     onAccentSubtle: null,
     // Focus
     focusRing: null,
-    // Sentiment — each `{ surface, border, text, icon }`. Application-named (not
-    // prominence-named) because a sentiment role spans multiple destinations.
-    positive: { surface: null, border: null, text: null, icon: null },
-    negative: { surface: null, border: null, text: null, icon: null },
-    warn: { surface: null, border: null, text: null, icon: null },
-    info: { surface: null, border: null, text: null, icon: null },
+    // Sentiment — each `{ surface, border, text, icon, fill, onFill }`.
+    // Application-named (not prominence-named) because a sentiment role spans
+    // multiple destinations. surface/border/text/icon are the tinted treatment;
+    // fill/onFill are the one solid high-emphasis pair (see tokens.ts).
+    positive: { surface: null, border: null, text: null, icon: null, fill: null, onFill: null },
+    negative: { surface: null, border: null, text: null, icon: null, fill: null, onFill: null },
+    warn: { surface: null, border: null, text: null, icon: null, fill: null, onFill: null },
+    info: { surface: null, border: null, text: null, icon: null, fill: null, onFill: null },
   },
   // Radius. `control` is the theme's one authored corner; `full` is the
   // orthogonal maximal-rounding treatment for square-aspect elements. No
