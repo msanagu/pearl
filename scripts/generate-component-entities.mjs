@@ -16,6 +16,7 @@ import { parse as docgenParse } from 'react-docgen';
 import { parse as babelParse } from '@babel/parser';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
+import { extractManifestParameters } from './extract-manifest-parameters.mjs';
 
 // Derived from src/components/ rather than hand-maintained: a directory
 // counts as a public component when it has a <Name>.tsx matching its own
@@ -180,6 +181,12 @@ function extractExamples(storiesPath) {
  * that `llms.txt` points at, so a consumer/agent fetches only the examples
  * for the component it's actually working with. `metadata.examplesPath` is
  * the pointer from an entity to its own examples file, when one exists.
+ * `sections` reads a component's own `parameters.manifest` off its
+ * `.stories.tsx` file, when it has one — most components don't (their
+ * `documentBlocks`/guidance content never existed), so `[]` stays the norm,
+ * not the fallback. `iconFlexibility` is the first real case: an API
+ * contract (bring-your-own icon set, no `weight` prop) that belongs on
+ * `Icon` itself, not invented as a standalone foundation domain.
  */
 export function generateComponentEntities() {
   const root = path.resolve(import.meta.dirname, '..');
@@ -188,7 +195,9 @@ export function generateComponentEntities() {
   for (const name of COMPONENTS) {
     const dir = path.join(root, 'src', 'components', name);
     const doc = extractProps(path.join(dir, `${name}.tsx`));
-    const examples = extractExamples(path.join(dir, `${name}.stories.tsx`));
+    const storiesPath = path.join(dir, `${name}.stories.tsx`);
+    const examples = extractExamples(storiesPath);
+    const manifestParams = extractManifestParameters(storiesPath);
 
     const props = doc?.props
       ? Object.entries(doc.props).map(([propName, p]) => ({
@@ -200,16 +209,23 @@ export function generateComponentEntities() {
         }))
       : [];
 
+    // DSDS requires a top-level `description` on every entry. Sourced from
+    // the component's own JSDoc (via react-docgen) when present, same
+    // source-of-truth stance as `props` above — never hand-typed.
+    const description = doc?.description?.trim() || `${name} component.`;
+
     entities.push({
       id: `component.${name}`,
+      kind: 'component',
+      name,
+      description,
       metadata: {
-        name,
         props,
         ...(examples.length && {
           examplesPath: `components/${name}/${name}.examples.json`,
         }),
       },
-      documentBlocks: [],
+      sections: manifestParams?.sections ?? [],
     });
   }
 

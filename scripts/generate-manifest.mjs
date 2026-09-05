@@ -9,6 +9,12 @@
 // llms.txt (generate-llms-txt.mjs) is the router pointing a consumer at
 // exactly the files relevant to it, instead of one everything-file.
 //
+// `rationale`/`foundations` entities are read from `parameters.manifest` on
+// `src/rationale/<name>/*.stories.tsx` / `src/foundations/<domain>/*.stories.tsx`
+// — Storybook is the authoring surface, not a hand-written src/manifest/*.ts
+// file (docs/process/plans/manifest-reshape.md, decision 7 / Phase C). See
+// extract-manifest-parameters.mjs for the AST-slice-not-execute extraction.
+//
 // Role tables come from the theme role tables (src/themes/*/*.roles.ts).
 //
 // Role tables are pure literal data (treatment names are string literals,
@@ -24,31 +30,24 @@
 // keep runtime literals) plus a stub-import plugin is the smaller surface.
 
 import * as esbuild from 'esbuild';
-import { writeFileSync, mkdtempSync, mkdirSync, readFileSync } from 'node:fs';
+import {
+  writeFileSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  existsSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
   generateComponentEntities,
   generateComponentExamples,
 } from './generate-component-entities.mjs';
-
-/** Loads a plain-literal-data .ts file (no .css imports to stub) via esbuild — same reason `loadRoles` below needs esbuild at all: TS7 dropped the classic compiler API this script would otherwise use to strip types. */
-async function loadPlainModule(entryPath) {
-  const result = await esbuild.build({
-    entryPoints: [entryPath],
-    bundle: true,
-    platform: 'node',
-    format: 'cjs',
-    write: false,
-  });
-  const code = result.outputFiles[0].text;
-  const tmpFile = path.join(
-    mkdtempSync(path.join(tmpdir(), 'pearl-manifest-')),
-    'bundle.cjs',
-  );
-  writeFileSync(tmpFile, code);
-  return import(tmpFile);
-}
+import {
+  extractManifestParameters,
+  listNamedLiteralExports,
+} from './extract-manifest-parameters.mjs';
 
 const THEMES = ['pearl', 'tahitian', 'freshwater', 'south-sea'];
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -119,31 +118,154 @@ async function loadRoles(theme) {
   return mod[rolesExportName];
 }
 
+/**
+ * Reshapes a `{ type: 'do'|'dont'|'verification', text }[]` array (the
+ * hand-authored shape every src/manifest/*.ts file still uses) into DSDS
+ * `sections` — do/dont collapse into one `guidelines` section
+ * (`must`/`must-not`), verification into one `steps` section (`ordered:
+ * false` — these are independent checks, not a sequence). Empty input
+ * yields `[]`, not a section with no items.
+ */
+function toSections(documentBlocks) {
+  const sections = [];
+  const guidelineItems = documentBlocks
+    .filter((b) => b.type === 'do' || b.type === 'dont')
+    .map((b) => ({
+      level: b.type === 'do' ? 'must' : 'must-not',
+      statement: b.text,
+    }));
+  if (guidelineItems.length) {
+    sections.push({ kind: 'guidelines', for: 'agent', items: guidelineItems });
+  }
+  const verificationItems = documentBlocks
+    .filter((b) => b.type === 'verification')
+    .map((b) => ({ title: b.text }));
+  if (verificationItems.length) {
+    sections.push({
+      kind: 'steps',
+      for: 'agent',
+      ordered: false,
+      items: verificationItems,
+    });
+  }
+  return sections;
+}
+
+/**
+ * One entity per subfolder of `baseDir` (`src/foundations` or `src/rationale`),
+ * aggregating `parameters.manifest` across every `.stories.tsx` file inside
+ * that subfolder — the authoring surface is Storybook, not a hand-written
+ * `src/manifest/*.ts` file (decision 7 / Phase C). A domain with no
+ * `parameters.manifest` anywhere yet is skipped, not shipped empty.
+ *
+ * The entity's own `name`/`description` always come from `domainDescriptions`
+ * (or a generic fallback) — never from one of the aggregated files' own
+ * `name`/`description`. A domain can hold more than one concept (`color`
+ * holds both `tokenSemantics` and `inverseConvention`), so no single file's
+ * identity is the whole domain's; each file's own `sections[].title` carries
+ * that finer distinction instead.
+ */
+function loadDomainEntities(baseDir, idPrefix, { metadataKey, domainDescriptions } = {}) {
+  if (!existsSync(baseDir)) return [];
+  const domains = readdirSync(baseDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort();
+
+  const entities = [];
+  for (const domain of domains) {
+    const domainDir = path.join(baseDir, domain);
+    const storyFiles = readdirSync(domainDir).filter((f) =>
+      /\.stories\.tsx?$/.test(f),
+    );
+    const sections = [];
+    for (const file of storyFiles) {
+      const params = extractManifestParameters(path.join(domainDir, file));
+      if (params?.sections?.length) sections.push(...params.sections);
+    }
+    if (!sections.length) continue;
+    const entity = {
+      id: `${idPrefix}.${domain}`,
+      kind: 'entry',
+      name: domain,
+      description: domainDescriptions?.[domain] ?? `${domain} ${idPrefix}.`,
+      sections,
+    };
+    if (metadataKey) entity.metadata = { [metadataKey]: domain };
+    entities.push(entity);
+  }
+  return entities;
+}
+
+/**
+ * Per-theme foundation values — a plain `export const <x>ByTheme = {...}`
+ * sibling export (mirrors `loadRoles`'s existing `*Roles` name convention),
+ * since theme identity isn't part of DSDS's per-entry shape and doesn't
+ * belong forced inside `parameters.manifest`. One `ThemeFoundationEntity`
+ * per domain that has such an export, `extends` pointing at its base
+ * `foundation.<domain>` counterpart.
+ */
+function loadThemeFoundationEntities(baseDir, theme) {
+  if (!existsSync(baseDir)) return [];
+  const domains = readdirSync(baseDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort();
+
+  const entities = [];
+  for (const domain of domains) {
+    const domainDir = path.join(baseDir, domain);
+    const storyFiles = readdirSync(domainDir).filter((f) =>
+      /\.stories\.tsx?$/.test(f),
+    );
+    for (const file of storyFiles) {
+      const exportsFound = listNamedLiteralExports(path.join(domainDir, file));
+      const byThemeKey = Object.keys(exportsFound).find((k) =>
+        k.endsWith('ByTheme'),
+      );
+      if (!byThemeKey) continue;
+      const byTheme = exportsFound[byThemeKey];
+      if (!byTheme[theme]) continue;
+      entities.push({
+        id: `foundation.${theme}.${domain}`,
+        kind: 'entry',
+        name: domain,
+        description: byTheme[theme].description ?? `${theme}'s ${domain} values.`,
+        metadata: { concept: domain },
+        extends: [{ rel: 'extends', to: `foundation.${domain}` }],
+        sections: toSections(byTheme[theme].documentBlocks ?? []),
+      });
+    }
+  }
+  return entities;
+}
+
 /** Reshapes one `RoleSpec` entry into a `TreatmentEntity` — see src/manifest/schema.ts. */
 function toTreatmentEntity(theme, name, spec) {
   const { treatment, intent, on, trigger, chroma, limits, guidance } = spec;
   return {
     id: `treatment.${theme}.${name}`,
+    kind: 'pearl.treatment',
+    name,
+    description: intent ?? `${name} role, fulfilled by the ${treatment} treatment.`,
     metadata: {
       role: name,
-      name: treatment,
+      treatment,
       ...(intent && { intent }),
       ...(on && { surface: on }),
       ...(trigger && { trigger }),
       ...(chroma && { chroma }),
       ...(limits && { limits }),
     },
-    // Existing guidance prose is doc-only, not yet rewritten into
-    // do/dont/verification blocks — carried through as `do` for now.
-    documentBlocks: (guidance ?? []).map((text) => ({
-      type: 'do',
-      text,
-    })),
+    // Existing guidance prose is doc-only, not yet rewritten into real
+    // do/dont/verification framing — carried through as bare `must` items
+    // for now (same shortcut Phase A shipped with, just DSDS-shaped).
+    sections: toSections((guidance ?? []).map((text) => ({ type: 'do', text }))),
   };
 }
 
 const generatedAt = new Date().toISOString();
-const manifestVersion = '0.2.0'; // bumped: split manifest shape (base + per-theme), examples moved out of Component entities
+const manifestVersion = '0.3.0'; // bumped: entities now DSDS (v0.20.0) entry/section-shaped — kind/name/description/sections/extends, not documentBlocks
 
 const treatmentEntitiesByTheme = Object.fromEntries(
   THEMES.map((t) => [t, []]),
@@ -159,65 +281,55 @@ for (const theme of THEMES) {
 
 const componentEntities = generateComponentEntities();
 const componentExamples = generateComponentExamples();
-const { overrideContractDocumentBlocks } = await loadPlainModule(
-  path.join(ROOT, 'src', 'manifest', 'overrideContract.ts'),
-);
-const { tokenSemanticsDocumentBlocks } = await loadPlainModule(
-  path.join(ROOT, 'src', 'manifest', 'tokenSemantics.ts'),
-);
-const { inverseConventionDocumentBlocks } = await loadPlainModule(
-  path.join(ROOT, 'src', 'manifest', 'inverseConvention.ts'),
-);
-const { iconFlexibilityDocumentBlocks } = await loadPlainModule(
-  path.join(ROOT, 'src', 'manifest', 'iconFlexibility.ts'),
-);
-const { sizingGridDocumentBlocks, sizingGridByTheme } = await loadPlainModule(
-  path.join(ROOT, 'src', 'manifest', 'sizingGrid.ts'),
-);
 
 const distDir = path.join(ROOT, 'dist');
 const manifestDir = path.join(distDir, 'manifest');
 mkdirSync(manifestDir, { recursive: true });
 
 // Rationale — DS-wide principles, not tied to one component/foundation/theme.
-const rationaleEntities = [
+// One entity per src/rationale/<name>/*.stories.tsx folder.
+const rationaleEntities = loadDomainEntities(
+  path.join(ROOT, 'src', 'rationale'),
+  'rationale',
   {
-    id: 'rationale.overrideContract',
-    metadata: { name: 'overrideContract' },
-    documentBlocks: overrideContractDocumentBlocks,
+    domainDescriptions: {
+      'override-contract':
+        'The stable data-component/data-part/data-variant attributes every component renders are the sanctioned way to extend past a documented variant — never inline styles or internal classes.',
+      composition:
+        "Favor children/slot-based props over prop-explosion — a component's own API stays small, and both its default rendering path and its fully-composed override path are first-class.",
+      'semantic-html':
+        'Defer to a native HTML element/attribute wherever one already provides the needed semantics/behavior, instead of reimplementing it with ARIA and JavaScript.',
+    },
   },
-];
+);
 
 // Foundations — the constraint/mechanic itself, common ground across every
 // theme. Per-theme instantiations (the actual values) ship in each theme's
-// own file instead, as `ThemeFoundationEntity`s — see below.
-const foundationEntities = [
+// own file instead, as `ThemeFoundationEntity`s — see below. One entity per
+// src/foundations/<domain>/*.stories.tsx folder — a domain can aggregate more
+// than one concept's sections (e.g. `color` holds tokenSemantics + inverseConvention).
+const foundationEntities = loadDomainEntities(
+  path.join(ROOT, 'src', 'foundations'),
+  'foundation',
   {
-    id: 'foundation.tokenSemantics',
-    metadata: { concept: 'tokenSemantics' },
-    documentBlocks: tokenSemanticsDocumentBlocks,
+    metadataKey: 'concept',
+    domainDescriptions: {
+      color:
+        "Sentiment sub-fields (surface/border/text/icon) each have a distinct intended use, and mode/inverse are orthogonal axes — most tokens auto-flip inside an inverse container, border tokens don't.",
+      radius:
+        "A padded surface derives its own corner radius from radius.control plus its own padding, instead of authoring one — keeps nested corners concentric. Experimental, not settled: see docs/foundations/radius-system.md.",
+      space:
+        "The soft sizing-grid mechanic — snap every raw pixel size to the active theme's own scale-token grid; per-theme increment values live in each theme's own foundations entry.",
+      typography:
+        'One Text component, not split Heading/Text — typeScale (size), role (face), as (element), and weight are four independent axes that combine any of them; heading level is driven by document structure, never by how large something needs to look.',
+    },
   },
-  {
-    id: 'foundation.inverseConvention',
-    metadata: { concept: 'inverseConvention' },
-    documentBlocks: inverseConventionDocumentBlocks,
-  },
-  {
-    id: 'foundation.iconFlexibility',
-    metadata: { concept: 'iconFlexibility' },
-    documentBlocks: iconFlexibilityDocumentBlocks,
-  },
-  {
-    id: 'foundation.sizingGrid',
-    metadata: { concept: 'sizingGrid' },
-    documentBlocks: sizingGridDocumentBlocks,
-  },
-];
+);
 
 const baseManifest = {
   manifestVersion,
   generatedFrom:
-    'src/components/*/*.tsx, src/manifest/overrideContract.ts, src/manifest/tokenSemantics.ts, src/manifest/inverseConvention.ts, src/manifest/iconFlexibility.ts, src/manifest/sizingGrid.ts',
+    'src/components/*/*.stories.tsx, src/foundations/*/*.stories.tsx, src/rationale/*/*.stories.tsx',
   generatedAt,
   rationale: rationaleEntities,
   components: componentEntities,
@@ -232,16 +344,13 @@ console.log(
 );
 
 for (const theme of THEMES) {
-  const themeFoundations = [
-    {
-      id: `foundation.${theme}.sizingGrid`,
-      metadata: { concept: 'sizingGrid' },
-      documentBlocks: sizingGridByTheme[theme],
-    },
-  ];
+  const themeFoundations = loadThemeFoundationEntities(
+    path.join(ROOT, 'src', 'foundations'),
+    theme,
+  );
   const themeManifest = {
     manifestVersion,
-    generatedFrom: `src/themes/${theme}/${theme}.roles.ts, src/manifest/sizingGrid.ts`,
+    generatedFrom: `src/themes/${theme}/${theme}.roles.ts, src/foundations/*/*.stories.tsx`,
     generatedAt,
     theme,
     foundations: themeFoundations,

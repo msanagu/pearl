@@ -35,9 +35,9 @@ const componentLines = baseManifest.components
   .map((e) => {
     const examplesPath = e.metadata.examplesPath;
     const exampleNote = examplesPath
-      ? ` Real usage examples: [${examplesPath}](./${examplesPath}) — fetch this file too, but only when generating with **${e.metadata.name}** specifically.`
+      ? ` Real usage examples: [${examplesPath}](./${examplesPath}) — fetch this file too, but only when generating with **${e.name}** specifically.`
       : ' No usage examples extracted for this component.';
-    return `- **${e.metadata.name}** (${e.metadata.props.length} prop${e.metadata.props.length === 1 ? '' : 's'} in \`manifest/base.json\`).${exampleNote}`;
+    return `- **${e.name}** (${e.metadata.props.length} prop${e.metadata.props.length === 1 ? '' : 's'} in \`manifest/base.json\`).${exampleNote}`;
   })
   .join('\n');
 
@@ -50,7 +50,7 @@ const content = `# ${pkg.name}
 The manifest is split by scope so a single generation task never has to load
 data for a theme it isn't using or a component it isn't touching:
 
-- [manifest/base.json](./manifest/base.json): ${baseManifest.components.length} theme-agnostic Component entities (props/types only — real usage examples live in each component's own file below, not embedded here). Also carries \`rationale\` (${baseManifest.rationale.length} DS-wide principle(s), not tied to one component/foundation/theme — e.g. \`overrideContract\`: the real mechanism for extending past a component's documented variants is data-attribute targeting, never inline styles, and the expectation that doing so gets flagged, not shipped silently) and \`foundations\` (${baseManifest.foundations.length} theme-agnostic mechanic(s) — \`tokenSemantics\`: what each sentiment-color sub-field \`surface\`/\`border\`/\`text\`/\`icon\` is actually for, \`icon\` in particular is deliberately desaturated for glyph use, not a general-purpose strong fill color; \`inverseConvention\`: \`mode\` (light/dark) and \`inverse\` (\`[data-inverse]\`) are different, orthogonal axes, most tokens auto-flip inside an inverse container except \`border\`/\`borderStrong\`/\`borderSubtle\` (use \`color.borderInverse\` explicitly for those); \`iconFlexibility\`: \`Icon\`'s \`icon\` prop accepts any \`react-icons\` \`IconType\`, check the actual set imported before assuming an outline/filled suffix pattern; \`sizingGrid\`: the soft-grid mechanic itself — read the active theme's own \`<theme>.json\` \`foundations\` entry for its real increment values, they differ by theme). Every entry's real content lives in its own \`documentBlocks\` (do/dont/verification) — read those, this summary is just a map of what's there.
+- [manifest/base.json](./manifest/base.json): ${baseManifest.components.length} theme-agnostic Component entities (props/types only — real usage examples live in each component's own file below, not embedded here). Also carries \`rationale\` (${baseManifest.rationale.length} DS-wide principle(s), not tied to one component/foundation/theme — e.g. \`overrideContract\`: the real mechanism for extending past a component's documented variants is data-attribute targeting, never inline styles, and the expectation that doing so gets flagged, not shipped silently) and \`foundations\` (${baseManifest.foundations.length} theme-agnostic mechanic(s) — \`tokenSemantics\`: what each sentiment-color sub-field \`surface\`/\`border\`/\`text\`/\`icon\` is actually for, \`icon\` in particular is deliberately desaturated for glyph use, not a general-purpose strong fill color; \`inverseConvention\`: \`mode\` (light/dark) and \`inverse\` (\`[data-inverse]\`) are different, orthogonal axes, most tokens auto-flip inside an inverse container except \`border\`/\`borderStrong\`/\`borderSubtle\` (use \`color.borderInverse\` explicitly for those); \`iconFlexibility\`: \`Icon\`'s \`icon\` prop accepts any \`react-icons\` \`IconType\`, check the actual set imported before assuming an outline/filled suffix pattern; \`sizingGrid\`: the soft-grid mechanic itself — read the active theme's own \`<theme>.json\` \`foundations\` entry for its real increment values, they differ by theme). Every entry's real content lives in its own \`sections\` (\`guidelines\`/\`steps\`) — read those, this summary is just a map of what's there.
 ${themeLines}
 
 ### Component examples — fetch only the ones you're using
@@ -59,7 +59,7 @@ ${componentLines}
 
 ### Schema
 
-Structured facts in \`metadata\`, do/dont/verification notes in \`documentBlocks\`. No separate human-facing channel — this manifest's only real consumer is an agent. See the repo's ADR-0008 for the full schema rationale.
+Entries follow [DSDS](https://designsystemdocspec.org/v0.20.0/dsds.bundled.yaml) v0.20.0's shape: \`id\`/\`kind\`/\`name\`/\`description\` plus entity-specific facts in \`metadata\`, and do/must/must-not/verification content in \`sections\` (\`guidelines\`/\`steps\`), every section \`for: 'agent'\` — this manifest's only real consumer. No separate human-facing channel inside it; a human-facing surface is generated separately. See the repo's DECISIONS.md ("Machine-readable manifest") for the full schema rationale.
 
 ## \`dist/components/_internal/\` and \`dist/components/_brand/\` — present in \`dist\`, not public API
 
