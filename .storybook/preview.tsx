@@ -1,5 +1,4 @@
 import type { Preview } from '@storybook/react-vite';
-import { useGlobals, useEffect, useRef } from 'storybook/preview-api';
 import '@fontsource/anton/400.css';
 import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
@@ -44,10 +43,6 @@ interface ThemeEntry {
    *  `luster`/`overtone` gradients read. Never pair one theme's extension
    *  class with another's theme class. */
   extension?: string;
-  /** The mode this theme wants to be met in — Tahitian reads dark-first,
-   *  Pearl light-first. Picking a theme snaps the mode to this; picking a
-   *  mode afterwards still overrides freely. */
-  defaultMode: Mode;
   /** Fontshare `f[]` requests for this theme's non-@fontsource faces, split
    *  the same way preview-head.html's used to be (one family per request,
    *  ≤3 styles each). Pearl's Gambetta is preloaded in preview-head.html
@@ -80,7 +75,6 @@ const themes: Record<string, ThemeEntry> = {
     light: pearlLightThemeClass,
     dark: pearlDarkThemeClass,
     extension: pearlExtensionClass,
-    defaultMode: 'light',
     // General Sans (body) — Gambetta (serif accent) is preloaded separately
     // in preview-head.html since Pearl is the default theme.
     fontshareFamilies: ['general-sans@300,400,500', 'general-sans@600,700'],
@@ -89,21 +83,18 @@ const themes: Record<string, ThemeEntry> = {
     light: tahitianLightThemeClass,
     dark: tahitianDarkThemeClass,
     extension: tahitianExtensionClass,
-    defaultMode: 'dark',
     fontshareFamilies: ['switzer@400,500,600', 'switzer@700'],
   },
   freshwater: {
     light: freshwaterLightThemeClass,
     dark: freshwaterDarkThemeClass,
     extension: freshwaterExtensionClass,
-    defaultMode: 'light',
     // No Fontshare faces: Space Grotesk (display/heading) and Azeret Mono
     // (body/mono) are both self-hosted via @fontsource.
   },
   southSea: {
     light: southSeaLightThemeClass,
     dark: southSeaDarkThemeClass,
-    defaultMode: 'dark',
     fontshareFamilies: [
       'zodiak@400,401,700,701',
       'general-sans@300,400,500',
@@ -168,12 +159,18 @@ const preview: Preview = {
       },
     },
   },
-  // Pearl is the flagship and the theme the docs site is pinned to.
-  initialGlobals: { theme: 'pearl', mode: 'light' },
+  // Pearl is the flagship and the theme the docs site is pinned to. Mode
+  // follows the OS's prefers-color-scheme on first load — themes no longer
+  // carry an opinionated default — until the visitor toggles it by hand.
+  initialGlobals: {
+    theme: 'pearl',
+    mode: window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
+  },
 
   decorators: [
     (Story, context) => {
-      const [, updateGlobals] = useGlobals();
       const theme = (context.globals.theme as string) ?? 'pearl';
       const mode = (context.globals.mode as Mode) ?? 'light';
       const entry = themes[theme] ?? themes.pearl;
@@ -184,19 +181,8 @@ const preview: Preview = {
       // doesn't matter for stylesheets.
       loadThemeFonts(entry);
 
-      // Snap the mode to the incoming theme's default *on a theme switch only*.
-      // The ref seeds on first render so `initialGlobals` and a `?globals=`
-      // deep link still win — this reacts to the toolbar, it doesn't preempt it.
-      const previousTheme = useRef<string | null>(null);
-      useEffect(() => {
-        const changed =
-          previousTheme.current !== null && previousTheme.current !== theme;
-        previousTheme.current = theme;
-        const preferred = themes[theme]?.defaultMode;
-        if (changed && preferred && preferred !== mode) {
-          updateGlobals({ mode: preferred });
-        }
-      }, [theme]);
+      // Mode is independent of theme — switching themes never touches it,
+      // only the ModeToggle does.
       // Both classes come from the SAME registry entry, so a theme class can
       // never be paired with another theme's extension class. A theme that
       // declares no extension treatments contributes nothing here — that's the
