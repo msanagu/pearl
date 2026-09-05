@@ -32,6 +32,13 @@ const config: StorybookConfig = {
   // addon-docs' own deps, e.g. the MDX renderer) still triggers a runtime
   // re-optimize. `optimizeDeps.entries` makes the scanner crawl the story
   // files' transitive imports at startup instead.
+  //
+  // `optimizeDeps.include` covers deps the scanner still can't see: the
+  // vanilla-extract plugin turns .css.ts into virtual modules, so the
+  // recipe runtime (@vanilla-extract/recipes/createRuntimeFn) is invisible
+  // to the crawl and first surfaces on a Docs visit, where it re-optimizes
+  // and reloads the iframe blank. Only shows up locally — `storybook build`
+  // pre-bundles everything.
   async viteFinal(config) {
     config.server ??= {};
     config.server.warmup = {
@@ -45,6 +52,10 @@ const config: StorybookConfig = {
           ? [config.optimizeDeps.entries]
           : []),
       './src/**/*.stories.@(ts|tsx)',
+    ];
+    config.optimizeDeps.include = [
+      ...(config.optimizeDeps.include ?? []),
+      '@vanilla-extract/recipes/createRuntimeFn',
     ];
     return config;
   },
