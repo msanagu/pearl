@@ -8,10 +8,21 @@ import {
   useTransform,
 } from 'motion/react';
 import type { IconType } from 'react-icons';
-import { PiCaretDown, PiCompassRose, PiCube, PiSwatches, PiTextAa } from 'react-icons/pi';
+import {
+  PiCaretDown,
+  PiCompassRose,
+  PiCube,
+  PiSwatches,
+  PiTextAa,
+} from 'react-icons/pi';
 import { RxColorWheel, RxCube, RxLayout, RxText } from 'react-icons/rx';
 import { TbCompass, TbCube, TbPalette, TbTypography } from 'react-icons/tb';
-import { RiBox3Fill, RiCompassFill, RiFontSize2, RiPaletteFill } from 'react-icons/ri';
+import {
+  RiBox3Fill,
+  RiCompassFill,
+  RiFontSize2,
+  RiPaletteFill,
+} from 'react-icons/ri';
 import { Text } from '@components/Text/Text';
 import { Button } from '@components/Button/Button';
 import { Card } from '@components/Card/Card';
@@ -58,8 +69,8 @@ const decisions: {
   why: string;
   /** The cost the record accepts with its eyes open. */
   cost: string;
-  /** Optional pointer to where this one is being worked out in the open. */
-  link?: { label: string; href: string };
+  /** Optional pointers to where this one is being worked out in the open. */
+  links?: { label: string; href: string }[];
 }[] = [
   {
     id: '0001',
@@ -122,12 +133,18 @@ const decisions: {
       'A manifest for coding agents, with stories as the usage context it points at',
     status: 'proposed',
     date: '2026-08',
-    why: 'The bet: guidance that ships as structured data — generated from the same source as the components, so it can’t drift — keeps a coding agent accurate without a retrieval layer bolted on afterward. The manifest carries the component contracts, token roles, and usage rules. Its usage examples are the Storybook stories: written once for the docs a person reads, and surfaced through the manifest for an agent — one set of examples, nothing duplicated.',
-    cost: 'Whether it actually makes an agent more accurate is being measured, not assumed — generation runs against a real package install are logged in the open as they happen. Separately, the emerging standards the shape’s structure leans on are still young enough to move.',
-    link: {
-      label: 'Open the playground',
-      href: 'https://msanagu.github.io/pearl-playground/',
-    },
+    why: 'The bet: guidance that ships as structured data — generated from the same source as the components, so it can’t drift — keeps a coding agent accurate without a retrieval layer bolted on afterward. The manifest carries the component contracts, token roles, and usage rules. Its entry/section shape now adopts Sanity’s Design System Doc Spec (DSDS) rather than loosely borrowing from it and re-deriving a shape that is an emerging standard. Its usage examples are the Storybook stories: written once for the docs a person reads, and surfaced through the manifest for an agent — one set of examples, nothing duplicated.',
+    cost: 'Whether it actually makes an agent more accurate is being measured, not assumed — generation runs against a real package install are logged in the open as they happen. The DSDS alignment is a hand-authored snapshot of its v0.20.0 schema, not a live dependency — staying caught up with DSDS is a manual step today, nothing pins or checks that version automatically, and DSDS itself is still pre-1.0 and could reshape again before anyone notices.',
+    links: [
+      {
+        label: 'Open the playground',
+        href: 'https://msanagu.github.io/pearl-playground/',
+      },
+      {
+        label: 'DSDS schema (v0.20.0)',
+        href: 'https://designsystemdocspec.org/v0.20.0/dsds.bundled.yaml',
+      },
+    ],
   },
   {
     id: '0008',
@@ -809,15 +826,16 @@ function IntroductionPage({
                             >
                               {decision.cost}
                             </Text>
-                            {decision.link && (
+                            {decision.links?.map((link) => (
                               <Link
-                                href={decision.link.href}
+                                key={link.href}
+                                href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                {decision.link.label} →
+                                {link.label} →
                               </Link>
-                            )}
+                            ))}
                           </Stack>
                         </Stack>
                       </motion.details>

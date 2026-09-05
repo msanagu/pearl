@@ -139,10 +139,13 @@ had just written.
 The fix is to treat these as opt-in extensions. A theme declares only the
 effects it actually wants and names where each one is allowed to apply; a theme
 with no signature effect is a valid, expressible state rather than a gap. (This
-independently landed on the same structure an emerging design-system spec
-formalized a month later — a small signal the shape is sound.) Still proposed —
-the open question is whether it holds up as more themes are authored or
-collapses into something simpler.
+independently landed on the same structure an emerging design-system spec —
+Sanity's [Design System Doc Spec](https://designsystemdocspec.org) — formalized
+a month later. Originally logged as convergence and left at that; as of
+September 2026, revisited into an actual adoption of that spec's shape for the
+manifest, credited rather than just noted as a coincidence — see the manifest
+entry below.) Still proposed — the open question is whether it holds up as more
+themes are authored or collapses into something simpler.
 
 ### Machine-readable manifest — and stories as the usage context
 
@@ -153,15 +156,39 @@ agent accurate with less retrieval scaffolding than one that bolts RAG onto
 human-only docs after the fact. So the build generates manifest JSON and an
 `llms.txt` from the same source that drives the components and themes — the
 component contracts, token roles, and usage rules as structured data an agent
-reads directly. Its shape borrows from the conventions taking hold in emerging
-standards for machine-readable design systems (Sanity's
-[Design System Doc Spec](https://designsystemdocspec.org) is the closest) rather
-than being invented — the structure without the dependency or a version to
-track, the same adopt-the-idea logic as the dependency stance. And for usage:
+reads directly. Its shape now adopts, rather than loosely borrows from, the
+conventions taking hold in emerging standards for machine-readable design
+systems — Sanity's [Design System Doc Spec](https://designsystemdocspec.org)
+(DSDS), specifically. First pass took the "structure without the dependency"
+route deliberately, since DSDS was pre-1.0 and offered nothing Pearl's own
+compile-time checks didn't already cover. Revisited: DSDS is now real enough
+(0.20.0, a disclosed production deployment at Sanity) that aligning to its
+entry/section shape and crediting it is a better way to participate in a small,
+active field than independently re-deriving a shape that already converged
+once. Pearl still generates JSON straight from TypeScript and Storybook
+sources rather than hand-authoring the spec's native YAML, and keeps its own
+compile-time completeness check on top — the adoption is of the shape
+defined by [DSDS's schema itself](https://designsystemdocspec.org/v0.20.0/dsds.bundled.yaml),
+not of DSDS's authoring format or in place of Pearl's own enforcement. And for usage:
 the Storybook stories are written once for the docs a person reads, then
 surfaced through the manifest for an agent — one set of real, compiled,
 type-checked examples, with no hand-written `@example` blocks to recreate or
 keep in sync.
+
+Worth being precise about what "adopts" means here, since it's easy to
+overstate: `src/manifest/schema.ts`'s types are hand-authored, written once
+against the real
+[`v0.20.0` schema](https://designsystemdocspec.org/v0.20.0/dsds.bundled.yaml)
+read directly — a snapshot, not a link. Nothing in this repo pins that version
+as a dependency or checks it against DSDS's live schema; `npm install` pulls
+nothing DSDS-related, because DSDS isn't distributed as an installable package
+in the first place, only a site and a schema file. If DSDS reshapes again,
+this repo won't know until someone rechecks by hand — staying caught up is a
+manual step today, not a build-time or install-time check of any kind.
+Building real fetch-and-diff tooling against a spec that's itself still
+pre-1.0 felt like effort that could get thrown away before it paid for
+itself — so the honest state is a point-in-time snapshot, revisited if DSDS
+reaches 1.0, not a live dependency.
 
 A first generator ships today. Whether it actually makes an agent more accurate
 is being measured, not assumed — the
