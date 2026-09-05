@@ -1,36 +1,28 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { color, radius, space, fontFamily, text } from '@tokens';
 
-// One `background`/`border`/`color` declaration per variant, same reasoning
-// as Alert's recipe: keeps each variant's full look together rather than
-// splitting a shared base color from a per-variant override.
+// One background/border/color declaration per variant, same reasoning as
+// Alert's recipe: keeps each variant's full look together.
 export const tag = recipe({
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    // `control`, not `full`. A Tag is a small rectangle, and `full` on a
-    // rectangle is a pill — a shape this system does not want. `full` is now
-    // reserved for genuinely square-aspect elements where maximal rounding
-    // produces a real circle (avatars, dots, status marks). Matching `control`
-    // also means a Tag sitting beside a Button or Input shares its corner
-    // rather than introducing a second one.
+    // control, not full — full on a rectangle is a pill, a shape this system
+    // avoids; full is reserved for square-aspect elements (avatars, dots).
+    // Matching control also shares corner with a neighboring Button/Input.
     borderRadius: radius.control,
     cornerShape: radius.cornerShape,
-    // `sm` + `xs` (8 + 4 = 12px), not a new scale step — the horizontal padding
-    // has to clear the corner arc or the label sits inside the curve, the same
-    // rule Input's text inset follows. Composed from two real tokens rather
-    // than a literal so it still rescales if a theme retunes its space scale.
+    // sm + xs (8 + 4 = 12px), not a new scale step — clears the corner arc,
+    // same rule as Input's text inset. Composed from tokens so it rescales.
     paddingLeft: `calc(${space.sm} + ${space.xs})`,
     paddingRight: `calc(${space.sm} + ${space.xs})`,
     paddingTop: space.xs,
     paddingBottom: space.xs,
-    // Gap, so a leading icon (a delta arrow, a status dot) does not butt
-    // against the label.
+    // So a leading icon (delta arrow, status dot) doesn't butt against the label.
     gap: space.xs,
     fontFamily: fontFamily.body,
-    // `caption`, not `bodySm` — a Tag is a mark ON content, not a line OF it.
-    // At body size it competes with the text it annotates; caption is the step
-    // the scale already reserves for "below the reading floor" (see tokens.ts).
+    // caption, not bodySm — a Tag marks content, it isn't a line of it; body
+    // size would compete with the text it annotates.
     fontSize: text.caption.fontSize,
     lineHeight: 1,
     whiteSpace: 'nowrap',

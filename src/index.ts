@@ -1,24 +1,15 @@
 // Public entry point for the design system package.
-// Components are re-exported here as they are built (Phase 2 onward).
+// Components are re-exported here as they ship (Phase 2 onward).
 //
-// ## Naming: what a prefix means
-// "Pearl" names both this design system and one of its themes, so the export
-// surface resolves the ambiguity by position rather than by word:
-//
-// - **DS-level symbols are unprefixed** — `vars`, `color`, `radius`, `space`,
-//   `Button`, `Text`. These belong to the system, and nothing in this package
-//   ever spells the system's name into an identifier.
-// - **Theme-level symbols carry their theme's name** — `pearlLightThemeClass`,
-//   `pearlExtensionClass`, `tahitianExtensionClass`. A `pearl*` prefix ALWAYS
-//   means Pearl-the-theme, never the design system.
-//
-// So `pearlExtensionClass` is Pearl-the-theme's extension class, exactly
-// parallel to `tahitianExtensionClass` — not a system-wide one. The prefixes
-// are deliberate and stay: these are concatenated as className strings
-// (`${pearlLightThemeClass} ${pearlExtensionClass}`), and the shared stem is
-// what makes pairing one theme's class with another's extension visible on
-// sight. That mispairing is otherwise silent — see tahitian.css.ts on why
-// Tahitian never applies Pearl's.
+// Naming: "Pearl" names both the system and one of its themes, so exports
+// disambiguate by position, not word.
+// - DS-level symbols are unprefixed: `vars`, `color`, `radius`, `space`, `Button`, `Text`.
+// - Theme-level symbols carry their theme's name: `pearlLightThemeClass`,
+//   `pearlExtensionClass`, `tahitianExtensionClass`. `pearl*` always means
+//   Pearl-the-theme, never the system.
+// Prefixes stay because classes concatenate
+// (`${pearlLightThemeClass} ${pearlExtensionClass}`) — a shared stem makes a
+// mispaired theme/extension visible on sight, otherwise silent. See tahitian.css.ts.
 
 // --- Theme contract & themes ---
 export { vars } from './theme.css';

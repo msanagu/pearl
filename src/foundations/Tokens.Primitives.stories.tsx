@@ -35,27 +35,22 @@ import { WordMark } from '@components/_brand/WordMark/WordMark';
 import * as css from './primitives.css';
 
 /**
- * Foundations → Tokens/Primitives: the raw hex palette for the ACTIVE theme, laid out like Tailwind's color docs — one row
- * per hue, one swatch per step the hue actually defines. Reads the
- * Storybook toolbar's theme global and shows only that theme's section, the
- * same pattern Typography.stories.tsx uses for role treatments — not every
- * theme side by side, since only one is ever the thing being inspected at a
- * time.
+ * Foundations → Tokens/Primitives: raw hex palette for the active theme, laid
+ * out like Tailwind's color docs — one row per hue, one swatch per step it
+ * defines. Reads the Storybook toolbar's theme global and shows only that
+ * theme's section, same pattern as Typography.stories.tsx.
  *
- * Purpose: a reference for building a step-pairing ruleset — e.g. "surface at
- * 100, text at 700 is always ≥4.5:1" — checked against real values here rather
- * than assumed from the numbers. Values print as their literal hex source, no
- * DOM-computed rgba. Alpha steps are the exception — instead of the rgba
- * string, they print as their derivation (`hue[step] @ N%`), since the
- * opacity is the meaningful fact, not the composited channel math.
+ * Purpose: a reference for building a step-pairing ruleset (e.g. "surface at
+ * 100, text at 700 is always ≥4.5:1"), checked against real values. Values
+ * print as literal hex, no DOM-computed rgba. Alpha steps print their
+ * derivation (`hue[step] @ N%`) instead — opacity is the meaningful fact.
  *
  * All four themes' neutrals are numeric ramps (`Scale`) on one hue per
- * register, matching the pattern of Pearl's `alabaster` / `squidInk`.
+ * register, matching Pearl's alabaster/squidInk.
  */
 
-// The palest steps sit within a few lightness points of the page background,
-// so a fixed border token is nearly invisible against them. Derive the ring
-// from each swatch's own lightness instead (dark on light fills, light on dark).
+// Palest steps sit near the page background's lightness, so a fixed border
+// token is nearly invisible — derive the ring from each swatch's own lightness.
 function contrastBorder(hex: string): string {
   const n = parseInt(hex.replace('#', ''), 16);
   const r = (n >> 16) & 255;
@@ -98,12 +93,10 @@ function Scale({
   );
 }
 
-// `{anchorLabel} @ {pct}%` (e.g. "squidInk[900] @ 10%") repeated per swatch
-// ran wider than the 64px swatch column at 10px monospace and wrapped onto
-// multiple lines, crowding into the row above/below — the anchor now prints
-// once, in the row label, and each swatch just carries its own percent.
-// `anchorHex` also gives `contrastBorder` something to key off, since the
-// swatch's own fill is a partial-opacity composite, not a flat color.
+// `{anchorLabel} @ {pct}%` repeated per swatch overflowed the 64px column at
+// 10px monospace — anchor now prints once in the row label, each swatch
+// carries just its percent. anchorHex also gives contrastBorder something to
+// key off, since the swatch's own fill is a partial-opacity composite.
 function AlphaScale({
   label,
   anchorLabel,

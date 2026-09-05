@@ -45,7 +45,7 @@ export const ICON_LIBRARIES: readonly IconLibrary[] = [
     weights: true,
     size: 9000,
     notes:
-      'Six weights (thin/light/regular/bold/fill/duotone) as separate exports, so icon weight can follow the theme. Duotone is the only common set with a two-layer structure the Icon styles can recolor per layer. The default pick, and the widest range here.',
+      'Six weights (thin/light/regular/bold/fill/duotone) as separate exports, so icon weight can follow the theme. Icon styles render everything flat, single-tone — duotone weight renders but loses its second layer. The default pick, and the widest range here.',
   },
   {
     id: 'lu',

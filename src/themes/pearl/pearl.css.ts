@@ -6,19 +6,17 @@ import { inverseOverride } from '@/foundations/inverseOverride';
  * Pearl — the flagship theme, and the one the docs site is pinned to.
  *
  * Sans-first: General Sans carries display/heading/body; Gambetta italic is a
- * rare accent (the wordmark, inline interjections). The colour contract needs
- * slots the visual language never specified (sentiment families, border ranks,
- * inverse pairs) — those are authored here and marked `[authored]`, to review
- * as new work rather than canon.
+ * rare accent (wordmark, inline interjections). Slots the visual language
+ * never specified (sentiment families, border ranks, inverse pairs) are
+ * authored here, marked [authored], to review as new work rather than canon.
  *
- * `pearlTreatments.luster` is a per-theme extension, not a shared contract slot
- * — see DECISIONS.md (theme extensions); its roles are declared in
- * `pearl.roles.ts`.
+ * pearlTreatments.luster is a per-theme extension, not a shared contract slot
+ * — see DECISIONS.md. Its roles are declared in pearl.roles.ts.
  */
 
 // ---- Type primitives (named by what they are — no roles assigned here) ----
 // General Sans and Gambetta (both Fontshare) load via the CDN link South Sea
-// already pulls (`.storybook/preview-head.html`); named here so Pearl's stack
+// already pulls (.storybook/preview-head.html); named here so Pearl's stack
 // resolves to them instead of system-ui.
 export const pearlFonts = {
   sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
@@ -28,17 +26,15 @@ export const pearlFonts = {
 
 // ---- Colour primitives ----
 //
-// Three hue families, each stepped 100 (lightest) → 900 (darkest). Dark mode is
-// not a second palette — it reads the same family at different steps, so a step
+// Three hue families, each stepped 100 (lightest) -> 900 (darkest). Dark mode
+// reads the same family at different steps, not a second palette — a step
 // number means the same lightness in both modes.
 //
-// - `alabaster` — warm neutral, pale end only. Pearl never uses a dark step of
-//   this hue (that register is squidInk's).
-// - `squidInk` — cool near-black neutral: dark-mode background/surface/border.
-//   Dark-mode text borrows `alabaster[300]` directly rather than aliasing a
-//   `squidInk[100]` that would claim a hue coherence it doesn't have.
-// - `urchin` — cool violet. Quiet work only (focus ring, tints, subtle text,
-//   accent); never a fill.
+// - alabaster — warm neutral, pale end only; dark register is squidInk's.
+// - squidInk — cool near-black neutral: dark-mode background/surface/border.
+//   Dark-mode text borrows alabaster[300] directly, not a squidInk[100] alias.
+// - urchin — cool violet. Quiet work only (focus ring, tints, subtle text,
+//   accent), never a fill.
 export const alabaster = {
   /** secondary control top-stop / onAccent */
   100: '#FDFCFA',
@@ -53,11 +49,11 @@ export const alabaster = {
 };
 
 /**
- * Neutral dark register. Steps are spaced by even *contrast* (not even OKLCH
- * L), a single hue (~297°), each ~1.4:1 against the step below — checked with
- * `validate/contrast.ts`. `900` is the canon ink anchor everything else is
- * solved against; `850`/`750` fill the gap up from it so `surface` reads above
- * `background` without a hard jump.
+ * Neutral dark register. Steps spaced by even contrast (not OKLCH L), single
+ * hue (~297°), each ~1.4:1 against the step below — checked with
+ * validate/contrast.ts. 900 is the canon ink anchor everything else is
+ * solved against; 850/750 fill the gap so surface reads above background
+ * without a hard jump.
  */
 export const squidInk = {
   /** surfaceHover doubles as a faint border */
@@ -70,11 +66,10 @@ export const squidInk = {
 
 /**
  * Urchin — Pearl's violet family, chromatic across the whole ramp. Chroma
- * follows an eased curve (`0.008 + 0.072·t^1.3`) so the light end does quiet
- * UI-chrome work without reading as visibly violet, while `accent` (`600`)
- * still separates from `textSubtle` (`500`) by both value and hue. Every
- * text/border pairing that lands on this ramp is contrast-checked against the
- * step it actually uses, not assumed from prior values.
+ * follows an eased curve (0.008 + 0.072·t^1.3) so the light end does quiet
+ * UI-chrome work without reading as visibly violet, while accent (600) still
+ * separates from textSubtle (500) by value and hue. Every text/border
+ * pairing is contrast-checked against the step it actually uses.
  */
 export const urchin = {
   /** accentSubtle (light) / accent + focusRing (dark) */
@@ -94,11 +89,11 @@ export const urchin = {
 };
 
 /**
- * `[authored]` Alpha palettes — neutral steps re-rendered at partial opacity,
- * keyed by percent, so they composite over whatever's underneath. Two anchors:
- * `squidInkAlpha` cool, `alabasterAlpha` warm — squidInk has no pale step to
- * use instead. Not anchored on the accent: most themes' accent is a saturated
- * brand hue, so an accent-anchored wash is neutral here only by coincidence.
+ * [authored] Alpha palettes — neutral steps re-rendered at partial opacity,
+ * keyed by percent, composited over whatever's underneath. Two anchors:
+ * squidInkAlpha cool, alabasterAlpha warm — squidInk has no pale step to use
+ * instead. Not accent-anchored: most themes' accent is a saturated brand
+ * hue, so an accent-anchored wash would only be neutral here by coincidence.
  */
 export const squidInkAlpha = {
   10: 'rgba(23, 22, 26, 0.10)',
@@ -109,10 +104,9 @@ export const alabasterAlpha = {
   10: 'rgba(245, 243, 239, 0.10)',
 };
 
-// `[authored]` Sentiment families — one 100→800 scale per hue, shared by both
-// modes on the same rule as the neutrals. Text contrast 4.5:1+, icon 3:1+ in
-// both modes (checked with the a11y addon). Not re-audited for the other three
-// themes.
+// [authored] Sentiment families — one 100-800 scale per hue, shared by both
+// modes like the neutrals. Text contrast 4.5:1+, icon 3:1+ in both modes
+// (checked with the a11y addon). Not re-audited for the other three themes.
 export const pearlSentiment = {
   algae: { 100: '#E8EDE6', 200: '#BCCBB8', 300: '#9BD3A6', 400: '#5FA36E', 500: '#4A7350', 600: '#33553B', 700: '#2C4A32', 800: '#16201A' },
   coral: { 100: '#F3E8E5', 200: '#DCBCB5', 300: '#EFA89C', 400: '#D46B5B', 500: '#A34C40', 600: '#733A31', 700: '#71322A', 800: '#281815' },
@@ -190,29 +184,26 @@ export const pearlLightThemeClass = createTheme(vars, {
     borderInverse: urchin[400],
     shadow: urchin[300],
 
-    // Primary CTA fill — a flat approximation of the dark gradient (no gradient
-    // token in the contract yet; see DECISIONS.md).
+    // Primary CTA fill — a flat approximation of the dark gradient (no
+    // gradient token in the contract yet; see DECISIONS.md).
     primary: squidInk[900],
     onPrimary: alabaster[300],
 
-    // Pearl is ink-primary, but `accent` stays genuinely subtle — it is not the
-    // button fill (`primary`). Reusing accent for both would make every subtle
-    // use (focus borders, underlines, hover) go loud too. `accentHover` is one
-    // even step past `accent`, not prose ink.
+    // Pearl is ink-primary, but accent stays genuinely subtle — not the
+    // button fill (primary). Reusing accent for both would make every
+    // subtle use go loud too. accentHover is one step past accent.
     accent: urchin[600],
     accentHover: urchin[700],
     accentSubtle: urchin[100],
     onAccent: alabaster[300],
     onAccentSubtle: squidInk[900],
-    // `urchin[600]`, not `[100]`: `urchin[100]` is 1.3:1 on light-mode
-    // background (invisible), `[600]` is 6.6:1. Dark mode keeps `[100]`
-    // (12.5:1 on dark-mode background) — same relationship, different step.
+    // urchin[600], not [100]: urchin[100] is 1.3:1 on light-mode background
+    // (invisible), [600] is 6.6:1. Dark mode keeps [100] (12.5:1 there).
     focusRing: urchin[600],
 
-    // `icon` is mixed toward `textSubtle` — the raw sentiment hue at full
-    // strength reads more prominent than body text despite a lower contrast
-    // ratio (saturation drives perceived prominence). 65% keeps the hue
-    // identifiable while quieting it.
+    // icon is mixed toward textSubtle — raw sentiment hue at full strength
+    // reads more prominent than body text despite lower contrast (saturation
+    // drives perceived prominence). 65% keeps the hue identifiable while quieting it.
     positive: { surface: pearlSentiment.algae[100], border: pearlSentiment.algae[200], text: pearlSentiment.algae[700], icon: `color-mix(in srgb, ${pearlSentiment.algae[500]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: pearlSentiment.coral[100], border: pearlSentiment.coral[200], text: pearlSentiment.coral[700], icon: `color-mix(in srgb, ${pearlSentiment.coral[500]} 65%, ${vars.color.textSubtle})` },
     warn: { surface: pearlSentiment.sunlight[100], border: pearlSentiment.sunlight[300], text: pearlSentiment.sunlight[700], icon: `color-mix(in srgb, ${pearlSentiment.sunlight[500]} 65%, ${vars.color.textSubtle})` },
@@ -239,25 +230,23 @@ export const pearlDarkThemeClass = createTheme(vars, {
     textSubtle: urchin[200],
     icon: urchin[200],
 
-    // Accent register, not a `squidInk` step. 3.55:1 vs `background`, one step
-    // quieter than `borderStrong` so the two separate.
+    // Accent register, not a squidInk step. 3.55:1 vs background, one step
+    // quieter than borderStrong so the two separate.
     border: urchin[500],
     borderStrong: urchin[400],
     borderSubtle: squidInk[750],
     borderInverse: alabaster[500],
-    // Black, not a neutral step. A shadow is occlusion — it must darken. Every
-    // neutral this theme has in dark mode is *lighter* than `background`, so
-    // used as a shadow it reads as a halo. Alpha rather than solid so it
-    // composites over sentiment surfaces; recipes dilute it by geometry
-    // (negative spread), not by fading the colour.
+    // Black, not a neutral step — a shadow must darken, and every neutral
+    // this theme has in dark mode is lighter than background. Alpha, not
+    // solid, so it composites over sentiment surfaces.
     shadow: 'rgba(0, 0, 0, 0.55)',
 
     // Mode swap inverts the CTA: dark fill on light, light fill on dark.
     primary: alabaster[100],
     onPrimary: squidInk[900],
 
-    // `urchin[100]` is the same hex in both modes — accentSubtle in light,
-    // accent in dark — and never a fill in either.
+    // urchin[100] is the same hex in both modes — accentSubtle in light,
+    // accent in dark — never a fill in either.
     accent: urchin[100],
     accentHover: alabaster[100],
     accentSubtle: urchin[400],
@@ -278,8 +267,8 @@ export const pearlDarkThemeClass = createTheme(vars, {
   text: pearlText,
 });
 
-// `[data-inverse]` scoped container — see inverseOverride.ts. Values mirror the
-// other mode's own background/surface/text/textSubtle/icon.
+// [data-inverse] scoped container — see inverseOverride.ts. Values mirror
+// the other mode's own background/surface/text/textSubtle/icon.
 inverseOverride(pearlLightThemeClass, {
   background: squidInk[900],
   surface: squidInk[850],
@@ -314,8 +303,7 @@ inverseOverride(pearlDarkThemeClass, {
 });
 
 // ---- Role treatments (roles declared in pearl.roles.ts) ----
-// `Text` only ever writes `data-role`; each theme decides here what that looks
-// like.
+// Text only ever writes data-role; each theme decides here what that looks like.
 
 globalStyle(
   `${pearlLightThemeClass} [data-role="inlineEmphasis"], ${pearlDarkThemeClass} [data-role="inlineEmphasis"]`,
@@ -337,8 +325,8 @@ globalStyle(
   },
 );
 
-// Preheading face — unconditional. Sentence case, body face: mono/upper/tracked
-// is Freshwater/Tahitian's console idiom, the wrong register for Pearl.
+// Preheading face — unconditional. Sentence case, body face: mono/upper/
+// tracked is Freshwater/Tahitian's console idiom, wrong register for Pearl.
 globalStyle(
   `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
   {
@@ -346,9 +334,8 @@ globalStyle(
   },
 );
 
-// Preheading *default* size only — gated on `:not([data-type-scale])` so an
-// explicit `typeScale` (the Hero's oversized `01`/`02` ordinals) still wins.
-// `Text` writes `data-type-scale` exactly when the caller named a scale.
+// Default size only — gated on :not([data-type-scale]) so an explicit
+// typeScale (Hero's oversized 01/02 ordinals) still wins.
 globalStyle(
   `${pearlLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${pearlDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
   {
@@ -357,10 +344,10 @@ globalStyle(
   },
 );
 
-// Pearl only. Its 12px control radius curves an Input's left border away from
-// the text baseline, so a flush label reads a hair left of the value beneath
-// it. A 2px nudge re-seats them — a raw value, not a token, because optical
-// corrections are sub-grid by nature (`xs`, 4px, would overshoot).
+// Pearl only. Its 12px control radius curves an Input's left border away
+// from the text baseline, so a flush label reads a hair left of the value.
+// 2px nudge re-seats them — raw value, not a token: optical corrections are
+// sub-grid by nature (xs, 4px, would overshoot).
 globalStyle(
   [
     `${pearlLightThemeClass} [data-component="field"][data-part="label"]`,
@@ -385,12 +372,11 @@ globalStyle(
 // ---- Primary button: "lacquered ink" ----
 
 /**
- * The canon recipe gives every theme a lifted, floating button. Pearl keeps the
- * flat ink fill (the identity) and puts every affordance somewhere other than
- * the fill's own surface: a single contact shadow grounds it (built from
- * `color.shadow` diluted by negative spread), hover/press mix a little `accent`
- * into the fill and bloom an `accentSubtle` halo — the same halo language
- * `secondary` uses, so the two variants read as one system.
+ * The canon recipe gives every theme a lifted, floating button. Pearl keeps
+ * the flat ink fill (the identity) and puts every affordance elsewhere: a
+ * contact shadow grounds it (color.shadow diluted by negative spread),
+ * hover/press mix a little accent into the fill and bloom an accentSubtle
+ * halo — same halo language secondary uses, so both variants read as one system.
  */
 
 /** Both mode classes — for rules that are genuinely mode-agnostic. */
@@ -411,20 +397,19 @@ const primaryCta = (state = '') => pearlButton('primary', state);
 const ctaPress = 'rgba(0, 0, 0, 0.30)';
 
 /**
- * Contact shadow. `color.shadow` is a solid token, so the blur-to-spread ratio
- * is the only thing diluting it — a wide blur well past the spread turns the
- * token into an actual gradient of occlusion rather than a crisp hairline.
+ * Contact shadow. color.shadow is a solid token, so blur-to-spread ratio is
+ * the only thing diluting it — too wide a blur turns the token into an
+ * actual gradient of occlusion rather than a crisp hairline.
  */
 const ctaGround = `0 2px 6px -3px ${vars.color.shadow}, 0 10px 20px -12px ${vars.color.shadow}`;
 const ctaGroundHover = `0 4px 10px -4px ${vars.color.shadow}, 0 14px 26px -14px ${vars.color.shadow}`;
 
 /**
- * The focus ring as a box-shadow pair, not an `outline`. `outline` draws a
- * plain rounded rect (it ignores `corner-shape: squircle`); `box-shadow`
- * follows the border box exactly. The 2px spacer painted in `background`
- * reproduces `outline-offset`, so the ring is only ever judged against the page
- * — a single flush ring can't clear 3:1 against both the ink fill and the page
- * at once.
+ * Focus ring as a box-shadow pair, not outline — outline draws a plain
+ * rounded rect (ignores corner-shape: squircle); box-shadow follows the
+ * border box exactly. The 2px background spacer reproduces outline-offset,
+ * so the ring is judged against the page — a flush ring can't clear 3:1
+ * against both the ink fill and the page at once.
  */
 const ctaFocusRing = `0 0 0 2px ${vars.color.background}, 0 0 0 4px ${vars.color.focusRing}`;
 
@@ -437,8 +422,8 @@ globalStyle(primaryCta(), {
 });
 
 globalStyle(primaryCta(':not(:disabled):hover'), {
-  // Mixing toward `accent` cools the fill in both modes — hover is a hue event,
-  // not a brightness step (the dark-mode fill is already near-white).
+  // Mixing toward accent cools the fill in both modes — hover is a hue
+  // event, not a brightness step (dark-mode fill is already near-white).
   backgroundColor: `color-mix(in srgb, ${vars.color.primary} 88%, ${vars.color.accent})`,
   transform: 'none', // Pearl's controls stay seated — canon's lift is not restored
   boxShadow: `0 0 0 3px ${vars.color.accentSubtle}, ${ctaGroundHover}`,
@@ -452,18 +437,17 @@ globalStyle(primaryCta(':not(:disabled):active'), {
 });
 
 /**
- * Focus, both variants — one ring, one colour. The `outline` stays declared but
- * transparent: forced-colors mode discards box-shadows, and a transparent
- * outline is re-coloured by the OS palette and takes over there.
+ * Focus, both variants — one ring, one colour. outline stays declared but
+ * transparent: forced-colors mode discards box-shadows, and the transparent
+ * outline gets re-coloured by the OS palette and takes over there.
  */
 globalStyle(pearlButton(null, ':focus-visible'), {
   outline: '2px solid transparent',
   outlineOffset: '2px',
 });
 
-// The hover/active rules above carry two pseudo-classes; matching their weight
-// and sitting later in the file makes focus win — a focus ring should outrank a
-// hover halo.
+// Hover/active rules above carry two pseudo-classes; matching their weight
+// and sitting later makes focus win — a focus ring should outrank a hover halo.
 globalStyle(primaryCta(':not(:disabled):focus-visible'), {
   boxShadow: `${ctaGround}, ${ctaFocusRing}`,
 });
@@ -480,16 +464,16 @@ globalStyle(primaryCta(':disabled'), {
 // ---- Extension treatment: luster ----
 
 /**
- * `luster` — nacre made literal: light moving across a pearl surface.
+ * luster — nacre made literal: light moving across a pearl surface.
  *
- * Not a contract slot. Declared via the single-argument `createTheme` overload
- * — the same public mechanism a downstream author uses, no privileged internal
- * path. The returned tuple's two halves do different jobs: the class *extends*
- * the contract (`pearlExtensionClass`), the vars object holds the treatments
- * (`pearlTreatments`). See DECISIONS.md (theme extensions).
+ * Not a contract slot. Declared via the single-argument createTheme
+ * overload, the same public mechanism a downstream author uses. The
+ * returned tuple's two halves do different jobs: the class extends the
+ * contract (pearlExtensionClass), the vars object holds the treatments
+ * (pearlTreatments). See DECISIONS.md.
  *
  * Constraint: three sheen hues max, none above 0.42 alpha — recorded as a
- * machine-checkable `limit` in `pearl.roles.ts`. Dark-mode values are authored;
+ * machine-checkable limit in pearl.roles.ts. Dark-mode values are authored;
  * the visual language only specifies light.
  */
 export const [pearlExtensionClass, pearlTreatments] = createTheme({
@@ -524,9 +508,9 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
     /** The hairline rule's own stops: sea green → blue → sand → blush. */
     ruleGradient: 'linear-gradient(90deg, #D6E4DD, #CFE0EA, #EAE0CC, #E8D2DC 80%, transparent)',
     /**
-     * Hover drift on card surfaces — one pass, never a loop. `driftInset`
-     * spills the ellipse past the card's box so no hard edge shows. Alpha held
-     * at the `desaturated` ceiling (0.42) from `pearl.roles.ts`.
+     * Hover drift on card surfaces — one pass, never a loop. driftInset
+     * spills the ellipse past the card's box so no hard edge shows. Alpha
+     * held at the desaturated ceiling (0.42) from pearl.roles.ts.
      */
     driftGradient:
       'radial-gradient(ellipse at center, rgba(216, 210, 240, 0.42) 0%, rgba(252, 250, 243, 0.26) 32%, rgba(231, 244, 234, 0.15) 52%, transparent 68%)',
@@ -548,10 +532,9 @@ export const [pearlExtensionClass, pearlTreatments] = createTheme({
 
 // ---- Luster drift — Card hover only ----
 //
-// Card-only now: on the secondary button the sheen was barely visible against
-// the button's own surface, and axe can't resolve contrast through a
-// gradient `::after`, so every secondary button audited as inconclusive
-// rather than pass. Not worth the trade for an effect nobody could see.
+// Card-only: on the secondary button the sheen was barely visible against
+// its own surface, and axe can't resolve contrast through a gradient
+// ::after, so secondary buttons audited as inconclusive rather than pass.
 const cardAfter = (themeClass: string, state = '') => `${themeClass} [data-component="card"][data-interactive="true"]${state}`;
 const lusterAfterLight = (state = '') => cardAfter(pearlLightThemeClass, state);
 const lusterAfterDark = (state = '') => cardAfter(pearlDarkThemeClass, state);
@@ -585,10 +568,9 @@ globalStyle(lusterAfterDark(':not(:disabled):hover::after'), {
   transform: pearlTreatments.luster.driftTo,
 });
 
-// Dark mode re-stops the gradient — a sheen needs to catch light against a dark
-// ground, so these are the same three hues light-toned. Contrast checked:
-// `textSubtle` still clears 4.5:1 against the composited card background at the
-// dominant stop's peak.
+// Dark mode re-stops the gradient — a sheen needs to catch light against a
+// dark ground, so these are the same three hues light-toned. Contrast
+// checked: textSubtle still clears 4.5:1 at the dominant stop's peak.
 export const pearlDarkLusterGradient = [
   `radial-gradient(ellipse at center, rgba(201, 226, 255, 0.22) 0%`,
   `rgba(227, 222, 240, 0.14) 32%`,

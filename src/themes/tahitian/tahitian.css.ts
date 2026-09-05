@@ -5,23 +5,21 @@ import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody } from '@components/_brand/PearlSphere/PearlSphere.css';
 
 /**
- * Tahitian — the flagship dark editorial system: condensed poster type (Anton),
- * an exposed grid, and one iridescent `overtone` reserved for photographic
- * plates. Dark is the default first render.
+ * Tahitian — the flagship dark editorial system: condensed poster type
+ * (Anton), an exposed grid, one iridescent overtone reserved for
+ * photographic plates. Dark is the default first render.
  *
- * `platinum` + `charcoal` are one continuous neutral ramp split into two named
- * halves for readability — each mode's text colour is the other half's extreme
- * step (light-mode text is `charcoal[950]`, dark-mode text is `platinum[100]`),
- * a cross-reference, not a separate hex.
+ * platinum + charcoal are one continuous neutral ramp split into two named
+ * halves for readability — each mode's text colour is the other half's
+ * extreme step (light text is charcoal[950], dark text is platinum[100]), a
+ * cross-reference, not a separate hex.
  *
- * Accent is the one place light and dark genuinely diverge rather than sharing
- * a ramp: light stays `peacock` (the signature deep green), dark moves to
- * `seaglass` (a brighter green tuned against near-black). Both scales' rungs
- * are placed by *value* against the neutral ramp, so the step numbers don't
- * line up between them.
+ * Accent is the one place light and dark genuinely diverge: light stays
+ * peacock (the signature deep green), dark moves to seaglass (brighter,
+ * tuned against near-black). Both scales' rungs are placed by value against
+ * the neutral ramp, so step numbers don't line up between them.
  *
- * Every non-colour scale is defined here, scoped to Tahitian alone — themes do
- * not share a global scale file.
+ * Every non-colour scale is defined here, scoped to Tahitian alone.
  */
 
 // ---- Primitives (raw, named hexes) ----
@@ -55,9 +53,8 @@ export const tahitianCharcoal = {
 };
 
 /**
- * Light mode's accent — the signature deep green. Rungs are placed by value
- * against the neutral ramp: `300` ≈ `platinum[300]`, `600` ≈ `platinum[600]`,
- * `700` ≈ `charcoal[700]`.
+ * Light mode's accent — the signature deep green. Rungs placed by value
+ * against the neutral ramp: 300 ≈ platinum[300], 600 ≈ platinum[600], 700 ≈ charcoal[700].
  */
 export const tahitianPeacock = {
   /** accentSubtle */
@@ -69,11 +66,10 @@ export const tahitianPeacock = {
 };
 
 /**
- * Dark mode's accent — a brighter green tuned to read against near-black, its
- * own hue rather than a lifted `peacock`. Two steps: dark `accentSubtle` reads
- * `charcoal[800]` directly (a mid-value neutral has no place under an accent).
- * The hover step holds hue 180° exactly and lifts ΔL 0.066 (comparable to
- * peacock's 0.084).
+ * Dark mode's accent — a brighter green tuned to read against near-black,
+ * its own hue rather than a lifted peacock. Two steps: dark accentSubtle
+ * reads charcoal[800] directly. Hover step holds hue exactly and lifts ΔL
+ * 0.066 (comparable to peacock's 0.084).
  */
 export const tahitianSeaglass = {
   /** hover — lighter than base, since the ground is dark */
@@ -101,27 +97,24 @@ export const tahitianTypeTreatments = {
 } satisfies Record<string, unknown>;
 
 /**
- * The `overtone` gradient's stops, light mode. `background-clip: text` paints
- * these as the glyphs, so every stop is body text and owes 4.5:1 — measured
- * against `background` (`platinum[200]`, the darker of the two light surfaces).
- * These are hue- and saturation-preserved darkenings of an eye-authored set
- * that missed (silver was 1.62:1), each verified ≥ 4.5:1.
+ * The overtone gradient's stops, light mode. background-clip: text paints
+ * these as the glyphs, so every stop owes 4.5:1 against background
+ * (platinum[200]). Hue- and saturation-preserved darkenings of an
+ * eye-authored set that missed (silver was 1.62:1), each verified ≥ 4.5:1.
  */
 export const tahitianPearlColors = {
   peacock: '#297C68', // 4.55:1
   green: '#5FAD78', // not in either gradient
   blue: '#447591', // 4.53:1
   aubergine: '#8C5A7D', // 4.91:1
-  /** The terminal stop is the theme's own `textSubtle`, so the iridescence
-   *  resolves into the type system rather than fading out of it. 4.68:1. */
+  /** Terminal stop is the theme's own textSubtle, so iridescence resolves
+   *  into the type system instead of fading out of it. 4.68:1. */
   silver: tahitianPlatinum[600],
 };
 
-// The same gradient's stops, dark mode — lighter/brighter versions of each
-// light-mode hue. `background-clip: text` renders them as foreground text, so
-// they need contrast against near-black `charcoal`, not the leeway a decorative
-// screen-blend gets. `green` reuses `seaglass[400]` — it already is peacock's
-// dark-mode sibling.
+// Same gradient's stops, dark mode — lighter/brighter versions of each
+// light-mode hue, needing contrast against near-black charcoal. green
+// reuses seaglass[400], already peacock's dark-mode sibling.
 export const tahitianPearlColorsBright = {
   peacock: tahitianSeaglass[400],
   green: '#8FE3A8',
@@ -141,9 +134,9 @@ export const tahitianSentiment = {
 // ---- Scales (this theme's own — not shared with Freshwater/South Sea) ----
 
 /**
- * `nesting: '0'` — hard-edged by identity; derived radii stay square. `full`
- * stays `9999px`: it means only elements that are circles by nature (dots,
- * radios, avatars). `Tag` and `XButton` take `radius.control`.
+ * nesting: '0' — hard-edged by identity; derived radii stay square. full
+ * stays 9999px: only elements that are circles by nature (dots, radios,
+ * avatars). Tag and XButton take radius.control.
  */
 const tahitianRadius = { control: '0px', full: '9999px', nesting: '0', cornerShape: 'round' };
 // rem, not px — scales with the user's base font-size preference (see pearl.css.ts).
@@ -177,19 +170,16 @@ const tahitianText = {
 // ---- Extension treatment: overtone ----
 
 /**
- * One recipe with two consumers: a colour treatment for inline emphasis, and a
- * moving screen-blend layer for grayscale photographic plates. The class /
- * object split is the same as Pearl's `luster` — see DECISIONS.md (theme
- * extensions).
+ * One recipe with two consumers: a colour treatment for inline emphasis, and
+ * a moving screen-blend layer for grayscale photographic plates. Class/
+ * object split same as Pearl's luster — see DECISIONS.md.
  */
 export const [tahitianExtensionClass, tahitianTreatments] = createTheme({
   overtone: {
-    // The text-clip gradient is mode-specific (see the split rules below); this
-    // var is the dark version (dark is the default render). Light mode's rule
-    // supplies its own literal.
+    // Text-clip gradient is mode-specific (see split rules below); this var
+    // is the dark version (dark is the default render). Light mode supplies its own literal.
     gradient: `linear-gradient(105deg, ${tahitianPearlColorsBright.peacock} 0%, ${tahitianPearlColorsBright.blue} 42%, ${tahitianPearlColorsBright.aubergine} 78%, ${tahitianPearlColorsBright.silver} 100%)`,
-    // Screen-blended over a grayscale image, not read as flat text — forgiving
-    // of mode, so one shared value.
+    // Screen-blended over a grayscale image, not read as flat text — mode-forgiving, one shared value.
     plateGradient: 'linear-gradient(105deg, rgba(47, 143, 120, 0.38) 0%, rgba(79, 136, 168, 0.34) 42%, rgba(140, 90, 125, 0.38) 78%, rgba(184, 196, 194, 0.38) 100%)',
     plateFrom: '0% 50%',
     plateTo: '100% 50%',
@@ -197,9 +187,8 @@ export const [tahitianExtensionClass, tahitianTreatments] = createTheme({
   },
 });
 
-// Light mode's inlineEmphasis gradient — built from `tahitianPearlColors`, not
-// the treatment var (a single CSS custom property can't hold two values for the
-// two mode selectors below).
+// Light mode's inlineEmphasis gradient — built from tahitianPearlColors, not
+// the treatment var (one CSS custom property can't hold two values for the two mode selectors below).
 const tahitianOvertoneGradientLight = `linear-gradient(105deg, ${tahitianPearlColors.peacock} 0%, ${tahitianPearlColors.blue} 42%, ${tahitianPearlColors.aubergine} 78%, ${tahitianPearlColors.silver} 100%)`;
 
 const overtoneShift = keyframes({
@@ -264,7 +253,7 @@ export const tahitianLightThemeClass = createTheme(vars, {
     onAccentSubtle: tahitianCharcoal[950],
     focusRing: tahitianPeacock[600],
 
-    // `icon` mixed toward `textSubtle` — full-strength sentiment hue reads more
+    // icon mixed toward textSubtle — full-strength sentiment hue reads more
     // prominent than body text despite lower contrast.
     positive: { surface: tahitianSentiment.kelp[100], border: tahitianSentiment.kelp[300], text: tahitianSentiment.kelp[700], icon: `color-mix(in srgb, ${tahitianSentiment.kelp[500]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: tahitianSentiment.reef[100], border: tahitianSentiment.reef[200], text: tahitianSentiment.reef[700], icon: `color-mix(in srgb, ${tahitianSentiment.reef[500]} 65%, ${vars.color.textSubtle})` },
@@ -351,9 +340,9 @@ inverseOverride(tahitianDarkThemeClass, {
   info: { surface: tahitianSentiment.wave[100], border: tahitianSentiment.wave[200], text: tahitianSentiment.wave[600], icon: `color-mix(in srgb, ${tahitianSentiment.wave[500]} 65%, ${vars.color.textSubtle})` },
 });
 
-// `PearlSphere` reads `pearlTreatments.luster.*` — vars Tahitian never applies —
-// so left alone it renders empty and disappears against near-black. This is a
-// bespoke three-radial sphere (pale mint highlight, faint pink blush, dark
+// PearlSphere reads pearlTreatments.luster.* — vars Tahitian never applies —
+// so left alone it renders empty and disappears against near-black. Bespoke
+// three-radial sphere (pale mint highlight, faint pink blush, dark
 // green-black body), static, no sweep.
 globalStyle(
   `${tahitianLightThemeClass} .${sphereBody}, ${tahitianDarkThemeClass} .${sphereBody}`,
@@ -370,8 +359,8 @@ globalStyle(
   },
 );
 
-// Dark mode only: the nav wordmark is forced white against near-black. Light
-// mode's pale surface would hide the same white, so it falls back to `color.text`.
+// Dark mode only: nav wordmark forced white against near-black. Light
+// mode's pale surface would hide the same white, so it falls back to color.text.
 globalStyle(`${tahitianDarkThemeClass} [data-component="brand-wordmark"]`, {
   color: tahitianPlatinum[100],
 });
@@ -386,10 +375,9 @@ globalStyle(
   },
 );
 
-// Preheading *default* size only — gated on `:not([data-type-scale])` so an
-// explicit `typeScale` wins (see the matching note in pearl.css.ts). Without
-// this the role inherits the ambient scale and a preheading renders at body
-// size, inverting the hierarchy.
+// Default size only — gated on :not([data-type-scale]) so an explicit
+// typeScale wins (see matching note in pearl.css.ts). Without this a
+// preheading inherits the ambient scale and renders at body size.
 globalStyle(
   `${tahitianLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${tahitianDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
   {
@@ -398,8 +386,8 @@ globalStyle(
   },
 );
 
-// Split by mode — `background-clip: text` renders these as foreground text, so
-// each mode needs stops that pass contrast against its surface.
+// Split by mode — background-clip: text renders these as foreground text,
+// so each mode needs stops that pass contrast against its surface.
 globalStyle(`${tahitianLightThemeClass} [data-role="inlineEmphasis"]`, {
   background: tahitianOvertoneGradientLight,
   backgroundClip: 'text',
@@ -433,10 +421,9 @@ globalStyle(
   },
 );
 
-// Dark mode primary: a light accent wash + a real accent border (the wash alone
-// doesn't read as emphasised against near-black). Light mode gets a solid fill
-// instead (below) — a translucent wash reads weaker than secondary's white
-// border on a pale surface.
+// Dark mode primary: light accent wash + real accent border — wash alone
+// doesn't read as emphasised against near-black. Light mode gets a solid
+// fill instead (below): translucent wash reads weaker on a pale surface.
 globalStyle(`${tahitianDarkThemeClass} [data-component="button"][data-variant="primary"]`, {
   background: `color-mix(in srgb, ${vars.color.accent} 8%, transparent)`,
   color: vars.color.accent,
@@ -448,20 +435,19 @@ globalStyle(
   `${tahitianDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
   {
     background: `color-mix(in srgb, ${vars.color.accent} 22%, transparent)`,
-    // Restated at `:hover` — the base recipe's `:hover` rule outranks this
-    // file's default-state `boxShadow: none` once `:hover` matches.
+    // Restated at :hover — base recipe's :hover rule outranks this file's
+    // default-state boxShadow: none once :hover matches.
     boxShadow: 'none',
     transform: 'none',
   },
 );
 
-// Secondary: unfilled, but never unbordered. The base recipe fills it with
-// `color.surface` (charcoal[900]), which reads as a grey slab and disappears
-// when the button sits on a `surface` panel. Dropping the fill fixes that;
-// dropping the border with it breaks alignment (an invisible box hides its
-// padding) and blurs button vs. link — see docs/foundations/control-affordances.md.
-// `borderStrong`, not `border`: `color.border` against charcoal[950] is under
-// 1.4:1 and reads as no edge at all.
+// Secondary: unfilled, but never unbordered. Base recipe fills it with
+// color.surface (charcoal[900]), reading as a grey slab that disappears on a
+// surface panel. Dropping the fill fixes that; dropping the border too would
+// break alignment and blur button vs. link — see control-affordances.md.
+// borderStrong, not border: color.border against charcoal[950] is under
+// 1.4:1, reads as no edge.
 globalStyle(`${tahitianDarkThemeClass} [data-component="button"][data-variant="secondary"]`, {
   background: 'transparent',
   border: `1px solid ${vars.color.borderStrong}`,
@@ -488,10 +474,9 @@ globalStyle(
 );
 
 // Secondary's hover stays neutral in both modes — primary uses the accent
-// border to signal emphasis; secondary borrowing it would blur the two. Light
-// steps the border up its own ramp; dark (whose resting border is already
-// `borderStrong`) lifts a neutral wash instead. Both bring the label to full
-// `text`.
+// border for emphasis; secondary borrowing it would blur the two. Light
+// steps the border up its ramp; dark (already borderStrong at rest) lifts a
+// neutral wash instead. Both bring the label to full text.
 globalStyle(
   `${tahitianLightThemeClass} [data-component="button"][data-variant="secondary"]:not(:disabled):hover`,
   { borderColor: vars.color.borderStrong, color: vars.color.text, boxShadow: 'none' },
@@ -512,8 +497,8 @@ globalStyle(
   { textTransform: 'uppercase' },
 );
 
-// Caps have no descenders — a stacked display headline wants tight leading, or
-// the lines read as separate strips. Display steps only; headings keep the base.
+// Caps have no descenders — a stacked display headline wants tight leading,
+// or lines read as separate strips. Display steps only; headings keep the base.
 globalStyle(
   `${tahitianLightThemeClass} [data-type-scale="displaySm"], ${tahitianLightThemeClass} [data-type-scale="displayLg"], ${tahitianLightThemeClass} [data-type-scale="displayXl"], ${tahitianDarkThemeClass} [data-type-scale="displaySm"], ${tahitianDarkThemeClass} [data-type-scale="displayLg"], ${tahitianDarkThemeClass} [data-type-scale="displayXl"]`,
   { lineHeight: '0.95' },

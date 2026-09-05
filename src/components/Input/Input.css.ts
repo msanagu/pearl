@@ -4,25 +4,20 @@ import { color, controlHeight, fontFamily, radius, space, text } from '@tokens';
 /**
  * Horizontal padding for the control's own text.
  *
- * A rounded corner occupies the horizontal span `x ∈ [0, r]`; text starting
- * inside that span sits alongside the curve rather than the straight edge,
- * which reads as cramped. So: clear the arc, with `space.md` as the floor.
+ * A rounded corner occupies span `x ∈ [0, r]`; text starting inside that span
+ * sits against the curve, reading cramped. So: clear the arc, `space.md` as
+ * the floor. The floor does the work at ordinary radii (12px arc cleared by
+ * 16px padding); radius only takes over once a control is round enough to
+ * need the room. Every theme sits on the floor today — expected, not idling.
  *
- * The floor does the work at ordinary radii — a 12px arc is already cleared by
- * 16px of padding — and the radius only takes over once a control is round
- * enough to genuinely need the room (a pill at Pearl's 42px height would reach
- * 21px on its own). Every theme sits on the floor today; that is the formula
- * behaving correctly, not idling.
- *
- * Deliberately NOT mirrored by `Field`'s label/hint/error, which sit flush at
- * zero — see the note in `Field.css.ts`. Text inside a box is indented because
- * it is inside a box; nothing outside the box should copy that number.
+ * Deliberately not mirrored by Field's label/hint/error, which sit flush at
+ * zero — see Field.css.ts. Text inside a box is indented because it's inside
+ * a box; nothing outside should copy that.
  */
 const controlInset = `max(${space.md}, ${radius.control})`;
 
-// Height maps to `controlHeight` so inputs align with Buttons in a row and
-// respond to the density lever. State styling (focus/invalid/disabled) lives on
-// self-selectors — a state legitimately outranking a base override is expected.
+// Height maps to controlHeight so inputs align with Buttons in a row and
+// respond to the density lever.
 export const input = style({
   width: '100%',
   boxSizing: 'border-box',
@@ -40,10 +35,8 @@ export const input = style({
   selectors: {
     '&::placeholder': { color: color.textSubtle },
     '&:focus-visible': {
-      // A transparent `outline` (invisible in normal rendering, but the
-      // one thing forced-colors/high-contrast mode respects) plus a soft
-      // `box-shadow` ring for the visual glow everywhere else — box-shadow
-      // alone would leave forced-colors users with no focus indicator.
+      // Transparent outline — invisible normally, but what forced-colors
+      // mode respects — plus box-shadow for the glow everywhere else.
       outline: '2px solid transparent',
       outlineOffset: '2px',
       borderColor: color.accent,

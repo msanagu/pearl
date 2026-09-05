@@ -144,10 +144,7 @@ function ButtonDocs(): ReactNode {
         </Text>
       </Stack>
 
-      {/* A real Card, not a div reimplementing one inline — it was duplicating
-          Card's surface/border/radius by hand and drifting from it. `lg` rather
-          than `xl`: the derived radius is correct at any padding, but a specimen
-          this short has little straight edge left to show for it. */}
+      {/* A real Card, not a div reimplementing one inline — it was duplicating and drifting from it. */}
       <div id="emphases">
         <Card padding="lg">
           <Stack gap="md">
@@ -167,11 +164,7 @@ function ButtonDocs(): ReactNode {
         </Card>
       </div>
 
-      {/* `radius.control`, NOT a concentric derivation: nothing is nested here.
-          The rule applies to a control inside a surface, and this holds text —
-          deriving `control + padding` on a single-line block just makes a
-          lozenge. `pre` (not a bare `code`) is what stops the snippet wrapping
-          mid-attribute; long lines scroll rather than reflow. */}
+      {/* radius.control, not a concentric derivation — nothing is nested here, this just holds text. */}
       <div
         data-inverse
         className={scrollRegion}
@@ -202,12 +195,7 @@ function ButtonDocs(): ReactNode {
   );
 }
 
-/**
- * A three-column documentation page — sidebar nav, article, on-this-page rail —
- * composed entirely from existing primitives (`Text`, `Button`, `Row`,
- * `Stack`) plus tokens. The layout grid and table are vanilla markup: the
- * system has no page-layout or `Table` primitive yet.
- */
+// Three-column docs page — sidebar nav, article, on-this-page rail — composed from existing primitives.
 export function Docs() {
   const stickyTop = HEADER_H;
   return (

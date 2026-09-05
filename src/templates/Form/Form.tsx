@@ -57,17 +57,9 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
-/**
- * A multi-section form template — composed entirely from existing primitives
- * (`Field`, `Input`, `Alert`, `Card`, `Button`, `Text`, `Stack`, `Row`). Real
- * `useState`-backed values, submit-time validation, per-field `Field` errors,
- * and a page-level `Alert` for the overall outcome, so the pattern is visible
- * end to end rather than mocked with static props.
- *
- * No `Select`/`Checkbox`/`Radio`/`Textarea` exist in the system yet (see
- * template README/story notes) — every field here is deliberately an `Input`,
- * so the showcase never reaches for a control the system doesn't have.
- */
+// Multi-section form template, composed from existing primitives. Real useState-backed values and
+// submit-time validation, so the pattern is visible end to end rather than mocked with static props.
+// No Select/Checkbox/Radio/Textarea exist yet — every field is deliberately an Input.
 export function Form() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});

@@ -60,8 +60,8 @@ describe('Icon', () => {
     );
   });
 
-  // Duotone is weight-as-a-name now, and Icon.css.ts recolors the two layers
-  // by source order — so the two-path structure is load-bearing, not cosmetic.
+  // Duotone is weight-as-a-name now; Icon.css.ts no longer recolors per
+  // layer, but the icon still renders both paths untouched.
   it('renders duotone icons as two stacked paths', () => {
     const { container } = render(<Icon icon={PiHeartDuotone} />);
     expect(

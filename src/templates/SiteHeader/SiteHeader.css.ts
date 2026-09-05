@@ -5,16 +5,15 @@ import {
   contact as sphereContact,
 } from '@components/_brand/PearlSphere/PearlSphere.css';
 
-// Matches Hero's one-column breakpoint — below it the hero drops its large body
+// Matches Hero's one-column breakpoint — below it the hero drops its body
 // sphere and this small nav-scale mark stands in beside the wordmark.
 const MOBILE = '(max-width: 1100px)';
 
-// Matches Introduction.css.ts's phone-width breakpoint — below it the bar
-// tightens its gutter and lets the link row wrap instead of overflowing.
+// Matches Introduction.css.ts's phone-width breakpoint.
 const SMALL = '(max-width: 640px)';
 
-// Matches `Introduction.css.ts`'s `CONTENT_MAX` and `Hero.css.ts`'s band width,
-// so the header, hero, and page body all share one column edge.
+// Matches Introduction.css.ts's CONTENT_MAX and Hero.css.ts's band width, so
+// header, hero, and page body share one column edge.
 const CONTENT_MAX_WIDTH = 1440;
 
 export const bar = style({
@@ -22,8 +21,8 @@ export const bar = style({
   borderBottom: `1px solid ${color.border}`,
 });
 
-// Re-applies the shared content column inside a full-bleed bar. The `calc`
-// gutter (not padding) mirrors `heroContentStyle` so the two line up exactly.
+// Re-applies the shared content column inside a full-bleed bar. calc gutter
+// (not padding) mirrors heroContentStyle so the two line up exactly.
 export const inner = style({
   maxWidth: CONTENT_MAX_WIDTH,
   width: `calc(100% - ${space.xl} - ${space.xl})`,
@@ -33,15 +32,13 @@ export const inner = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  // A floor under `justify-content`'s own gap — `brandRow`'s `flexGrow`
-  // (below) claims the bar's *entire* remaining width up to the links group,
-  // so without this there's nothing left for `space-between` to distribute
-  // and the switcher cluster ends up flush against GitHub with no breathing
-  // room between two visually distinct clusters.
+  // Floor under justify-content's gap — brandRow's flexGrow claims the
+  // bar's entire remaining width, so without this space-between has nothing
+  // left to distribute and clusters end up flush against each other.
   columnGap: space.xl,
   '@media': {
-    // A narrower gutter and a wrap allowance keep the link row from forcing
-    // horizontal scroll once the wordmark and links can no longer share a line.
+    // Narrower gutter + wrap allowance keeps the link row from forcing
+    // horizontal scroll once wordmark and links can't share a line.
     [SMALL]: {
       width: `calc(100% - ${space.lg} - ${space.lg})`,
       flexWrap: 'wrap',
@@ -50,32 +47,26 @@ export const inner = style({
   },
 });
 
-// Brand mark + theme controls — kept in one row, deliberately never wrapped
-// internally (see `SiteHeader.tsx`'s comment): only the links row below drops
-// to a second line at `SMALL`. `flexGrow` gives the row itself the bar's full
-// available width (up to the links group), so its own `justify="between"`
-// (set in `SiteHeader.tsx`) has room to push the mark left and the switchers
-// right — flush against the links group, the same right-aligned edge `links`
-// itself uses — rather than just sitting shoulder-to-shoulder on `gap`.
+// Brand mark + theme controls — kept in one row, never wrapped internally
+// (see SiteHeader.tsx): only the links row below drops to a second line at
+// SMALL. flexGrow gives this row the bar's full available width, so its own
+// justify="between" can push the mark left and switchers flush right.
 export const brandRow = style({
   flexGrow: 1,
   minWidth: 0,
 });
 
-// Tightens the row's own `gap` (a `Row` prop, so it's a same-specificity
-// recipe class) at `SMALL`, where it's sharing the bar with a stacked links
-// row and can use the room — a descendant selector outranks that single class
-// regardless of which one the bundler emits later.
+// Tightens the row's own gap at SMALL, where it shares the bar with a
+// stacked links row — descendant selector outranks the recipe class regardless of emit order.
 globalStyle(`${inner} .${brandRow}`, {
   '@media': {
     [SMALL]: { columnGap: space.md },
   },
 });
 
-// The GitHub/Playground link pair — the only thing that wraps to its own
-// line at `SMALL` (via `inner`'s `flexWrap`), where it goes full-width and
-// left-aligned under the wordmark rather than trailing off under the
-// switchers on the opposite edge.
+// GitHub/Playground link pair — the only thing that wraps to its own line
+// at SMALL (via inner's flexWrap), going full-width and left-aligned under
+// the wordmark instead of trailing under the switchers.
 export const links = style({
   '@media': {
     [SMALL]: {

@@ -157,10 +157,9 @@ function formatMonthYear(isoDate: string): string {
 // Display order; the mode for each comes from `themeSpecimens`.
 const specimenOrder = ['pearl', 'tahitian', 'freshwater', 'southSea'] as const;
 
-// Every value here is derived, not typed in — `liveStats.ts` reads the real
-// public export surface (`src/index.ts`), and `Conventions` comes from the
-// array above. The brand marks stay uncounted: they aren't exported, so the
-// component detector never sees them.
+// Every value here is derived, not typed in — liveStats.ts reads the real
+// public export surface (src/index.ts); Conventions comes from the array
+// above. Brand marks stay uncounted since they aren't exported.
 const stats = [
   { value: String(componentCount), label: 'Components' },
   { value: String(themeCount), label: 'Themes' },
@@ -168,14 +167,11 @@ const stats = [
   { value: String(decisions.length), label: 'Conventions' },
 ];
 
-// Directory-relative (`./?path=...`), not bare and not root-absolute —
-// inside Storybook's preview iframe a bare query string resolves against
-// `iframe.html` itself (wrong file, no sidebar/manager chrome to interpret
-// `?path=`), while a root-absolute `/?path=...` breaks under any subpath
-// deploy (GitHub Pages serves a project repo at `/<repo>/`, not `/`). `./`
-// resolves to whatever directory `iframe.html` is actually served from —
-// the manager's `index.html` lives right there either way. Paired with
-// `target="_top"` so the link replaces the whole page.
+// Directory-relative (./?path=...), not bare or root-absolute — a bare query
+// resolves against iframe.html itself inside Storybook's preview, and a
+// root-absolute path breaks under any subpath deploy (GitHub Pages serves at
+// /<repo>/). ./ resolves to wherever iframe.html is served from, where the
+// manager's index.html also lives. Paired with target="_top" to replace the whole page.
 type NextStepConcept = 'tokens' | 'typography' | 'components' | 'templates';
 
 const nextSteps: {
@@ -212,9 +208,9 @@ const nextSteps: {
 
 /**
  * "Start here" is decorative/editorial, not the Alert/Field/XButton sentiment
- * vocabulary — so it isn't part of `iconSets.ts`. It still follows the same
- * per-theme set choice (`useThemeName`) so the cards don't default to
- * Phosphor under every other theme.
+ * vocabulary — not part of iconSets.ts. Still follows the same per-theme set
+ * choice (useThemeName) so the cards don't default to Phosphor under every
+ * other theme.
  */
 const NEXT_STEP_ICONS: Record<ThemeName, Record<NextStepConcept, IconType>> = {
   pearl: {
@@ -252,10 +248,9 @@ const toKebabCase = (s: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-// The hero's primary CTA smooth-scrolls to the Conventions section;
-// `href="#conventions"` is the no-JS fallback (the id comes from `SectionHead`).
-// `lenis` is passed when the page's smooth-scroll layer is active so the jump
-// shares its easing; without it (reduced motion) this is a native smooth scroll.
+// Hero's primary CTA smooth-scrolls to Conventions; href="#conventions" is
+// the no-JS fallback. lenis is passed when the smooth-scroll layer is active
+// so the jump shares its easing; without it, a native smooth scroll.
 function scrollToConventions(
   event: MouseEvent<HTMLAnchorElement>,
   lenis: ReturnType<typeof useLenis>,
@@ -313,14 +308,13 @@ function SectionHead({
 }
 
 /**
- * The hero's motion, applied from the page rather than inside the `Hero`
- * template — the template stays motion-free and portable.
+ * Hero's motion, applied from the page rather than inside the Hero template
+ * — the template stays motion-free and portable.
  *
- * Two moves: its headline, standfirst, and CTA row stagger into place on
- * mount (via `Hero`'s `revealWrap` hook), and the whole band dims as it
- * leaves so the sections below arrive on a clean ground. Deliberately no
- * translate on the scroll pass — the hero's feature strip is bordered, and
- * shifting or scaling it would open a visible seam against the section under it.
+ * Two moves: headline/standfirst/CTA stagger into place on mount (via
+ * Hero's revealWrap hook), and the whole band dims as it leaves so sections
+ * below arrive on a clean ground. No translate on the scroll pass — the
+ * feature strip is bordered, and shifting it would open a seam against the section under it.
  */
 function HeroStage({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion();
@@ -333,9 +327,8 @@ function HeroStage({ children }: { children: ReactNode }) {
 
   if (reduce) return <div>{children}</div>;
   return (
-    // A MotionValue in `style` takes ownership of `opacity`, so the
-    // scroll-driven dim lives on its own layer — separate from the mount
-    // stagger `Hero` runs internally via `revealWrap`.
+    // MotionValue in style takes ownership of opacity — scroll-driven dim
+    // lives on its own layer, separate from the mount stagger.
     <motion.div ref={ref} style={{ opacity }}>
       <Stagger gap={0.16}>{children}</Stagger>
     </motion.div>
@@ -352,14 +345,13 @@ function ThemeSpecimenFrame({ theme }: { theme: ThemeKey }) {
     <div className={css.themeSwatch}>
       <iframe
         title={`${name} theme specimen`}
-        // Eager, not lazy: these sit high on the page and each one boots a full
-        // preview runtime, so deferring the start until they near the viewport
-        // is most of the wait you actually see.
+        // Eager, not lazy: sits high on the page, each boots a full preview
+        // runtime, so deferring the start is most of the wait you'd see.
         loading="eager"
         className={css.themeFrame}
         src={`iframe.html?id=introduction-theme-specimen--specimen&viewMode=story&globals=theme:${theme};mode:${mode}`}
-        // Belt-and-suspenders alongside `themeFrame`'s `pointer-events: none`
-        // (see that comment) — legacy attribute, harmless where honored.
+        // Belt-and-suspenders alongside themeFrame's pointer-events: none —
+        // legacy attribute, harmless where honored.
         scrolling="no"
       />
     </div>
@@ -376,36 +368,34 @@ function ThemeSpecimenFrame({ theme }: { theme: ThemeKey }) {
 export interface IntroductionProps {
   /**
    * A theme's photographic-plate treatment, applied to the record index plate.
-   * Optional — treatments are additive, never a dependency; a theme without one
-   * passes nothing and the plate renders as a plain inverse surface.
+   * Optional — a theme without one passes nothing, plate renders as a plain
+   * inverse surface.
    */
   plateTreatment?: string;
   /**
-   * A theme's effect treatment, applied ambiently to the stats card — a demo of
-   * a downstream team reusing an exported treatment on a plain surface. South
-   * Sea has none and passes nothing.
+   * A theme's effect treatment, applied ambiently to the stats card — demos a
+   * downstream team reusing an exported treatment on a plain surface. South
+   * Sea has none.
    */
   statsTreatment?: string;
   /**
-   * The footer plate photo — resolved per theme by the story, the same shape
-   * as `plateTreatment`. Defaults to Pearl's for a standalone render.
+   * Footer plate photo — resolved per theme by the story, same shape as
+   * plateTreatment. Defaults to Pearl's for a standalone render.
    */
   footerPlateSrc?: string;
   footerPlateAlt?: string;
   /**
-   * The page's theme switcher, rendered in the masthead's `actions` slot.
-   * Threaded in from the story (it drives Storybook's globals); the page
-   * renders fine without it.
+   * Page's theme switcher, rendered in the masthead's actions slot. Threaded
+   * in from the story (drives Storybook's globals); page renders fine without it.
    */
   themeControl?: ReactNode;
 }
 
 /**
- * Wraps the page in `lenis`'s smooth-scroll layer so `useLenis` works in the
- * page and its sticky header. Landing-page-only experiment — `lenis` / `motion`
- * are devDependencies scoped to `src/introduction/`. Under
- * `prefers-reduced-motion` the layer is skipped and everything falls back to
- * native scrolling.
+ * Wraps the page in lenis's smooth-scroll layer so useLenis works in the
+ * page and its sticky header. Landing-page-only experiment — lenis/motion
+ * are devDependencies scoped to src/introduction/. Skipped under
+ * prefers-reduced-motion, falls back to native scrolling.
  */
 export function Introduction(props: IntroductionProps) {
   const reduceMotion = useReducedMotion();
@@ -427,14 +417,13 @@ function IntroductionPage({
   const lenis = useLenis();
   const reduceMotion = useReducedMotion();
   const themeName = useThemeName();
-  // Marks the hero's bottom edge for `AutoHideHeader` — while it's on screen the
-  // masthead rides in flow; past it, the masthead goes sticky and summon-on-scroll.
+  // Marks the hero's bottom edge for AutoHideHeader — on screen, masthead
+  // rides in flow; past it, masthead goes sticky and summon-on-scroll.
   const heroSentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // In Storybook's preview iframe a hash in the top-level URL never triggers
-    // the browser's native anchor-scroll. Read it off whichever window has it
-    // and scroll manually.
+    // A hash in Storybook's preview iframe's top-level URL never triggers
+    // native anchor-scroll. Read it off whichever window has it and scroll manually.
     let hash = window.location.hash;
     if (!hash) {
       try {
@@ -453,23 +442,22 @@ function IntroductionPage({
 
   return (
     <>
-      {/* Masthead + hero are full-bleed, outside `page`'s max-width container,
-          so their borders reach the viewport edge. `AutoHideHeader` gives the
-          masthead its sticky / summon-on-scroll behavior once the hero is past;
-          the sentinel below the hero is how it knows. */}
+      {/* Masthead + hero are full-bleed, outside page's max-width container,
+          so borders reach the viewport edge. AutoHideHeader gives the
+          masthead sticky/summon-on-scroll once the hero is past; the
+          sentinel below the hero is how it knows. */}
       <AutoHideHeader heroSentinelRef={heroSentinelRef}>
         <SiteHeader
-          // Pearl-only page — the wordmark comes straight from
-          // `pearlBrandWordmark` so there's no second hardcoded 'pearl'.
+          // Pearl-only page — wordmark comes straight from pearlBrandWordmark,
+          // no second hardcoded 'pearl'.
           brandName={pearlBrandWordmark.text}
           brandRole={pearlBrandWordmark.role}
           actions={themeControl}
         />
       </AutoHideHeader>
 
-      {/* Primary CTA scrolls to Conventions; secondary jumps to the component
-          docs (`_top` escapes the preview iframe). The playground has its own
-          section below, not a hero CTA. */}
+      {/* Primary CTA scrolls to Conventions; secondary jumps to component docs
+          (_top escapes the preview iframe). Playground has its own section below. */}
       <HeroStage>
         <Hero
           primaryHref="#conventions"
@@ -487,10 +475,9 @@ function IntroductionPage({
 
       <div className={css.page}>
         <div className={css.sectionFlow}>
-          {/* Reskinning — show, then tell: the live theme specimens (the proof)
-              come first, the title and standfirst follow as a caption. Not
-              `SectionHead` — its title-beside-standfirst shape is for the
-              tell-first case. */}
+          {/* Reskinning — show, then tell: live theme specimens (the proof)
+              come first, title/standfirst follow as a caption. Not
+              SectionHead — that shape is for the tell-first case. */}
           <section>
             <div className={css.sectionBody}>
               <Reveal>
@@ -506,9 +493,8 @@ function IntroductionPage({
                 </Stack>
               </Reveal>
 
-              {/* The four specimens arrive in reading order — the claim above
-                  is "any number of themes", and seeing them resolve one after
-                  another is that sentence happening. */}
+              {/* Four specimens arrive in reading order — the claim above is
+                  "any number of themes", resolving one after another shows it. */}
               <Stagger className={css.themeGrid} gap={0.12}>
                 {specimenOrder.map((theme) => (
                   <StaggerItem key={theme}>
@@ -536,12 +522,11 @@ function IntroductionPage({
             </div>
           </section>
 
-          {/* The premise — one Card: a headline statement, then three labelled
-              beats in a row ("The shift" / "The testbed" / "The loop"), the
-              same preheading-label pattern the record's detail panel uses.
-              Stacked, not title-beside-column — that shape belongs to the
-              Conventions opener directly below, and two of it in a row reads as
-              one object twice. */}
+          {/* The premise — one Card: headline statement, then three labelled
+              beats in a row, same preheading-label pattern as the record's
+              detail panel. Stacked, not title-beside-column — that shape
+              belongs to the Conventions opener below; two in a row would
+              read as one object twice. */}
           <section>
             <div className={css.sectionBody}>
               <Reveal>
@@ -706,10 +691,9 @@ function IntroductionPage({
                     </div>
                   </div>
 
-                  {/* The record reveals itself line by line — the one place a
-                      stagger is doing real work, since the list *is* the
-                      section's argument. `motion.details` rather than a wrapper:
-                      the rows' hairline borders are keyed to sibling position. */}
+                  {/* Record reveals line by line — the list is the section's
+                      argument. motion.details, not a wrapper: hairline
+                      borders are keyed to sibling position. */}
                   <Stagger className={css.indexList} gap={0.06}>
                     {decisions.map((decision) => (
                       <motion.details
@@ -863,9 +847,8 @@ function IntroductionPage({
             </div>
           </section>
 
-          {/* Playground — the manifest convention shown working. The run is
-              written up in `docs/playground/`; regenerate the image
-              (`public/images/`) if the assistant's output changes materially. */}
+          {/* Playground — the manifest convention shown working. Written up
+              in docs/playground/; regenerate public/images/ if output changes materially. */}
           <section>
             <div className={css.sectionBody}>
               <div className={css.playgroundHead}>
@@ -961,7 +944,7 @@ function IntroductionPage({
           </section>
 
           {/* Stats — every value is a real count off the export surface, so
-              they resolve rather than just appear. See `CountUp`. */}
+              they resolve rather than just appear. See CountUp. */}
           <section className={css.narrowContent} aria-label="What is shipped">
             <Reveal>
               <Card padding="xl" className={statsTreatment}>
@@ -972,12 +955,10 @@ function IntroductionPage({
                         <div className={css.statDivider} aria-hidden="true" />
                       )}
                       <StaggerItem y={0}>
-                        {/* `textAlign: center` matters once `statsRow` switches
-                            to the narrow-viewport grid (see its comment): the
-                            item's own box is only as wide as its widest child
-                            (the label), so without this the shorter number
-                            hugs that box's left edge instead of centering
-                            over the label under it. */}
+                        {/* textAlign: center matters once statsRow switches
+                            to the grid — the item's box is only as wide as
+                            its widest child (the label), so without this the
+                            shorter number hugs the left edge instead. */}
                         <Stack gap="md" style={{ textAlign: 'center' }}>
                           <Text
                             as="p"

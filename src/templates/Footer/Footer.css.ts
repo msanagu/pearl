@@ -1,12 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { color, space } from '@tokens';
 
-// Layout-only: every colour/space value is a token, so the footer survives a
-// theme swap untouched. The raw number is a structural max-width.
 const CONTENT_MAX = 1440;
 
-// Full-bleed band. The `borderTop` (the footer's only rule) separates it from
-// the page; `overflow: hidden` clips the plate where it bleeds past the band.
 export const band = style({
   position: 'relative',
   overflow: 'hidden',
@@ -14,9 +10,7 @@ export const band = style({
   borderTop: `1px solid ${color.border}`,
 });
 
-// Two columns: a type column and a full-height plate. No padding here — the
-// plate bleeds to all three outer edges (top, bottom, right); the type column
-// carries its own gutters.
+// No padding here — plate bleeds to outer edges; type column carries own gutters.
 export const inner = style({
   maxWidth: CONTENT_MAX,
   margin: '0 auto',
@@ -27,10 +21,6 @@ export const inner = style({
   },
 });
 
-// The type column. `space-between` pins the name story to the top and the
-// signature (wordmark + meta) to the bottom; the plate's height sets how much
-// air falls between them. `gap` is the floor on that air. No interior rule —
-// the wordmark's scale is the separator.
 export const leftCol = style({
   flex: '1 1 auto',
   minWidth: 0,
@@ -49,9 +39,7 @@ export const leftCol = style({
       paddingRight: space.xl,
       gap: `calc(${space['2xl']} * 1.25)`,
     },
-    // Matches Introduction.css.ts's / Docs.css.ts's / Hero.css.ts's phone-width
-    // gutter reduction — the 860px step above never touches `paddingLeft`, so
-    // without this it stays at `xl` (32px) all the way down to phone width.
+    // Matches Introduction/Docs/Hero phone-width gutter reduction.
     '(max-width: 640px)': {
       paddingLeft: space.md,
       paddingRight: space.md,
@@ -59,7 +47,6 @@ export const leftCol = style({
   },
 });
 
-// The name story — the "Why Pearl" analogy and its coda.
 export const top = style({
   display: 'flex',
   flexDirection: 'column',
@@ -67,8 +54,6 @@ export const top = style({
   gap: space.lg,
 });
 
-// The coda: a subdued "what you can do with this" line, then the sign-off
-// sentence on its own line at full body weight so "yours" lands.
 export const coda = style({
   display: 'flex',
   flexDirection: 'column',
@@ -76,8 +61,6 @@ export const coda = style({
   gap: space.sm,
 });
 
-// The signature block: poster wordmark, then copyright + links directly under
-// its left edge as one unit.
 export const sign = style({
   display: 'flex',
   flexDirection: 'column',
@@ -85,7 +68,6 @@ export const sign = style({
   gap: space.md,
 });
 
-// Copyright then links, on one baseline.
 export const meta = style({
   display: 'flex',
   flexWrap: 'wrap',
@@ -100,13 +82,7 @@ export const metaLinks = style({
   gap: space.lg,
 });
 
-// A full-height slab anchored to the band's top-right corner — bleeds top,
-// bottom, and right; only the left edge is framed. Its left edge stays on the
-// content column; the right edge runs to the viewport, past the centred
-// `CONTENT_MAX` — `calc(50% - 50vw)` is the half-gutter on each side of the
-// container, zero once the viewport is narrower than it. A floor height covers
-// the case where the type column is unusually short. Drops to a lead image
-// below 860.
+// Bleeds top/bottom/right past centred CONTENT_MAX container; lead image below 860.
 export const plate = style({
   flex: '0 0 clamp(300px, 36vw, 500px)',
   alignSelf: 'stretch',

@@ -6,9 +6,9 @@ import * as css from './tokens.css';
 
 /**
  * Foundations → Tokens/Semantic: a live specimen of the whole token contract,
- * rendered under whichever theme is active in the Storybook toolbar. This is
- * not a component — it's a validation surface for the semantic tier. Raw values live on Tokens/Primitives instead; this
- * page is about the role each token plays, not its resolved hex.
+ * rendered under whichever theme is active in the Storybook toolbar. Not a
+ * component — a validation surface for the semantic tier. Raw values live on
+ * Tokens/Primitives instead; this page is about the role each token plays.
  */
 
 function ColorSwatch({ name, cssVar }: { name: string; cssVar: string }) {

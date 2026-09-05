@@ -28,11 +28,9 @@ export const sectionTitle = style({
   fontWeight: 600,
 });
 
-// The wordmark's own class — deliberately no fontSize/fontWeight, unlike
-// `sectionTitle` (shared by every OTHER heading on this page, which still
-// wants its fixed 18px). The wordmark is rendered through `Text` with
-// `typeScale="displayLg"`; reusing `sectionTitle` here would fight that
-// scale's own font-size for specificity, capping it back down to 18px.
+// Wordmark's own class — deliberately no fontSize/fontWeight, unlike
+// sectionTitle. Rendered through Text with typeScale="displayLg"; reusing
+// sectionTitle would fight that scale's font-size, capping it back to 18px.
 export const wordmarkTitle = style({
   margin: 0,
   marginBottom: space.sm,
@@ -97,9 +95,8 @@ export const sentimentCard = style({
   borderRadius: radius.control,
 });
 
-// The resolved-value caption under every swatch — what the token ACTUALLY
-// computes to in the active theme, not just the var() reference. Turns this
-// page from a paint job into a verification surface (see file doc comment).
+// Resolved-value caption under every swatch — what the token actually
+// computes to in the active theme, not just the var() reference.
 export const resolvedValue = style({
   fontFamily: 'ui-monospace, Menlo, monospace',
   fontSize: '10px',

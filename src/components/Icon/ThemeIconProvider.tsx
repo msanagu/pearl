@@ -10,9 +10,8 @@ import {
 const DEFAULT_THEME_NAME: ThemeName = 'pearl';
 
 const ThemeIconContext = createContext<ThemeIconSet>(DEFAULT_THEME_ICON_SET);
-// Separate from `ThemeIconContext` because that one carries only the five
-// Alert/Field/XButton keys — anything choosing its own theme-appropriate icon
-// outside that vocabulary (e.g. Introduction's "Start here" cards) needs the
+// Separate from ThemeIconContext, which carries only the five
+// Alert/Field/XButton keys — icon choices outside that vocabulary need the
 // theme name itself, not a resolved set.
 const ThemeNameContext = createContext<ThemeName>(DEFAULT_THEME_NAME);
 
@@ -23,14 +22,10 @@ export interface ThemeIconProviderProps {
 }
 
 /**
- * Makes the active theme's icon set available to this library's own
- * components (Alert, Field, XButton) via `useThemeIconSet`. Optional: a tree
- * with no provider gets `DEFAULT_THEME_ICON_SET` (Pearl/Phosphor), which is
- * today's behavior — wrapping in this provider is what opts a consumer into
- * per-theme icons, it isn't required to render at all.
- *
- * This only affects icons those components choose on their own; anything
- * passed via an explicit `icon` prop always wins.
+ * Makes the active theme's icon set available to Alert/Field/XButton via
+ * `useThemeIconSet`. Optional — no provider means `DEFAULT_THEME_ICON_SET`
+ * (Pearl/Phosphor). Only affects icons those components choose on their own;
+ * an explicit `icon` prop always wins.
  */
 export function ThemeIconProvider({ theme, children }: ThemeIconProviderProps) {
   const iconSet = THEME_ICON_SETS[theme] ?? DEFAULT_THEME_ICON_SET;

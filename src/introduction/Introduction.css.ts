@@ -7,17 +7,14 @@ import { color, radius, space, text } from '@tokens';
 
 const CONTENT_MAX = 1440;
 
-// Width of the record index's ordinal column, shared by `indexOrdinal` and
-// `indexDetail` so they align. A fixed rem, not `4ch` — `ch` is font-relative
-// and the two elements sit in different font contexts, so the same `4ch`
-// resolved to different pixel widths.
+// Width of the record index's ordinal column, shared by indexOrdinal and
+// indexDetail so they align. Fixed rem, not 4ch — ch is font-relative and
+// the two elements sit in different font contexts.
 const INDEX_ORDINAL_WIDTH = '2rem';
 
-// Fixed width for the status/date column so every title cell is the same width
-// and the titles render at a uniform size down the list — an `auto` track lets
-// a longer status string ("in evaluation / September 2026") shrink the title
-// beside it. Wide enough for the longest status + month at the mono caption
-// size; the column drops out entirely below 620.
+// Fixed width for the status/date column so every title cell renders at a
+// uniform size — an auto track lets a long status string shrink the title
+// beside it. Wide enough for the longest status + month; drops out below 620.
 const INDEX_META_WIDTH = '15rem';
 
 export const page = style({
@@ -27,16 +24,13 @@ export const page = style({
   boxSizing: 'border-box',
   paddingLeft: space.xl,
   paddingRight: space.xl,
-  // Composed from `2xl` (the largest step the theme authors) rather than a new
-  // step — a front door wants roughly double that at the top. The bottom is
-  // lighter: the `Footer` band closes the page and brings its own top padding.
+  // Composed from 2xl rather than a new step — a front door wants roughly
+  // double that at top. Bottom is lighter: Footer brings its own top padding.
   paddingTop: `calc(${space['2xl']} * 3)`,
   paddingBottom: `calc(${space['2xl']} * 1.5)`,
   '@media': {
-    // `xl` (32px) a side reads fine as a page margin at desktop width, but on
-    // a narrow phone it eats a real slice of the viewport — every piece of
-    // content it bounds, including the theme specimen frames, is squeezed
-    // narrower than it needs to be and reflows taller as a result.
+    // xl (32px) a side eats a real slice of a narrow phone viewport,
+    // squeezing every bounded piece of content (theme specimen frames included).
     '(max-width: 640px)': {
       paddingLeft: space.md,
       paddingRight: space.md,
@@ -44,16 +38,15 @@ export const page = style({
   },
 });
 
-// Section rhythm — wider than a `Stack`'s `2xl`: at this heading scale, `2xl`
-// reads as a list of blocks rather than a sequence of statements.
+// Section rhythm — wider than a Stack's 2xl: at this heading scale, 2xl
+// reads as a list of blocks, not a sequence of statements.
 export const sectionFlow = style({
   display: 'flex',
   flexDirection: 'column',
   gap: `calc(${space['2xl']} * 4)`,
   '@media': {
-    // The flat gap is tuned for the desktop reading rhythm; at narrow
-    // viewports it reads as excess air around any visually short section
-    // (the stats strip especially), not a deliberate pause.
+    // Desktop-tuned flat gap reads as excess air at narrow viewports around
+    // any visually short section (the stats strip especially).
     '(max-width: 640px)': {
       gap: `calc(${space['2xl']} * 2)`,
     },
@@ -62,7 +55,7 @@ export const sectionFlow = style({
 
 // Section opener as an asymmetric pair — title in the wide left column at
 // display scale, standfirst in a narrow right column at body scale. A heading
-// and its own explanation shouldn't read as the same kind of object.
+// and its explanation shouldn't read as the same kind of object.
 export const sectionHead = style({
   display: 'grid',
   gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)',
@@ -94,20 +87,19 @@ export const sectionStandfirst = style({
   },
 });
 
-// The premise card stacks — headline as a spanning statement, then the beats in
-// a row beneath it. Deliberately NOT the `sectionHead` shape (title beside a
-// narrow column): this section sits right above the Conventions opener, and two
-// asymmetric title-left/column-right blocks in a row read as one object twice.
+// Premise card stacks — headline as a spanning statement, then beats in a
+// row beneath it. Deliberately not the sectionHead shape: this sits right
+// above the Conventions opener, and two asymmetric blocks in a row would
+// read as one object twice.
 export const premiseCard = style({
   display: 'flex',
   flexDirection: 'column',
   gap: `calc(${space['2xl']} * 1.25)`,
 });
 
-// Right-aligned and pushed to the right edge — the one heading on this page that
-// isn't left-anchored. The beats span the full width beneath it, so the headline
-// reads as a caption to the row rather than a column title. Falls back to the
-// normal left anchor on narrow screens, where a ragged-left heading reads badly.
+// Right-aligned — the one heading on this page that isn't left-anchored.
+// Beats span the full width beneath it, so the headline reads as a caption
+// to the row, not a column title. Falls back to left anchor on narrow screens.
 export const premiseHeading = style({
   margin: 0,
   maxWidth: '20ch',
@@ -122,9 +114,9 @@ export const premiseHeading = style({
   },
 });
 
-// Three labelled beats side by side — a different texture from the single
-// flowing standfirst the Conventions opener uses. Collapses to a stack, with a
-// hairline between beats standing in for the column gutters.
+// Three labelled beats side by side — different texture from the flowing
+// standfirst the Conventions opener uses. Collapses to a stack, hairline
+// between beats standing in for the column gutters.
 export const premiseBeats = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
@@ -145,12 +137,9 @@ export const premiseBeat = style({
   borderTop: `1px solid ${color.border}`,
 });
 
-// The beat body copy (`bodySm`, Introduction.tsx) is sized for a *column* —
-// three narrow ones side by side above 860px. Below that `premiseBeats`
-// collapses to one column spanning the whole card, so the same cramped size
-// just reads small against all the width it now has. Bumped only where the
-// grid is actually stacked; the class attribute (0,2,0) outranks `Text`'s own
-// recipe class (0,1,0) regardless of stylesheet order.
+// Beat body copy (bodySm, Introduction.tsx) is sized for a column — three
+// narrow ones side by side above 860px. Below that premiseBeats collapses to
+// one full-width column, so bump size only where the grid is stacked.
 globalStyle(`${premiseBeat} [data-type-scale="bodySm"]`, {
   fontSize: text.bodyMd.fontSize,
   lineHeight: text.bodyMd.lineHeight,
@@ -162,8 +151,8 @@ globalStyle(`${premiseBeat} [data-type-scale="bodySm"]`, {
   },
 });
 
-// Space between a section's opener and its content — wider than the opener's
-// internal rhythm so the content reads as a separate beat.
+// Space between a section's opener and its content — wider than the
+// opener's internal rhythm, reads as a separate beat.
 export const sectionBody = style({
   display: 'flex',
   flexDirection: 'column',
@@ -183,22 +172,18 @@ export const themeGrid = style({
 });
 
 // One theme specimen in its own frame. Theme classes can't nest in one
-// document — both selectors match a nested component at equal specificity and
-// source order (not proximity) breaks the tie. See `ThemeSpecimen.tsx`.
+// document — source order breaks the specificity tie. See ThemeSpecimen.tsx.
 export const themeSwatch = style({
-  position: 'relative', // the loading placeholder is stacked over the frame
+  position: 'relative', // loading placeholder stacks over the frame
   borderRadius: radius.control,
   cornerShape: radius.cornerShape,
   border: `1px solid ${color.border}`,
   overflow: 'hidden',
   '@media': {
-    // Each specimen already has its own internal padding (see
-    // `ThemeSpecimen.tsx`'s `Stack` + `Card`) — at phone width, `page`'s
-    // padding around the frame plus that internal padding stacked a card
-    // inside a card, each losing more width to margins the same content
-    // could have used. Breaking the frame full-bleed (same `50vw` technique
-    // as `indexPanel`) means the outer page padding IS the specimen's
-    // padding, not a second layer on top of it.
+    // Each specimen has its own internal padding (ThemeSpecimen.tsx's
+    // Stack + Card) — at phone width, page's padding plus that stacked a
+    // card inside a card. Full-bleed (same 50vw technique as indexPanel)
+    // makes the outer page padding the specimen's own padding instead.
     '(max-width: 640px)': {
       marginLeft: 'calc(50% - 50vw)',
       marginRight: 'calc(50% - 50vw)',
@@ -210,20 +195,16 @@ export const themeSwatch = style({
 });
 
 // Fixed height — an iframe can't auto-size to its content without a
-// postMessage handshake. 700 clears the tallest theme (Tahitian, ~667px)
-// with margin, so a scale tweak doesn't immediately reopen this.
+// postMessage handshake. 700 clears the tallest theme (Tahitian, ~667px).
 export const themeFrame = style({
   display: 'block',
   width: '100%',
   height: 700,
   border: 'none',
-  // Each frame is a real document, so it can scroll independently of the
-  // page. A touch (or wheel) gesture that starts over one gets captured by
-  // *that* document instead of the outer page — `scrolling="no"` on the
-  // element doesn't stop this on mobile Safari, which ignores the attribute
-  // for touch. The frames are non-interactive demo content, so disabling
-  // pointer events entirely is safe and makes every gesture over a specimen
-  // fall through to the page underneath it.
+  // Each frame is a real document; a touch gesture over it gets captured by
+  // that document instead of the page (scrolling="no" doesn't stop this on
+  // mobile Safari). Frames are non-interactive, so disabling pointer events
+  // lets every gesture fall through to the page.
   pointerEvents: 'none',
 });
 
@@ -316,17 +297,16 @@ export const indexBody = style({
 });
 
 /**
- * The anchoring plate. Uses the inverse pair, which exists for exactly this
- * — a section that flips against the page around it — so the panel reads as
- * one composed object rather than a list floating in a box.
+ * Anchoring plate. Uses the inverse pair — a section that flips against the
+ * page around it — so the panel reads as one composed object, not a list
+ * floating in a box.
  */
 export const indexPlate = style({
   position: 'relative',
   isolation: 'isolate',
   overflow: 'hidden',
-  // The theme's own ground, not a `[data-inverse]` container: in a dark theme
-  // the inverse value is light, and a screen-blend overtone renders nothing
-  // over near-white. The plate needs to stay dark wherever the theme is dark.
+  // Theme's own ground, not [data-inverse]: in a dark theme the inverse
+  // value is light, and a screen-blend overtone renders nothing over near-white.
   background: color.background,
   padding: space.xl,
   display: 'flex',
@@ -342,19 +322,15 @@ export const indexPlate = style({
   },
 });
 
-// The photographic layer, held at partial opacity. `0.3` is a computed
-// ceiling, not a taste call: composite a worst-case pure-white pixel (the
-// grayscale filter's brightest possible value) over the darkest ground at
-// this opacity, and the plate text's contrast against that composite still
-// clears 4.5:1 — so the guarantee holds regardless of which photo is used or
-// where the text sits over it, not just for today's crop. Above ~0.33 that
-// stops being true (verified: 0.45 composites to ~3.2:1 in the worst case).
+// Photographic layer, held at partial opacity. 0.3 is a computed ceiling,
+// not taste: compositing a worst-case pure-white pixel over the darkest
+// ground at this opacity still clears 4.5:1 text contrast, for any photo.
+// Above ~0.33 that stops holding (0.45 composites to ~3.2:1 worst case).
 //
-// A tool auditing this will still report contrast here as inconclusive — any
-// element with an image node intersecting the text's box reads that way,
-// since axe checks for an image in the stack rather than sampling the
-// rendered pixel. That's a real limit of automated checking, not a signal
-// this needs a scrim: the math above is the actual verification.
+// An axe-style tool will still flag contrast here as inconclusive — it
+// checks for an image in the stack, not the rendered pixel. Real limit of
+// automated checking, not a signal this needs a scrim; the math above is
+// the actual verification.
 export const indexPlateImage = style({
   position: 'absolute',
   inset: 0,
@@ -431,27 +407,21 @@ export const indexRow = style({
   },
 });
 
-// Query context for `indexTitle` — the title sizes to this cell's width, not
-// the viewport (see `indexTitle`).
+// Query context for indexTitle — title sizes to this cell's width, not the viewport.
 export const indexTitleCell = style({
   containerType: 'inline-size',
   minWidth: 0,
 });
 
-// The display `typeScale` on this title sets a viewport-scaled `font-size`
-// (`displaySm` is `clamp(2rem, 8vw, 4.5rem)`, `displayLg` larger still) — built
-// for a full-width section title, far too big for one cell of a record row. At
-// that size a single long word ("Composition", "MACHINE-READABLE") is wider
-// than the cell, and `overflow-wrap` then breaks it mid-word.
+// Display typeScale here sets a viewport-scaled font-size, built for a
+// full-width section title — far too big for one record-row cell, so a long
+// word overflows the cell and overflow-wrap breaks it mid-word.
 //
-// The fix is to size the title to *its cell*, not the viewport: `cqi` against
-// the `indexTitleCell` container. That keeps every word within one line's
-// width at the rendered size, so `overflow-wrap` only ever fires as a last
-// resort on a genuinely unbreakable string. `lineHeight: 1` also drops the
-// display half-leading so the title sits on the ordinal/meta optical line.
-//
-// Matches whichever display scale the markup passes — the `&[data-type-scale]`
-// selector (0,2,0) outranks `Text.css.ts`'s own `[data-type-scale]` rule.
+// Fix: size the title to its cell instead, cqi against indexTitleCell. Keeps
+// every word within one line's width, so overflow-wrap only fires as a last
+// resort. lineHeight: 1 drops display half-leading so the title sits on the
+// ordinal/meta optical line. Matches whichever display scale the markup
+// passes — &[data-type-scale] (0,2,0) outranks Text.css.ts's own rule.
 export const indexTitle = style({
   overflowWrap: 'break-word',
   selectors: {
@@ -474,9 +444,8 @@ export const indexCaret = style({
   },
 });
 
-// The revealed panel, indented to align its title with the summary title
-// above. The `calc` mirrors `indexRow`'s real column layout: left padding +
-// ordinal width + column gap.
+// Revealed panel, indented to align its title with the summary title above.
+// calc mirrors indexRow's real column layout: left padding + ordinal width + column gap.
 export const indexDetail = style({
   paddingLeft: `calc(${space.lg} + ${INDEX_ORDINAL_WIDTH} + ${space.xl})`,
   paddingRight: space.xl,
@@ -517,11 +486,9 @@ export const sectionTick = style({
 
 /** Stats section needs narrower width */
 export const narrowContent = style({
-  // Without this, `width: 100%` (content-box by default) plus this element's
-  // own padding add up to *more* than 100% of the parent — it was overflowing
-  // its container by exactly `paddingLeft + paddingRight` and shifting right,
-  // which is what actually made the stats card look off-center; the grid
-  // layout below wasn't the cause.
+  // Without this, width: 100% (content-box) plus this element's own padding
+  // adds to more than 100% of the parent — overflowed and shifted right,
+  // which made the stats card look off-center; not the grid layout below.
   boxSizing: 'border-box',
   maxWidth: 1200,
   margin: '0 auto',
@@ -548,13 +515,10 @@ export const statsRow = style({
   width: '100%',
   minWidth: 0,
   '@media': {
-    // Matches `statDivider`'s breakpoint, where the dividers drop out. A flex
-    // row's `gap` is a minimum, not a cap — once the Card's own padding has
-    // already eaten into a phone-width viewport, `space-between` (or any
-    // extra gap) can push a wrapped pair wider than the Card and spill past
-    // its edge instead of centering. A 2-column grid can't do that: its
-    // tracks are capped to the container's width no matter what the content
-    // wants, so this both centers the pairs and guarantees no overflow.
+    // Matches statDivider's breakpoint. A flex row's gap is a minimum, not a
+    // cap — at phone width, space-between can push a wrapped pair wider than
+    // the Card and spill past its edge. A grid's tracks stay capped to the
+    // container width, so this centers pairs and guarantees no overflow.
     '(max-width: 620px)': {
       display: 'grid',
       gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
@@ -612,10 +576,8 @@ export const playgroundCta = style({
   marginTop: space.md,
 });
 
-// A variation on `sectionHead` — title a step down (`headingLg`), columns
-// top-aligned and closer to even, so the standfirst reads as a partner. The
-// CTA lives in the left column under the heading, so it's the first thing the
-// eye reaches after the title.
+// A variation on sectionHead — title a step down (headingLg), columns
+// top-aligned and closer to even, so the standfirst reads as a partner.
 export const playgroundHead = style({
   display: 'grid',
   gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 0.9fr)',

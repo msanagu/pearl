@@ -4,89 +4,39 @@ import { inverseOverride } from '@/foundations/inverseOverride';
 import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '@components/Field/Field.css';
 import { sphereWrap, body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
 
-/**
- * South Sea — "Golden Hour Maison". Flat warm ecru surface, chocolate ink,
- * conch (`#E8A184`) doing exactly one small loud thing per view, radius 0
- * throughout. Identity is type/space/restraint — no ambient effect.
- *
- * One hover-only exception: a static gilt sphere that sweeps once engaged
- * ("golden hour, held still" until then). Light mode gets a shell-toned
- * counterpart in South Sea's own register — it can't fall through to Pearl's
- * sphere, which reads `pearlTreatments` vars this theme never applies.
- *
- * Type: roman + italic serif (Zodiak roman / Times italic — see `serifItalic`)
- * with a hairline rule in the gap; Boska for headings and display.
- *
- * Two colour tiers: `*Sand`/`*Driftwood`/`*Conch` are raw single-hue scales
- * (verified with HSL math — one target hue per scale); the `*ThemeClass` calls
- * map them onto semantic roles. Scales are this theme's own.
- */
+// South Sea — "Golden Hour Maison". Flat warm ecru surface, chocolate ink, conch doing one loud
+// thing per view, radius 0. Type: roman + italic serif (Zodiak / Times), Boska for headings/display.
 
-/**
- * Light-register neutral, one warm ecru hue (38°) stepped 100 (brightest) →
- * 600. Only spans its light end; the dark register is `southSeaDriftwood`.
- */
+// Light-register neutral, warm ecru hue, 100 (brightest) -> 600. Dark register is southSeaDriftwood.
 export const southSeaSand = {
-  /** page background (light) */
   100: '#F5EFE4',
-  /** text (dark mode) / inverse text (light mode) — its own step, a different contrast job */
   150: '#F3EADA',
-  /** raised surface (light) */
   200: '#EFE6D6',
-  /** border, subtle (light) */
   300: '#E9E0D0',
-  /** border (light) */
   400: '#DDD1BC',
-  /** borderStrong / shadow (light) — 4.6:1 on sand[100] */
   500: '#CBBA9E',
-  /** text, subtle (light) — 4.88:1 on background, 4.51:1 on surface */
   600: '#746650',
 };
 
-/**
- * Dark-register neutral, one chocolate/umber hue (27°) stepped 500 → 900.
- * `750` is the exception — light mode's ink — kept here as the same hue family,
- * a step tuned for a different background.
- */
+// Dark-register neutral, chocolate/umber hue, 500 -> 900. 750 (light mode's ink) is the same hue
+// family, tuned for a different background.
 export const southSeaDriftwood = {
-  /** text, subtle (dark) */
   500: '#B8A18E',
-  /** borderStrong (dark) */
   600: '#5E4632',
-  /** border (dark) */
   700: '#4A3626',
-  /** text (light mode) */
   750: '#3B2C1F',
-  /** border, subtle (dark) */
   800: '#382719',
-  /** raised surface (dark) */
   850: '#2E2116',
-  /** page background (dark) */
   900: '#241A11',
 };
 
-/**
- * The accent hue — conch (19°) — spent as "one small loud thing per view".
- * One scale reused across both modes. Every step carries conch's chroma; any
- * step that drifts toward neutral is a neutral misfiled here (neutral roles
- * belong to `sand`/`driftwood`).
- *
- * `300` is a mode-invariant swatch doing four jobs — `primary` fill and
- * `accent` in both modes — and a fill and a text colour have opposite contrast
- * needs against the ecru ground. No single value satisfies both, so in light
- * mode only, `accent` splits from `primary`: `300` keeps the fill, `400`/`500`
- * (deeper, less saturated) take the roles that land as text.
- */
+// Accent hue — conch — spent as "one small loud thing per view". In light mode, accent splits
+// from primary (300 keeps the fill; 400/500 take the roles that land as text).
 export const southSeaConch = {
-  /** accentSubtle, light mode */
   100: '#FBE8DF',
-  /** accentHover, dark mode */
   200: '#F0B79C',
-  /** primary (both modes) / accent (dark mode) */
   300: '#E8A484',
-  /** accent + focusRing, light mode */
   400: '#A0522F',
-  /** accentHover, light mode */
   500: '#713E26',
 };
 
@@ -95,11 +45,8 @@ const southSeaScrim = {
   dark: 'rgba(0, 0, 0, 0.6)',
 };
 
-// Sentiment families — one 100→800 scale per hue, shared by both modes. Warm
-// throughout to match the maison palette: `seaMoss` (a moss green, not a cool
-// mint), `pacific` (a muted steel-teal, not a saturated blue) — so `info`/
-// `positive` sit in the same register as `anemone`/`shell` rather than reading
-// as imports from another theme.
+// Sentiment families, warm throughout to match the maison palette (seaMoss a moss green, pacific a
+// muted steel-teal — not cool imports from another theme).
 export const southSeaSentiment = {
   seaMoss: { 100: '#e7edde', 200: '#c5d3b1', 300: '#a5bb86', 400: '#8aa762', 500: '#657c46', 600: '#506237', 700: '#3d4b2a', 800: '#202716' },
   anemone: { 100: '#fdeceb', 200: '#f4b9b4', 300: '#f5a8a0', 400: '#e8574a', 500: '#d64036', 600: '#8f1d17', 700: '#7a2f28', 800: '#2a1513' },
@@ -107,26 +54,17 @@ export const southSeaSentiment = {
   pacific: { 100: '#e7efee', 200: '#c3d6d4', 300: '#a1bfbd', 400: '#6e9694', 500: '#4c7573', 600: '#395857', 700: '#2c4442', 800: '#16211f' },
 };
 
-/** Radius 0 — hard-edged by identity; derived radii stay square. */
 const southSeaRadius = { control: '0px', full: '9999px', nesting: '0', cornerShape: 'round' };
-// rem, not px — scales with the user's base font-size preference (see pearl.css.ts).
 const southSeaSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
 const southSeaControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const southSeaFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
 
 export const southSeaFonts = {
   serif: "'Zodiak', Georgia, 'Times New Roman', serif",
-  /**
-   * The italic half of the roman/italic mix — Times, deliberately. The design
-   * canvas was authored against `font-family: Zodiak` but never requested a
-   * Zodiak italic, so every italic there fell through to Times Italic and was
-   * signed off in it. Times' calligraphic italic is the maison voice; Zodiak's
-   * is squarer. So the fallback is promoted to the intended face rather than
-   * "corrected". `Times` before `'Times New Roman'` for the exact macOS face.
-   */
+  // The italic half of the roman/italic mix — Times, deliberately: the design canvas's Zodiak
+  // italic fell through to Times Italic and was signed off in it.
   serifItalic: "Times, 'Times New Roman', Georgia, serif",
   sans: "'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-  /** Boska (Fontshare) — headings (sentence case) and display (uppercase), one weight. */
   boska: "'Boska', Georgia, serif",
 };
 const southSeaFontFamily = {
@@ -135,7 +73,6 @@ const southSeaFontFamily = {
   body: southSeaFonts.sans,
   mono: "ui-monospace, 'SF Mono', Menlo, monospace",
 };
-// Sizes follow the shared 4px-grid ramp (see pearl.css.ts); weight/tracking are South Sea's own.
 const southSeaText = {
   caption: { fontSize: '0.6875rem', lineHeight: '1.4545', fontWeight: '400', letterSpacing: '0' }, // 11/16
   bodySm: { fontSize: '0.75rem', lineHeight: '1.6667', fontWeight: '400', letterSpacing: '0' }, // 12/20
@@ -163,23 +100,14 @@ export const southSeaLightThemeClass = createTheme(vars, {
     borderSubtle: southSeaSand[300],
     borderInverse: southSeaDriftwood[700],
     shadow: southSeaSand[500],
-    // `accent` and `primary` take different steps of conch in light mode — a
-    // fill and a text colour have opposite contrast needs against the ecru
-    // ground (see `southSeaConch`). Measured on `sand[200]` (the harder
-    // ground): `accent` 4.52:1, `accentHover` 7.03:1.
     primary: southSeaConch[300],
     onPrimary: southSeaDriftwood[750],
     accent: southSeaConch[400],
     accentHover: southSeaConch[500],
     accentSubtle: southSeaConch[100],
-    // `sand[150]`, not `driftwood[750]`: `accent` is a deep step now, so text
-    // on it comes from the light register. Cream measures 4.7:1.
     onAccent: southSeaSand[150],
     onAccentSubtle: southSeaDriftwood[750],
     focusRing: southSeaConch[400],
-    // `icon` mixed toward `textSubtle` — full-strength sentiment hue reads more
-    // prominent than body text despite lower contrast (saturation drives
-    // perceived prominence).
     positive: { surface: southSeaSentiment.seaMoss[100], border: southSeaSentiment.seaMoss[200], text: southSeaSentiment.seaMoss[700], icon: `color-mix(in srgb, ${southSeaSentiment.seaMoss[500]} 65%, ${vars.color.textSubtle})` },
     negative: { surface: southSeaSentiment.anemone[100], border: southSeaSentiment.anemone[200], text: southSeaSentiment.anemone[600], icon: `color-mix(in srgb, ${southSeaSentiment.anemone[500]} 65%, ${vars.color.textSubtle})` },
     warn: { surface: southSeaSentiment.shell[100], border: southSeaSentiment.shell[200], text: southSeaSentiment.shell[700], icon: `color-mix(in srgb, ${southSeaSentiment.shell[500]} 65%, ${vars.color.textSubtle})` },
@@ -206,13 +134,9 @@ export const southSeaDarkThemeClass = createTheme(vars, {
     borderStrong: southSeaDriftwood[600],
     borderSubtle: southSeaDriftwood[800],
     borderInverse: southSeaSand[400],
-    // A shadow is occlusion — it must darken. Every neutral this theme owns in
-    // dark mode is lighter than `background` (which is the darkest step), so
-    // this is a fixed value below the ramp, on driftwood's warm hue.
+    // Fixed, not derived: a shadow must darken, but every dark-mode neutral this theme owns is
+    // lighter than background (the darkest step).
     shadow: 'rgba(18, 11, 5, 0.55)',
-    // `onPrimary`/`onAccent`/`accentSubtle` read from `driftwood`, not conch —
-    // a text foreground and a dark-mode background are neutral jobs, and conch
-    // is accent-only.
     primary: southSeaConch[300],
     onPrimary: southSeaDriftwood[900],
     accent: southSeaConch[300],
@@ -267,20 +191,13 @@ inverseOverride(southSeaDarkThemeClass, {
   info: { surface: southSeaSentiment.pacific[100], border: southSeaSentiment.pacific[200], text: southSeaSentiment.pacific[700], icon: `color-mix(in srgb, ${southSeaSentiment.pacific[500]} 65%, ${vars.color.textSubtle})` },
 });
 
-// ---- Role treatments (roles declared in south-sea.roles.ts) ----
-// `Text` only ever writes `data-role`; each theme decides here what it looks
-// like. All mode-agnostic — none of these reference a colour except
-// `inlineEmphasis`, which is contrast-checked against both grounds in both
-// modes (light 4.90:1 / 4.53:1, dark 8.18:1 / 7.49:1).
-
-// `inlineEmphasis` — plain accent-coloured text, not the serif mix.
+// inlineEmphasis — plain accent-coloured text, not the serif mix.
 globalStyle(`${southSeaLightThemeClass} [data-role="inlineEmphasis"], ${southSeaDarkThemeClass} [data-role="inlineEmphasis"]`, {
   color: vars.color.accent,
 });
 
-// The brand wordmark is the maison's italic — Times, neutral ink. Its own rule
-// (not a `role`) so no scale can override it. The `span` qualifier lifts it
-// past the same-specificity `[data-type-scale="heading*"]` Boska rule below.
+// Brand wordmark: own rule (not a role) so no scale can override it; span qualifier lifts it past
+// the same-specificity heading Boska rule below.
 globalStyle(
   `${southSeaLightThemeClass} span[data-component="brand-wordmark"], ${southSeaDarkThemeClass} span[data-component="brand-wordmark"]`,
   {
@@ -291,9 +208,7 @@ globalStyle(
   },
 );
 
-// Body text borrows the italic voice for variety — these scale steps switch to
-// the italic face outright rather than needing `role="inlineEmphasis"` per call
-// site. Each scale keeps its own letter-spacing.
+// Body text borrows the italic voice for variety — these scale steps switch face outright.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="bodySm"]`,
@@ -309,11 +224,7 @@ globalStyle(
   },
 );
 
-// Compensating size bump for the face swap above. Times' x-height sits ~0.448em
-// — a "16px" Times paragraph reads like a 13–14px sans one. Rather than inflate
-// the shared token (and Button/Input's already-correct size), each step is
-// bumped 12.5% here, at the selector that owns the face swap. Line-heights are
-// re-picked on the 4px grid at the new sizes.
+// Compensating size bump for the face swap above — Times' x-height reads ~12.5% smaller than sans.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="bodySm"]`,
@@ -336,10 +247,8 @@ globalStyle(
   { fontSize: '1.6875rem', lineHeight: '1.4815' }, // 27/40
 );
 
-// Headings: Boska, sentence case, roman, Regular. `letterSpacing: 'normal'`
-// drops `southSeaText`'s per-step negative tracking — those values were tuned
-// for Zodiak/Times, and Boska runs tight enough at the same tracking that
-// letters touch at `headingLg`.
+// Headings: Boska, sentence case, roman. letterSpacing reset to normal — Boska runs tight enough at
+// southSeaText's Zodiak/Times tracking that letters touch at headingLg.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="headingSm"]`,
@@ -357,10 +266,7 @@ globalStyle(
   },
 );
 
-// Display: Boska, uppercase, roman, Regular. Same `letterSpacing: 'normal'`
-// reasoning as headings. The nested `[data-role="inlineEmphasis"]` selector
-// stops an inline-emphasised word inheriting the theme's italic Times — Boska
-// has no relationship to the roman/italic mix.
+// Display: Boska, uppercase, roman. Same letterSpacing reset as headings.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="displaySm"]`,
@@ -376,11 +282,11 @@ globalStyle(
     fontWeight: '400',
     letterSpacing: 'normal',
     textTransform: 'uppercase',
-    // Caps have no descenders — display leading goes tighter than the base,
-    // not looser. Boska sits a hair tall, so not as tight as Freshwater's.
     lineHeight: '0.96',
   },
 );
+// Stops an inline-emphasised word inheriting the theme's italic Times — Boska has no relationship
+// to the roman/italic mix.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="displaySm"] [data-role="inlineEmphasis"]`,
@@ -396,11 +302,8 @@ globalStyle(
   },
 );
 
-// Field's label — a plain element, so it carries no `data-*` and falls outside
-// every rule above. Matched to `preheading`'s treatment: General Sans, Light,
-// uppercase, `textSubtle`, with its own tighter tracking (a label above an
-// input reads too loose at `preheading`'s `0.28em`). `fontWeight: '300'`
-// deliberately escapes `southSeaFontWeight` — one caller wants a real Light cut.
+// Field's label falls outside data-role rules (a plain element) — matched to preheading's
+// treatment but with tighter tracking; fontWeight 300 deliberately escapes southSeaFontWeight.
 globalStyle(`${southSeaLightThemeClass} .${fieldMeta} .${fieldLabel}, ${southSeaDarkThemeClass} .${fieldMeta} .${fieldLabel}`, {
   fontFamily: southSeaFonts.sans,
   fontWeight: '300',
@@ -409,8 +312,7 @@ globalStyle(`${southSeaLightThemeClass} .${fieldMeta} .${fieldLabel}, ${southSea
   color: vars.color.textSubtle,
 });
 
-// Input value + hint/error copy — all body prose, so all run the italic voice.
-// `errorText`/`requiredMark` sentiment colour is untouched — only the face changes.
+// Input value + hint/error copy — all body prose, so all run the italic voice; sentiment colour untouched.
 globalStyle(
   [
     `${southSeaLightThemeClass} [data-component="input"]`,
@@ -426,17 +328,13 @@ globalStyle(
   },
 );
 
-// Bare caption-scale text (button text, standalone captions) — General Sans,
-// uppercase, `preheading`'s airy `0.28em`. `southSeaText.caption`'s own
-// tracking is `0`, tuned for mixed case.
 globalStyle(`${southSeaLightThemeClass} [data-type-scale="caption"], ${southSeaDarkThemeClass} [data-type-scale="caption"]`, {
   fontFamily: southSeaFonts.sans,
   textTransform: 'uppercase',
   letterSpacing: '0.28em',
 });
 
-// Uppercase button text at the canon recipe's padding/size reads cramped — caps
-// run wider than mixed case. Wider padding, a size down, and tracking.
+// Uppercase button text at the canon recipe's padding/size reads cramped — caps run wider than mixed case.
 globalStyle(`${southSeaLightThemeClass} [data-component="button"], ${southSeaDarkThemeClass} [data-component="button"]`, {
   fontFamily: southSeaFonts.sans,
   textTransform: 'uppercase',
@@ -446,17 +344,14 @@ globalStyle(`${southSeaLightThemeClass} [data-component="button"], ${southSeaDar
   paddingRight: vars.space.lg,
 });
 
-// `preheading` — the `/ LABEL /` idiom at caption size.
+// preheading — the "/ LABEL /" idiom at caption size.
 globalStyle(`${southSeaLightThemeClass} [data-role="preheading"], ${southSeaDarkThemeClass} [data-role="preheading"]`, {
   fontFamily: southSeaFonts.sans,
   textTransform: 'uppercase',
   letterSpacing: '0.28em',
 });
 
-// Preheading *default* size only — gated on `:not([data-type-scale])` so an
-// explicit `typeScale` still wins. `Text` writes `data-type-scale` exactly
-// when the caller named a scale; without this, a bare `role="preheading"`
-// inherits its ambient size instead of caption, reading oversized.
+// Default size only — gated on :not([data-type-scale]) so an explicit typeScale still wins.
 globalStyle(
   `${southSeaLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${southSeaDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
   {
@@ -465,15 +360,12 @@ globalStyle(
   },
 );
 
-// `dataDigits` aliases to the plain sans — no tabular mono face in this theme.
+// dataDigits aliases to the plain sans — no tabular mono face in this theme.
 globalStyle(`${southSeaLightThemeClass} [data-role="dataDigits"], ${southSeaDarkThemeClass} [data-role="dataDigits"]`, {
   fontFamily: southSeaFonts.sans,
 });
 
-// The shared Button recipe's primary carries an `inset` top-highlight sized for
-// Pearl's near-fill-hued `accentSubtle`. South Sea's is a light wash, so that
-// inset reads as a stark seam. South Sea has no effect at all, so it's dropped
-// entirely; a background hue-shift carries hover/press feedback instead.
+// The shared Button recipe's inset top-highlight is sized for Pearl's accentSubtle; dropped here.
 globalStyle(
   `${southSeaLightThemeClass} [data-component="button"][data-variant="primary"], ${southSeaDarkThemeClass} [data-component="button"][data-variant="primary"]`,
   { boxShadow: 'none' },
@@ -484,24 +376,15 @@ globalStyle(
     `${southSeaDarkThemeClass} [data-component="button"][data-variant="primary"]:not(:disabled):hover`,
   ].join(', '),
   {
-    // Restated at `:hover` — the base recipe's own `:hover` rule outranks this
-    // file's resting `boxShadow: none` once `:hover` matches. In light mode,
-    // with `accent` split onto the deep `conch[400]`, mixing 15% into the fill
-    // reads as a real state change; dark mode mixes conch with conch (both
-    // roles hold `300`) and is unchanged.
+    // Restated at :hover — the base recipe's own :hover rule outranks the resting boxShadow: none above.
     backgroundColor: `color-mix(in srgb, ${vars.color.primary} 85%, ${vars.color.accent})`,
     boxShadow: 'none',
     transform: 'none',
   },
 );
 
-// ---- The golden-hour sphere (hover-triggered) ----
-//
-// `PearlSphere` reads `pearlTreatments.luster` directly (bespoke brand artwork,
-// not a themeable canon component), so a different sphere means overriding its
-// two styled elements here — the same mechanism Tahitian uses. Values are a
-// best-effort match to the reference's labelled hues, not a pixel-exact port.
-
+// The golden-hour sphere (hover-triggered): PearlSphere reads pearlTreatments.luster directly, so a
+// different sphere overrides its two styled elements here.
 const southSeaGoldenHour = {
   champagne800: '#8C6A34',
   gold700: '#A67C2E',
@@ -517,10 +400,8 @@ const southSeaSweep = keyframes({
   '50%': { backgroundPosition: `${southSeaSheenTo}, center` },
 });
 
-// Static by default ("golden hour, held still") — the sheen sits fully off to
-// one side and only the hover rule sets it sweeping. This is why the override
-// replaces `PearlSphere.css.ts`'s always-on `sweep` rather than adding to it —
-// that keyframe is baked to Pearl's own sheen positions.
+// Static by default ("golden hour, held still") — replaces PearlSphere.css.ts's always-on sweep
+// rather than adding to it, since that keyframe is baked to Pearl's own sheen positions.
 globalStyle(`${southSeaDarkThemeClass} .${sphereBody}`, {
   backgroundImage: `${southSeaSheenBand}, radial-gradient(circle at 35% 28%, #FCF4E6 0%, ${southSeaGoldenHour.champagne800} 46%, ${southSeaGoldenHour.gold700} 72%, ${southSeaGoldenHour.dusk850} 100%)`,
   backgroundPosition: `${southSeaSheenFrom}, center`,
@@ -536,18 +417,13 @@ globalStyle(`${southSeaDarkThemeClass} .${sphereContact}`, {
   background: `radial-gradient(ellipse at center, rgba(28, 18, 10, 0.5), transparent 68%)`,
 });
 
-// Light mode's counterpart — required, not optional: unstyled, `PearlSphere`'s
-// gradients resolve `pearlTreatments` vars to nothing and the sphere vanishes
-// on the ecru ground. The nacre reads white, not ecru — a tinted body dissolves
-// into `sand[100]`; value separation comes from the terminator and contact
-// shadow, leaving the body free to run brighter than the background.
+// Light mode's counterpart is required, not optional: unstyled, PearlSphere's gradients resolve
+// pearlTreatments vars to nothing and the sphere vanishes on the ecru ground.
 const southSeaLightSheenBand = `linear-gradient(115deg, transparent 34%, rgba(255, 255, 255, 0.65) 45%, rgba(255, 255, 255, 0.95) 52%, rgba(255, 255, 255, 0.55) 58%, transparent 70%)`;
 const southSeaLightBloom = `radial-gradient(circle at 64% 76%, rgba(251, 232, 223, 0.6), transparent 54%)`;
 const southSeaLightBody = `radial-gradient(circle at 34% 27%, #FFFFFF 0%, #FFFFFF 28%, #FDFBF6 46%, #F7F0E5 63%, #EADCC6 82%, #D2BE9F 100%)`;
 
-// Three-position keyframe (not `southSeaSweep`'s two): CSS cycles a short
-// `background-position` list across the layer count, so three layers need three
-// positions with `center, center` pinning the bloom and body.
+// Three-position keyframe (not southSeaSweep's two) — three layers need three positions.
 const southSeaLightSweep = keyframes({
   '0%, 100%': { backgroundPosition: `${southSeaSheenFrom}, center, center` },
   '50%': { backgroundPosition: `${southSeaSheenTo}, center, center` },
@@ -556,8 +432,7 @@ const southSeaLightSweep = keyframes({
 globalStyle(`${southSeaLightThemeClass} .${sphereBody}`, {
   backgroundImage: `${southSeaLightSheenBand}, ${southSeaLightBloom}, ${southSeaLightBody}`,
   backgroundPosition: `${southSeaSheenFrom}, center, center`,
-  // The drop shadow does the lifting the body no longer does; the two insets
-  // keep a white sphere from going flat (warm occlusion arc + hard white crown).
+  // Two insets keep a white sphere from going flat: warm occlusion arc + hard white crown.
   boxShadow: `0 20px 44px rgba(120, 106, 83, 0.34), inset 0 -10px 26px rgba(120, 106, 83, 0.3), inset 5px 4px 16px rgba(255, 255, 255, 0.9)`,
   animation: 'none',
 });

@@ -3,28 +3,21 @@ import { recipe } from '@vanilla-extract/recipes';
 import { color, radius, space } from '@tokens';
 import { concentricRadius } from '@/foundations/concentricRadius';
 
-// One `border` declaration per variant (not a shared `border: 1px solid` in
-// `base` + a `borderColor` override) — vanilla-extract variants win on equal
-// specificity by declaration order, but keeping the whole property together
-// per variant avoids relying on that ordering at all.
+// One `border` declaration per variant, not shared base + borderColor override
+// — keeps the whole property together instead of relying on declaration order.
 export const alert = recipe({
   base: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: space.sm,
     padding: space.md,
-    // Derived from Alert's OWN padding, not shared with Card — Card pads `lg`
-    // by default and Alert pads `md`, so a single authored radius could only
-    // ever be right for one of them.
+    // Derived from Alert's own padding, not shared with Card (which pads `lg`).
     borderRadius: concentricRadius(space.md),
     cornerShape: radius.cornerShape,
   },
   variants: {
-    // `color` here is a fallback/cascade root, kept for any plain-text/icon
-    // descendant that doesn't set its own color — the title/body `Text` sets
-    // its own explicitly instead (it always sets `color`, so it can't inherit
-    // one from an ancestor), and `XButton` is intentionally neutral
-    // rather than variant-colored, so it doesn't read from this either.
+    // Fallback/cascade root for descendants without their own color — title/body
+    // Text always sets its own; XButton stays neutral, doesn't read from this.
     variant: {
       positive: { background: color.positive.surface, border: `1px solid ${color.positive.border}`, color: color.positive.text },
       negative: { background: color.negative.surface, border: `1px solid ${color.negative.border}`, color: color.negative.text },
@@ -37,14 +30,12 @@ export const alert = recipe({
   },
 });
 
-// Icon sits at the text baseline, not vertically centered on the whole
-// (possibly multi-line) message block.
+// Icon sits at the text baseline, not centered on the whole (possibly multi-line) message.
 export const iconSlot = style({
   flexShrink: 0,
-  marginTop: '0px', // Default style when heading is absent
-  
+  marginTop: '0px',
+
   selectors: {
-    // If a heading class exists in the content sibling of this icon
     [`[data-component="alert"]:has([data-part="content"] [data-part="heading"]) &`]: {
       marginTop: '2px',
     },

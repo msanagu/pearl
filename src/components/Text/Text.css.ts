@@ -1,25 +1,24 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { color, fontFamily, fontWeight, text } from '@tokens';
 
-// One Text component, not split Heading/Text: the type scale is a closed set,
-// so a single `typeScale` variant is safe. `typeScale` has no `defaultVariants`
-// entry so a `role` with no size of its own inherits the surrounding text's
-// size rather than snapping to `bodyMd`.
+// One Text component, not split Heading/Text — type scale is a closed set,
+// so a single typeScale variant is safe. No defaultVariants entry for
+// typeScale, so a role with no size of its own inherits the surrounding size.
 
 /**
  * Prose measure — the `max-width` that caps line length for readability.
  *
- * Values are `ch` (the advance of the `0` glyph, not a character). In Pearl's
- * body sans `1ch` ≈ 0.6em against a ~0.43em average lowercase advance, so a
- * `Nch` box holds roughly `1.4 × N` characters:
+ * Values are `ch` (advance of the `0` glyph). In Pearl's body sans `1ch` ≈
+ * 0.6em against a ~0.43em average lowercase advance, so an `Nch` box holds
+ * roughly `1.4 × N` characters:
  *
  *   sm 35ch ≈ 49 chars — cards, sidebars, form hints
  *   md 45ch ≈ 63 chars — default prose
  *   lg 55ch ≈ 77 chars — wide layouts, docs body
  *
- * `ch` is font-relative on purpose. These labels assume the body sans; a mono
- * `role` would make `1ch` one real character, but Pearl's mono roles are labels
- * and figures, not prose.
+ * `ch` is font-relative on purpose — these labels assume the body sans; a
+ * mono role would make `1ch` one real character, but Pearl's mono roles are
+ * labels/figures, not prose.
  */
 export const measure = {
   sm: '35ch',

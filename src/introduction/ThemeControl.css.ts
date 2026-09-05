@@ -5,10 +5,9 @@ import { color, space, radius, text, fontFamily } from '@tokens';
 // sits in the header's wrapped, full-width actions row.
 const SMALL = '(max-width: 640px)';
 
-// Shared fixed height for `select` and `modeToggle` — `select`'s box is
-// otherwise font-metric-dependent (line-height of whatever it's rendered at)
-// while `modeToggle` is a fixed square, so the two drift apart by a couple of
-// px without an explicit height pinning both to the same number.
+// Shared fixed height for select and modeToggle — select's box is otherwise
+// font-metric-dependent while modeToggle is a fixed square, so they'd drift
+// apart without an explicit height pinning both to the same number.
 const CONTROL_HEIGHT = 32;
 
 export const group = style({

@@ -20,13 +20,11 @@ import { alert, iconSlot, content } from './Alert.css';
 type AlertVariants = NonNullable<RecipeVariants<typeof alert>>;
 export type AlertVariant = NonNullable<AlertVariants['variant']>;
 
-// Named by valence (`positive`/`negative`/`warn`/`info`), matching the
-// sentiment tokens in theme.css.ts — not by prominence ("success"/"error"),
-// and not split across a separate "Notification" component: severity lives
-// entirely in `variant`, so an `info` or `positive` Alert is exactly as
-// first-class as a `negative` one.
+// Named by valence, matching theme.css.ts sentiment tokens — not prominence
+// ("success"/"error"), and no separate "Notification" component: severity
+// lives entirely in `variant`.
 //
-// The actual icon per variant comes from the active theme's icon set
+// Actual icon per variant comes from the active theme's icon set
 // (`useThemeIconSet`) — this just maps variant name to that set's field name.
 const iconKeyByVariant: Record<AlertVariant, keyof ThemeIconSet> = {
   positive: 'positive',
@@ -63,18 +61,13 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * Inline, persistent feedback — form errors, page-level status, confirmations.
- * For low-priority messages that are fine to miss, use `Toast` (a delivery
- * mechanism that renders this same component in a portal with auto-dismiss),
- * not a different visual component.
+ * For low-priority messages fine to miss, use `Toast` (renders this same
+ * component in a portal with auto-dismiss), not a different visual component.
  */
-// `negative`/`warn` are urgent enough to interrupt assistive tech on mount —
-// `role="alert"` is an assertive live region. `positive`/`info` are static
-// confirmations, not urgent, so they carry no role at all. `role="status"`
-// (polite live region) is deliberately not used here: it exists for content
-// that changes in place after mount — which is exactly what `Toast` (see
-// this component's own doc comment) will need once it renders Alert inside
-// a portal with auto-dismiss. A statically-rendered Alert never mutates, so
-// there's nothing for a live region to announce a change to.
+// negative/warn interrupt assistive tech on mount: role="alert" (assertive
+// live region). positive/info are static, non-urgent, carry no role.
+// role="status" (polite) is skipped — it's for content that changes in place
+// after mount, which a statically-rendered Alert never does.
 const roleByVariant: Partial<Record<AlertVariant, 'alert'>> = {
   negative: 'alert',
   warn: 'alert',
