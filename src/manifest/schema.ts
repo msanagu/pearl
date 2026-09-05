@@ -18,9 +18,15 @@
  * real DSDS values, just unused so far. */
 export type GuidelineLevel = 'must' | 'should' | 'should-not' | 'must-not' | 'may';
 
+/** `id`, on every section kind: an optional slug making one facet of an entry
+ * addressable as a cross-ref target — `to: 'pattern.forms#validation'` points
+ * at the section with `id: 'validation'`. Only needed on sections other
+ * entries actually link to. `title` stays the human label. */
 export interface GuidelinesSection {
   kind: 'guidelines';
   for: 'agent';
+  id?: string;
+  title?: string;
   items: { level: GuidelineLevel; statement: string }[];
 }
 
@@ -29,6 +35,8 @@ export interface GuidelinesSection {
 export interface StepsSection {
   kind: 'steps';
   for: 'agent';
+  id?: string;
+  title?: string;
   ordered: boolean;
   items: { title: string; description?: string }[];
 }
@@ -37,6 +45,8 @@ export interface StepsSection {
 export interface DefinitionsSection {
   kind: 'definitions';
   for: 'agent';
+  id?: string;
+  title?: string;
   items: { term: string; definition: string; usage?: string }[];
 }
 
@@ -46,6 +56,8 @@ export interface DefinitionsSection {
 export interface FreeformSection {
   kind: 'section';
   for: 'agent';
+  id?: string;
+  title?: string;
   body: string;
 }
 
@@ -56,7 +68,13 @@ export type ManifestSection =
   | FreeformSection;
 
 /** DSDS's cross-reference object (`related`/`extends`/`refs` all share this
- * shape) — exactly one of `to` (internal entry id) or `href` (external URI). */
+ * shape) — exactly one of `to` (internal entry id, optionally `id#sectionId`)
+ * or `href` (external URI). `rel` is a DSDS rel value: `relates-to`,
+ * `depends-on`, `part-of`, `composes`, `pairs-with`, `extends`, `same-as`,
+ * `alternative-to`, `replaces`, `see-also`, … or a namespaced custom one.
+ * `to` never points at a group — a category is only a ref target if it's its
+ * own entry (e.g. a PatternEntity). generate-manifest.mjs fails the build on
+ * any `to` that doesn't resolve to a real entry or section id. */
 export interface ManifestRef {
   rel: string;
   to?: string;
@@ -82,6 +100,8 @@ interface ManifestEntityBase {
   sections: ManifestSection[];
   /** Links a per-theme instantiation back to its theme-agnostic counterpart — replaces the old implicit `metadata.concept` string-match convention. */
   extends?: ManifestRef[];
+  /** Sibling entries related in purpose/usage — e.g. `foundation.radius` relates-to `foundation.space`. Authored on the specific, stable side (a component/pattern pointing at a foundation), never as a hand-maintained list of everything that touches an entry; the reverse direction is derived by a consumer. */
+  related?: ManifestRef[];
   refs?: ManifestRef[];
 }
 
@@ -130,6 +150,22 @@ export interface FoundationEntity extends ManifestEntityBase {
   metadata: {
     /** Namespace tying this to its `ThemeFoundationEntity` counterparts, e.g. `'sizingGrid'`. */
     concept: string;
+  };
+}
+
+/**
+ * A multi-part usage pattern spanning several components/foundations — e.g.
+ * a "forms" pattern whose facets are layout, form controls, validation. One
+ * entry, facets as `sections` (give a facet a section `id` when another
+ * entry links to it — `related.to: 'pattern.forms#validation'`). `base.json`
+ * only. DSDS kind `'entry'` — the spec has no dedicated pattern kind; its
+ * generic `'entry'` names "a foundation, a pattern, a guide" as this use.
+ * `metadata.pattern` namespaces it, mirroring `FoundationEntity.concept`.
+ */
+export interface PatternEntity extends ManifestEntityBase {
+  kind: 'entry';
+  metadata: {
+    pattern: string;
   };
 }
 
@@ -201,6 +237,8 @@ export interface BaseManifest {
   rationale: RationaleEntity[];
   components: ComponentEntity[];
   foundations: FoundationEntity[];
+  /** Multi-part usage patterns — one per `src/patterns/<name>/` folder; empty until any exist. */
+  patterns: PatternEntity[];
 }
 
 /** One theme's manifest shape (`dist/manifest/<theme>.json`). */

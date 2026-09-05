@@ -199,6 +199,20 @@ pre-1.0 felt like effort that could get thrown away before it paid for
 itself — so the honest state is a point-in-time snapshot, revisited if DSDS
 reaches 1.0, not a live dependency.
 
+The identity a manifest carries is kept out of prose. The system name and its
+theme set live in one `design-system.config.json` at the repo root, which the
+generators read — a fork renames the system and swaps its themes there and
+nowhere else. Per-theme entries describe only their own values; how a theme
+compares to a sibling is left derivable from the data, not asserted in English
+that goes stale when a theme is renamed or added. Cross-references between
+entries (a component or usage pattern pointing at the foundation it builds on)
+use DSDS's `related` field and are authored on the specific, stable side, never
+as a hand-kept list of everything that touches a foundation — and the build
+fails on any reference that doesn't resolve, the same completeness check Pearl
+already runs on entities, extended to the links between them. Multi-part usage
+patterns (a form: layout, controls, validation) are their own entity kind,
+authored as a Storybook story like everything else.
+
 A first generator ships today. Whether it actually makes an agent more accurate
 is being measured, not assumed — the
 [playground](https://msanagu.github.io/pearl-playground/) runs generation against

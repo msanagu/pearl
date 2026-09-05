@@ -1,0 +1,10 @@
+{
+  "$comment": "Design-system identity. The one place theme names are declared — generators and docs read this, never a hardcoded list. A fork edits this file and nothing else to rename the system or change its theme set.",
+  "name": "Pearl",
+  "themes": [
+    { "id": "pearl", "label": "Pearl" },
+    { "id": "tahitian", "label": "Tahitian" },
+    { "id": "freshwater", "label": "Freshwater" },
+    { "id": "south-sea", "label": "South Sea" }
+  ]
+}

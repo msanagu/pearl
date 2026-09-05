@@ -226,6 +226,10 @@ export function generateComponentEntities() {
         }),
       },
       sections: manifestParams?.sections ?? [],
+      ...(manifestParams?.related?.length && {
+        related: manifestParams.related,
+      }),
+      ...(manifestParams?.refs?.length && { refs: manifestParams.refs }),
     });
   }
 

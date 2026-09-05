@@ -49,8 +49,14 @@ import {
   listNamedLiteralExports,
 } from './extract-manifest-parameters.mjs';
 
-const THEMES = ['pearl', 'tahitian', 'freshwater', 'south-sea'];
 const ROOT = path.resolve(import.meta.dirname, '..');
+
+// Theme set + system name come from design-system.config.json — never a
+// literal list here, so a fork renames its system and themes in one file.
+const dsConfig = JSON.parse(
+  readFileSync(path.join(ROOT, 'design-system.config.json'), 'utf8'),
+);
+const THEMES = dsConfig.themes.map((t) => t.id);
 
 // esbuild's ESM-interop shim (`__toESM`) copies `Object.getOwnPropertyNames`
 // off the required module before any named import can see a property — a
@@ -158,12 +164,13 @@ function toSections(documentBlocks) {
  * `src/manifest/*.ts` file (decision 7 / Phase C). A domain with no
  * `parameters.manifest` anywhere yet is skipped, not shipped empty.
  *
- * The entity's own `name`/`description` always come from `domainDescriptions`
- * (or a generic fallback) — never from one of the aggregated files' own
- * `name`/`description`. A domain can hold more than one concept (`color`
- * holds both `tokenSemantics` and `inverseConvention`), so no single file's
- * identity is the whole domain's; each file's own `sections[].title` carries
- * that finer distinction instead.
+ * The entity's `description` comes from `domainDescriptions` first — a domain
+ * that aggregates several concepts (`color` holds `tokenSemantics` +
+ * `inverseConvention`) has no single file's identity, so the map is
+ * authoritative there. A domain with no map entry falls back to its lone
+ * story's own `parameters.manifest.description` (the norm for `patterns`,
+ * one folder / one story), then a generic string. `name` is always the
+ * folder name; finer distinctions live in each `sections[].title`.
  */
 function loadDomainEntities(baseDir, idPrefix, { metadataKey, domainDescriptions } = {}) {
   if (!existsSync(baseDir)) return [];
@@ -179,19 +186,32 @@ function loadDomainEntities(baseDir, idPrefix, { metadataKey, domainDescriptions
       /\.stories\.tsx?$/.test(f),
     );
     const sections = [];
+    const related = [];
+    const refs = [];
+    let authoredDescription;
     for (const file of storyFiles) {
       const params = extractManifestParameters(path.join(domainDir, file));
       if (params?.sections?.length) sections.push(...params.sections);
+      if (params?.related?.length) related.push(...params.related);
+      if (params?.refs?.length) refs.push(...params.refs);
+      if (params?.description) authoredDescription ??= params.description;
     }
     if (!sections.length) continue;
+    // Field order matches ComponentEntity: id/kind/name/description/metadata,
+    // then sections, then the cross-ref arrays.
     const entity = {
       id: `${idPrefix}.${domain}`,
       kind: 'entry',
       name: domain,
-      description: domainDescriptions?.[domain] ?? `${domain} ${idPrefix}.`,
+      description:
+        domainDescriptions?.[domain] ??
+        authoredDescription ??
+        `${domain} ${idPrefix}.`,
+      ...(metadataKey && { metadata: { [metadataKey]: domain } }),
       sections,
+      ...(related.length && { related }),
+      ...(refs.length && { refs }),
     };
-    if (metadataKey) entity.metadata = { [metadataKey]: domain };
     entities.push(entity);
   }
   return entities;
@@ -264,6 +284,53 @@ function toTreatmentEntity(theme, name, spec) {
   };
 }
 
+/** Entity-bearing arrays on a manifest object — base and per-theme both. */
+const ENTITY_KEYS = [
+  'rationale',
+  'components',
+  'foundations',
+  'patterns',
+  'treatments',
+];
+
+function eachEntity(manifest, fn) {
+  for (const key of ENTITY_KEYS) for (const e of manifest[key] ?? []) fn(e);
+}
+
+/** Throws if any `extends`/`related`/`refs` `to` doesn't resolve to a known
+ * entity id — or `entityId#sectionId` when it names a section. `href`-only
+ * refs (external) are skipped. */
+function assertRefsResolve(manifests) {
+  const ids = new Set();
+  const sectionIds = new Set();
+  for (const m of manifests) {
+    eachEntity(m, (e) => {
+      ids.add(e.id);
+      for (const s of e.sections ?? [])
+        if (s.id) sectionIds.add(`${e.id}#${s.id}`);
+    });
+  }
+  const dangling = [];
+  for (const m of manifests) {
+    eachEntity(m, (e) => {
+      for (const rel of ['extends', 'related', 'refs']) {
+        for (const ref of e[rel] ?? []) {
+          if (!ref.to) continue;
+          const known = ref.to.includes('#')
+            ? sectionIds.has(ref.to)
+            : ids.has(ref.to);
+          if (!known) dangling.push(`${e.id} .${rel} -> ${ref.to}`);
+        }
+      }
+    });
+  }
+  if (dangling.length) {
+    throw new Error(
+      `Manifest cross-references don't resolve:\n  ${dangling.join('\n  ')}`,
+    );
+  }
+}
+
 const generatedAt = new Date().toISOString();
 const manifestVersion = '0.3.0'; // bumped: entities now DSDS (v0.20.0) entry/section-shaped — kind/name/description/sections/extends, not documentBlocks
 
@@ -326,15 +393,43 @@ const foundationEntities = loadDomainEntities(
   },
 );
 
+// Patterns — multi-part usage patterns (forms, etc.). One entity per
+// src/patterns/<name>/*.stories.tsx folder; the array stays empty until any
+// exist. Same authoring surface and shape as rationale.
+const patternEntities = loadDomainEntities(
+  path.join(ROOT, 'src', 'patterns'),
+  'pattern',
+  { metadataKey: 'pattern' },
+);
+
 const baseManifest = {
   manifestVersion,
   generatedFrom:
-    'src/components/*/*.stories.tsx, src/foundations/*/*.stories.tsx, src/rationale/*/*.stories.tsx',
+    'src/components/*/*.stories.tsx, src/foundations/*/*.stories.tsx, src/rationale/*/*.stories.tsx, src/patterns/*/*.stories.tsx',
   generatedAt,
   rationale: rationaleEntities,
   components: componentEntities,
   foundations: foundationEntities,
+  patterns: patternEntities,
 };
+
+const themeManifests = THEMES.map((theme) => ({
+  manifestVersion,
+  generatedFrom: `src/themes/${theme}/${theme}.roles.ts, src/foundations/*/*.stories.tsx`,
+  generatedAt,
+  theme,
+  foundations: loadThemeFoundationEntities(
+    path.join(ROOT, 'src', 'foundations'),
+    theme,
+  ),
+  treatments: treatmentEntitiesByTheme[theme],
+}));
+
+// Every `to` in an extends/related/refs must resolve to a real entity id (or
+// `entityId#sectionId`) across all manifests — a dangling cross-reference
+// fails the build, same rot the removed sibling-name prose used to risk.
+assertRefsResolve([baseManifest, ...themeManifests]);
+
 writeFileSync(
   path.join(manifestDir, 'base.json'),
   JSON.stringify(baseManifest, null, 2) + '\n',
@@ -343,25 +438,13 @@ console.log(
   `Wrote ${componentEntities.length} components to dist/manifest/base.json`,
 );
 
-for (const theme of THEMES) {
-  const themeFoundations = loadThemeFoundationEntities(
-    path.join(ROOT, 'src', 'foundations'),
-    theme,
-  );
-  const themeManifest = {
-    manifestVersion,
-    generatedFrom: `src/themes/${theme}/${theme}.roles.ts, src/foundations/*/*.stories.tsx`,
-    generatedAt,
-    theme,
-    foundations: themeFoundations,
-    treatments: treatmentEntitiesByTheme[theme],
-  };
+for (const themeManifest of themeManifests) {
   writeFileSync(
-    path.join(manifestDir, `${theme}.json`),
+    path.join(manifestDir, `${themeManifest.theme}.json`),
     JSON.stringify(themeManifest, null, 2) + '\n',
   );
   console.log(
-    `Wrote ${themeManifest.foundations.length} foundation(s) and ${themeManifest.treatments.length} treatments to dist/manifest/${theme}.json`,
+    `Wrote ${themeManifest.foundations.length} foundation(s) and ${themeManifest.treatments.length} treatments to dist/manifest/${themeManifest.theme}.json`,
   );
 }
 
