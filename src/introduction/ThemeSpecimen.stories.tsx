@@ -11,7 +11,13 @@ const meta: Meta<typeof ThemeSpecimen> = {
   title: 'Introduction/Theme specimen',
   component: ThemeSpecimen,
   tags: ['!dev'],
-  parameters: { layout: 'fullscreen', removePreviewPadding: true },
+  // ThemeSpecimen renders its own labelled `<main>` per frame — keep the
+  // preview decorator from wrapping a second one around it.
+  parameters: {
+    layout: 'fullscreen',
+    removePreviewPadding: true,
+    ownsMainLandmark: true,
+  },
 };
 export default meta;
 

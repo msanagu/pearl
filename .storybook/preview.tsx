@@ -117,10 +117,23 @@ const preview: Preview = {
     a11y: { test: 'todo' },
     options: {
       storySort: {
-        method: 'alphabetical', // Optional: sorts remaining items alphabetically
+        method: 'alphabetical',
+        // Nested arrays order a section's children — 'Tokens' leads every
+        // foundation page (its reference specimen), then the rest alphabetically.
         order: [
           'Introduction',
           'Foundations',
+          [
+            'Color',
+            ['Tokens', '*'],
+            'Radius',
+            ['Tokens', '*'],
+            'Space',
+            ['Tokens', '*'],
+            'Typography',
+            ['Tokens', '*'],
+            '*',
+          ],
           'Brand',
           'Components',
           'Templates',
@@ -205,8 +218,14 @@ const preview: Preview = {
 
       // `<main>` only in the standalone Canvas tab — an autodocs page
       // renders many stories through this same decorator, and more than one
-      // `<main>` landmark on a page is itself an a11y violation.
-      const Container = context.viewMode === 'docs' ? 'div' : 'main';
+      // `<main>` landmark on a page is itself an a11y violation. Stories whose
+      // own component renders a `<main>` (Docs, ThemeSpecimen) opt out with
+      // `parameters: { ownsMainLandmark: true }` so it isn't nested in ours.
+      const Container =
+        context.viewMode === 'docs' ||
+        context.parameters.ownsMainLandmark === true
+          ? 'div'
+          : 'main';
 
       return (
         <ThemeIconProvider theme={theme as ThemeName}>

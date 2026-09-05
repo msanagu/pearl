@@ -12,7 +12,12 @@ const meta: Meta<typeof Docs> = {
   title: 'Templates/Docs',
   component: Docs,
   tags: ['autodocs'],
-  parameters: { layout: 'fullscreen', removePreviewPadding: true },
+  // Docs renders its own `<main>` — don't nest it in the decorator's.
+  parameters: {
+    layout: 'fullscreen',
+    removePreviewPadding: true,
+    ownsMainLandmark: true,
+  },
 };
 export default meta;
 
