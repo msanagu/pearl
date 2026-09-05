@@ -46,7 +46,7 @@ export const vars = createThemeContract({
     borderStrong: null,
     borderSubtle: null,
     // No background/surface/text/textSubtle/icon "Inverse" fields — see
-    // foundations/inverseOverride.ts: a `[data-inverse]` boundary scopes
+    // foundations/color/inverse.ts: a `[data-inverse]` boundary scopes
     // these same tokens instead.
     borderInverse: null,
     // Elevation — box-shadow colour, distinct from border (see tokens.ts).
@@ -75,7 +75,7 @@ export const vars = createThemeContract({
   // Radius. `control` is the theme's one authored corner; `full` is the
   // orthogonal maximal-rounding treatment for square-aspect elements. No
   // `surface`: a padded surface derives its radius from `control` plus its own
-  // padding (see foundations/concentricRadius.ts).
+  // padding (see foundations/radius/Radius.ts).
   radius: {
     control: null,
     full: null,

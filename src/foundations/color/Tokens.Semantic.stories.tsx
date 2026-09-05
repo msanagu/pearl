@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { color, controlHeight, radius, space } from '@tokens';
-import { WordMark, brandWordmarkByTheme } from './typeSpecimens';
+import { WordMark, brandWordmarkByTheme } from '../typography/typeSpecimens';
 import { pearlBrandWordmark } from '@themes/pearl/pearl.roles';
 import * as css from './tokens.css';
 
@@ -20,28 +20,11 @@ function ColorSwatch({ name, cssVar }: { name: string; cssVar: string }) {
   );
 }
 
-function BorderSwatch({
-  name,
-  cssVar,
-  captionColor,
-}: {
-  name: string;
-  cssVar: string;
-  /**
-   * `css.cell` defaults to `color.textSubtle`, which is only legible on a
-   * light-register background. Pass the inverse token when this swatch sits
-   * inside an inverse panel — see the a11y finding this fixes: reusing the
-   * light-mode default here was a real WCAG AA failure (3.18:1), not a token
-   * defect.
-   */
-  captionColor?: string;
-}) {
+function BorderSwatch({ name, cssVar }: { name: string; cssVar: string }) {
   return (
     <div className={css.cell}>
       <div className={css.borderRule} style={{ borderTopColor: cssVar }} />
-      <span style={captionColor ? { color: captionColor } : undefined}>
-        {name}
-      </span>
+      <span>{name}</span>
     </div>
   );
 }
@@ -146,24 +129,6 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
             <span>focusRing, in use</span>
           </div>
         </div>
-
-        <h3 className={css.subsectionTitle}>
-          Inverse — a `[data-inverse]` container, not isolated swatches
-        </h3>
-        <div className={css.inversePanel} data-inverse>
-          <div className={css.inverseCard}>
-            <span style={{ fontWeight: 600 }}>text</span>
-            <span style={{ color: color.textSubtle, fontSize: '13px' }}>
-              textSubtle — everything in this section renders as if the other
-              mode were active, without flipping the global mode.
-            </span>
-            <BorderSwatch name="borderInverse" cssVar={color.borderInverse} />
-          </div>
-          <span className={css.subsectionTitle}>
-            panel: background · card: surface — same tokens, scoped by
-            `[data-inverse]`
-          </span>
-        </div>
       </section>
 
       <section className={css.section}>
@@ -263,7 +228,45 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
 const meta: Meta<typeof TokensPreview> = {
   title: 'Foundations/Tokens/Semantic',
   component: TokensPreview,
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    manifest: {
+      name: 'tokenSemantics',
+      description:
+        'What each sentiment-color sub-field (surface/border/text/icon) is actually for — pick by where it applies, not how bold it looks.',
+      sections: [
+        {
+          kind: 'guidelines',
+          title: 'Token semantics',
+          for: 'agent',
+          items: [
+            {
+              level: 'must',
+              statement:
+                'Pick a sentiment sub-field (color.positive/negative/warn/info) by where it applies, not how strong/bold it looks: surface (tinted background fill), border (tinted border), text (accessible content color on that surface), icon (saturated icon/mark color).',
+            },
+            {
+              level: 'must-not',
+              statement:
+                'Never reach for icon as a general "strong version of this sentiment" elsewhere — e.g. using color.negative.icon as a button\'s background or border is a category error: it is the wrong sub-field for that job, not just a stylistic choice.',
+            },
+          ],
+        },
+        {
+          kind: 'steps',
+          title: 'Token semantics verification',
+          for: 'agent',
+          ordered: false,
+          items: [
+            {
+              title:
+                'Before shipping a solid/bold sentiment fill (e.g. a filled destructive CTA button), verify no such token exists yet — Pearl currently only exposes tinted, Alert-intensity surface/border fills, not a bold/solid sentiment fill. Flag that gap explicitly, the same way a missing variant is flagged under the override contract, rather than substituting icon or inventing an ad hoc color.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   decorators: [
     (Story, context) => (
       <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />

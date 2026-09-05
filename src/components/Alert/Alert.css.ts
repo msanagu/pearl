@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { color, radius, space } from '@tokens';
-import { concentricRadius } from '@/foundations/concentricRadius';
+import { concentricRadius } from '@/foundations/radius/Radius';
 
 // One `border` declaration per variant, not shared base + borderColor override
 // — keeps the whole property together instead of relying on declaration order.

@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
 import { color, fontFamily, radius, space } from '@tokens';
-import { concentricRadius } from './concentricRadius';
 
 // Layout for the token preview — itself built from the tokens, so this file is
 // also the first proof that a `.css.ts` compiles through the vanilla-extract
@@ -118,26 +117,6 @@ export const borderRule = style({
   width: '112px',
   height: 0,
   borderTop: '2px solid',
-});
-
-// `[data-inverse]` demo — panel carries the `data-inverse` attribute in JSX,
-// which repaints its own background automatically (see inverseOverride.ts);
-// no explicit background needed here.
-export const inversePanel = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: space.md,
-  padding: space.lg,
-  borderRadius: concentricRadius(space.lg),
-});
-
-export const inverseCard = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: space.xs,
-  padding: space.md,
-  borderRadius: radius.control,
-  background: color.surface,
 });
 
 // Accent shown as it's actually consumed: a filled pill with onAccent text,

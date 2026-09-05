@@ -1,6 +1,6 @@
 import { createTheme, globalStyle, keyframes, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
-import { inverseOverride } from '@/foundations/inverseOverride';
+import { inverseOverride } from '@/foundations/color/inverse';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody } from '@components/_brand/PearlSphere/PearlSphere.css';
 
@@ -445,7 +445,7 @@ globalStyle(
 // Secondary: unfilled, but never unbordered. Base recipe fills it with
 // color.surface (charcoal[900]), reading as a grey slab that disappears on a
 // surface panel. Dropping the fill fixes that; dropping the border too would
-// break alignment and blur button vs. link — see control-affordances.md.
+// break alignment and blur button vs. link.
 // borderStrong, not border: color.border against charcoal[950] is under
 // 1.4:1, reads as no edge.
 globalStyle(`${tahitianDarkThemeClass} [data-component="button"][data-variant="secondary"]`, {

@@ -1,6 +1,6 @@
 import { createTheme, globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
-import { inverseOverride } from '@/foundations/inverseOverride';
+import { inverseOverride } from '@/foundations/color/inverse';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
 

@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, fontFamily } from '@tokens';
-import * as css from './tokens.css';
+import * as css from '../color/tokens.css';
 
 /**
  * Shared specimen components for Foundations stories — used by both

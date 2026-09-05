@@ -1,6 +1,6 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
-import { inverseOverride } from '@/foundations/inverseOverride';
+import { inverseOverride } from '@/foundations/color/inverse';
 
 /**
  * Pearl — the flagship theme, and the one the docs site is pinned to.

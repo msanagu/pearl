@@ -7,7 +7,7 @@ import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
 import { Tag } from '@components/Tag/Tag';
 import { color, space } from '@tokens';
-import { brandWordmarkByTheme } from '@/foundations/typeSpecimens';
+import { brandWordmarkByTheme } from '@/foundations/typography/typeSpecimens';
 import { WordMark } from '@components/_brand/WordMark/WordMark';
 
 /**
