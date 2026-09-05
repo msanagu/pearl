@@ -322,7 +322,7 @@ globalStyle(
   },
 );
 
-// Field's label falls outside data-role rules (a plain element) — matched to preheading's
+// Field's label falls outside data-role rules (a plain element) — matched to contextLabel's
 // treatment but with tighter tracking; fontWeight 300 deliberately escapes southSeaFontWeight.
 globalStyle(`${southSeaLightThemeClass} .${fieldMeta} .${fieldLabel}, ${southSeaDarkThemeClass} .${fieldMeta} .${fieldLabel}`, {
   fontFamily: southSeaFonts.sans,
@@ -364,8 +364,8 @@ globalStyle(`${southSeaLightThemeClass} [data-component="button"], ${southSeaDar
   paddingRight: vars.space.lg,
 });
 
-// preheading — the "/ LABEL /" idiom at caption size.
-globalStyle(`${southSeaLightThemeClass} [data-role="preheading"], ${southSeaDarkThemeClass} [data-role="preheading"]`, {
+// contextLabel — the "/ LABEL /" idiom at caption size.
+globalStyle(`${southSeaLightThemeClass} [data-role="contextLabel"], ${southSeaDarkThemeClass} [data-role="contextLabel"]`, {
   fontFamily: southSeaFonts.sans,
   textTransform: 'uppercase',
   letterSpacing: '0.28em',
@@ -373,7 +373,7 @@ globalStyle(`${southSeaLightThemeClass} [data-role="preheading"], ${southSeaDark
 
 // Default size only — gated on :not([data-type-scale]) so an explicit typeScale still wins.
 globalStyle(
-  `${southSeaLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${southSeaDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  `${southSeaLightThemeClass} [data-role="contextLabel"]:not([data-type-scale]), ${southSeaDarkThemeClass} [data-role="contextLabel"]:not([data-type-scale])`,
   {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,

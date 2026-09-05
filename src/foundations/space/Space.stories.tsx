@@ -122,7 +122,7 @@ const meta: Meta<typeof SpaceScale> = {
             {
               level: 'must',
               statement:
-                'Where elements stack, make the gap ratio communicate structure — an inner gap must be at least a full scale step smaller than the gap to what surrounds it. A preheading+heading sit at xs, the body after at md — four-to-one reads as grouping with no rule or box; adjacent steps (sm inside md) read as inconsistency.',
+                'Where elements stack, make the gap ratio communicate structure — an inner gap must be at least a full scale step smaller than the gap to what surrounds it. A context label + heading sit at xs, the body after at md — four-to-one reads as grouping with no rule or box; adjacent steps (sm inside md) read as inconsistency.',
             },
           ],
         },

@@ -58,7 +58,7 @@ export const BodyOnly: Story = {
       <Card>
         <Stack gap="md">
           <Stack gap="xs">
-            <Text role="preheading" prominence="subtle" as="p">
+            <Text role="contextLabel" prominence="subtle" as="p">
               Order 4821
             </Text>
             <Text typeScale="headingSm" as="h2">
@@ -112,7 +112,7 @@ export const Padding: Story = {
   render: () => (
     <Row gap="lg" align="start" wrap>
       <Stack gap="lg" style={{ flex: 1, minWidth: 260 }}>
-        <Text role="preheading" typeScale="caption" prominence="subtle" as="p">
+        <Text role="contextLabel" typeScale="caption" prominence="subtle" as="p">
           With header
         </Text>
         {paddings.map((padding) => (
@@ -132,7 +132,7 @@ export const Padding: Story = {
       </Stack>
 
       <Stack gap="lg" style={{ flex: 1, minWidth: 260 }}>
-        <Text role="preheading" typeScale="caption" prominence="subtle" as="p">
+        <Text role="contextLabel" typeScale="caption" prominence="subtle" as="p">
           No header
         </Text>
         {paddings.map((padding) => (
@@ -179,7 +179,7 @@ const metrics = [
 /**
  * `padding="md"` — the dense end. KPI tiles repeat, so padding multiplies:
  * tighter padding means more metrics above the fold. Grouping is uneven on
- * purpose — the preheading is held off from the value, while the value, its
+ * purpose — the context label is held off from the value, while the value, its
  * unit, and the delta Tag sit tight together.
  */
 export const MetricTiles: Story = {
@@ -200,7 +200,7 @@ export const MetricTiles: Story = {
         <Card key={m.label} padding="md">
           <Stack gap="lg" align="start">
             <Text
-              role="preheading"
+              role="contextLabel"
               typeScale="caption"
               prominence="subtle"
               as="p"

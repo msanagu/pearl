@@ -90,7 +90,7 @@ export function Hero({
           {revealWrap(
             'heading',
             <Stack gap="sm">
-              <Text role="preheading" as="p" typeScale="caption" prominence="subtle">
+              <Text role="contextLabel" as="p" typeScale="caption" prominence="subtle">
                 An active experiment
               </Text>
               <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
@@ -158,7 +158,7 @@ export function Hero({
           {stats.map((s) => (
             <Stack className={css.feature} key={s.n} gap="sm">
               <Text
-                role="preheading"
+                role="contextLabel"
                 as="span"
                 typeScale="caption"
                 prominence="subtle"

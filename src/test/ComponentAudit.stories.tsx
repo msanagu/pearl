@@ -114,7 +114,7 @@ function ComponentSampler() {
           Every value comes from the theme contract — swap the theme files, and
           the whole system reskins without touching a single component.
         </Text>
-        <Text typeScale="bodySm" role="preheading">
+        <Text typeScale="bodySm" role="contextLabel">
           Foundations / 01
         </Text>
       </Stack>

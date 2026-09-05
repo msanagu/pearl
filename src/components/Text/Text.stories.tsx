@@ -38,7 +38,7 @@ const meta: Meta<typeof Text> = {
     },
     role: {
       control: 'select',
-      options: [undefined, 'inlineEmphasis', 'preheading', 'dataDigits'],
+      options: [undefined, 'inlineEmphasis', 'contextLabel', 'dataDigits'],
       description:
         'A theme-owned face treatment — independent of `typeScale`, combine freely.',
     },
@@ -108,7 +108,7 @@ export const VariantVsElement: Story = {
  * `role` targeting resolved live, in whichever theme is active in the
  * toolbar — switch themes to see it change. Pearl defines `inlineEmphasis`
  * (serif italic, no declared size — rides whatever `typeScale` it's set in,
- * or ambient size with none) and `preheading` (mono caps, defaults to the
+ * or ambient size with none) and `contextLabel` (mono caps, defaults to the
  * `caption` step).
  */
 export const Roles: Story = {
@@ -121,7 +121,7 @@ export const Roles: Story = {
         </Text>
         .
       </Text>
-      <Text role="preheading" as="span">
+      <Text role="contextLabel" as="span">
         Plate 01 / Nacre
       </Text>
       <Text role="dataDigits" as="span">
@@ -133,21 +133,21 @@ export const Roles: Story = {
 
 /**
  * `role` and `typeScale` are independent axes and compose freely — a role's
- * face doesn't lock in its size. `preheading` carries the mono/uppercase/tracked
+ * face doesn't lock in its size. `contextLabel` carries the mono/uppercase/tracked
  * treatment; the scale step decides how big it renders, and the role's own
  * `caption` size is only the default that applies when the caller names none.
  *
  * This is the case that motivated the split: the Hero's ordinal numbers
- * (`01`, `02`...) need `preheading`'s treatment far larger than that default.
+ * (`01`, `02`...) need `contextLabel`'s treatment far larger than that default.
  */
 export const RoleAndScale: Story = {
   render: () => (
     <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
-      <Text role="preheading" as="span" data-testid="role-default">
+      <Text role="contextLabel" as="span" data-testid="role-default">
         01
       </Text>
       <Text
-        role="preheading"
+        role="contextLabel"
         typeScale="bodyLg"
         as="span"
         data-testid="role-bodyLg"
@@ -155,7 +155,7 @@ export const RoleAndScale: Story = {
         01
       </Text>
       <Text
-        role="preheading"
+        role="contextLabel"
         typeScale="headingLg"
         as="span"
         data-testid="role-headingLg"

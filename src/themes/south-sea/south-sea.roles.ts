@@ -30,9 +30,9 @@ export const southSeaRoles: ThemeRoles<SouthSeaTreatmentName> = {
     scope: ['inline', 'heading'],
     guidance: ['Verified against both background and surface, both modes, as text color: light 4.90:1/4.53:1, dark 8.18:1/7.49:1.'],
   },
-  preheading: {
+  contextLabel: {
     treatment: 'slashLabel',
-    intent: 'The `/ LABEL /` slash-wrapped caption — standalone labels/IDs/metadata.',
+    intent: 'The `/ LABEL /` slash-wrapped caption — the line above a heading, plus standalone labels, IDs, status, metadata.',
     size: 'caption',
   },
   dataDigits: {

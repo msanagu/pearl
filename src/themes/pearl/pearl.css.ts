@@ -352,10 +352,10 @@ globalStyle(
   },
 );
 
-// Preheading face — unconditional. Sentence case, body face: mono/upper/
+// contextLabel face — unconditional. Sentence case, body face: mono/upper/
 // tracked is Freshwater/Tahitian's console idiom, wrong register for Pearl.
 globalStyle(
-  `${pearlLightThemeClass} [data-role="preheading"], ${pearlDarkThemeClass} [data-role="preheading"]`,
+  `${pearlLightThemeClass} [data-role="contextLabel"], ${pearlDarkThemeClass} [data-role="contextLabel"]`,
   {
     fontFamily: pearlFonts.sans,
   },
@@ -364,7 +364,7 @@ globalStyle(
 // Default size only — gated on :not([data-type-scale]) so an explicit
 // typeScale (Hero's oversized 01/02 ordinals) still wins.
 globalStyle(
-  `${pearlLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${pearlDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  `${pearlLightThemeClass} [data-role="contextLabel"]:not([data-type-scale]), ${pearlDarkThemeClass} [data-role="contextLabel"]:not([data-type-scale])`,
   {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,

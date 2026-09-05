@@ -70,7 +70,7 @@ export const sectionHead = style({
   },
 });
 
-/** Preheading + tick + title, stacked in the wide left column. */
+/** Context label + tick + title, stacked in the wide left column. */
 export const sectionHeadLead = style({
   gridColumn: '1',
   display: 'flex',

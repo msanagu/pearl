@@ -48,7 +48,7 @@ export function Dashboard() {
       <Stack gap="lg">
         <div className={css.head}>
           <Stack gap="xs">
-            <Text role="preheading" prominence="subtle" as="p">
+            <Text role="contextLabel" prominence="subtle" as="p">
               miSaaS · Growth
             </Text>
             <Text typeScale="headingMd" as="h1">

@@ -19,9 +19,9 @@ export const tahitianRoles: ThemeRoles<TahitianTreatmentName> = {
     scope: ['inline', 'headline'],
     forbid: ['surface', 'control'],
   },
-  preheading: {
+  contextLabel: {
     treatment: 'monoCapsTracked',
-    intent: 'The short line above a heading, and standalone labels/IDs/metadata — index numbers, plate captions, filter labels.',
+    intent: 'Micro-label treatment: the line above a heading, plus standalone labels, IDs, status, metadata — index numbers, plate captions, filter labels.',
     size: 'caption',
   },
   imageOverlay: {

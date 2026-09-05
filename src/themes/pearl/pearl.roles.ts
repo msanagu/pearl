@@ -27,9 +27,9 @@ export const pearlRoles: ThemeRoles<PearlTreatmentName> = {
     intent: 'The face carrying rare emphasis — pull quotes, inline interjections.',
     scope: ['inline', 'wordmark'],
   },
-  preheading: {
+  contextLabel: {
     treatment: 'sansSentence',
-    intent: 'The short line above a heading, and standalone labels/IDs/metadata.',
+    intent: 'Micro-label treatment: the line above a heading, plus standalone labels, IDs, status, metadata.',
     size: 'caption',
   },
   dataDigits: {

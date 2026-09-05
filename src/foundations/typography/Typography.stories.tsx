@@ -23,8 +23,8 @@ import * as css from '../color/tokens.css';
 /**
  * Foundations → Typography: the flat token list — fontFamily.*, fontWeight.*,
  * text.*, dotted like every other foundation — plus the active theme's role
- * treatments (how it assigns type primitives to jobs: emphasis, preheading,
- * data digits). Role assignment is per-theme, so that section reads the
+ * treatments (how it assigns type primitives to jobs: emphasis, context
+ * label, data digits). Role assignment is per-theme, so that section reads the
  * toolbar's theme global and switches its role table to match.
  *
  * Each role renders through the real `Text` `role` prop, never by reading a
@@ -84,7 +84,7 @@ function InlineEmphasisSpecimen({ theme }: { theme: string }) {
   );
 }
 
-function PreheadingSpecimen({
+function ContextLabelSpecimen({
   label,
   sample,
   theme,
@@ -95,12 +95,17 @@ function PreheadingSpecimen({
 }) {
   const [ref, resolved] = useComputed<HTMLSpanElement>(
     ['font-family', 'text-transform', 'letter-spacing'],
-    '[data-role="preheading"]',
+    '[data-role="contextLabel"]',
     [theme],
   );
   return (
     <div ref={ref} className={css.cell}>
-      <Text as="span" role="preheading" typeScale="caption" prominence="subtle">
+      <Text
+        as="span"
+        role="contextLabel"
+        typeScale="caption"
+        prominence="subtle"
+      >
         {sample}
       </Text>
       <span>{label}</span>
@@ -237,21 +242,21 @@ function TypographyTokens({ theme = 'pearl' }: { theme?: string }) {
           </>
         )}
 
-        {active?.roles.preheading && (
+        {active?.roles.contextLabel && (
           <>
-            <h3 className={css.subsectionTitle}>Preheading</h3>
+            <h3 className={css.subsectionTitle}>Context label</h3>
             <div className={css.row}>
-              <PreheadingSpecimen
+              <ContextLabelSpecimen
                 label="nav / index"
                 sample="Index"
                 theme={theme}
               />
-              <PreheadingSpecimen
+              <ContextLabelSpecimen
                 label="caption"
                 sample="01 / Nacre"
                 theme={theme}
               />
-              <PreheadingSpecimen
+              <ContextLabelSpecimen
                 label="index row"
                 sample="Selected — 2024/26"
                 theme={theme}

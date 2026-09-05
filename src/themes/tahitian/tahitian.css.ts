@@ -385,9 +385,9 @@ globalStyle(`${tahitianDarkThemeClass} [data-component="brand-wordmark"]`, {
   color: tahitianPlatinum[100],
 });
 
-// Preheading face — unconditional.
+// contextLabel face — unconditional.
 globalStyle(
-  `${tahitianLightThemeClass} [data-role="preheading"], ${tahitianDarkThemeClass} [data-role="preheading"]`,
+  `${tahitianLightThemeClass} [data-role="contextLabel"], ${tahitianDarkThemeClass} [data-role="contextLabel"]`,
   {
     fontFamily: tahitianFonts.mono,
     textTransform: 'uppercase',
@@ -397,9 +397,9 @@ globalStyle(
 
 // Default size only — gated on :not([data-type-scale]) so an explicit
 // typeScale wins (see matching note in pearl.css.ts). Without this a
-// preheading inherits the ambient scale and renders at body size.
+// contextLabel inherits the ambient scale and renders at body size.
 globalStyle(
-  `${tahitianLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${tahitianDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  `${tahitianLightThemeClass} [data-role="contextLabel"]:not([data-type-scale]), ${tahitianDarkThemeClass} [data-role="contextLabel"]:not([data-type-scale])`,
   {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,

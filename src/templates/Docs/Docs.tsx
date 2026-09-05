@@ -39,7 +39,7 @@ function NavGroup({
 }) {
   return (
     <Stack gap="xs" style={{ marginBottom: space.xl }}>
-      <Text role="preheading" as="p" prominence="subtle">
+      <Text role="contextLabel" as="p" prominence="subtle">
         {heading}
       </Text>
       {items.map((item) => {
@@ -95,7 +95,7 @@ function PropsTable() {
                   borderBottom: `1px solid ${color.borderStrong}`,
                 }}
               >
-                <Text role="preheading" as="span" prominence="subtle">
+                <Text role="contextLabel" as="span" prominence="subtle">
                   {heading}
                 </Text>
               </th>
@@ -128,7 +128,7 @@ function ButtonDocs(): ReactNode {
   return (
     <Stack gap="xl">
       <Stack gap="sm">
-        <Text role="preheading" as="p" prominence="subtle">
+        <Text role="contextLabel" as="p" prominence="subtle">
           Components / Button
         </Text>
         <Text typeScale="headingLg" as="h1" style={{ margin: 0 }}>
@@ -149,7 +149,7 @@ function ButtonDocs(): ReactNode {
         <Card padding="lg">
           <Stack gap="md">
             <Text
-              role="preheading"
+              role="contextLabel"
               typeScale="caption"
               prominence="subtle"
               as="p"
@@ -236,7 +236,7 @@ export function Docs() {
           aria-label="On this page"
         >
           <Stack gap="sm">
-            <Text role="preheading" as="p" prominence="subtle">
+            <Text role="contextLabel" as="p" prominence="subtle">
               On this page
             </Text>
             {onThisPage.map((item, index) => (

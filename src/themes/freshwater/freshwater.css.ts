@@ -275,7 +275,7 @@ globalStyle(
   { fontSize: vars.text.bodySm.fontSize },
 );
 
-// Preheading + Field's label: subtle mono caps, the console's metadata idiom.
+// contextLabel + Field's label: subtle mono caps, the console's metadata idiom.
 const freshwaterMetaCaps = {
   fontFamily: vars.fontFamily.mono,
   textTransform: 'uppercase',
@@ -283,13 +283,13 @@ const freshwaterMetaCaps = {
   color: vars.color.textSubtle,
 } as const;
 globalStyle(
-  `${freshwaterLightThemeClass} [data-role="preheading"], ${freshwaterDarkThemeClass} [data-role="preheading"]`,
+  `${freshwaterLightThemeClass} [data-role="contextLabel"], ${freshwaterDarkThemeClass} [data-role="contextLabel"]`,
   freshwaterMetaCaps,
 );
 
 // Default size only — gated on :not([data-type-scale]) so an explicit typeScale still wins.
 globalStyle(
-  `${freshwaterLightThemeClass} [data-role="preheading"]:not([data-type-scale]), ${freshwaterDarkThemeClass} [data-role="preheading"]:not([data-type-scale])`,
+  `${freshwaterLightThemeClass} [data-role="contextLabel"]:not([data-type-scale]), ${freshwaterDarkThemeClass} [data-role="contextLabel"]:not([data-type-scale])`,
   {
     fontSize: vars.text.caption.fontSize,
     lineHeight: vars.text.caption.lineHeight,

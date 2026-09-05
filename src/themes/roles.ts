@@ -109,4 +109,4 @@ export type ThemeRoles<TTreatment extends string = string> = Record<string, Role
  * own roles file, because `Text`'s `role` prop enforces this same union
  * regardless of which theme is active.
  */
-export type TypographyRole = 'inlineEmphasis' | 'preheading' | 'dataDigits';
+export type TypographyRole = 'inlineEmphasis' | 'contextLabel' | 'dataDigits';

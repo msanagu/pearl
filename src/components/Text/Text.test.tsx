@@ -21,9 +21,9 @@ describe('Text', () => {
   });
 
   it('sets data-role when a role is passed', () => {
-    render(<Text role="preheading">Plate 01</Text>);
+    render(<Text role="contextLabel">Plate 01</Text>);
     const el = screen.getByText('Plate 01');
-    expect(el.dataset.role).toBe('preheading');
+    expect(el.dataset.role).toBe('contextLabel');
   });
 
   it('merges custom className and forwards other props', () => {

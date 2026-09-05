@@ -279,13 +279,13 @@ function scrollToConventions(
   else anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/** A section opener: accent tick, preheading, title, optional standfirst. */
+/** A section opener: accent tick, contextLabel, title, optional standfirst. */
 function SectionHead({
-  preheading,
+  contextLabel,
   title,
   standfirst,
 }: {
-  preheading: string;
+  contextLabel: string;
   title: string;
   standfirst?: ReactNode;
 }) {
@@ -294,14 +294,14 @@ function SectionHead({
       <StaggerItem className={css.sectionHeadLead}>
         <DrawTick className={css.sectionTick} />
         <Text
-          id={toKebabCase(preheading)}
-          role="preheading"
+          id={toKebabCase(contextLabel)}
+          role="contextLabel"
           as="p"
           typeScale="caption"
           prominence="subtle"
           style={{ scrollMarginTop: '2.5rem' }} // breathing room when a CTA scrolls to this id
         >
-          {preheading}
+          {contextLabel}
         </Text>
         <Text as="h2" typeScale="displayLg" measure="sm" style={{ margin: 0 }}>
           {title}
@@ -540,7 +540,7 @@ function IntroductionPage({
           </section>
 
           {/* The premise — one Card: headline statement, then three labelled
-              beats in a row, same preheading-label pattern as the record's
+              beats in a row, same contextLabel pattern as the record's
               detail panel. Stacked, not title-beside-column — that shape
               belongs to the Conventions opener below; two in a row would
               read as one object twice. */}
@@ -568,7 +568,7 @@ function IntroductionPage({
                         <Stagger className={css.premiseBeats} gap={0.1}>
                           <StaggerItem className={css.premiseBeat}>
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="p"
                               typeScale="caption"
                               prominence="subtle"
@@ -591,7 +591,7 @@ function IntroductionPage({
 
                           <StaggerItem className={css.premiseBeat}>
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="p"
                               typeScale="caption"
                               prominence="subtle"
@@ -613,7 +613,7 @@ function IntroductionPage({
 
                           <StaggerItem className={css.premiseBeat}>
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="p"
                               typeScale="caption"
                               prominence="subtle"
@@ -645,7 +645,7 @@ function IntroductionPage({
           <section>
             <div className={css.sectionBody}>
               <SectionHead
-                preheading="Conventions"
+                contextLabel="Conventions"
                 title="How Pearl is built — and what's still being tested"
                 standfirst="The conventions the system commits to, and the ones still being evaluated. Adopted ones would take a real reason to reverse; the open ones are approaches taken up to find out whether they hold up — where reversing later is the method working, not a failure. Each is dated to when the thinking behind it was done."
               />
@@ -655,7 +655,7 @@ function IntroductionPage({
                 <div className={css.indexRailTop}>
                   <div className={css.indexRailCell}>
                     <Text
-                      role="preheading"
+                      role="contextLabel"
                       as="p"
                       typeScale="caption"
                       prominence="subtle"
@@ -667,7 +667,7 @@ function IntroductionPage({
                     className={`${css.indexRailCell} ${css.indexRailCellRange}`}
                   >
                     <Text
-                      role="preheading"
+                      role="contextLabel"
                       as="p"
                       typeScale="caption"
                       prominence="subtle"
@@ -678,7 +678,7 @@ function IntroductionPage({
                   </div>
                   <div className={css.indexRailCell}>
                     <Text
-                      role="preheading"
+                      role="contextLabel"
                       as="p"
                       typeScale="caption"
                       prominence="subtle"
@@ -721,11 +721,11 @@ function IntroductionPage({
                         }
                       >
                         <summary className={css.indexRow}>
-                          {/* `preheading` resolves to each theme's mono face —
+                          {/* `contextLabel` resolves to each theme's mono face —
                             without the role the ordinal reads as body text, not
                             an index number. */}
                           <Text
-                            role="preheading"
+                            role="contextLabel"
                             as="span"
                             typeScale="caption"
                             prominence="subtle"
@@ -754,7 +754,7 @@ function IntroductionPage({
                               adopted and stay subtle; the in-evaluation ones
                               take `accent`. */}
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="span"
                               typeScale="caption"
                               prominence={
@@ -793,7 +793,7 @@ function IntroductionPage({
                           </Text>
                           <Stack gap="xs">
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="p"
                               typeScale="caption"
                               prominence="subtle"
@@ -811,7 +811,7 @@ function IntroductionPage({
                           </Stack>
                           <Stack gap="xs">
                             <Text
-                              role="preheading"
+                              role="contextLabel"
                               as="p"
                               typeScale="caption"
                               prominence="subtle"
@@ -845,7 +845,7 @@ function IntroductionPage({
 
                 <div className={css.indexRailBottom}>
                   <Text
-                    role="preheading"
+                    role="contextLabel"
                     as="p"
                     typeScale="caption"
                     prominence="subtle"
@@ -853,7 +853,7 @@ function IntroductionPage({
                     {acceptedCount} adopted / {proposedCount} in evaluation
                   </Text>
                   <Text
-                    role="preheading"
+                    role="contextLabel"
                     as="p"
                     typeScale="caption"
                     prominence="subtle"
@@ -875,7 +875,7 @@ function IntroductionPage({
                     <DrawTick className={css.sectionTick} />
                     <Text
                       id="playground"
-                      role="preheading"
+                      role="contextLabel"
                       as="p"
                       typeScale="caption"
                       prominence="subtle"
@@ -986,7 +986,7 @@ function IntroductionPage({
                             <CountUp value={stat.value} />
                           </Text>
                           <Text
-                            role="preheading"
+                            role="contextLabel"
                             as="p"
                             typeScale="caption"
                             prominence="subtle"
@@ -1006,7 +1006,7 @@ function IntroductionPage({
           {/* Next */}
           <section>
             <div className={css.sectionBody}>
-              <SectionHead preheading="Start here" title="Where to go next" />
+              <SectionHead contextLabel="Start here" title="Where to go next" />
 
               <Stagger className={css.nextGrid} gap={0.08}>
                 {nextSteps.map((step) => (

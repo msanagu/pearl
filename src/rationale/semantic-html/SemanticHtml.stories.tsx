@@ -10,7 +10,7 @@ import { Text } from '@components/Text/Text';
 function SemanticHeaderDemo() {
   return (
     <header>
-      <Text role="preheading" as="p">
+      <Text role="contextLabel" as="p">
         A design system for identities that refuse sameness
       </Text>
       <Text as="h1" typeScale="displayLg">
@@ -49,7 +49,7 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
         {
           kind: 'guidelines',
           for: 'agent',
-          title: 'Header vocabulary: header, heading, preheading, subheading',
+          title: 'Header vocabulary: header, heading, contextLabel',
           items: [
             {
               level: 'must',
@@ -59,17 +59,17 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
             {
               level: 'must-not',
               statement:
-                'preheading (a Text role, not a variant — the short line above a heading) must never be an h* element — a heading level there puts a bogus entry in the document outline immediately above the real heading. Use as="p" inside a header, or as="span" inline.',
+                'contextLabel (a Text role, not a variant — the mono/caps micro-label treatment: eyebrows, status, category and metadata labels, index numbers) must never be an h* element. When it is the line above a heading, a heading level there puts a bogus entry in the document outline immediately above the real heading. Use as="p" inside a header, or as="span" inline.',
             },
             {
               level: 'must',
               statement:
-                "Pass typeScale explicitly on a preheading unless every targeted theme already sizes that role (some do, some don't — check the theme's typography entry) — a role with no size opinion inherits ambient scale, which for a preheading means body size directly above the heading it introduces, inverting the hierarchy.",
+                "When a contextLabel sits above a heading, pass typeScale explicitly unless every targeted theme already sizes the role (some do, some don't — check the theme's typography entry) — a role with no size opinion inherits ambient scale, which here means body size directly above the heading it introduces, inverting the hierarchy.",
             },
             {
               level: 'should',
               statement:
-                'subheading is not yet a role — reserved for a short line below a heading, same pattern as preheading, once a theme needs one.',
+                'A short line below a heading (a deck or standfirst) is a separate concern, not a mirror of contextLabel — it is running prose, sized via typeScale on a p, and has no role of its own yet.',
             },
           ],
         },
@@ -77,18 +77,20 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
           kind: 'section',
           for: 'agent',
           title: 'Composing a header',
-          body: 'Assembled by hand today — <header><Text role="preheading" as="p">...</Text><Text as="h1" typeScale="displayLg">...</Text></header> — no Header/composition component yet.',
+          body: 'Assembled by hand today — <header><Text role="contextLabel" as="p">...</Text><Text as="h1" typeScale="displayLg">...</Text></header> — no Header/composition component yet.',
         },
         {
           kind: 'section',
           for: 'agent',
-          title: "Where it's genuinely contested: components with no native element",
+          title:
+            "Where it's genuinely contested: components with no native element",
           body: "Alert and Badge have no native HTML5 equivalent — a <div> with the appropriate ARIA role isn't a compromise here, native HTML just has nothing to defer to. Alert's role varies by variant rather than being fixed.",
         },
         {
           kind: 'section',
           for: 'agent',
-          title: "Where it's a real trade-off: Progress Bar (not yet built, decision deferred)",
+          title:
+            "Where it's a real trade-off: Progress Bar (not yet built, decision deferred)",
           body: 'Native <progress> gives accessible semantics free but is hard to style consistently across browsers. The alternative, <div role="progressbar"> with manual aria-valuenow/min/max, trades that for full styling control. Decide deliberately when Progress Bar is built — revisit then, not now.',
         },
       ],

@@ -147,7 +147,7 @@ export function ThemeSpecimen({
           <Row justify="between" align="center" gap="sm">
             <Stack gap="sm">
               <Text
-                role="preheading"
+                role="contextLabel"
                 as="p"
                 typeScale="caption"
                 prominence="subtle"
