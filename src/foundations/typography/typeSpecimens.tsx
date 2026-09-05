@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, fontFamily } from '@tokens';
 import * as css from '../color/tokens.css';
@@ -11,6 +12,64 @@ import * as css from '../color/tokens.css';
 // Re-exported so specimens and nav render from one source, not parallel copies.
 export { brandWordmarkByTheme } from '@components/_brand/WordMark/brandWordmark';
 export { WordMark } from '@components/_brand/WordMark/WordMark';
+
+/**
+ * Shrinks its child down to fit the available width — WordMark's `scale` is an
+ * inline font-size no media query reaches, so measure the natural box and apply
+ * a transform. Never scales up past the child's own size (cap at 1); `maxWidth`
+ * caps the box so the mark doesn't stretch across a wide desktop canvas.
+ */
+export function FitToWidth({
+  children,
+  maxWidth = '40rem',
+}: {
+  children: ReactNode;
+  maxWidth?: number | string;
+}) {
+  const box = useRef<HTMLDivElement>(null);
+  const content = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const outer = box.current;
+    const inner = content.current;
+    if (!outer || !inner) return;
+    let applied = -1;
+    const fit = () => {
+      // scrollWidth/offsetHeight are layout boxes — the transform doesn't move
+      // them, so natural size stays readable whatever scale is applied.
+      const natural = inner.scrollWidth;
+      if (!natural) return;
+      const next = Math.min(1, outer.clientWidth / natural);
+      // Guard against a ResizeObserver feedback loop off the height we set.
+      if (Math.abs(next - applied) < 0.002) return;
+      applied = next;
+      setScale(next);
+      outer.style.height = `${inner.offsetHeight * next}px`;
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(outer);
+    // Anton/display faces load after first paint — re-measure once they do.
+    document.fonts?.ready.then(fit).catch(() => {});
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={box} style={{ width: '100%', maxWidth, overflow: 'hidden' }}>
+      <div
+        ref={content}
+        style={{
+          display: 'inline-block',
+          transform: `scale(${scale})`,
+          transformOrigin: 'left top',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 /**
  * Reads computed CSS properties off the attached node, or off the first

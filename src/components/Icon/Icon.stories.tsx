@@ -165,17 +165,17 @@ const meta: Meta<typeof Icon> = {
             {
               level: 'must',
               statement:
-                "Accept any react-icons IconType via Icon's icon prop — Phosphor, Remix, Heroicons v2, Lucide, Tabler, or whatever set the consumer already uses. Pearl ships no default set; the choice belongs to the consumer.",
+                "Accept any react-icons IconType via icon — Phosphor, Remix, Heroicons v2, Lucide, Tabler, whatever the consumer uses. This system ships no default icon set.",
             },
             {
               level: 'must',
               statement:
-                'Switch between outline and filled yourself via a matched-pair import (selected ? PiHeartFill : PiHeart) — check the actual set imported before assuming a suffix convention: …/…Fill (Phosphor), …Line/…Fill (Remix), HiOutline…/Hi… (Heroicons v2).',
+                'Switch outline/filled via a matched-pair import (selected ? PiHeartFill : PiHeart) — check the actual set before assuming a suffix convention: …/…Fill (Phosphor), …Line/…Fill (Remix), HiOutline…/Hi… (Heroicons v2).',
             },
             {
               level: 'must-not',
               statement:
-                'Don\'t look for a weight="outline" prop on Icon — outline vs. filled is a matched-pair import, not a Pearl prop.',
+                'Don\'t look for a weight="outline" prop on Icon — outline vs. filled is a matched-pair import, not a prop this component exposes.',
             },
             {
               level: 'must-not',

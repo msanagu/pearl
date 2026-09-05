@@ -1,9 +1,9 @@
 import { style } from '@vanilla-extract/css';
 import { color, fontFamily, radius, space } from '@tokens';
 
-// Layout for the token preview — itself built from the tokens, so this file is
-// also the first proof that a `.css.ts` compiles through the vanilla-extract
-// plugin inside Storybook (not just the Vite library build).
+// Layout for the semantic half of the Color/Tokens specimen — itself built
+// from the tokens, so also the first proof that a `.css.ts` compiles through
+// the vanilla-extract plugin inside Storybook (not just the Vite library build).
 
 export const page = style({
   display: 'flex',
@@ -13,6 +13,10 @@ export const page = style({
   background: color.background,
   color: color.text,
   fontFamily: fontFamily.body,
+  // Portrait mobile: 32px each side eats a tenth of a 360px viewport.
+  '@media': {
+    '(max-width: 600px)': { padding: space.md, gap: space.xl },
+  },
 });
 
 export const section = style({
@@ -25,14 +29,6 @@ export const sectionTitle = style({
   margin: 0,
   fontSize: '18px',
   fontWeight: 600,
-});
-
-// Wordmark's own class — deliberately no fontSize/fontWeight, unlike
-// sectionTitle. Rendered through Text with typeScale="displayLg"; reusing
-// sectionTitle would fight that scale's font-size, capping it back to 18px.
-export const wordmarkTitle = style({
-  margin: 0,
-  marginBottom: space.sm,
 });
 
 export const row = style({
@@ -56,28 +52,26 @@ export const swatch = style({
   border: `1px solid ${color.border}`,
 });
 
-export const spaceBar = style({
-  height: '16px',
-  background: color.accent,
-  borderRadius: radius.control,
+// One sentiment group (positive, negative, …): label above its swatch strip —
+// same layout and label weight as the hue blocks on Color/Tokens primitives.
+export const sentimentGroup = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.sm,
 });
 
-export const radiusBox = style({
-  width: '72px',
-  height: '72px',
-  background: color.surface,
-  border: `1px solid ${color.border}`,
+export const sentimentGroupLabel = style({
+  fontSize: '13px',
+  fontWeight: 600,
+  color: color.text,
+  lineHeight: 1.4,
 });
 
-export const controlHeightBar = style({
-  background: color.accentSubtle,
-  border: `1px solid ${color.accent}`,
-  borderRadius: radius.control,
-});
-
-// One swatch strip per sentiment role — surface/border/text/icon side by side.
+// One swatch strip per sentiment role — surface/border/text/icon/fill side by side,
+// wrapping to a 2x2 block once four 96px cards no longer fit (portrait mobile).
 export const sentimentRow = style({
   display: 'flex',
+  flexWrap: 'wrap',
   gap: space.md,
 });
 

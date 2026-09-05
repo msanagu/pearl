@@ -1,4 +1,6 @@
+import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, radius, space } from '@tokens';
 import { Row } from '@components/Row/Row';
 import { Stack } from '@components/Stack/Stack';
@@ -8,52 +10,207 @@ import { concentricRadius } from './Radius';
 const PADDINGS = ['md', 'lg', 'xl'] as const;
 
 /**
- * Foundations → Radius: **experimental — not a settled design-system
- * stance.** A live trial of concentric derivation: Pearl's default card
- * radius grew from an authored 16px to a derived 36px as a direct
- * consequence, a real, debatable identity change, not a neutral refactor.
- * Treat every number and rule here as provisional until it's been judged in
- * Storybook and lived with for a while. One authored corner per theme —
- * everything else is geometry.
+ * Foundations → Radius: the corner system. A theme authors exactly one radius
+ * — radius.control — plus two policy tokens (nesting, cornerShape); every
+ * other rounded corner is derived. The Default story shows the authored
+ * tokens; Concentric derivation covers the experimental surface-radius rule.
  */
-function ConcentricDemo() {
+
+// Radius values are per-theme calc()s / custom props — JS can't derive them,
+// so measure a rendered node. Keyed on `theme` because the toolbar swaps a
+// class on an ancestor, not on the node itself.
+function useMeasured<T extends HTMLElement>(prop: string, theme: string) {
+  const ref = useRef<T | null>(null);
+  const [value, setValue] = useState('');
+  const read = useCallback(() => {
+    if (ref.current)
+      setValue(getComputedStyle(ref.current).getPropertyValue(prop).trim());
+  }, [prop]);
+  const setRef = useCallback(
+    (node: T | null) => {
+      ref.current = node;
+      read();
+    },
+    [read],
+  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- `theme` is the real re-read trigger; `read` is stable per `prop`.
+  useLayoutEffect(read, [read, theme]);
+  return [setRef, value] as const;
+}
+
+function ShapeSpec({
+  name,
+  note,
+  theme,
+  circle = false,
+}: {
+  name: string;
+  note: string;
+  theme: string;
+  circle?: boolean;
+}) {
+  const [ref, value] = useMeasured<HTMLDivElement>('border-radius', theme);
   return (
-    <Row gap="lg" wrap align="start">
-      {PADDINGS.map((padding) => (
-        <Stack key={padding} gap="sm" align="center" style={{ width: 160 }}>
-          <div
-            style={{
-              padding: space[padding],
-              borderRadius: concentricRadius(space[padding]),
-              background: color.surface,
-              border: `1px solid ${color.border}`,
-            }}
-          >
-            <div
-              style={{
-                height: 32,
-                borderRadius: radius.control,
-                background: color.accent,
-              }}
-            />
-          </div>
-          <Text as="p" typeScale="bodySm" prominence="subtle">
-            padding=&quot;{padding}&quot;
-          </Text>
-        </Stack>
-      ))}
-    </Row>
+    <Stack gap="sm" align="start" style={{ flex: '1 1 160px', minWidth: 0 }}>
+      <div
+        ref={ref}
+        style={{
+          width: circle ? 72 : '100%',
+          height: 72,
+          maxWidth: 220,
+          borderRadius: circle ? radius.full : radius.control,
+          background: color.accentSubtle,
+          border: `1px solid ${color.accent}`,
+        }}
+      />
+      <Text as="p" typeScale="bodySm">
+        {name}
+      </Text>
+      <Text as="p" typeScale="caption" prominence="subtle">
+        {value || '—'} · {note}
+      </Text>
+    </Stack>
   );
 }
 
-const meta: Meta<typeof ConcentricDemo> = {
+function RadiusPrinciples({ theme = 'pearl' }: { theme?: string }) {
+  const [shapeRef, cornerShape] = useMeasured<HTMLSpanElement>('--cs', theme);
+  const [nestingRef, nesting] = useMeasured<HTMLSpanElement>('--rn', theme);
+  return (
+    <Stack gap="lg" style={{ maxWidth: '100%' }}>
+      <span
+        ref={shapeRef}
+        aria-hidden
+        style={{ display: 'none', '--cs': radius.cornerShape } as CSSProperties}
+      />
+      <span
+        ref={nestingRef}
+        aria-hidden
+        style={{ display: 'none', '--rn': radius.nesting } as CSSProperties}
+      />
+      <Text as="p" typeScale="bodySm" prominence="subtle" measure="lg">
+        A theme authors one corner — radius.control, used by every button,
+        input, and tag. radius.full is maximal rounding, valid only on
+        square-aspect elements where it renders a true circle. cornerShape and
+        nesting are policy, not lengths.
+      </Text>
+      <Row gap="lg" wrap align="start" style={{ maxWidth: '100%' }}>
+        <ShapeSpec
+          name="radius.control"
+          note="buttons, inputs, tags"
+          theme={theme}
+        />
+        <ShapeSpec
+          name="radius.full"
+          note="circles only — never a rectangle"
+          theme={theme}
+          circle
+        />
+      </Row>
+      <Text as="p" typeScale="caption" prominence="subtle">
+        radius.cornerShape = {cornerShape || '—'} · radius.nesting ={' '}
+        {nesting || '—'}
+        {nesting === '0' ? ' (nesting 0 — flat surface radius)' : ''}
+      </Text>
+    </Stack>
+  );
+}
+
+// Concentric derivation — the experimental surface-radius rule. Not a settled
+// stance: Pearl's default card radius grew from an authored 16px to a derived
+// 36px as a direct consequence, a real identity change. See the manifest's
+// experimental-status section.
+function ConcentricSpecimen({
+  padding,
+  theme,
+}: {
+  padding: string;
+  theme: string;
+}) {
+  const [outerRef, outer] = useMeasured<HTMLDivElement>('border-radius', theme);
+  const [innerRef, inner] = useMeasured<HTMLDivElement>('border-radius', theme);
+  const step = space[padding as keyof typeof space];
+  return (
+    <Stack
+      gap="sm"
+      align="start"
+      style={{ flex: '1 1 160px', maxWidth: 260, minWidth: 0 }}
+    >
+      <div
+        ref={outerRef}
+        style={{
+          alignSelf: 'stretch',
+          padding: step,
+          borderRadius: concentricRadius(step),
+          background: color.accentSubtle,
+          border: `1px solid ${color.border}`,
+        }}
+      >
+        <div
+          ref={innerRef}
+          style={{
+            height: 40,
+            borderRadius: radius.control,
+            background: color.accent,
+          }}
+        />
+      </div>
+      <Text as="p" typeScale="bodySm">
+        padding=&quot;{padding}&quot;
+      </Text>
+      <Text as="p" typeScale="caption" prominence="subtle">
+        outer {outer || '—'} · inner {inner || '—'}
+      </Text>
+    </Stack>
+  );
+}
+
+function ConcentricDemo({ theme = 'pearl' }: { theme?: string }) {
+  const [nestingRef, nesting] = useMeasured<HTMLSpanElement>('--rn', theme);
+  return (
+    <Stack gap="lg" style={{ maxWidth: '100%' }}>
+      <span
+        ref={nestingRef}
+        aria-hidden
+        style={{ display: 'none', '--rn': radius.nesting } as CSSProperties}
+      />
+      <Text as="p" typeScale="bodySm" prominence="subtle" measure="lg">
+        Experimental. Each surface derives its own corner from radius.control
+        plus its own padding, so the gap between the outer arc and the inner
+        control stays constant across paddings. A theme with radius.nesting 0
+        zeroes the padding term — every surface collapses to radius.control.
+      </Text>
+      <Text as="p" typeScale="caption" prominence="subtle">
+        {theme} · radius.nesting = {nesting || '—'}
+        {nesting === '0'
+          ? ' — outer stays at radius.control, no padding-driven growth'
+          : ''}
+      </Text>
+      <Row gap="lg" wrap align="start" style={{ maxWidth: '100%' }}>
+        {PADDINGS.map((padding) => (
+          <ConcentricSpecimen key={padding} padding={padding} theme={theme} />
+        ))}
+      </Row>
+    </Stack>
+  );
+}
+
+const meta: Meta<typeof RadiusPrinciples> = {
   title: 'Foundations/Radius',
-  component: ConcentricDemo,
+  component: RadiusPrinciples,
+  decorators: [
+    (Story, context) => (
+      <Story args={{ theme: (context.globals.theme as string) ?? 'pearl' }} />
+    ),
+  ],
   parameters: {
     manifest: {
       name: 'concentricRadius',
       description:
         "A padded surface derives its own corner radius from radius.control plus its own padding, instead of authoring one — keeps nested corners concentric regardless of that surface's padding. Experimental: see the 'Experimental status' section below.",
+      // The derivation is `radius.control + own padding`, and padding is a
+      // space scale token — the two foundations move together.
+      related: [{ rel: 'relates-to', to: 'foundation.space' }],
       sections: [
         {
           kind: 'definitions',
@@ -73,17 +230,17 @@ const meta: Meta<typeof ConcentricDemo> = {
             {
               term: 'radius.nesting',
               definition:
-                "'1' or '0'. Policy, not a value: whether this theme derives surface radii concentrically. Carried as a CSS custom property (so one compiled stylesheet can serve every theme, swapped by class) but it expresses a rule, not a design value — deliberately not shown on the Tokens/Semantic specimen page.",
+                "'1' or '0' — the coefficient on the padding term when a surface derives its radius: calc(control + nesting * padding). '1' grows the corner with padding; '0' holds every surface at radius.control. A CSS custom property, but a policy rule not a design value — not shown on the Tokens/Semantic specimen page.",
             },
             {
               term: 'radius.cornerShape',
               definition:
-                "How the corner is drawn — round, squircle, bevel, etc. Must be uniform across everything with a radius: a squircle button inside a round-cornered card no longer has arcs parallel to it, which defeats the concentric rule. A theme token, not a per-component choice. Inert at border-radius: 0, so hard-edged themes are unaffected whatever they set.",
+                'How the corner is drawn — round, squircle, bevel. Must be uniform across everything with a radius: a squircle button in a round-cornered card breaks the concentric rule. A theme token, not per-component. Inert at border-radius: 0.',
             },
             {
               term: 'There is no radius.surface',
               definition:
-                'A padded surface does not author its radius, it derives it: outer = control + gap, where gap is that surface\'s own padding. A single authored surface token could only ever have been right for one padding value — Card derives from its own padding, Alert from its own md padding, and any future Modal/Popover/Sheet does the same against theirs.',
+                'A padded surface derives its radius (outer = control + gap, gap = its own padding) rather than authoring one — a single token could only fit one padding value. Card/Alert derive from their own padding; a future Modal/Popover/Sheet does the same.',
             },
           ],
         },
@@ -95,17 +252,17 @@ const meta: Meta<typeof ConcentricDemo> = {
             {
               level: 'must',
               statement:
-                'When a new component nests a rounded surface around padded content (a future Modal, Popover, Sheet — following the same pattern Card and Alert already use), derive its radius as concentricRadius(ownPadding) — outer = radius.control + that padding — rather than authoring a fixed radius value. The inner radius is always radius.control, the same value every nested Button/Input/Tag already uses.',
+                'When nesting a rounded surface around padded content (a future Modal, Popover, Sheet — same pattern as Card/Alert), derive radius as concentricRadius(ownPadding) — outer = radius.control + that padding — rather than authoring a fixed value. Inner radius is always radius.control, same as every nested Button/Input/Tag.',
             },
             {
               level: 'should',
               statement:
-                "Treat the concentric-derivation approach itself as still under evaluation system-wide, not settled doctrine — apply it for consistency with Card/Alert today, but don't present it as a permanent design law in generated explanations.",
+                "Treat concentric derivation as still under system-wide evaluation, not settled doctrine — apply it for consistency with Card/Alert, don't present it as permanent law in generated explanations.",
             },
             {
               level: 'must-not',
               statement:
-                'Reach for radius.full on anything that is not a circle by nature (dots, radios, avatars, slider thumbs, status marks) — never on a rectangle: full on a rectangle is a pill, and this system does not use pill shapes. Anything that sits inside something else (Tag, an icon-only close button inside an Alert) is a nested control and takes radius.control, whatever its aspect ratio.',
+                "Reach for radius.full only on true circles (dots, radios, avatars, slider thumbs) — never a rectangle (that's a pill, unused here). Anything nested inside something else (Tag, an Alert's close button) takes radius.control regardless of aspect ratio.",
             },
           ],
         },
@@ -113,13 +270,13 @@ const meta: Meta<typeof ConcentricDemo> = {
           kind: 'section',
           for: 'agent',
           title: 'Why concentric',
-          body: "When one rounded box sits inside another with padding between them, the two arcs stay parallel only if the outer radius exceeds the inner one by exactly that gap. Any other pairing makes the curves converge or diverge — subtle at small sizes, obviously wrong at large ones. The inner radius is always radius.control, because that is what every nested Button, Input, and Tag uses.\n\nResolved on Pearl (control: 12px): md padding (16px) derives 28px; lg padding (24px) derives 36px; xl padding (32px) derives 44px.\n\nHow hard-edged themes opt out: radius.nesting is a unitless multiplier applied to the gap term, not a branch — calc(control + nesting * gap). South Sea and Tahitian set control: 0px and nesting: '0', so the gap term zeroes and every surface collapses to 0px. One expression serves both kinds of theme with no conditional at any call site — without it, calc(0px + 24px) would hand a square theme a 24px-rounded card, precisely backwards.",
+          body: "Two nested rounded boxes keep parallel arcs only when outer radius exceeds inner by exactly the padding gap — any other pairing converges or diverges, worse at large sizes. Inner radius is always radius.control.\n\nWith nesting '1' and control 8px: a surface at md/lg/xl padding (16/24/32px) renders 24/32/40px.\n\nEvery theme runs the same expression — calc(control + nesting * padding). nesting is a coefficient, not a branch: '0' zeroes the padding term, so every surface renders at radius.control regardless of padding. A 0px-control theme goes fully square; a small-control theme keeps that small corner flat across paddings. One expression, every theme, no per-call-site conditional.",
         },
         {
           kind: 'section',
           for: 'agent',
           title: 'Known limits',
-          body: 'Control-in-surface only: additive derivation is correct for a control inside a surface. For a surface inside a surface it over-produces, and one level deeper the arithmetic goes negative — nothing nests padded surfaces today, and the fix if that changes is a subtractive cascade, not a bigger formula.\n\nSmall surfaces degenerate: Card has no sm padding step, since the derivation makes radius-minus-padding a constant, so at an 8px padding the corner would be 2.5x the gap it sits in and the card would read corner-first.\n\nsquircle makes the offset approximate, and that is fine: outer = inner + gap is exact for circular arcs. CSS squircle is superellipse(2) (exponent 4), which reaches further along the 45deg diagonal by a factor of sqrt(2)/2^(1/4) = 1.189, so a 32px gap opens to about 38px through the turn. Do not compensate for it — along the straight runs the gap is set by the padding, not the radius; shrinking the outer radius to match the diagonal would pinch the gap at the tangent points, a visible kink traded for a gradual drift mid-curve that is far less visible. The current formula puts the unavoidable error in the least visible place, and stays exact for round, which is why one expression serves both corner shapes.\n\nSiblings can disagree: two cards at different paddings have different radii, each concentric with its own contents but inconsistent with each other. Accepted — padding is a deliberate choice per call site.',
+          body: "Control-in-surface only — a surface inside a surface over-produces, one level deeper goes negative. Nothing nests padded surfaces today; the fix if that changes is a subtractive cascade, not a bigger formula.\n\nSmall surfaces degenerate: Card has no sm padding step, since radius-minus-padding is constant — at 8px padding the corner would be 2.5x the gap.\n\nsquircle offset is approximate by design: outer = inner + gap is exact only for circular arcs; squircle reaches ~1.189x further on the diagonal (a 32px gap opens to ~38px). Don't compensate — padding sets the gap on straight runs; shrinking the outer radius to match the diagonal would pinch the gap at the tangent points, worse than the mid-curve drift it trades away.\n\nSiblings can disagree: two cards at different paddings get different, individually-correct radii. Accepted — padding is a per-call-site choice.",
         },
       ],
     },
@@ -127,6 +284,10 @@ const meta: Meta<typeof ConcentricDemo> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ConcentricDemo>;
+type Story = StoryObj<typeof RadiusPrinciples>;
 
-export const Default: Story = {};
+export const Tokens: Story = {};
+
+export const ConcentricDerivation: Story = {
+  render: (args) => <ConcentricDemo {...args} />,
+};

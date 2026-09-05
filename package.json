@@ -1,6 +1,6 @@
 {
   "name": "@msanagu/pearl",
-  "version": "0.0.0-test",
+  "version": "0.1.0-test.1",
   "description": "A small, intentional, composition-first React design system styled with vanilla-extract.",
   "type": "module",
   "license": "MIT",
@@ -64,7 +64,6 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
-    "react-icons": "^5.7.0",
     "@babel/parser": "^8.0.4",
     "@storybook/addon-a11y": "^10.5.2",
     "@storybook/addon-docs": "^10.5.2",
@@ -95,6 +94,7 @@
     "react": "^19.2.7",
     "react-docgen": "^8.0.3",
     "react-dom": "^19.2.7",
+    "react-icons": "^5.7.0",
     "storybook": "^10.5.2",
     "typescript": "^7.0.2",
     "vite": "^8.1.5",

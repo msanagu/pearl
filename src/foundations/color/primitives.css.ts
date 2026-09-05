@@ -1,9 +1,9 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 import { color, fontFamily, space } from '@tokens';
 
-// Layout for the primitive-palette specimen (Tokens/Primitives). Values are
+// Layout for the primitives half of the Color/Tokens specimen. Values are
 // raw theme-scoped hex constants, not custom properties, so swatches don't
-// recolor with the toolbar like Tokens/Semantic does — the story reads the
+// recolor with the toolbar like the semantic half does — this half reads the
 // toolbar's theme global instead and renders only that theme's section.
 
 export const page = style({
@@ -14,6 +14,9 @@ export const page = style({
   background: color.background,
   color: color.text,
   fontFamily: fontFamily.body,
+  '@media': {
+    '(max-width: 600px)': { padding: space.md, gap: space.xl },
+  },
 });
 
 export const themeSection = style({
@@ -22,14 +25,6 @@ export const themeSection = style({
   gap: space.lg,
   paddingBottom: space.xl,
   borderBottom: `1px solid ${color.border}`,
-});
-
-// No fontSize/fontWeight here — the wordmark is rendered through `Text`
-// with `typeScale="displayLg"`, and this class would otherwise fight that
-// scale's own font-size/weight for specificity. Margin/spacing only.
-export const themeTitle = style({
-  margin: 0,
-  marginBottom: space.sm,
 });
 
 export const groupTitle = style({
@@ -41,35 +36,35 @@ export const groupTitle = style({
   letterSpacing: '0.06em',
 });
 
-// One row per hue: fixed-width label, then one swatch per step it has.
-// Steps are whatever the palette defines — no padding to a uniform 100-900 run.
+// One block per hue: label on top, swatches wrapping below. Label-beside forced
+// a 9-step ramp past ~640px; stacked, the strip wraps to as many rows as the
+// viewport needs. Steps are whatever the palette defines — no padding to a
+// uniform 100-900 run.
 export const scaleRow = style({
   display: 'flex',
-  // flex-start, not flex-end — label aligns with the top of the swatch
-  // column it names, not the hex text at the bottom.
-  alignItems: 'flex-start',
+  flexDirection: 'column',
   gap: space.sm,
 });
 
 export const scaleLabel = style({
-  // Wide enough for AlphaScale's two-line label — name plus its (hue[step])
-  // anchor, the longest content this column carries.
-  width: '140px',
-  flexShrink: 0,
+  display: 'block',
   fontSize: '13px',
-  fontWeight: 500,
-  // Matches stepSwatch's height so the label centers against the swatch row.
-  height: '48px',
+  fontWeight: 600,
+  color: color.text,
+  lineHeight: 1.4,
+});
+
+// Stacks the hue blocks within a group (Neutral, Accent, …). Wider than
+// scaleRow's own label-to-swatches gap so blocks read as separate.
+export const hueGroup = style({
   display: 'flex',
-  // Row (the default) would lay AlphaScale's `{label}<br/>{anchor}` side by
-  // side — flex items ignore <br>. Column direction stacks the two lines.
   flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'flex-start',
+  gap: space.lg,
 });
 
 export const stepList = style({
   display: 'flex',
+  flexWrap: 'wrap',
   gap: space.sm,
 });
 
@@ -80,6 +75,8 @@ export const step = style({
   gap: space.xs,
   fontSize: '11px',
   color: color.textSubtle,
+  width: '4rem',
+  flexShrink: 0,
 });
 
 export const stepNumber = style({
@@ -89,7 +86,7 @@ export const stepNumber = style({
 // Fixed radius, decoupled from radius.control so a theme with a large
 // authored corner can't paint these chips as near-circles.
 export const stepSwatch = style({
-  width: '64px',
+  width: '100%',
   height: '48px',
   borderRadius: '8px',
   border: `1px solid ${color.border}`,

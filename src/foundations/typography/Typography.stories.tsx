@@ -3,11 +3,7 @@ import type { ReactNode } from 'react';
 import { color, fontFamily, fontWeight, text } from '@tokens';
 import { Text } from '@components/Text/Text';
 import type { ThemeRoles } from '@themes/roles';
-import {
-  pearlBrandWordmark,
-  pearlDescription,
-  pearlRoles,
-} from '@themes/pearl/pearl.roles';
+import { pearlDescription, pearlRoles } from '@themes/pearl/pearl.roles';
 import {
   tahitianDescription,
   tahitianRoles,
@@ -20,17 +16,16 @@ import {
   FamilySwatch,
   TypeSpecimen,
   WeightSwatch,
-  WordMark,
-  brandWordmarkByTheme,
   useComputed,
 } from './typeSpecimens';
 import * as css from '../color/tokens.css';
 
 /**
- * Foundations → Typography: canon type plus the active theme's role treatments
- * — how it assigns type primitives to jobs (emphasis, preheading, data digits).
- * Role assignment is per-theme, so this section reads the toolbar's theme
- * global and switches its role table to match.
+ * Foundations → Typography: the flat token list — fontFamily.*, fontWeight.*,
+ * text.*, dotted like every other foundation — plus the active theme's role
+ * treatments (how it assigns type primitives to jobs: emphasis, preheading,
+ * data digits). Role assignment is per-theme, so that section reads the
+ * toolbar's theme global and switches its role table to match.
  *
  * Each role renders through the real `Text` `role` prop, never by reading a
  * treatment's shape in JS, so the resolved CSS is whatever the active theme's
@@ -133,66 +128,82 @@ function DataDigitsSpecimen({ theme }: { theme: string }) {
   );
 }
 
-function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
+/**
+ * The flat token list — every fontFamily, fontWeight, and text step, labelled
+ * with its dotted accessor and its live-resolved value under the active theme
+ * — plus that theme's role treatments (per-theme, so it reads the toolbar).
+ */
+function TypographyTokens({ theme = 'pearl' }: { theme?: string }) {
   const active = themesWithRoles[theme];
   return (
     <div className={css.page}>
       <section className={css.section}>
-        {/* `scale={2.8}` — see the re-export's own comment in
-            `typeSpecimens.tsx` for why: reproduces the size this page used
-            to render at (`displayLg`, `7rem`) against `WordMark`'s
-            `headingMd`-relative base (`2.5rem`). */}
-        <WordMark
-          {...(brandWordmarkByTheme[theme] ?? pearlBrandWordmark)}
-          scale={2.8}
-          className={css.wordmarkTitle}
-        />
+        <h2 className={css.sectionTitle}>Typography tokens</h2>
 
-        <h2 className={css.sectionTitle}>Type scale</h2>
-
-        <h3 className={css.subsectionTitle}>Family</h3>
+        <h3 className={css.subsectionTitle}>fontFamily</h3>
         <div className={css.row}>
           <FamilySwatch
-            name="display"
+            name="fontFamily.display"
             cssVar={fontFamily.display}
             theme={theme}
           />
           <FamilySwatch
-            name="heading"
+            name="fontFamily.heading"
             cssVar={fontFamily.heading}
             theme={theme}
           />
-          <FamilySwatch name="body" cssVar={fontFamily.body} theme={theme} />
+          <FamilySwatch
+            name="fontFamily.body"
+            cssVar={fontFamily.body}
+            theme={theme}
+          />
+          <FamilySwatch
+            name="fontFamily.mono"
+            cssVar={fontFamily.mono}
+            theme={theme}
+          />
         </div>
 
-        <h3 className={css.subsectionTitle}>Weight</h3>
+        <h3 className={css.subsectionTitle}>fontWeight</h3>
         <div className={css.row}>
           <WeightSwatch
-            name="regular"
+            name="fontWeight.regular"
             cssVar={fontWeight.regular}
             theme={theme}
           />
           <WeightSwatch
-            name="medium"
+            name="fontWeight.medium"
             cssVar={fontWeight.medium}
             theme={theme}
           />
           <WeightSwatch
-            name="semibold"
+            name="fontWeight.semibold"
             cssVar={fontWeight.semibold}
             theme={theme}
           />
-          <WeightSwatch name="bold" cssVar={fontWeight.bold} theme={theme} />
+          <WeightSwatch
+            name="fontWeight.bold"
+            cssVar={fontWeight.bold}
+            theme={theme}
+          />
         </div>
 
         <h3 className={css.subsectionTitle}>
-          Scale — size / line-height · weight · tracking, all resolved live
+          text — size / line-height · weight · tracking, all resolved live
         </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+            overflowX: 'auto',
+            overflowWrap: 'anywhere',
+          }}
+        >
           {Object.entries(text).map(([name, variant]) => (
             <TypeSpecimen
               key={name}
-              name={name}
+              name={`text.${name}`}
               variant={variant}
               theme={theme}
             />
@@ -260,15 +271,15 @@ function TypographyPreview({ theme = 'pearl' }: { theme?: string }) {
   );
 }
 
-const meta: Meta<typeof TypographyPreview> = {
+const meta: Meta<typeof TypographyTokens> = {
   title: 'Foundations/Typography',
-  component: TypographyPreview,
+  component: TypographyTokens,
   parameters: {
     layout: 'fullscreen',
     manifest: {
       name: 'typography',
       description:
-        "One Text component, not split Heading/Text — typeScale (size), role (face), as (element), and weight are four independent axes that combine any of them; heading level is driven by document structure, never by how large something needs to look.",
+        'One Text component, not split Heading/Text — typeScale (size), role (face), as (element), and weight are four independent axes that combine any of them; heading level is driven by document structure, never by how large something needs to look.',
       sections: [
         {
           kind: 'guidelines',
@@ -278,17 +289,17 @@ const meta: Meta<typeof TypographyPreview> = {
             {
               level: 'must',
               statement:
-                'Choose visual scale and semantic element independently — heading level is driven by document structure (don\'t skip h1 -> h4), never by how large something needs to look. <Text typeScale="bodyMd" as="h2"> (structurally an h2, visually restrained) is valid and intentional, not a mistake.',
+                'Choose visual scale and semantic element independently — heading level follows document structure (don\'t skip h1 -> h4), never visual size. <Text typeScale="bodyMd" as="h2"> (structurally h2, visually restrained) is valid, not a mistake.',
             },
             {
               level: 'must',
               statement:
-                'typeScale selects the token bundle (size, line-height, tracking, default weight); as selects the actual DOM element; weight optionally overrides the scale step\'s default weight; role overrides face (and, per-theme, case/tracking) independently of scale — pairing a role with a larger or smaller typeScale than its default doesn\'t fight the role\'s meaning, same as rendering headingLg as an h2 doesn\'t fight as. All four combine freely.',
+                "typeScale selects the token bundle (size, line-height, tracking, default weight); as selects the DOM element; weight overrides the step's default weight; role overrides face (and per-theme case/tracking) independently of scale. All four combine freely — pairing a role with a different typeScale than its default doesn't fight the role's meaning.",
             },
             {
               level: 'must',
               statement:
-                'A role passed with no typeScale inherits ambient size from its surrounding context rather than being forced to bodyMd — e.g. Pearl\'s inlineEmphasis has no declared size for exactly this reason. Don\'t add a typeScale to a role-only usage just to give it "a" size.',
+                "A role with no typeScale inherits ambient size rather than being forced to bodyMd — an inlineEmphasis treatment may carry no declared size for exactly this reason. Don't add a typeScale to a role-only usage just to give it a size.",
             },
           ],
         },
@@ -300,46 +311,50 @@ const meta: Meta<typeof TypographyPreview> = {
             {
               level: 'must',
               statement:
-                "fontSize is rem, not px — SC 1.4.4 Resize Text (AA): text must scale up to 200% via the browser's own zoom/text-size setting without loss of content, which rem inherits and px ignores.",
+                'fontSize is rem, not px — SC 1.4.4: text must scale to 200% via browser zoom without loss of content, which rem inherits and px ignores.',
             },
             {
               level: 'must',
               statement:
-                "lineHeight is a unitless multiplier, not a fixed px value — SC 1.4.12 Text Spacing (AA): a user-forced line-spacing override (>=1.5x) must not break the layout, which only a unitless ratio (recalculating against whatever font-size results) allows.",
+                'lineHeight is a unitless multiplier, not px — SC 1.4.12: a user-forced line-spacing override (>=1.5x) must not break the layout, which only a unitless ratio allows.',
             },
             {
               level: 'must',
               statement:
-                'letterSpacing is em, not px — same SC 1.4.12: tracking scales proportionally with font-size instead of staying a fixed px gap that reads as too tight or too loose once size changes.',
+                'letterSpacing is em, not px — same SC 1.4.12: tracking scales with font-size instead of a fixed gap that reads wrong once size changes.',
             },
             {
               level: 'should',
               statement:
-                'Body copy line-height targets >=1.5x — SC 1.4.8 Visual Presentation (AAA), "at least 1.5 within paragraphs." Not a hard AA requirement, but the default authored value meets it anyway rather than needing a user override to get there.',
+                'Body line-height targets >=1.5x — SC 1.4.8 (AAA), not a hard AA requirement, but the default value meets it anyway.',
             },
           ],
         },
         {
           kind: 'definitions',
           for: 'agent',
-          title: "Type scale — Pearl's reference values (4px-grid ramp, shared across all four themes)",
+          title:
+            'Type scale — reference values (4px-grid ramp, shared across every theme)',
           items: [
             {
               term: 'caption',
               definition:
-                '11px (0.6875rem) fontSize, 1.4545 lineHeight (resolves to 16px), 0 letterSpacing. The one deliberate 4px-grid exception: true 4px neighbors are 8px (below the 11px legibility floor for functional UI text) and 12px (collides with bodySm), so it holds 11px instead. Only its raw fontSize escapes the grid — resolved lineHeight is still a 4px multiple.',
+                '11px (0.6875rem), 1.4545 lineHeight (16px), 0 letterSpacing. The one 4px-grid exception — true neighbors are 8px (below the 11px legibility floor) and 12px (collides with bodySm). Only fontSize escapes the grid; resolved lineHeight is still a 4px multiple.',
             },
             {
               term: 'bodySm',
-              definition: '12px (0.75rem), 1.667 lineHeight (20px), 0 letterSpacing.',
+              definition:
+                '12px (0.75rem), 1.667 lineHeight (20px), 0 letterSpacing.',
             },
             {
               term: 'bodyMd',
-              definition: '16px (1rem), 1.5 lineHeight (24px), 0 letterSpacing.',
+              definition:
+                '16px (1rem), 1.5 lineHeight (24px), 0 letterSpacing.',
             },
             {
               term: 'bodyLg',
-              definition: '24px (1.5rem), 1.5 lineHeight (36px), 0 letterSpacing.',
+              definition:
+                '24px (1.5rem), 1.5 lineHeight (36px), 0 letterSpacing.',
             },
             {
               term: 'headingSm',
@@ -364,39 +379,39 @@ const meta: Meta<typeof TypographyPreview> = {
             {
               term: 'displayLg',
               definition:
-                '112px (7rem), 1.071 lineHeight (120px), -0.04em letterSpacing (-4.48px). Top of the reading hierarchy — see displayXl below for why it does not go higher for section headings.',
+                '112px (7rem), 1.071 lineHeight (120px), -0.04em letterSpacing (-4.48px). Top of the reading hierarchy — see displayXl.',
             },
             {
               term: 'displayXl',
               definition:
-                '152px (9.5rem), 1.053 lineHeight (160px), -0.045em letterSpacing (-6.84px). Identity type only — a wordmark on a title page, nothing else. Do not reach for it for section headings.',
+                '152px (9.5rem), 1.053 lineHeight (160px), -0.045em letterSpacing (-6.84px). Identity type only — a wordmark on a title page. Not for section headings.',
             },
           ],
         },
         {
           kind: 'definitions',
           for: 'agent',
-          title: 'Font-weight scale (values consistent across all four themes; only which name a step defaults to differs)',
+          title:
+            'Font-weight scale (values identical across themes; which step is a role default varies by theme — check the active theme entry)',
           items: [
             {
               term: 'regular (400)',
-              definition:
-                'Default for bodySm/bodyMd/bodyLg in every theme.',
+              definition: 'Default for bodySm/bodyMd/bodyLg in every theme.',
             },
             {
               term: 'medium (500)',
               definition:
-                "Pearl's default for headingSm/headingMd/headingLg/displaySm/displayLg/displayXl — Pearl is the one outlier, one step lighter than the other three themes throughout. Override-only for the other three themes.",
+                'One step up from body. A heading and display default in the lighter-weight themes; override-only in the others.',
             },
             {
               term: 'semibold (600)',
               definition:
-                "Tahitian/Freshwater/South Sea's default for headingSm/headingMd/headingLg, and Tahitian's default for displaySm/displayLg/displayXl too. Override-only for Pearl.",
+                'A heading default in most themes, and a display default in some; override-only where a theme sets its headings lighter.',
             },
             {
               term: 'bold (700)',
               definition:
-                "Freshwater and South Sea's default for displaySm/displayLg/displayXl. Override-only elsewhere.",
+                'Heaviest step. A display default in some themes; override-only elsewhere.',
             },
           ],
         },
@@ -404,13 +419,13 @@ const meta: Meta<typeof TypographyPreview> = {
           kind: 'section',
           for: 'agent',
           title: 'displayXl — the poster step, and why it exists',
-          body: 'displayXl was promoted, not designed in advance: the introduction page set its wordmark at displayLg and measured it at 13% of the content width, with the brand object rendering 1.75x the height of the brand name — the scale had no larger step to reach for. That is the promotion test this system uses for canon generally: canon grows by promotion, not accretion — a real consumer needed it, the absence forced a page-local workaround, and a second consumer (Hero) was already queued behind it. Overriding fontSize on the page directly was rejected because it would put a raw type value outside the theme layer, which the reskinning promise forbids. Adding it was a breaking contract change deliberately: all four themes had to author a real value before the build would pass, and the compiler caught two consumers that were easy to forget (Text.css.ts\'s recipe, experiments/theme-generator) — that coordination tax is the contract working, not a cost to route around.',
+          body: "Promoted, not designed in advance: the introduction page's wordmark at displayLg measured 13% of content width, brand object 1.75x the brand name's height, with no larger step to reach for. Canon grows by promotion, not accretion — a real consumer needed it, forcing a page-local workaround, with a second consumer (Hero) already queued. Overriding fontSize directly was rejected — it would put a raw type value outside the theme layer. Adding it was a deliberate breaking change: all four themes had to author a value, and the compiler caught two easy-to-forget consumers (Text.css.ts's recipe, experiments/theme-generator) — that coordination tax is the contract working.",
         },
         {
           kind: 'section',
           for: 'agent',
           title: 'One Text component, not split Heading/Text',
-          body: 'Typography properties (size, weight, line-height, letter-spacing) are a closed, stable set of concerns — unifying them under one component with a typeScale token is the safe kind of DRY (a heading and a paragraph aren\'t structurally different things, they\'re the same thing, styled text, at different scale steps). as should generally resolve to genuine semantic HTML5 elements (p, span, h1-h6) — see the semantic-html rationale entity — Text is the polymorphic mechanism that keeps visual styling and semantic markup honest and independently controllable.',
+          body: 'Typography properties (size, weight, line-height, letter-spacing) are a closed, stable set — unifying them under one typeScale token is safe DRY: a heading and a paragraph are the same thing, styled text, at different scale steps. as should resolve to genuine semantic HTML5 elements — see the semantic-html rationale entity.',
         },
       ],
     },
@@ -423,6 +438,6 @@ const meta: Meta<typeof TypographyPreview> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof TypographyPreview>;
+type Story = StoryObj<typeof TypographyTokens>;
 
-export const Overview: Story = {};
+export const Tokens: Story = {};

@@ -37,12 +37,12 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
             {
               level: 'must',
               statement:
-                'If a native HTML element or attribute already provides the semantics/behavior needed, use it instead of reimplementing it with ARIA and JavaScript. Native elements come with keyboard handling, screen-reader semantics, and browser-level behavior for free — a custom <div role="button"> has to reinvent all of that by hand and will always have edge cases the native element doesn\'t.',
+                'If a native HTML element/attribute already provides the semantics/behavior needed, use it instead of reimplementing with ARIA and JavaScript. Native elements get keyboard handling, screen-reader semantics, and browser behavior for free — a custom <div role="button"> reinvents all of it and will still have edge cases the native element doesn\'t.',
             },
             {
               level: 'must',
               statement:
-                'Applied across this system: Button renders an actual <button>, never a styled <div> with a click handler. Text\'s as prop swaps real semantic elements (p, span, h1-h6), never a <div> styled to resemble a heading. Field wraps a real <label> with real htmlFor, not a styled span pretending to be one. Icon renders an inline <svg>, not an icon font or background-image. Stack/Row use real CSS Flexbox on plain elements.',
+                "Applied across this system: Button renders <button>, never a styled <div> with a click handler. Text's as prop swaps real elements (p, span, h1-h6), never a <div> styled to resemble a heading. Field wraps a real <label> with real htmlFor. Icon renders inline <svg>, not an icon font. Stack/Row use real Flexbox on plain elements.",
             },
           ],
         },
@@ -54,17 +54,17 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
             {
               level: 'must',
               statement:
-                "header names the composed area (the actual HTML5 <header> element, or a component rendering one via as=\"header\") — not any single piece of text inside it. heading is the canon type-scale step (Text's typeScale, e.g. headingLg, displayLg) paired with the correct semantic level via as (h1-h6), independently of visual size.",
+                'header names the composed area (the HTML5 <header> element, or a component rendering one via as="header") — not any text inside it. heading is the canon type-scale step (typeScale, e.g. headingLg) paired with the correct semantic level via as (h1-h6), independently of visual size.',
             },
             {
               level: 'must-not',
               statement:
-                'preheading (a Text role, not a variant — the short line above a heading) must never be an h* element. It reads as part of the title visually, but giving it a heading level puts a bogus entry in the document outline immediately above the real heading it introduces. Use as="p" inside a header, or as="span" when it sits inline.',
+                'preheading (a Text role, not a variant — the short line above a heading) must never be an h* element — a heading level there puts a bogus entry in the document outline immediately above the real heading. Use as="p" inside a header, or as="span" inline.',
             },
             {
               level: 'must',
               statement:
-                "Pass typeScale explicitly on a preheading unless every theme you're targeting already sizes that role — a role is a face, and whether it also carries a size is each theme's own choice (Pearl and Tahitian size preheading, South Sea and Freshwater don't). A role with no size opinion inherits the ambient scale, which for a preheading means rendering at body size directly above the heading it introduces, inverting the hierarchy. Being explicit costs nothing where the theme already agrees, and is the difference between right and broken where it doesn't.",
+                "Pass typeScale explicitly on a preheading unless every targeted theme already sizes that role (some do, some don't — check the theme's typography entry) — a role with no size opinion inherits ambient scale, which for a preheading means body size directly above the heading it introduces, inverting the hierarchy.",
             },
             {
               level: 'should',
@@ -77,19 +77,19 @@ const meta: Meta<typeof SemanticHeaderDemo> = {
           kind: 'section',
           for: 'agent',
           title: 'Composing a header',
-          body: 'A header composes these parts by hand today — <header><Text role="preheading" as="p">...</Text><Text as="h1" typeScale="displayLg">...</Text></header> — the system has no Header/composition component yet.',
+          body: 'Assembled by hand today — <header><Text role="preheading" as="p">...</Text><Text as="h1" typeScale="displayLg">...</Text></header> — no Header/composition component yet.',
         },
         {
           kind: 'section',
           for: 'agent',
           title: "Where it's genuinely contested: components with no native element",
-          body: "Some components (Alert, Badge) have no native HTML5 equivalent — there's no <alert> or <badge> element. For these, a <div> with the appropriate ARIA role is not a compromise of this philosophy, it's simply where native HTML doesn't offer anything to defer to in the first place. Alert's role varies by variant rather than being one fixed value.",
+          body: "Alert and Badge have no native HTML5 equivalent — a <div> with the appropriate ARIA role isn't a compromise here, native HTML just has nothing to defer to. Alert's role varies by variant rather than being fixed.",
         },
         {
           kind: 'section',
           for: 'agent',
           title: "Where it's a real trade-off: Progress Bar (not yet built, decision deferred)",
-          body: 'HTML provides a native <progress> element with built-in accessible semantics and zero required ARIA, but it is difficult to style consistently across browsers (fill color/track especially). The alternative is a custom <div role="progressbar"> with manually managed aria-valuenow/aria-valuemin/aria-valuemax — full styling control, but accessibility correctness becomes hand-maintained rather than free. This decision needs to be made deliberately when Progress Bar is implemented, not defaulted into — revisit at that point rather than assuming either path now.',
+          body: 'Native <progress> gives accessible semantics free but is hard to style consistently across browsers. The alternative, <div role="progressbar"> with manual aria-valuenow/min/max, trades that for full styling control. Decide deliberately when Progress Bar is built — revisit then, not now.',
         },
       ],
     },
