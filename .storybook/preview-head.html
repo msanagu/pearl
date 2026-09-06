@@ -24,6 +24,21 @@
   theme is actually selected, by the `loadThemeFonts` decorator in
   preview.tsx.
 -->
+<script>
+  // Pin focus non-configurable so storybook/test's userEvent focus-guard
+  // can't install its accessor — its unguarded getter throws "Illegal
+  // invocation" when useFocusVisible reads it off the prototype, blanking
+  // docs pages on story->docs nav. See docs/process/plans/
+  // storybook-story-to-docs-blank.md. Inert here: no play functions in docs.
+  try {
+    Object.defineProperty(HTMLElement.prototype, 'focus', {
+      value: HTMLElement.prototype.focus,
+      writable: true,
+      enumerable: true,
+      configurable: false,
+    });
+  } catch (e) {}
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://api.fontshare.com" />
 <link
