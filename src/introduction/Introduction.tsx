@@ -207,7 +207,7 @@ const nextSteps: {
     concept: 'typography',
     title: 'Typography',
     body: 'Size, face, element, and weight as four independent axes — plus the opt-in measure cap.',
-    href: './?path=/story/foundations-typography--typography',
+    href: './?path=/story/foundations-typography--tokens',
   },
   {
     concept: 'components',
