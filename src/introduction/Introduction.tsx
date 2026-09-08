@@ -201,13 +201,13 @@ const nextSteps: {
     concept: 'tokens',
     title: 'Tokens',
     body: 'The contract every theme fills — primitives, semantics, and the inverse bridge between modes.',
-    href: './?path=/story/foundations-tokens-primitives--overview',
+    href: './?path=/story/foundations-color-tokens--tokens',
   },
   {
     concept: 'typography',
     title: 'Typography',
     body: 'Size, face, element, and weight as four independent axes — plus the opt-in measure cap.',
-    href: './?path=/story/foundations-typography--overview',
+    href: './?path=/story/foundations-typography--typography',
   },
   {
     concept: 'components',
