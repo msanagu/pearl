@@ -1,5 +1,6 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { color, concentricNesting } from '@/tokens';
 import { inverseOverride } from '@/foundations/color/inverse';
 
 /**
@@ -131,7 +132,7 @@ export const pearlSentiment = {
  * inner smaller than outer. `full` stays a pill for Tag and XButton by
  * identity.
  */
-const pearlRadius = { control: '8px', full: '9999px', nesting: '1', cornerShape: 'squircle' };
+const pearlRadius = { control: '8px', full: '9999px', nesting: concentricNesting(true), cornerShape: 'squircle' };
 
 /**
  * `[authored]` `usage.density = comfortable` — the midpoint of the four themes.
@@ -167,8 +168,8 @@ const pearlText = {
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '500', letterSpacing: '-0.015em' }, // 40/48
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '500', letterSpacing: '-0.02em' }, // 56/64
   displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '500', letterSpacing: '-0.03em' }, // 76px ceiling, clamped fluid below
-  displayLg: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '500', letterSpacing: '-0.04em' }, // 88px ceiling
-  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '500', letterSpacing: '-0.045em' }, // 152px ceiling
+  displayMd: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '500', letterSpacing: '-0.04em' }, // 88px ceiling
+  displayLg: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '500', letterSpacing: '-0.045em' }, // 152px ceiling
 };
 
 // ---- Canon theme (light) ----

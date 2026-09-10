@@ -45,7 +45,7 @@ export const vars = createThemeContract({
     border: null,
     borderStrong: null,
     borderSubtle: null,
-    // No "Inverse" fields for the other roles — see foundations/color/inverse.ts:
+    // No "Inverse" fields for the other roles — see foundations/color/inverse:
     // a `[data-inverse]` boundary flips the whole colour contract locally.
     // borderInverse predates that and is now redundant (plain `border` flips
     // inside `[data-inverse]` too); kept only until a deprecation pass.
@@ -83,9 +83,9 @@ export const vars = createThemeContract({
     control: null,
     full: null,
     // Concentric-nesting opt-out — a unitless `'1'` or `'0'` multiplied into the
-    // padding term of a derived radius (`calc(control + nesting * pad)`). A
-    // boolean smuggled in as a multiplier so one formula serves every theme with
-    // no per-theme branching.
+    // padding term of a derived radius (`calc(control + nesting * pad)`), so one
+    // formula serves every theme with no per-theme branching. Author it via
+    // `concentricNesting(true/false)` below, never a raw string.
     nesting: null,
     // CSS `corner-shape` — how the corner `border-radius` carves is drawn
     // (`round`, `squircle`, `bevel`, `notch`, `scoop`, `superellipse()`). In the
@@ -139,9 +139,9 @@ export const vars = createThemeContract({
     headingMd: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     headingLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     displaySm: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
-    displayLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    displayMd: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
     // The poster step — a theme with no use for poster type still has to say
     // what its largest voice is, which is the point of a total contract.
-    displayXl: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
+    displayLg: { fontSize: null, lineHeight: null, fontWeight: null, letterSpacing: null },
   },
 });

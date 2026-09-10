@@ -93,7 +93,7 @@ export function Hero({
               <Text role="contextLabel" as="p" typeScale="caption" prominence="subtle">
                 An active experiment
               </Text>
-              <Text typeScale="displayLg" as="h1" style={{ margin: 0 }}>
+              <Text typeScale="displayMd" as="h1" style={{ margin: 0 }}>
                 A design system
                 <br />
                 coding agents

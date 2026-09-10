@@ -114,9 +114,10 @@ export interface RadiusTokens {
   full: CSSVarFunction;
   /**
    * Whether this theme follows the concentric-nesting rule (`outer = inner +
-   * gap`). `'1'` to opt in, `'0'` to opt out — a unitless multiplier applied to
-   * the padding term, so one formula serves rounded and hard-edged themes with
-   * no branching. Not a length: never set a `border-radius` from it directly.
+   * gap`). Authored as a boolean via `concentricNesting()` below;
+   * resolves to a unitless 0/1 multiplier on the padding term at the CSS
+   * layer, so one formula serves rounded and hard-edged themes with no
+   * branching. Not a length: never set a `border-radius` from it directly.
    */
   nesting: CSSVarFunction;
   /**
@@ -240,9 +241,9 @@ export interface TextTokens {
   /** 80/84. Large hero / marketing type — above document headings. */
   displaySm: TextVariantTokens;
   /** 112/120. Ultra-large landing/hero display type. */
-  displayLg: TextVariantTokens;
+  displayMd: TextVariantTokens;
   /** 152/160. Poster scale — the theme's largest voice. Identity and title pages only. */
-  displayXl: TextVariantTokens;
+  displayLg: TextVariantTokens;
 }
 
 // The annotations are the whole trick: TS checks `vars.*` against each interface
@@ -254,3 +255,9 @@ export const controlHeight: ControlHeightTokens = vars.controlHeight;
 export const fontFamily: FontFamilyTokens = vars.fontFamily;
 export const fontWeight: FontWeightTokens = vars.fontWeight;
 export const text: TextTokens = vars.text;
+
+// radius.nesting's CSS value must stay a 0/1 multiplier for calc() to work —
+// author the boolean at each theme's call site, never a raw string.
+export function concentricNesting(on: boolean): '1' | '0' {
+  return on ? '1' : '0';
+}

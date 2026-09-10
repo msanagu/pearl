@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, keyframes, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { concentricNesting } from '@/tokens';
 import { inverseOverride } from '@/foundations/color/inverse';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody } from '@components/_brand/PearlSphere/PearlSphere.css';
@@ -134,11 +135,11 @@ export const tahitianSentiment = {
 // ---- Scales (this theme's own — not shared with Freshwater/South Sea) ----
 
 /**
- * nesting: '0' — hard-edged by identity; derived radii stay square. full
+ * nesting: false — hard-edged by identity; derived radii stay square. full
  * stays 9999px: only elements that are circles by nature (dots, radios,
  * avatars). Tag and XButton take radius.control.
  */
-const tahitianRadius = { control: '0px', full: '9999px', nesting: '0', cornerShape: 'round' };
+const tahitianRadius = { control: '0px', full: '9999px', nesting: concentricNesting(false), cornerShape: 'round' };
 // rem, not px — scales with the user's base font-size preference (see pearl.css.ts).
 const tahitianSpace = { xs: '0.5rem', sm: '0.75rem', md: '1.25rem', lg: '1.75rem', xl: '2.5rem', '2xl': '3.5rem' };
 const tahitianControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
@@ -163,8 +164,8 @@ const tahitianText = {
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '400', letterSpacing: '0' }, // 40/48
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '400', letterSpacing: '0.004em' }, // 56/64
   displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '400', letterSpacing: '0.004em' }, // 76px ceiling
-  displayLg: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '400', letterSpacing: '0.004em' }, // 88px ceiling
-  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '400', letterSpacing: '0.004em' }, // 152px ceiling
+  displayMd: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '400', letterSpacing: '0.004em' }, // 88px ceiling
+  displayLg: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '400', letterSpacing: '0.004em' }, // 152px ceiling
 };
 
 // ---- Extension treatment: overtone ----
@@ -539,13 +540,13 @@ globalStyle(
 );
 
 globalStyle(
-  `${tahitianLightThemeClass} [data-type-scale="headingSm"], ${tahitianLightThemeClass} [data-type-scale="headingMd"], ${tahitianLightThemeClass} [data-type-scale="headingLg"], ${tahitianLightThemeClass} [data-type-scale="displaySm"], ${tahitianLightThemeClass} [data-type-scale="displayLg"], ${tahitianLightThemeClass} [data-type-scale="displayXl"], ${tahitianDarkThemeClass} [data-type-scale="headingSm"], ${tahitianDarkThemeClass} [data-type-scale="headingMd"], ${tahitianDarkThemeClass} [data-type-scale="headingLg"], ${tahitianDarkThemeClass} [data-type-scale="displaySm"], ${tahitianDarkThemeClass} [data-type-scale="displayLg"], ${tahitianDarkThemeClass} [data-type-scale="displayXl"]`,
+  `${tahitianLightThemeClass} [data-type-scale="headingSm"], ${tahitianLightThemeClass} [data-type-scale="headingMd"], ${tahitianLightThemeClass} [data-type-scale="headingLg"], ${tahitianLightThemeClass} [data-type-scale="displaySm"], ${tahitianLightThemeClass} [data-type-scale="displayMd"], ${tahitianLightThemeClass} [data-type-scale="displayLg"], ${tahitianDarkThemeClass} [data-type-scale="headingSm"], ${tahitianDarkThemeClass} [data-type-scale="headingMd"], ${tahitianDarkThemeClass} [data-type-scale="headingLg"], ${tahitianDarkThemeClass} [data-type-scale="displaySm"], ${tahitianDarkThemeClass} [data-type-scale="displayMd"], ${tahitianDarkThemeClass} [data-type-scale="displayLg"]`,
   { textTransform: 'uppercase' },
 );
 
 // Caps have no descenders — a stacked display headline wants tight leading,
 // or lines read as separate strips. Display steps only; headings keep the base.
 globalStyle(
-  `${tahitianLightThemeClass} [data-type-scale="displaySm"], ${tahitianLightThemeClass} [data-type-scale="displayLg"], ${tahitianLightThemeClass} [data-type-scale="displayXl"], ${tahitianDarkThemeClass} [data-type-scale="displaySm"], ${tahitianDarkThemeClass} [data-type-scale="displayLg"], ${tahitianDarkThemeClass} [data-type-scale="displayXl"]`,
+  `${tahitianLightThemeClass} [data-type-scale="displaySm"], ${tahitianLightThemeClass} [data-type-scale="displayMd"], ${tahitianLightThemeClass} [data-type-scale="displayLg"], ${tahitianDarkThemeClass} [data-type-scale="displaySm"], ${tahitianDarkThemeClass} [data-type-scale="displayMd"], ${tahitianDarkThemeClass} [data-type-scale="displayLg"]`,
   { lineHeight: '0.95' },
 );

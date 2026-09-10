@@ -1,23 +1,154 @@
-import { globalStyle, style } from '@vanilla-extract/css';
-import { color, fontFamily, space } from '@tokens';
+import { style, globalStyle } from '@vanilla-extract/css';
+import { color, radius, space } from '@tokens';
 
-// Layout for the primitives half of the Color/Tokens specimen. Values are
-// raw theme-scoped hex constants, not custom properties, so swatches don't
-// recolor with the toolbar like the semantic half does — this half reads the
-// toolbar's theme global instead and renders only that theme's section.
-
+// Layout for the Color/Tokens specimen — both halves. The primitives half
+// renders raw theme-scoped hex (no custom properties, so swatches don't
+// recolor with the toolbar); the semantic half is built from the tokens
+// themselves, which also makes this the first proof that a `.css.ts` compiles
+// through the vanilla-extract plugin inside Storybook, not just the Vite build.
+//
+// No padding/background/font here — this renders inside <StoryDoc>'s own
+// page chrome now, not as a standalone full-bleed canvas.
 export const page = style({
   display: 'flex',
   flexDirection: 'column',
   gap: space['2xl'],
-  padding: space.xl,
-  background: color.background,
-  color: color.text,
-  fontFamily: fontFamily.body,
   '@media': {
-    '(max-width: 600px)': { padding: space.md, gap: space.xl },
+    '(max-width: 600px)': { gap: space.xl },
   },
 });
+
+/* --- semantic half --- */
+
+// No gap here — proximity is carried by sectionTitle/subsectionTitle margins
+// instead, so a heading sits close to its own content and a full step away
+// from the previous group, rather than every sibling getting the same gap.
+export const section = style({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+export const sectionTitle = style({
+  margin: `0 0 ${space.sm}`,
+  fontSize: '18px',
+  fontWeight: 600,
+});
+
+export const row = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: space.lg,
+});
+
+export const cell = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.xs,
+  fontSize: '12px',
+  color: color.textSubtle,
+});
+
+export const swatch = style({
+  width: '112px',
+  height: '72px',
+  borderRadius: radius.control,
+  border: `1px solid ${color.border}`,
+});
+
+// One sentiment group (positive, negative, …): label above its swatch strip —
+// same layout and label weight as the hue blocks on the primitives half.
+export const sentimentGroup = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: space.sm,
+});
+
+export const sentimentGroupLabel = style({
+  fontSize: '13px',
+  fontWeight: 600,
+  color: color.text,
+  lineHeight: 1.4,
+});
+
+// One swatch strip per sentiment role — surface/border/text/icon/fill side by side,
+// wrapping to a 2x2 block once four 96px cards no longer fit (portrait mobile).
+export const sentimentRow = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: space.md,
+});
+
+export const sentimentCard = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: space.xs,
+  width: '96px',
+  height: '64px',
+  // No interior padding, so nothing to be concentric with — the theme's own
+  // corner is the honest answer.
+  borderRadius: radius.control,
+});
+
+// Resolved-value caption under every swatch — what the token actually
+// computes to in the active theme, not just the var() reference.
+export const resolvedValue = style({
+  fontFamily: 'ui-monospace, Menlo, monospace',
+  fontSize: '10px',
+  color: color.textSubtle,
+});
+
+export const subsectionTitle = style({
+  margin: `${space.xl} 0 ${space.sm}`,
+  fontSize: '13px',
+  fontWeight: 600,
+  color: color.textSubtle,
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
+});
+
+// A border/divider token shown as an actual rule, not a filled box — a border
+// color swatch-as-fill misrepresents how the token is ever used.
+export const borderRule = style({
+  width: '112px',
+  height: 0,
+  borderTop: '2px solid',
+});
+
+// Accent shown as it's actually consumed: a filled pill with onAccent text,
+// so a contrast problem is visible rather than inferred from two flat swatches.
+export const accentPill = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: space.sm,
+  padding: `${space.sm} ${space.lg}`,
+  borderRadius: radius.control,
+  background: color.accent,
+  color: color.onAccent,
+  fontWeight: 600,
+  width: 'fit-content',
+});
+
+// focusRing is a ring, never a fill — show the actual box-shadow usage.
+export const focusDemo = style({
+  width: '96px',
+  height: '40px',
+  borderRadius: radius.control,
+  border: `1px solid ${color.border}`,
+  background: color.surface,
+  boxShadow: `0 0 0 3px ${color.focusRing}`,
+});
+
+export const familySample = style({
+  fontSize: '20px',
+});
+
+export const weightSwatch = style({
+  fontSize: '24px',
+});
+
+/* --- primitives half (raw hex, reads the toolbar theme only) --- */
 
 export const themeSection = style({
   display: 'flex',

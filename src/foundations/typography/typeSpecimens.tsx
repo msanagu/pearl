@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { color, fontFamily } from '@tokens';
-import * as css from '../color/tokens.css';
+import * as css from '../color/tokens/tokens.css';
 
 /**
  * Shared specimen components for Foundations stories — used by both

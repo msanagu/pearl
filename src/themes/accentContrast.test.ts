@@ -38,7 +38,7 @@ import {
  *    light puts `surface` above `background`), so the check takes the worse of
  *    the pair rather than assuming an order.
  * 2. `onAccent` is readable on `accent`, since `accent` is also a fill (see
- *    `accentPill` in foundations/color/tokens.css.ts). This is what forces `onAccent`
+ *    `accentPill` in foundations/color/tokens/tokens.css.ts). This is what forces `onAccent`
  *    to flip register whenever `accent` crosses the middle of the ramp.
  *
  * Values are the primitives, duplicated from each theme's role block rather

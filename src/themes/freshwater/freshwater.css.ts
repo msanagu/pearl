@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { concentricNesting } from '@/tokens';
 import { inverseOverride } from '@/foundations/color/inverse';
 import { fieldMeta, label as fieldLabel } from '@components/Field/Field.css';
 import { body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
@@ -57,7 +58,7 @@ export const freshwaterSentiment = {
   pool: { 100: '#ebf1fe', 200: '#b9ccf7', 300: '#9fc0f5', 400: '#5a8cf0', 500: '#3b6fe0', 600: '#2c4a80', 700: '#1c3a80', 800: '#131d2e' },
 };
 
-const freshwaterRadius = { control: '2px', full: '9999px', nesting: '0', cornerShape: 'round' };
+const freshwaterRadius = { control: '2px', full: '9999px', nesting: concentricNesting(false), cornerShape: 'round' };
 const freshwaterSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
 const freshwaterControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const freshwaterFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
@@ -77,8 +78,8 @@ const freshwaterText = {
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.01em' }, // 40/48
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '600', letterSpacing: '-0.01em' }, // 56/64
   displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px ceiling
-  displayLg: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.03em' }, // 88px ceiling
-  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '700', letterSpacing: '-0.035em' }, // 152px ceiling
+  displayMd: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.03em' }, // 88px ceiling
+  displayLg: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '700', letterSpacing: '-0.035em' }, // 152px ceiling
 };
 
 export const freshwaterLightThemeClass = createTheme(vars, {
@@ -303,13 +304,13 @@ globalStyle(
   freshwaterMetaCaps,
 );
 
-// headingSm and displayLg only; displaySm (stat figures) excluded since caps is a no-op on digits.
+// headingSm and displayMd only; displaySm (stat figures) excluded since caps is a no-op on digits.
 globalStyle(
   [
     `${freshwaterLightThemeClass} [data-type-scale="headingSm"]`,
     `${freshwaterDarkThemeClass} [data-type-scale="headingSm"]`,
-    `${freshwaterLightThemeClass} [data-type-scale="displayLg"]`,
-    `${freshwaterDarkThemeClass} [data-type-scale="displayLg"]`,
+    `${freshwaterLightThemeClass} [data-type-scale="displayMd"]`,
+    `${freshwaterDarkThemeClass} [data-type-scale="displayMd"]`,
   ].join(', '),
   {
     textTransform: 'uppercase',

@@ -425,7 +425,7 @@ export const indexTitleCell = style({
 export const indexTitle = style({
   overflowWrap: 'break-word',
   selectors: {
-    '&[data-type-scale="displaySm"], &[data-type-scale="displayLg"]': {
+    '&[data-type-scale="displaySm"], &[data-type-scale="displayMd"]': {
       lineHeight: 1,
       fontSize: 'clamp(2rem, 9cqi, 5rem)',
     },

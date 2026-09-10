@@ -1,5 +1,6 @@
 import { createTheme, globalStyle, keyframes } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
+import { concentricNesting } from '@/tokens';
 import { inverseOverride } from '@/foundations/color/inverse';
 import { fieldMeta, label as fieldLabel, hint as fieldHint, errorText as fieldErrorText } from '@components/Field/Field.css';
 import { sphereWrap, body as sphereBody, contact as sphereContact } from '@components/_brand/PearlSphere/PearlSphere.css';
@@ -54,7 +55,7 @@ export const southSeaSentiment = {
   pacific: { 100: '#e7efee', 200: '#c3d6d4', 300: '#a1bfbd', 400: '#6e9694', 500: '#4c7573', 600: '#395857', 700: '#2c4442', 800: '#16211f' },
 };
 
-const southSeaRadius = { control: '0px', full: '9999px', nesting: '0', cornerShape: 'round' };
+const southSeaRadius = { control: '0px', full: '9999px', nesting: concentricNesting(false), cornerShape: 'round' };
 const southSeaSpace = { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem', '2xl': '3rem' };
 const southSeaControlHeight = { sm: '2rem', md: '2.5rem', lg: '3rem', xl: '3.5rem' };
 const southSeaFontWeight = { regular: '400', medium: '500', semibold: '600', bold: '700' };
@@ -82,8 +83,8 @@ const southSeaText = {
   headingMd: { fontSize: '2.5rem', lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.015em' }, // 40/48
   headingLg: { fontSize: '3.5rem', lineHeight: '1.142857', fontWeight: '600', letterSpacing: '-0.02em' }, // 56/64
   displaySm: { fontSize: 'clamp(2rem, 8vw, 4.5rem)', lineHeight: '1.056', fontWeight: '700', letterSpacing: '-0.02em' }, // 76px ceiling
-  displayLg: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.02em' }, // 88px ceiling
-  displayXl: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '700', letterSpacing: '-0.025em' }, // 152px ceiling
+  displayMd: { fontSize: 'clamp(2.5rem, 9vw, 5.5rem)', lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.02em' }, // 88px ceiling
+  displayLg: { fontSize: 'clamp(3rem, 13vw, 9.5rem)', lineHeight: '1', fontWeight: '700', letterSpacing: '-0.025em' }, // 152px ceiling
 };
 
 export const southSeaLightThemeClass = createTheme(vars, {
@@ -291,10 +292,10 @@ globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="displaySm"]`,
     `${southSeaDarkThemeClass} [data-type-scale="displaySm"]`,
+    `${southSeaLightThemeClass} [data-type-scale="displayMd"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="displayMd"]`,
     `${southSeaLightThemeClass} [data-type-scale="displayLg"]`,
     `${southSeaDarkThemeClass} [data-type-scale="displayLg"]`,
-    `${southSeaLightThemeClass} [data-type-scale="displayXl"]`,
-    `${southSeaDarkThemeClass} [data-type-scale="displayXl"]`,
   ].join(', '),
   {
     fontFamily: southSeaFonts.boska,
@@ -311,10 +312,10 @@ globalStyle(
   [
     `${southSeaLightThemeClass} [data-type-scale="displaySm"] [data-role="inlineEmphasis"]`,
     `${southSeaDarkThemeClass} [data-type-scale="displaySm"] [data-role="inlineEmphasis"]`,
+    `${southSeaLightThemeClass} [data-type-scale="displayMd"] [data-role="inlineEmphasis"]`,
+    `${southSeaDarkThemeClass} [data-type-scale="displayMd"] [data-role="inlineEmphasis"]`,
     `${southSeaLightThemeClass} [data-type-scale="displayLg"] [data-role="inlineEmphasis"]`,
     `${southSeaDarkThemeClass} [data-type-scale="displayLg"] [data-role="inlineEmphasis"]`,
-    `${southSeaLightThemeClass} [data-type-scale="displayXl"] [data-role="inlineEmphasis"]`,
-    `${southSeaDarkThemeClass} [data-type-scale="displayXl"] [data-role="inlineEmphasis"]`,
   ].join(', '),
   {
     fontFamily: southSeaFonts.boska,

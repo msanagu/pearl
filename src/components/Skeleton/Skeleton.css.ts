@@ -66,8 +66,8 @@ export const skeleton = recipe({
       headingMd: { height: lineBox('headingMd') },
       headingLg: { height: lineBox('headingLg') },
       displaySm: { height: lineBox('displaySm') },
+      displayMd: { height: lineBox('displayMd') },
       displayLg: { height: lineBox('displayLg') },
-      displayXl: { height: lineBox('displayXl') },
     },
   },
 
