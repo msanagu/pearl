@@ -15,7 +15,7 @@ export const radiusDoc: StoryDoc = {
         {
           term: 'radius.control',
           definition:
-            "The theme's corner. Buttons, inputs, tags. The only radius a theme authors — a real design token. A free per-theme value, not snapped to the space grid — Freshwater's is 2px, off-grid by design (see Space). Only a derived surface radius (control + padding) inherits grid alignment, through the padding term.",
+            "The theme's corner. Buttons, inputs, tags. The only radius a theme authors — a real design token, free to be any value the theme wants, not snapped to the space grid (see Space). Only a derived surface radius (control + padding) inherits grid alignment, through the padding term.",
         },
         {
           term: 'radius.full',
