@@ -104,6 +104,7 @@ import {
   BsExclamationTriangle,
 } from 'react-icons/bs';
 import { Icon } from './Icon';
+import type { IconTone } from './Icon';
 import { ICON_LIBRARIES_BY_ID } from './iconLibraries';
 import { THEME_ICON_SETS } from './iconSets';
 import type { ThemeName } from './iconSets';
@@ -191,6 +192,16 @@ const meta: Meta<typeof Icon> = {
               level: 'must-not',
               statement:
                 "Don't hand-roll duotone recoloring for a set that already gets this for free from Icon.css.ts.",
+            },
+            {
+              level: 'must',
+              statement:
+                'Leave tone unset on an icon inside a solid-background container (Button\'s primary variant, a solid status badge) — the untoned default renders color: inherit, so it automatically picks up whatever onFill/onAccent/onPrimary that container sets on itself. This "fill" is a background-color token (color.positive.fill), unrelated to the outline/filled icon-weight axis above.',
+            },
+            {
+              level: 'must-not',
+              statement:
+                'Don\'t pass a sentiment or accent tone to an icon sitting on that same family\'s solid fill (e.g. tone="positive" inside a color.positive.fill background) — tone\'s colors are tinted-surface-tier (color.positive.icon, color.accent), not contrast-paired with fill the way onFill/onAccent/onPrimary are, so same-family tone-on-fill risks unreadable contrast.',
             },
             {
               level: 'must',
@@ -540,35 +551,35 @@ export const ThemeDefaults: StoryObj = {
 // ---- Tone -------------------------------------------------------------
 
 /** left-to-right: default (untoned) neutral, accent, then the four alert sentiments. */
-const TONE_ROW: { label: string; className: string | undefined; e: Entry }[] = [
+const TONE_ROW: { label: string; tone: IconTone | undefined; e: Entry }[] = [
   {
     label: 'default',
-    className: undefined,
+    tone: undefined,
     e: entry('PiUserFill', PiUserFill),
   },
   {
     label: 'accent',
-    className: Icon.tone.accent,
+    tone: 'accent',
     e: entry('PiMagnifyingGlass', PiMagnifyingGlass),
   },
   {
     label: 'positive',
-    className: Icon.tone.positive,
+    tone: 'positive',
     e: entry('PiCheckCircleFill', PiCheckCircleFill),
   },
   {
     label: 'negative',
-    className: Icon.tone.negative,
+    tone: 'negative',
     e: entry('PiXCircleFill', PiXCircleFill),
   },
   {
     label: 'warn',
-    className: Icon.tone.warn,
+    tone: 'warn',
     e: entry('PiWarningCircleFill', PiWarningCircleFill),
   },
   {
     label: 'info',
-    className: Icon.tone.info,
+    tone: 'info',
     e: entry('PiInfoFill', PiInfoFill),
   },
 ];
@@ -576,9 +587,9 @@ const TONE_ROW: { label: string; className: string | undefined; e: Entry }[] = [
 function ToneRow() {
   return (
     <Row gap="xl">
-      {TONE_ROW.map(({ label, className, e }) => (
+      {TONE_ROW.map(({ label, tone, e }) => (
         <Stack key={label} gap="sm" align="center" style={{ width: 84 }}>
-          <Icon icon={e.Component} className={className} size={28} />
+          <Icon icon={e.Component} tone={tone} size={28} />
           <Text typeScale="caption" prominence="subtle" as="span">
             {label}
           </Text>
@@ -589,47 +600,44 @@ function ToneRow() {
 }
 
 /**
- * `Icon.tone.<name>` — real classes reachable off the one import, not a
- * `color`/`tone` prop (a prop would still mean feeding a token value through
- * JSX at every call site). Same static-property pattern as `Card.Header`.
- * `accent` isn't a sentiment — it's `color.accent` — grouped here because it
- * answers the same call-site need. `default` (no `className` at all) shows
- * the untoned baseline: `color.icon`, inherited unless overridden.
+ * `tone` — a real, typed prop (`accent | positive | negative | warn | info`),
+ * not Tag's `variant` vocabulary reused wholesale: no `neutral` (unset already
+ * renders the untoned baseline, `color.icon`, inherited), and `accent` is a
+ * real option here since an icon commonly wants the plain brand color (an
+ * active nav icon, a selected state) with no status meaning attached.
  *
  * The second row proves tone survives a `[data-inverse]` boundary — every
- * `Icon.tone` class references a token (`color.negative.icon`, etc.), and
- * `inverseOverride.ts` only reassigns `icon`/`background`/`surface`/`text`/
- * `textSubtle`, not the sentiment colors, so this is also the honest answer
- * to whether sentiment tone flips correctly inside a container: it doesn't
- * need to, and doesn't try to — same value in both rows, by design.
+ * tone maps to a token (`color.negative.icon`, etc.), and `inverseOverride.ts`
+ * passes the opposite mode's own sentiment values for every theme (see
+ * pearl.css.ts), so tone flips correctly inside a container exactly like
+ * every other color token — nothing sentiment-specific to special-case.
  */
 export const Tone: StoryObj = {
   parameters: staticSource(
     `import { Icon } from '@msanagu/pearl';\n` +
       `import { PiUserFill, PiMagnifyingGlass, PiCheckCircleFill, PiXCircleFill, PiWarningCircleFill, PiInfoFill } from 'react-icons/pi';\n\n` +
       `<Icon icon={PiUserFill} size={28} />{/* default */}\n` +
-      `<Icon icon={PiMagnifyingGlass} className={Icon.tone.accent} size={28} />\n` +
-      `<Icon icon={PiCheckCircleFill} className={Icon.tone.positive} size={28} />\n` +
-      `<Icon icon={PiXCircleFill} className={Icon.tone.negative} size={28} />\n` +
-      `<Icon icon={PiWarningCircleFill} className={Icon.tone.warn} size={28} />\n` +
-      `<Icon icon={PiInfoFill} className={Icon.tone.info} size={28} />\n\n` +
-      `{/* Inside a [data-inverse] container — see foundations/color/inverse.ts */}\n` +
+      `<Icon icon={PiMagnifyingGlass} tone="accent" size={28} />\n` +
+      `<Icon icon={PiCheckCircleFill} tone="positive" size={28} />\n` +
+      `<Icon icon={PiXCircleFill} tone="negative" size={28} />\n` +
+      `<Icon icon={PiWarningCircleFill} tone="warn" size={28} />\n` +
+      `<Icon icon={PiInfoFill} tone="info" size={28} />\n\n` +
+      `{/* Inside a [data-inverse] container — see foundations/color/inverse */}\n` +
       `<div data-inverse style={{ background: color.background, padding: space.lg }}>\n` +
       `  <Icon icon={PiUserFill} size={28} />{/* default */}\n` +
-      `  {/* ...same tone classes, unchanged */}\n` +
+      `  {/* ...same tone prop, unchanged */}\n` +
       `</div>`,
   ),
   render: () => (
-    <Stack gap="2xl">
-      <Stack gap="sm">
-        <Text typeScale="caption" weight="semibold" as="span">
-          Normal context
-        </Text>
+    <Stack gap="xl">
+      {/* Unpadded box, same inset as the [data-inverse] box below — so the
+          two rows' icons line up on the same left edge for a direct compare. */}
+      <div style={{ padding: space.lg }}>
         <ToneRow />
-      </Stack>
+      </div>
       <Stack gap="sm">
-        <Text typeScale="caption" weight="semibold" as="span">
-          Inside a `[data-inverse]` container
+        <Text typeScale="caption" prominence="subtle" as="span">
+          Inside a [data-inverse] container
         </Text>
         <div
           data-inverse

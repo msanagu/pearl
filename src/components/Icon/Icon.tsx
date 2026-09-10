@@ -23,6 +23,16 @@ import {
  */
 type RefableIcon = ComponentType<IconBaseProps & { ref?: Ref<SVGSVGElement> }>;
 
+export type IconTone = 'accent' | 'positive' | 'negative' | 'warn' | 'info';
+
+const TONE_CLASS: Record<IconTone, string> = {
+  accent: accentIcon,
+  positive: positiveIcon,
+  negative: negativeIcon,
+  warn: warnIcon,
+  info: infoIcon,
+};
+
 export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
   /**
    * Any `react-icons` icon component, from any of its bundled sets — e.g.
@@ -45,6 +55,15 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'color'> {
    * @default 20
    */
   size?: number | string;
+  /**
+   * The four sentiments (positive/negative/warn/info), plus accent — not
+   * quite Tag's `variant` vocabulary: no `neutral` (unset already renders
+   * the untoned default, `color.icon`, inherited), and accent is a real
+   * option here since an icon commonly wants the plain brand color (an
+   * active nav icon, a selected state), not a status meaning. Composes with
+   * `className`: pass both and both apply.
+   */
+  tone?: IconTone;
 }
 
 const GRID_STEP = 4;
@@ -69,30 +88,19 @@ function toGridRem(px: number): string {
  * next to its own visible text label. Both are ordinary `SVGAttributes`
  * passed straight through — Icon does not default either one.
  */
-const IconImpl = forwardRef<SVGSVGElement, IconProps>(
-  ({ icon: iconComponent, size = 20, className, ...rest }, ref) => {
+export const Icon = forwardRef<SVGSVGElement, IconProps>(
+  ({ icon: iconComponent, size = 20, tone, className, ...rest }, ref) => {
     const IconComponent = iconComponent as RefableIcon;
     return (
       <IconComponent
         ref={ref}
         size={typeof size === 'number' ? toGridRem(size) : size}
         data-component="icon"
-        className={clsx(icon, className)}
+        className={clsx(icon, tone && TONE_CLASS[tone], className)}
         {...rest}
       />
     );
   },
 );
 
-IconImpl.displayName = 'Icon';
-
-// Static-property namespacing, like `Card.Header`/`Card.Body`.
-export const Icon = Object.assign(IconImpl, {
-  tone: {
-    positive: positiveIcon,
-    negative: negativeIcon,
-    warn: warnIcon,
-    info: infoIcon,
-    accent: accentIcon,
-  },
-});
+Icon.displayName = 'Icon';
