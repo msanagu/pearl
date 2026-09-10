@@ -303,7 +303,7 @@ function SectionHead({
         >
           {contextLabel}
         </Text>
-        <Text as="h2" typeScale="displayLg" measure="sm" style={{ margin: 0 }}>
+        <Text as="h2" typeScale="displayMd" measure="sm" style={{ margin: 0 }}>
           {title}
         </Text>
       </StaggerItem>
@@ -737,7 +737,7 @@ function IntroductionPage({
                           <div className={css.indexTitleCell}>
                             <Text
                               as="h3"
-                              typeScale="displayLg"
+                              typeScale="displayMd"
                               className={css.indexTitle}
                               style={{ margin: 0 }}
                             >
