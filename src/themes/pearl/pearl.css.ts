@@ -1,6 +1,6 @@
 import { createTheme, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/theme.css';
-import { color, concentricNesting } from '@/tokens';
+import { concentricNesting } from '@/tokens';
 import { inverseOverride } from '@/foundations/color/inverse';
 
 /**
