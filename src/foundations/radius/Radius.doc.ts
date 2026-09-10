@@ -35,7 +35,7 @@ export const radiusDoc: StoryDoc = {
         {
           term: 'There is no radius.surface',
           definition:
-            'A padded surface derives its radius (outer = control + gap, gap = its own padding) rather than authoring one — a single token could only fit one padding value. Card/Alert derive from their own padding; a future Modal/Popover/Sheet does the same.',
+            'A padded surface derives its radius via concentric derivation rather than authoring one — a single token could only fit one padding value. Card/Alert derive from their own padding; a future Modal/Popover/Sheet does the same.',
         },
       ],
     },
