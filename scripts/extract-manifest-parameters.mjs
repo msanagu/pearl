@@ -96,7 +96,7 @@ export function parseStoryFile(storiesPath) {
 
 /** Resolves `export default meta;` back to `meta`'s own initializer, or
  * returns the object literal directly for `export default {...};`. */
-function findDefaultExportObject(ast) {
+export function findDefaultExportObject(ast) {
   let metaNode = null;
   for (const stmt of ast.program.body) {
     if (
