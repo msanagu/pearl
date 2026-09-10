@@ -457,7 +457,7 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
     <div className={css.page}>
       <h2 className={css.sectionTitle} id="primitives-raw-palette">
-        Raw palette
+        Primitives — raw palette
       </h2>
       <Text as="p" typeScale="bodySm" prominence="subtle" measure="md">
         Theme-internal — not exported from the package. Build against the
@@ -473,13 +473,11 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
 }
 
 const DEMO_SECTIONS = [
-  // Shares StoryDoc's "Primitives" caption with tokensDoc's own note — both
-  // land in one rail group instead of the swatches demo sitting ungrouped.
-  {
-    title: 'Raw palette',
-    id: 'primitives-raw-palette',
-    caption: 'Primitives',
-  },
+  // No caption: a lone top-level rail entry. tokensDoc's "modes share a
+  // scale" note that used to share this caption is now uncaptioned prose
+  // right below this demo instead — reads as this entry's own content, not
+  // a second rail-navigable topic.
+  { title: 'Primitives — raw palette', id: 'primitives-raw-palette' },
   { title: 'Semantic — token roles', id: 'semantic-token-roles' },
 ];
 

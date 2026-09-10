@@ -6,12 +6,12 @@ export const tokensDoc: StoryDoc = {
   concept:
     'What each sentiment-color sub-field (surface/border/text/icon/fill/onFill) is actually for — pick by where it applies, not how bold it looks.',
   overview:
-    'Two tiers: primitives, and semantic tokens built on top of them. Primitives are raw, theme-scoped hex values, internal to the theme — a consumer never references one directly. Semantic tokens (color.*) name what each color is for; that\'s the only tier a consumer touches, and switching the toolbar\'s theme or mode just changes which primitive each one currently resolves to.',
+    "Two tiers: primitives, and semantic tokens built on top of them. Primitives are raw, theme-scoped hex values, internal to the theme — a consumer never references one directly. Semantic tokens (color.*) name what each color is for; that's the only tier a consumer touches, and switching the toolbar's theme or mode just changes which primitive each one currently resolves to.",
   sections: [
     {
+      // No title/caption: reads as a continuation of the Raw palette demo
+      // right above it, not a topic of its own — no separate rail entry.
       kind: 'note',
-      caption: 'Primitives',
-      title: "Modes share a scale, they don't duplicate one",
       body: "Neutral and sentiment primitives are each one shared scale — light and dark mode draw different steps from it and invert roles (light's text comes from the same register as dark's background, and vice versa), rather than each mode authoring its own. Accent is the exception: it's tuned per theme, and a theme is free to use different values per mode where it needs to. Reusing one scale for neutral and sentiment keeps color declarations reductive — fewer raw values to author and keep consistent, not a second palette per mode.",
     },
     {
@@ -23,7 +23,7 @@ export const tokensDoc: StoryDoc = {
     {
       kind: 'note',
       caption: 'Sentiment',
-      title: 'Why positive/negative, not success/danger',
+      title: 'Why positive/negative',
       body: "Broader than an action's outcome: positive/negative also cover upward/downward and gain/loss — a stock-price arrow, an account balance — not just a form succeeding or failing. success/danger are action-result names; positive/negative are sentiment names, so they still read correctly outside a confirmation-toast context.",
     },
     {
