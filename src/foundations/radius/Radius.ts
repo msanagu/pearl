@@ -15,8 +15,9 @@ import { radius } from '@tokens';
  * so it is passed in rather than assumed: a Card at `padding="md"` and a Card at
  * `padding="xl"` are different shapes, and correctly so.
  *
- * `radius.nesting` is the per-theme opt-out (`'1'` / `'0'`). A hard-edged theme
- * sets `'0'`, the gap term zeroes out, and every surface collapses to its
+ * `radius.nesting` is the per-theme opt-out — a boolean via `concentricNesting()`,
+ * resolving to a 0/1 multiplier at the CSS layer. A hard-edged theme sets
+ * `false`, the gap term zeroes out, and every surface collapses to its
  * `control` (`0px`) — square through the same expression, with no branching at
  * any call site. Without it, `calc(0px + 24px)` would hand a square theme a
  * 24px-rounded card, which is precisely backwards.
