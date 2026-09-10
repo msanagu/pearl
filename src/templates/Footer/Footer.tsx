@@ -103,12 +103,14 @@ export function Footer({
           {/* Signature: poster wordmark, then copyright + links directly under
               its left edge as one unit. */}
           <div className={css.sign}>
-            <WordMark
-              text={brandName}
-              role={brandRole}
-              underscoreColor={brandUnderscoreColor}
-              scale={2.8}
-            />
+            <div className={css.wordmark}>
+              <WordMark
+                text={brandName}
+                role={brandRole}
+                underscoreColor={brandUnderscoreColor}
+                scale={2.8}
+              />
+            </div>
             <div className={css.meta}>
               <Text
                 as="p"

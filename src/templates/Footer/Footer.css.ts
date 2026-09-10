@@ -68,6 +68,14 @@ export const sign = style({
   gap: space.md,
 });
 
+// Pearl/South Sea wordmarks are italic — their descenders overflow the line
+// box at this scale, eating the gap above. `em` tracks the wordmark's own
+// font-size through its `scale` prop; upright wordmarks (Tahitian, Freshwater)
+// just get a touch more breathing room.
+export const wordmark = style({
+  paddingBottom: '0.2em',
+});
+
 export const meta = style({
   display: 'flex',
   flexWrap: 'wrap',
