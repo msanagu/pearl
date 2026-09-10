@@ -7,6 +7,12 @@ export const tag = recipe({
   base: {
     display: 'inline-flex',
     alignItems: 'center',
+    // Not `auto` — a Tag in a Row with no explicit align stretches to match a
+    // taller sibling (heading, avatar) otherwise, since flex's default
+    // align-items:normal computes to stretch for any auto-height item.
+    // fit-content keeps its own content-based height so the parent's align
+    // only ever repositions it, never resizes it.
+    height: 'fit-content',
     // control, not full — full on a rectangle is a pill, a shape this system
     // avoids; full is reserved for square-aspect elements (avatars, dots).
     // Matching control also shares corner with a neighboring Button/Input.
