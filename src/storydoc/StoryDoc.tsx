@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PiCheckCircleFill, PiXCircleFill } from 'react-icons/pi';
 import { Text } from '@components/Text/Text';
-import { Row } from '@components/Row/Row';
 import type { ManifestRef } from '@/manifest/schema';
 import type {
   StoryDoc as StoryDocData,
@@ -186,10 +185,6 @@ function SectionBody({ section }: { section: DocSection }) {
   }
 }
 
-// More than 3 cards no longer reads as one row at a glance — a carousel
-// keeps them scannable instead of wrapping into a ragged multi-row grid.
-const CAROUSEL_THRESHOLD = 3;
-
 function RelatedSection({
   related,
   entityId,
@@ -215,16 +210,7 @@ function RelatedSection({
   ));
   return (
     <section className={css.section} id="related-to">
-      <Text as="h2" typeScale="headingSm" className={css.sectionTitle}>
-        Related to
-      </Text>
-      {cards.length > CAROUSEL_THRESHOLD ? (
-        <Carousel>{cards}</Carousel>
-      ) : (
-        <Row gap="md" wrap>
-          {cards}
-        </Row>
-      )}
+      <Carousel heading="Related to">{cards}</Carousel>
     </section>
   );
 }
@@ -324,7 +310,8 @@ export function StoryDoc({
       // the band below — nothing left to scroll through. Reaching the true
       // page bottom always means "reading the last section," so that wins
       // outright rather than leaving the last rail entry unreachable.
-      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const { scrollTop, scrollHeight, clientHeight } =
+        document.documentElement;
       if (scrollTop + clientHeight >= scrollHeight - 2) return lastId;
       // Otherwise: last id (in document order) still inside the band —
       // the section whose heading most recently crossed near the top.
@@ -334,7 +321,8 @@ export function StoryDoc({
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) intersectingRef.current.add(entry.target.id);
+          if (entry.isIntersecting)
+            intersectingRef.current.add(entry.target.id);
           else intersectingRef.current.delete(entry.target.id);
         }
         const next = resolveActive();
