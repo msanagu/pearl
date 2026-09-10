@@ -48,6 +48,11 @@ import {
   extractManifestParameters,
   listNamedLiteralExports,
 } from './extract-manifest-parameters.mjs';
+import {
+  readStoryDocsIn,
+  toEntitySections,
+  walkFiles,
+} from './read-story-doc.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
@@ -182,19 +187,27 @@ function loadDomainEntities(baseDir, idPrefix, { metadataKey, domainDescriptions
   const entities = [];
   for (const domain of domains) {
     const domainDir = path.join(baseDir, domain);
-    const storyFiles = readdirSync(domainDir).filter((f) =>
-      /\.stories\.tsx?$/.test(f),
-    );
+    // Recurse — a domain may split into concept subfolders (color/inverse/, …).
+    const storyFiles = walkFiles(domainDir, (f) => /\.stories\.tsx?$/.test(f));
     const sections = [];
     const related = [];
     const refs = [];
     let authoredDescription;
     for (const file of storyFiles) {
-      const params = extractManifestParameters(path.join(domainDir, file));
+      const params = extractManifestParameters(file);
       if (params?.sections?.length) sections.push(...params.sections);
       if (params?.related?.length) related.push(...params.related);
       if (params?.refs?.length) refs.push(...params.refs);
       if (params?.description) authoredDescription ??= params.description;
+    }
+    // *.doc.ts sidecars — the current authoring surface (see src/storydoc).
+    // Coexists with the legacy parameters.manifest path above during migration.
+    for (const doc of readStoryDocsIn(domainDir)) {
+      const entity = toEntitySections(doc);
+      sections.push(...entity.sections);
+      related.push(...entity.related);
+      refs.push(...entity.refs);
+      authoredDescription ??= entity.description;
     }
     if (!sections.length) continue;
     // Field order matches ComponentEntity: id/kind/name/description/metadata,
