@@ -14,14 +14,8 @@ import { Skeleton } from '@components/Skeleton/Skeleton';
 import { Stack } from '@components/Stack/Stack';
 import { Tag } from '@components/Tag/Tag';
 import { Text } from '@components/Text/Text';
-
-/**
- * Foundations → Color/Inverse: the global app theme sets light or dark for the
- * whole tree. `[data-inverse]` applies the opposite mode locally to one
- * subtree, without touching the global setting — the two are orthogonal axes.
- * A consumer only adds the attribute; each theme's `.css.ts` wires the flip
- * through `inverseOverride(...)` in `foundations/color/inverse.ts`.
- */
+import { StoryDoc } from '@/storydoc/StoryDoc';
+import { inverseDoc } from './Inverse.doc';
 
 // The whole color contract. [data-inverse] reassigns every one of these to the
 // opposite mode's value — nothing is left fixed. Source of truth: inverse.ts
@@ -186,36 +180,6 @@ function Sample() {
               <Tag variant="warn">warn</Tag>
               <Tag variant="negative">error</Tag>
             </Row>
-            {/* No component consumes fill/onFill yet — a raw solid badge +
-                destructive button, to show the pair flips too. */}
-            <Row gap="xs" align="center">
-              <span
-                style={{
-                  background: color.positive.fill,
-                  color: color.positive.onFill,
-                  padding: '2px 8px',
-                  borderRadius: 4,
-                  fontSize: 12,
-                  fontWeight: 600,
-                }}
-              >
-                Passing
-              </span>
-              <button
-                type="button"
-                style={{
-                  background: color.negative.fill,
-                  color: color.negative.onFill,
-                  border: 'none',
-                  padding: '6px 12px',
-                  borderRadius: 6,
-                  fontSize: 13,
-                  fontWeight: 600,
-                }}
-              >
-                Delete
-              </button>
-            </Row>
           </Stack>
         </Card.Body>
       </Card>
@@ -257,22 +221,11 @@ function InverseDemo() {
   return (
     <div
       style={{
-        maxWidth: 960,
-        margin: '0 auto',
-        padding: 24,
         display: 'flex',
         flexDirection: 'column',
         gap: 32,
-        fontFamily: 'system-ui, sans-serif',
       }}
     >
-      <Text as="p" style={{ margin: 0, fontSize: 13, color: color.textSubtle }}>
-        Same token names on both sides. Left is the global app theme; right is
-        the same subtree wrapped in <code>[data-inverse]</code> — a local
-        application of the opposite mode. Every token in the contract resolves
-        to the opposite mode&rsquo;s value; nothing is left fixed.
-      </Text>
-
       <div
         style={{
           display: 'grid',
@@ -320,51 +273,7 @@ const meta: Meta<typeof InverseDemo> = {
   component: InverseDemo,
   parameters: {
     layout: 'fullscreen',
-    manifest: {
-      name: 'inverseConvention',
-      description:
-        'The global app theme (light/dark, whole tree) and inverse ([data-inverse], a local application of the opposite mode on one subtree) are orthogonal axes. Inside [data-inverse] every color token flips — the whole contract — so ordinary token names just work.',
-      sections: [
-        {
-          kind: 'guidelines',
-          title: 'Inverse convention',
-          for: 'agent',
-          items: [
-            {
-              level: 'must',
-              statement:
-                'Treat the global app theme (light/dark, whole tree) and inverse ([data-inverse], a local application of the opposite mode on one subtree) as orthogonal axes. Call an inverse container "the inverse container," not "the dark version" — which mode it resolves to depends on the global app theme currently active.',
-            },
-            {
-              level: 'must-not',
-              statement:
-                "Don't conflate the two axes — an inverse container always renders as if the opposite mode were active there, without touching the global app theme.",
-            },
-            {
-              level: 'must',
-              statement:
-                'Add data-inverse to a container, then use ordinary token names inside it — every color token resolves to the opposite mode automatically. The whole color contract flips: surfaces, text, icon, the full border set (border / borderStrong / borderSubtle / borderInverse), overlay / overlaySubtle, shadow, focusRing, the primary and accent families, and every sentiment field. Nothing is fixed; there is no token you must swap by hand.',
-            },
-          ],
-        },
-        {
-          kind: 'steps',
-          title: 'Inverse convention verification',
-          for: 'agent',
-          ordered: false,
-          items: [
-            {
-              title:
-                "When adding a theme or a new color-contract key, extend both inverseOverride(...) calls with that key set to the theme's own other-mode value — inverse.ts hands the whole object to assignVars, so every contract key must be present. Never invent a fresh color for the inverse case.",
-            },
-            {
-              title:
-                "If a theme restyles a component per mode with its own globalStyle keyed on the mode class (e.g. the primary button in freshwater/tahitian), add a matching [data-inverse]-scoped rule that applies the other mode's treatment — the var flip alone can't move a hardcoded per-mode fill.",
-            },
-          ],
-        },
-      ],
-    },
+    removePreviewPadding: true,
   },
 };
 export default meta;
@@ -373,4 +282,10 @@ type Story = StoryObj<typeof InverseDemo>;
 
 // Named to match the title's last segment so Storybook collapses the group
 // into a single sidebar entry (no Inverse/Default nesting).
-export const Inverse: Story = {};
+export const Inverse: Story = {
+  render: () => (
+    <StoryDoc doc={inverseDoc} entityId="foundation.color">
+      <InverseDemo />
+    </StoryDoc>
+  ),
+};

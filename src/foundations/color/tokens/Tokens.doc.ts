@@ -6,18 +6,38 @@ export const tokensDoc: StoryDoc = {
   concept:
     'What each sentiment-color sub-field (surface/border/text/icon/fill/onFill) is actually for — pick by where it applies, not how bold it looks.',
   overview:
-    'The whole color contract on one page. Primitives — raw, theme-scoped hex — sit on top; the semantic tier below names the role each token plays and reacts live to the toolbar theme. Consumers only ever touch the semantic tier (color.*); primitives are theme-internal.',
+    'Two tiers: primitives, and semantic tokens built on top of them. Primitives are raw, theme-scoped hex values, internal to the theme — a consumer never references one directly. Semantic tokens (color.*) name what each color is for; that\'s the only tier a consumer touches, and switching the toolbar\'s theme or mode just changes which primitive each one currently resolves to.',
   sections: [
     {
-      kind: 'guidelines',
+      kind: 'note',
+      caption: 'Primitives',
+      title: "Modes share a scale, they don't duplicate one",
+      body: "Neutral and sentiment primitives are each one shared scale — light and dark mode draw different steps from it and invert roles (light's text comes from the same register as dark's background, and vice versa), rather than each mode authoring its own. Accent is the exception: it's tuned per theme, and a theme is free to use different values per mode where it needs to. Reusing one scale for neutral and sentiment keeps color declarations reductive — fewer raw values to author and keep consistent, not a second palette per mode.",
+    },
+    {
+      kind: 'note',
+      caption: 'Accent',
+      title: "Accent isn't necessarily primary",
+      body: "accent is a named role, not a promise that a theme's primary button reads from it. Pearl's own primary is squidInk (ink), not accent — deliberately: reusing its subtle accent (urchin) for primary would make every subtle accent use go loud too. Freshwater goes further and gives primary an entirely unrelated scale. A theme can point primary at accent, at a dedicated scale, or use accent as pure decoration — whichever the brand calls for (see Getting Started/Setup, Building your own theme, for how to declare a new one).",
+    },
+    {
+      kind: 'note',
+      caption: 'Sentiment',
+      title: 'Why positive/negative, not success/danger',
+      body: "Broader than an action's outcome: positive/negative also cover upward/downward and gain/loss — a stock-price arrow, an account balance — not just a form succeeding or failing. success/danger are action-result names; positive/negative are sentiment names, so they still read correctly outside a confirmation-toast context.",
+    },
+    {
+      kind: 'note',
       title: 'Tinted vs. solid treatment',
+      body: 'Pick a sentiment sub-field (color.positive/negative/warn/info) by where it applies. Tinted treatment: surface (tinted background fill), border (tinted border), text (accessible content on surface), icon (saturated mark on surface). Solid treatment: fill (one saturated background — a filled status badge, a destructive primary button) paired with onFill (accessible content on fill).',
+    },
+    {
+      kind: 'steps',
+      title: 'Token semantics verification',
       items: [
         {
-          level: 'must',
-          statement:
-            'Pick a sentiment sub-field (color.positive/negative/warn/info) by where it applies.',
-          detail:
-            'Tinted treatment: surface (tinted background fill), border (tinted border), text (accessible content on surface), icon (saturated mark on surface). Solid treatment: fill (one saturated background — a filled status badge, a destructive primary button) paired with onFill (accessible content on fill).',
+          title:
+            'For a solid, high-emphasis sentiment element (filled badge, destructive CTA) use color.<sentiment>.fill for the background and color.<sentiment>.onFill for text and icons on it — never surface (too tinted), text, or icon. There is exactly one solid intensity; if a design needs two solid weights, flag the gap rather than inventing a second fill.',
         },
       ],
     },
@@ -31,16 +51,6 @@ export const tokensDoc: StoryDoc = {
             'Never reach for icon as a general "strong version of this sentiment."',
           detail:
             'e.g. color.negative.icon as a button background is a category error. For a solid sentiment surface use color.negative.fill + color.negative.onFill, which are contrast-checked as a pair; icon is only ever a mark on surface.',
-        },
-      ],
-    },
-    {
-      kind: 'steps',
-      title: 'Token semantics verification',
-      items: [
-        {
-          title:
-            'For a solid, high-emphasis sentiment element (filled badge, destructive CTA) use color.<sentiment>.fill for the background and color.<sentiment>.onFill for text and icons on it — never surface (too tinted), text, or icon. There is exactly one solid intensity; if a design needs two solid weights, flag the gap rather than inventing a second fill.',
         },
       ],
     },

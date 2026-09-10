@@ -32,23 +32,20 @@ import { tahitianBrandWordmark } from '@themes/tahitian/tahitian.roles';
 import { freshwaterBrandWordmark } from '@themes/freshwater/freshwater.roles';
 import { southSeaBrandWordmark } from '@themes/south-sea/south-sea.roles';
 import { WordMark } from '@components/_brand/WordMark/WordMark';
+import { Text } from '@components/Text/Text';
+import { Icon } from '@components/Icon/Icon';
+import type { IconType } from 'react-icons';
+import {
+  PiCheckCircleFill,
+  PiXCircleFill,
+  PiWarningCircleFill,
+  PiInfoFill,
+} from 'react-icons/pi';
 import { color } from '@tokens';
-import { FitToWidth } from '../typography/typeSpecimens';
-import * as primCss from './primitives.css';
-import * as semCss from './tokens.css';
-
-/**
- * Foundations → Color/Tokens: the whole color contract on one page. Primitives
- * (raw theme-scoped hex, per the toolbar theme) on top; Semantic (the role
- * each color token plays, reacting live to the toolbar) below. Only color —
- * space/radius/control-height specimens live on their own foundation pages.
- *
- * Primitives values print as literal hex, no DOM-computed rgba; alpha steps
- * print their derivation (hue[step] @ N%) since opacity is the meaningful fact.
- *
- * Primitives are theme-internal — not re-exported from the package. Consumers
- * only ever touch the semantic tier (color.*).
- */
+import { FitToWidth } from '../../typography/typeSpecimens';
+import * as css from './tokens.css';
+import { StoryDoc } from '@/storydoc/StoryDoc';
+import { tokensDoc } from './Tokens.doc';
 
 // --- Primitives ------------------------------------------------------------
 
@@ -74,20 +71,20 @@ function Scale({
     .map(Number)
     .sort((a, b) => a - b);
   return (
-    <div className={primCss.scaleRow}>
-      <span className={primCss.scaleLabel}>{label}</span>
-      <div className={primCss.stepList}>
+    <div className={css.scaleRow}>
+      <span className={css.scaleLabel}>{label}</span>
+      <div className={css.stepList}>
         {ordered.map((stepValue) => {
           // Always defined — `ordered` is derived from `Object.keys(steps)`.
           const hex = steps[stepValue] as string;
           return (
-            <div key={stepValue} className={primCss.step}>
+            <div key={stepValue} className={css.step}>
               <div
-                className={primCss.stepSwatch}
+                className={css.stepSwatch}
                 style={{ background: hex, borderColor: contrastBorder(hex) }}
               />
-              <span className={primCss.stepNumber}>{stepValue}</span>
-              <span className={primCss.stepHex}>{hex}</span>
+              <span className={css.stepNumber}>{stepValue}</span>
+              <span className={css.stepHex}>{hex}</span>
             </div>
           );
         })}
@@ -116,25 +113,22 @@ function AlphaScale({
     .sort((a, b) => a - b);
   const border = contrastBorder(anchorHex);
   return (
-    <div className={primCss.scaleRow}>
-      <span className={primCss.scaleLabel}>
+    <div className={css.scaleRow}>
+      <span className={css.scaleLabel}>
         {label}
         <br />
         <span style={{ fontWeight: 400, opacity: 0.7 }}>({anchorLabel})</span>
       </span>
-      <div className={primCss.stepList}>
+      <div className={css.stepList}>
         {ordered.map((pct) => (
-          <div key={pct} className={primCss.step}>
-            <div
-              className={primCss.alphaSwatch}
-              style={{ borderColor: border }}
-            >
+          <div key={pct} className={css.step}>
+            <div className={css.alphaSwatch} style={{ borderColor: border }}>
               <div
-                className={primCss.alphaSwatchFill}
+                className={css.alphaSwatchFill}
                 style={{ backgroundColor: steps[pct] }}
               />
             </div>
-            <span className={primCss.stepHex}>@ {pct}%</span>
+            <span className={css.stepHex}>@ {pct}%</span>
           </div>
         ))}
       </div>
@@ -148,7 +142,7 @@ function SentimentScales({
   sentiment: Record<string, Record<number, string>>;
 }) {
   return (
-    <div className={primCss.hueGroup}>
+    <div className={css.hueGroup}>
       {Object.entries(sentiment).map(([hue, steps]) => (
         <Scale key={hue} label={hue} steps={steps} />
       ))}
@@ -158,7 +152,7 @@ function SentimentScales({
 
 function PearlSection() {
   return (
-    <section className={primCss.themeSection} style={{ borderBottom: 'none' }}>
+    <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <FitToWidth maxWidth="28rem">
         <WordMark
           text={pearlBrandWordmark.text}
@@ -167,15 +161,15 @@ function PearlSection() {
         />
       </FitToWidth>
 
-      <h3 className={primCss.groupTitle}>Neutral</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Neutral</h3>
+      <div className={css.hueGroup}>
         <Scale label="alabaster" steps={alabaster} />
         <Scale label="squidInk" steps={squidInk} />
         <Scale label="urchin" steps={urchin} />
       </div>
 
-      <h3 className={primCss.groupTitle}>Alpha</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Alpha</h3>
+      <div className={css.hueGroup}>
         <AlphaScale
           label="squidInkAlpha"
           anchorLabel="squidInk[900]"
@@ -190,7 +184,7 @@ function PearlSection() {
         />
       </div>
 
-      <h3 className={primCss.groupTitle}>Sentiment</h3>
+      <h3 className={css.groupTitle}>Sentiment</h3>
       <SentimentScales sentiment={pearlSentiment} />
     </section>
   );
@@ -199,7 +193,7 @@ function PearlSection() {
 function TahitianSection() {
   return (
     <section
-      className={`${primCss.themeSection} ${primCss.squareSwatches}`}
+      className={`${css.themeSection} ${css.squareSwatches}`}
       style={{ borderBottom: 'none' }}
     >
       <FitToWidth maxWidth="28rem">
@@ -210,19 +204,19 @@ function TahitianSection() {
         />
       </FitToWidth>
 
-      <h3 className={primCss.groupTitle}>Neutral</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Neutral</h3>
+      <div className={css.hueGroup}>
         <Scale label="platinum" steps={tahitianPlatinum} />
         <Scale label="charcoal" steps={tahitianCharcoal} />
       </div>
 
-      <h3 className={primCss.groupTitle}>Accent</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Accent</h3>
+      <div className={css.hueGroup}>
         <Scale label="peacock" steps={tahitianPeacock} />
         <Scale label="seaglass" steps={tahitianSeaglass} />
       </div>
 
-      <h3 className={primCss.groupTitle}>Sentiment</h3>
+      <h3 className={css.groupTitle}>Sentiment</h3>
       <SentimentScales sentiment={tahitianSentiment} />
     </section>
   );
@@ -230,7 +224,7 @@ function TahitianSection() {
 
 function FreshwaterSection() {
   return (
-    <section className={primCss.themeSection} style={{ borderBottom: 'none' }}>
+    <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <FitToWidth maxWidth="28rem">
         <WordMark
           text={freshwaterBrandWordmark.text}
@@ -239,16 +233,16 @@ function FreshwaterSection() {
         />
       </FitToWidth>
 
-      <h3 className={primCss.groupTitle}>Neutral</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Neutral</h3>
+      <div className={css.hueGroup}>
         <Scale label="ice" steps={freshwaterIce} />
         <Scale label="graphite" steps={freshwaterGraphite} />
       </div>
 
-      <h3 className={primCss.groupTitle}>Accent</h3>
+      <h3 className={css.groupTitle}>Accent</h3>
       <Scale label="glacier" steps={freshwaterGlacier} />
 
-      <h3 className={primCss.groupTitle}>Sentiment</h3>
+      <h3 className={css.groupTitle}>Sentiment</h3>
       <SentimentScales sentiment={freshwaterSentiment} />
     </section>
   );
@@ -256,21 +250,21 @@ function FreshwaterSection() {
 
 function SouthSeaSection() {
   return (
-    <section className={primCss.themeSection} style={{ borderBottom: 'none' }}>
+    <section className={css.themeSection} style={{ borderBottom: 'none' }}>
       <FitToWidth maxWidth="28rem">
         <WordMark text={southSeaBrandWordmark.text} scale={1.4} />
       </FitToWidth>
 
-      <h3 className={primCss.groupTitle}>Neutral</h3>
-      <div className={primCss.hueGroup}>
+      <h3 className={css.groupTitle}>Neutral</h3>
+      <div className={css.hueGroup}>
         <Scale label="sand" steps={southSeaSand} />
         <Scale label="driftwood" steps={southSeaDriftwood} />
       </div>
 
-      <h3 className={primCss.groupTitle}>Accent</h3>
+      <h3 className={css.groupTitle}>Accent</h3>
       <Scale label="conch" steps={southSeaConch} />
 
-      <h3 className={primCss.groupTitle}>Sentiment</h3>
+      <h3 className={css.groupTitle}>Sentiment</h3>
       <SentimentScales sentiment={southSeaSentiment} />
     </section>
   );
@@ -287,10 +281,10 @@ function PrimitivesHalf({ theme }: { theme: string }) {
   const Section = sectionByTheme[theme];
   if (!Section) {
     return (
-      <p style={{ fontSize: 13, color: 'inherit', opacity: 0.7 }}>
+      <Text as="p" typeScale="bodySm" prominence="subtle">
         Unrecognized theme "{theme}" — switch the toolbar's Theme to Pearl,
         Tahitian, Freshwater, or South Sea.
-      </p>
+      </Text>
     );
   }
   return <Section />;
@@ -300,8 +294,8 @@ function PrimitivesHalf({ theme }: { theme: string }) {
 
 function ColorSwatch({ name, cssVar }: { name: string; cssVar: string }) {
   return (
-    <div className={semCss.cell}>
-      <div className={semCss.swatch} style={{ background: cssVar }} />
+    <div className={css.cell}>
+      <div className={css.swatch} style={{ background: cssVar }} />
       <span>{name}</span>
     </div>
   );
@@ -309,8 +303,8 @@ function ColorSwatch({ name, cssVar }: { name: string; cssVar: string }) {
 
 function BorderSwatch({ name, cssVar }: { name: string; cssVar: string }) {
   return (
-    <div className={semCss.cell}>
-      <div className={semCss.borderRule} style={{ borderTopColor: cssVar }} />
+    <div className={css.cell}>
+      <div className={css.borderRule} style={{ borderTopColor: cssVar }} />
       <span>{name}</span>
     </div>
   );
@@ -319,75 +313,81 @@ function BorderSwatch({ name, cssVar }: { name: string; cssVar: string }) {
 const sentimentGroups = ['positive', 'negative', 'warn', 'info'] as const;
 const sentimentFields = ['surface', 'border', 'text', 'icon', 'fill'] as const;
 
+// Same sentiment→icon pairing documented in Icon.stories.tsx's Tone story.
+const sentimentIcon: Record<(typeof sentimentGroups)[number], IconType> = {
+  positive: PiCheckCircleFill,
+  negative: PiXCircleFill,
+  warn: PiWarningCircleFill,
+  info: PiInfoFill,
+};
+
 function SemanticHalf() {
   // No theme wrapper — the global preview decorator supplies the active
   // theme's CSS vars; every swatch below reacts to the toolbar purely
   // through `color.*` custom properties.
   return (
     <>
-      <section className={semCss.section}>
-        <h3 className={semCss.subsectionTitle}>Surface</h3>
-        <div className={semCss.row}>
+      <section className={css.section}>
+        <h3 className={css.subsectionTitle}>Surface</h3>
+        <div className={css.row}>
           <ColorSwatch name="color.background" cssVar={color.background} />
           <ColorSwatch name="color.surface" cssVar={color.surface} />
           <ColorSwatch name="color.overlay" cssVar={color.overlay} />
         </div>
 
-        <h3 className={semCss.subsectionTitle}>Text</h3>
-        <div className={semCss.row}>
+        <h3 className={css.subsectionTitle}>Text</h3>
+        <div className={css.row}>
           <ColorSwatch name="color.text" cssVar={color.text} />
           <ColorSwatch name="color.textSubtle" cssVar={color.textSubtle} />
         </div>
 
-        <h3 className={semCss.subsectionTitle}>Border</h3>
-        <div className={semCss.row}>
+        <h3 className={css.subsectionTitle}>Border</h3>
+        <div className={css.row}>
           <BorderSwatch name="color.border" cssVar={color.border} />
           <BorderSwatch name="color.borderStrong" cssVar={color.borderStrong} />
           <BorderSwatch name="color.borderSubtle" cssVar={color.borderSubtle} />
         </div>
 
-        <h3 className={semCss.subsectionTitle}>Shadow</h3>
-        <div className={semCss.row}>
+        <h3 className={css.subsectionTitle}>Shadow</h3>
+        <div className={css.row}>
           <ColorSwatch name="color.shadow" cssVar={color.shadow} />
         </div>
 
-        <h3 className={semCss.subsectionTitle}>Accent &amp; focus</h3>
-        <div className={semCss.row} style={{ alignItems: 'flex-end' }}>
+        <h3 className={css.subsectionTitle}>Accent &amp; focus</h3>
+        <div className={css.row} style={{ alignItems: 'flex-end' }}>
           <ColorSwatch name="color.accent" cssVar={color.accent} />
           <ColorSwatch name="color.accentHover" cssVar={color.accentHover} />
           <ColorSwatch name="color.accentSubtle" cssVar={color.accentSubtle} />
-          <div className={semCss.cell}>
-            <div className={semCss.accentPill}>
+          <div className={css.cell}>
+            <div className={css.accentPill}>
               <span style={{ color: color.onAccent }}>Aa onAccent</span>
             </div>
             <span>color.accent + color.onAccent</span>
           </div>
-          <div className={semCss.cell}>
-            <div className={semCss.focusDemo} />
+          <div className={css.cell}>
+            <div className={css.focusDemo} />
             <span>color.focusRing</span>
           </div>
         </div>
       </section>
 
-      <section className={semCss.section}>
-        <h2 className={semCss.sectionTitle}>Sentiment</h2>
+      <section className={css.section}>
+        <h2 className={css.sectionTitle}>Sentiment</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {sentimentGroups.map((group) => {
             const tokens = color[group];
             return (
-              <div key={group} className={semCss.sentimentGroup}>
-                <span className={semCss.sentimentGroupLabel}>
-                  color.{group}
-                </span>
-                <div className={semCss.sentimentRow}>
+              <div key={group} className={css.sentimentGroup}>
+                <span className={css.sentimentGroupLabel}>color.{group}</span>
+                <div className={css.sentimentRow}>
                   {sentimentFields.map((field) => (
                     <div
                       key={field}
-                      className={semCss.cell}
+                      className={css.cell}
                       style={{ alignItems: 'center' }}
                     >
                       <div
-                        className={semCss.sentimentCard}
+                        className={css.sentimentCard}
                         style={{
                           background:
                             field === 'surface'
@@ -428,12 +428,12 @@ function SemanticHalf() {
                           </span>
                         )}
                         {field === 'icon' && (
-                          <span
+                          <Icon
+                            icon={sentimentIcon[group]}
+                            tone={group}
+                            size={16}
                             aria-hidden="true"
-                            style={{ color: tokens.icon, fontSize: 16 }}
-                          >
-                            ●
-                          </span>
+                          />
                         )}
                         {/* surface/border demonstrate themselves via the card's own fill/ring —
                             no inner mark needed, and one would misleadingly imply icon color. */}
@@ -455,60 +455,40 @@ function SemanticHalf() {
 
 function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
-    <div className={primCss.page}>
-      <h2 className={semCss.sectionTitle}>Primitives — raw palette</h2>
-      <p style={{ margin: 0, maxWidth: '42rem', fontSize: 13, opacity: 0.7 }}>
+    <div className={css.page}>
+      <h2 className={css.sectionTitle} id="primitives-raw-palette">
+        Primitives — raw palette
+      </h2>
+      <Text as="p" typeScale="bodySm" prominence="subtle" measure="md">
         Theme-internal — not exported from the package. Build against the
         semantic tier (color.*) below, never a raw ramp step.
-      </p>
+      </Text>
       <PrimitivesHalf theme={theme} />
-      <h2 className={semCss.sectionTitle}>Semantic — token roles</h2>
+      <h2 className={css.sectionTitle} id="semantic-token-roles">
+        Semantic — token roles
+      </h2>
       <SemanticHalf />
     </div>
   );
 }
+
+const DEMO_SECTIONS = [
+  // Shares StoryDoc's "Primitives" caption with tokensDoc's own note — both
+  // land in one rail group instead of the swatches demo sitting ungrouped.
+  {
+    title: 'Primitives — raw palette',
+    id: 'primitives-raw-palette',
+    caption: 'Primitives',
+  },
+  { title: 'Semantic — token roles', id: 'semantic-token-roles' },
+];
 
 const meta: Meta<typeof TokensPreview> = {
   title: 'Foundations/Color/Tokens',
   component: TokensPreview,
   parameters: {
     layout: 'fullscreen',
-    manifest: {
-      name: 'tokenSemantics',
-      description:
-        'What each sentiment-color sub-field (surface/border/text/icon/fill/onFill) is actually for — pick by where it applies, not how bold it looks.',
-      sections: [
-        {
-          kind: 'guidelines',
-          title: 'Token semantics',
-          for: 'agent',
-          items: [
-            {
-              level: 'must',
-              statement:
-                'Pick a sentiment sub-field (color.positive/negative/warn/info) by where it applies, not how strong/bold it looks. Tinted treatment: surface (tinted background fill), border (tinted border), text (accessible content on surface), icon (saturated mark on surface). Solid treatment: fill (one saturated background — a filled status badge, a destructive primary button) paired with onFill (accessible content on fill).',
-            },
-            {
-              level: 'must-not',
-              statement:
-                'Never reach for icon as a general "strong version of this sentiment" — e.g. color.negative.icon as a button background is a category error. For a solid sentiment surface use color.negative.fill + color.negative.onFill, which are contrast-checked as a pair; icon is only ever a mark on surface.',
-            },
-          ],
-        },
-        {
-          kind: 'steps',
-          title: 'Token semantics verification',
-          for: 'agent',
-          ordered: false,
-          items: [
-            {
-              title:
-                'For a solid, high-emphasis sentiment element (filled badge, destructive CTA) use color.<sentiment>.fill for the background and color.<sentiment>.onFill for text and icons on it — never surface (too tinted), text, or icon. There is exactly one solid intensity; if a design needs two solid weights, flag the gap rather than inventing a second fill.',
-            },
-          ],
-        },
-      ],
-    },
+    removePreviewPadding: true,
   },
   decorators: [
     (Story, context) => (
@@ -520,4 +500,10 @@ export default meta;
 
 type Story = StoryObj<typeof TokensPreview>;
 
-export const Tokens: Story = {};
+export const Tokens: Story = {
+  render: (args) => (
+    <StoryDoc doc={tokensDoc} demoSections={DEMO_SECTIONS} entityId="foundation.color">
+      <TokensPreview theme={args.theme} />
+    </StoryDoc>
+  ),
+};
