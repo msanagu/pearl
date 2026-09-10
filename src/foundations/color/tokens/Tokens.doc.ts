@@ -28,31 +28,9 @@ export const tokensDoc: StoryDoc = {
     },
     {
       kind: 'note',
-      title: 'Tinted vs. solid treatment',
-      body: 'Pick a sentiment sub-field (color.positive/negative/warn/info) by where it applies. Tinted treatment: surface (tinted background fill), border (tinted border), text (accessible content on surface), icon (saturated mark on surface). Solid treatment: fill (one saturated background — a filled status badge, a destructive primary button) paired with onFill (accessible content on fill).',
-    },
-    {
-      kind: 'steps',
-      title: 'Token semantics verification',
-      items: [
-        {
-          title:
-            'For a solid, high-emphasis sentiment element (filled badge, destructive CTA) use color.<sentiment>.fill for the background and color.<sentiment>.onFill for text and icons on it — never surface (too tinted), text, or icon. There is exactly one solid intensity; if a design needs two solid weights, flag the gap rather than inventing a second fill.',
-        },
-      ],
-    },
-    {
-      kind: 'guidelines',
-      title: 'Icon is not "strong sentiment"',
-      items: [
-        {
-          level: 'must-not',
-          statement:
-            'Never reach for icon as a general "strong version of this sentiment."',
-          detail:
-            'e.g. color.negative.icon as a button background is a category error. For a solid sentiment surface use color.negative.fill + color.negative.onFill, which are contrast-checked as a pair; icon is only ever a mark on surface.',
-        },
-      ],
+      caption: 'Sentiment',
+      title: 'Surface tier vs. fill tier',
+      body: "Pick a sentiment sub-field (color.positive/negative/warn/info) by tier, not by how bold it looks. Surface tier — surface, border, text, icon — is the tinted, Alert-level treatment; icon is a saturated mark that sits ON that surface, never a stand-in for a solid background. Fill tier — fill paired with onFill — is the one solid, high-emphasis background, contrast-checked as a pair: a filled status badge, a destructive primary button. There's exactly one fill intensity per sentiment; a design wanting a second solid weight is a gap to flag, not a reason to reach for icon as a background.",
     },
   ],
 };
