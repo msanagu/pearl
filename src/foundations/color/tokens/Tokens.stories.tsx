@@ -457,7 +457,7 @@ function TokensPreview({ theme = 'pearl' }: { theme?: string }) {
   return (
     <div className={css.page}>
       <h2 className={css.sectionTitle} id="primitives-raw-palette">
-        Primitives — raw palette
+        Raw palette
       </h2>
       <Text as="p" typeScale="bodySm" prominence="subtle" measure="md">
         Theme-internal — not exported from the package. Build against the
@@ -476,7 +476,7 @@ const DEMO_SECTIONS = [
   // Shares StoryDoc's "Primitives" caption with tokensDoc's own note — both
   // land in one rail group instead of the swatches demo sitting ungrouped.
   {
-    title: 'Primitives — raw palette',
+    title: 'Raw palette',
     id: 'primitives-raw-palette',
     caption: 'Primitives',
   },
