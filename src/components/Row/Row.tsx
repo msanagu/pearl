@@ -10,5 +10,5 @@ export interface RowProps extends Omit<FlexBoxProps, 'direction'> {}
  * `direction: row`. Use for button groups, inline field rows, toolbars.
  */
 export function Row(props: RowProps) {
-  return <FlexBox direction="row" {...props} />;
+  return <FlexBox direction="row" data-component="row" {...props} />;
 }

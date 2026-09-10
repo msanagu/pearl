@@ -12,6 +12,8 @@ export interface FlexBoxProps
   noValidate?: boolean;
   className?: string;
   children?: ReactNode;
+  /** Set by `Row`/`Stack` to their own name — the override-contract's stable hook. */
+  'data-component'?: string;
 }
 
 /**

@@ -11,5 +11,5 @@ export interface StackProps extends Omit<FlexBoxProps, 'direction'> {}
  * space scale, so spacing stays on-system by construction.
  */
 export function Stack(props: StackProps) {
-  return <FlexBox direction="column" {...props} />;
+  return <FlexBox direction="column" data-component="stack" {...props} />;
 }
