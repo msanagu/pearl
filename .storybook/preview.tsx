@@ -122,6 +122,9 @@ const preview: Preview = {
         // foundation page (its reference specimen), then the rest alphabetically.
         order: [
           'Introduction',
+          // Setup only for now — Rationale stays under its own top-level
+          // category until the must/should framing there is settled.
+          'Getting Started',
           'Foundations',
           [
             'Color',
@@ -134,6 +137,7 @@ const preview: Preview = {
             ['Tokens', '*'],
             '*',
           ],
+          'Patterns',
           'Brand',
           'Components',
           'Templates',
